@@ -1,0 +1,55 @@
+name: Autograde Sample
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+  workflow_dispatch:
+
+jobs:
+  validate-and-grade:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Verify repository structure
+        run: |
+          test -f README.md
+          test -f LICENSE
+          test -f grade_class.py
+          test -f grader_core.py
+          test -d class001
+          test -f class001/class001_assignment_basic.py
+
+      - name: Syntax check core files
+        run: |
+          python -m py_compile grade_class.py grade_all.py grader_core.py class001/class001_assignment_basic.py class001/class001_solution.py
+
+      - name: Run sample autograde
+        run: |
+          python grade_class.py class001 --tier basic
+          python grade_class.py class050 --tier advanced || true
+          python grade_class.py class100 --tier challenge || true
+
+      - name: Upload grading artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grading-artifacts
+          path: |
+            reports/
+            results/
+          if-no-files-found: ignore

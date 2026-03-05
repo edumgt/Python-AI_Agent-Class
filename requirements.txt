@@ -1,0 +1,10 @@
+# Optional packages for advanced class practice
+pandas>=2.0
+numpy>=1.26
+matplotlib>=3.8
+scikit-learn>=1.4
+requests>=2.31
+pyttsx3>=2.90
+SpeechRecognition>=3.10
+langchain>=0.3
+langchain-community>=0.3
