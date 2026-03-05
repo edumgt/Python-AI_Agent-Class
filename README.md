@@ -1,4 +1,4 @@
-# AI Human 5 Curriculum Classes 001-500
+# Python , AI Agent Curriculum Classes 001-500
 
 첨부 커리큘럼의 **정규교과 500시간**만 기준으로 세분화한 교육 저장소입니다.
 프로젝트 과정은 제외되어 있으며, `class001`부터 `class500`까지 각 차시별 학습 자료가 포함됩니다.
