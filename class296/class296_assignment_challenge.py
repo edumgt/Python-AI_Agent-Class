@@ -1,20 +1,50 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 """
-class296 assignment
-교과목명: 거대 언어 모델을 활용한 자연어 생성
-차시 주제: 토큰/컨텍스트 이해
-교육일차: Day 37
-일일 교시: 8교시 (1일 8시간 운영 기준)
+class296 Challenge(챌린지) 과제 (자기주도 학습용)
 
-진행(권장):
-- 설명 10분: 문제/목표 공유, 예제 시연
-- 실습 30분: TODO 구현
-- 정리 10분: 리뷰 + 개선 포인트
+[학습 정보]
+- 교과목: 거대 언어 모델을 활용한 자연어 생성
+- 주제: 토큰/컨텍스트 이해
+- 일정: Day 37 / 8교시
+- 난이도: 입문
 
-차시 목표(요약):
-- 토큰/컨텍스트 이해 핵심 개념 이해
-- 토큰/컨텍스트 이해 관련 코드/도구 적용
-- 토큰/컨텍스트 이해 결과 점검 및 다음 차시 연결
+[이번 과제 목표]
+- 리팩토링, 자체 테스트, 성능 확인까지 포함한 완성형으로 발전시키기
+- 초등학생도 혼자 따라갈 수 있도록, 작은 단계로 나눠서 완성하기
+
+[환경 구성 - Windows PowerShell]
+1) cd C:\DevOps\Python-AI_Agent-Class
+2) python -m venv .venv
+3) .\.venv\Scripts\Activate.ps1
+4) python -m pip install --upgrade pip
+5) pip install -r requirements.txt
+
+[환경 구성 - Linux/macOS (bash)]
+1) cd /path/to/Python-AI_Agent-Class
+2) python3 -m venv .venv
+3) source .venv/bin/activate
+4) python -m pip install --upgrade pip
+5) pip install -r requirements.txt
+
+[실행 방법]
+- python class296/class296_assignment_challenge.py
+
+[쉬운 학습 포인트]
+- 문장을 토큰으로 나누고 패턴을 찾는 연습을 해요.
+- 정제 -> 토큰화 -> 집계 순서를 고정하면 코드가 깔끔해져요.
+
+[진행 순서]
+1) TODO 지시문을 먼저 읽고, 입력/출력 예시를 적어 봅니다.
+2) TODO를 1개 구현한 뒤 바로 실행해 확인합니다.
+3) 오류가 나면 에러 마지막 줄을 보고 수정합니다.
+4) 모든 TODO 완료 후 한 번 더 전체 실행합니다.
+
+[디버깅 힌트]
+- 토큰 리스트를 먼저 출력해 전처리 결과를 눈으로 확인하세요.
+- 함수 분리 -> assert 테스트 -> 성능 로그 순서로 진행하세요.
 """
+
+
 from __future__ import annotations
 
 from pathlib import Path

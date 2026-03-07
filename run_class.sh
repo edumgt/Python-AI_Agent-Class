@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ $# -eq 0 ]; then

@@ -1,0 +1,182 @@
+<!doctype html>
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>class262 3문항 퀴즈</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <section class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+      <p class="text-sm font-semibold text-sky-700">class262 SELF QUIZ</p>
+      <h1 class="mt-2 text-2xl font-bold">발화/화자 특성 이해</h1>
+      <p class="mt-2 text-sm text-slate-600">
+        교과목: 음성 데이터 활용한 TTS와 STT 모델 개발 · 세부 시퀀스: 38/64 · 난이도: 기초응용 · Day 33 / 6교시
+      </p>
+      <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
+        학습 내용 기반 3문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
+      </p>
+    </section>
+
+    <section id="quiz-root" class="mt-6 space-y-4"></section>
+
+    <div class="mt-6 flex items-center gap-3">
+      <button id="grade-btn" class="rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white hover:bg-sky-700">
+        채점하기
+      </button>
+      <button id="reset-btn" class="rounded-lg bg-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300">
+        다시풀기
+      </button>
+    </div>
+
+    <section id="result-root" class="mt-6 hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200"></section>
+  </main>
+
+  <script>
+    const QUIZ_DATA = {
+  "class_id": "class262",
+  "subject_name": "음성 데이터 활용한 TTS와 STT 모델 개발",
+  "module": "발화/화자 특성 이해",
+  "level": "기초응용",
+  "session": "38/64",
+  "track_outcome": "음성 데이터 품질 지표를 계산하고 해석할 수 있다.",
+  "questions": [
+    {
+      "question": "이번 차시의 핵심 학습 주제로 가장 알맞은 것은 무엇인가요?",
+      "options": [
+        "TTS 파이프라인",
+        "TTS 전처리/학습",
+        "STT 데이터 라벨링",
+        "발화/화자 특성 이해"
+      ],
+      "answer_index": 3,
+      "explanation": "정답은 '발화/화자 특성 이해' 입니다."
+    },
+    {
+      "question": "'발화/화자 특성 이해'를 학습할 때 핵심 개념으로 가장 적절한 설명은 무엇인가요?",
+      "options": [
+        "질문과 관련 문서를 검색하고 근거를 바탕으로 답변을 만든다.",
+        "입력(X)과 정답(y)을 사용해 예측 규칙(모델)을 학습한다.",
+        "복잡한 문제를 작은 단계로 나누면 해결이 쉬워진다.",
+        "음성 데이터는 길이, 텍스트 라벨, 품질 정보를 함께 다룬다."
+      ],
+      "answer_index": 3,
+      "explanation": "핵심 개념은 수업 주제의 기본 원리를 정확히 설명해야 합니다."
+    },
+    {
+      "question": "'발화/화자 특성 이해' 실습을 시작할 때 가장 좋은 방법은 무엇인가요?",
+      "options": [
+        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
+        "검색 결과와 최종 답변을 분리해서 출력한다.",
+        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
+        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다."
+      ],
+      "answer_index": 0,
+      "explanation": "정답은 실제 실습 성공률을 높이는 시작 루틴입니다."
+    }
+  ],
+  "day": 33,
+  "slot": 6
+};
+
+    function renderQuiz() {
+      const root = document.getElementById("quiz-root");
+      root.innerHTML = "";
+
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
+        const wrap = document.createElement("article");
+        wrap.className = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200";
+
+        const title = document.createElement("h2");
+        title.className = "text-base font-semibold";
+        title.textContent = `${qIndex + 1}번. ${q.question}`;
+        wrap.appendChild(title);
+
+        const list = document.createElement("div");
+        list.className = "mt-3 space-y-2";
+
+        q.options.forEach((opt, optIndex) => {
+          const label = document.createElement("label");
+          label.className = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 p-3 hover:bg-slate-50";
+
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = `q-${qIndex}`;
+          radio.value = String(optIndex);
+          radio.className = "mt-1";
+
+          const text = document.createElement("span");
+          text.className = "text-sm";
+          text.textContent = opt;
+
+          label.appendChild(radio);
+          label.appendChild(text);
+          list.appendChild(label);
+        });
+
+        wrap.appendChild(list);
+        root.appendChild(wrap);
+      });
+    }
+
+    function gradeQuiz() {
+      let score = 0;
+      const details = [];
+
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
+        const selected = document.querySelector(`input[name="q-${qIndex}"]:checked`);
+        const selectedIndex = selected ? Number(selected.value) : -1;
+        const isCorrect = selectedIndex === q.answer_index;
+        if (isCorrect) score += 1;
+
+        details.push({
+          number: qIndex + 1,
+          isCorrect,
+          correct: q.options[q.answer_index],
+          chosen: selectedIndex >= 0 ? q.options[selectedIndex] : "미선택",
+          explanation: q.explanation
+        });
+      });
+
+      const resultRoot = document.getElementById("result-root");
+      resultRoot.classList.remove("hidden");
+
+      const headerClass = score === 3 ? "text-emerald-700" : "text-amber-700";
+      const summary = `
+        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / 3</h3>
+        <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
+        <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
+      `;
+
+      const rows = details.map((d) => `
+        <li class="rounded-lg border border-slate-200 p-3">
+          <p class="text-sm font-semibold">${d.number}번 - ${d.isCorrect ? "정답" : "오답"}</p>
+          <p class="mt-1 text-sm">내 답: ${d.chosen}</p>
+          <p class="text-sm">정답: ${d.correct}</p>
+          <p class="mt-1 text-xs text-slate-500">${d.explanation}</p>
+        </li>
+      `).join("");
+
+      resultRoot.innerHTML = `
+        ${summary}
+        <ul class="mt-4 space-y-2">${rows}</ul>
+      `;
+    }
+
+    function resetQuiz() {
+      document.querySelectorAll('input[type="radio"]').forEach((el) => {
+        el.checked = false;
+      });
+      const resultRoot = document.getElementById("result-root");
+      resultRoot.classList.add("hidden");
+      resultRoot.innerHTML = "";
+    }
+
+    document.getElementById("grade-btn").addEventListener("click", gradeQuiz);
+    document.getElementById("reset-btn").addEventListener("click", resetQuiz);
+    renderQuiz();
+  </script>
+</body>
+</html>

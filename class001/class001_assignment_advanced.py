@@ -1,20 +1,50 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 """
-class001 assignment
-교과목명: Python 프로그래밍
-차시 주제: 오리엔테이션 및 개발환경 준비
-교육일차: Day 01
-일일 교시: 1교시 (1일 8시간 운영 기준)
+class001 Advanced(심화) 과제 (자기주도 학습용)
 
-진행(권장):
-- 설명 10분: 문제/목표 공유, 예제 시연
-- 실습 30분: TODO 구현
-- 정리 10분: 리뷰 + 개선 포인트
+[학습 정보]
+- 교과목: Python 프로그래밍
+- 주제: 오리엔테이션 및 개발환경 준비
+- 일정: Day 01 / 1교시
+- 난이도: 입문
 
-차시 목표(요약):
-- 오리엔테이션 및 개발환경 준비 핵심 개념 이해
-- 오리엔테이션 및 개발환경 준비 관련 코드/도구 적용
-- 오리엔테이션 및 개발환경 준비 결과 점검 및 다음 차시 연결
+[이번 과제 목표]
+- 입력 검증/구조화/결과 저장까지 포함한 실무형 코드로 확장하기
+- 초등학생도 혼자 따라갈 수 있도록, 작은 단계로 나눠서 완성하기
+
+[환경 구성 - Windows PowerShell]
+1) cd C:\DevOps\Python-AI_Agent-Class
+2) python -m venv .venv
+3) .\.venv\Scripts\Activate.ps1
+4) python -m pip install --upgrade pip
+5) pip install -r requirements.txt
+
+[환경 구성 - Linux/macOS (bash)]
+1) cd /path/to/Python-AI_Agent-Class
+2) python3 -m venv .venv
+3) source .venv/bin/activate
+4) python -m pip install --upgrade pip
+5) pip install -r requirements.txt
+
+[실행 방법]
+- python class001/class001_assignment_advanced.py
+
+[쉬운 학습 포인트]
+- 작은 규칙을 코드로 바꾸는 연습을 해요.
+- 입력 -> 처리 -> 출력 흐름을 먼저 종이에 써 보고 코드를 작성하세요.
+
+[진행 순서]
+1) TODO 지시문을 먼저 읽고, 입력/출력 예시를 적어 봅니다.
+2) TODO를 1개 구현한 뒤 바로 실행해 확인합니다.
+3) 오류가 나면 에러 마지막 줄을 보고 수정합니다.
+4) 모든 TODO 완료 후 한 번 더 전체 실행합니다.
+
+[디버깅 힌트]
+- print()로 중간 값을 찍어 보면 대부분의 실수를 바로 찾을 수 있어요.
+- 기본 동작을 유지하면서 예외 처리와 결과 구조를 추가하세요.
 """
+
+
 from __future__ import annotations
 
 from pathlib import Path

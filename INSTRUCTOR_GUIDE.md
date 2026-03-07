@@ -1,3 +1,4 @@
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
 ## 자동채점 업그레이드 안내
 - 현재 패키지는 **함수 단위 테스트 + 결과 파일 검증** 기반 자동채점을 포함합니다.
 - 루트의 `AUTOGRADING.md`, `SUBMISSION_GRADING_GUIDE.md`를 함께 참고하세요.

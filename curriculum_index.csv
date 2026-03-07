@@ -1,3 +1,4 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 ﻿class,day,slot,subject_code,subject_name,subject_session,module,level,md_file
 class001,1,1,정규교과-1,Python 프로그래밍,1/40,오리엔테이션 및 개발환경 준비,입문,class001/class001.md
 class002,1,2,정규교과-1,Python 프로그래밍,2/40,오리엔테이션 및 개발환경 준비,입문,class002/class002.md

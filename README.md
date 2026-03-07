@@ -1,3 +1,4 @@
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
 # Python , AI Agent Curriculum Classes 001-500
 
 첨부 커리큘럼의 **정규교과 500시간**만 기준으로 세분화한 교육 저장소입니다.
