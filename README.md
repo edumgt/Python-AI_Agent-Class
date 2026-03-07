@@ -196,6 +196,7 @@ docker run hello-world
 3. `Install`
 
 ### 5-1) Live Server로 `classXXX_quiz.html` 실행
+![alt text](image.png)
 1. VS Code Extensions (`Ctrl+Shift+X`)에서 `Live Server` (`ritwickdey.LiveServer`) 설치
 2. 원하는 퀴즈 파일 열기 (예: `pyBasics/class001/class001_quiz.html`)
 3. 에디터 우측 하단 `Go Live` 클릭
