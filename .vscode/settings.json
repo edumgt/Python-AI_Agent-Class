@@ -1,3 +1,7 @@
 {
-  "markdown.preview.mermaid": true
+  "markdown.preview.mermaid": true,
+  "markdown-mermaid.languages": [
+    "mermaid",
+    "mermaid2"
+  ]
 }

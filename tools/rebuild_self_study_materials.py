@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import csv
+import re
 from pathlib import Path
 from textwrap import dedent
+
+from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -95,6 +98,27 @@ TRACK_INFO = {
             "빈도 상위 단어를 3개 이상 찾았다.",
         ],
         "next_tip": "다음 차시에서는 토큰을 숫자 벡터로 바꿔 모델에 넣어 볼 거예요.",
+    },
+    "llm": {
+        "kid_summary": "거대 언어 모델에게 목적과 조건을 정확히 지시해 원하는 답을 얻는 방법을 배워요.",
+        "why": "같은 모델이라도 지시문, 검증 기준, 도메인 맥락을 어떻게 주느냐에 따라 결과 품질이 크게 달라져요.",
+        "concepts": [
+            "요구사항을 프롬프트 조건(역할/출력형식/제약)으로 구조화해요.",
+            "안전성·환각 점검 기준을 함께 넣어 결과의 신뢰도를 높여요.",
+            "도메인 문맥과 예시를 연결해 실무형 답변 품질을 높여요.",
+        ],
+        "analogy": "똑똑한 조교에게 과제를 맡길 때, 목표·형식·검수 기준을 먼저 주면 결과가 정확해지는 것과 같아요.",
+        "practice_steps": [
+            "같은 질문을 조건 없는 프롬프트와 조건 있는 프롬프트로 각각 실행해 비교해요.",
+            "답변에 근거/제약/출처 항목을 넣어 품질 기준을 점검해요.",
+            "도메인 예시 1개를 추가하고 답변 정확도가 어떻게 달라지는지 확인해요.",
+        ],
+        "checklist": [
+            "프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다.",
+            "환각 가능 문장을 식별하고 검증 절차를 적용했다.",
+            "도메인 문맥을 넣은 버전과 넣지 않은 버전을 비교했다.",
+        ],
+        "next_tip": "다음 차시에서는 도메인 시나리오를 API나 서비스 흐름과 연결해 실전형으로 확장해 볼 거예요.",
     },
     "speech": {
         "kid_summary": "사람의 목소리 데이터를 구조적으로 다루는 방법을 배워요.",
@@ -204,6 +228,1074 @@ TRACK_INFO = {
 }
 
 
+TRACK_MAIN_SYNTAX = {
+    "python": ["함수", "조건문", "반복문", "출력(print)"],
+    "data": ["함수", "리스트/딕셔너리", "집계 로직", "출력(print)"],
+    "ml": ["함수", "리스트 컴프리헨션", "오차 계산", "출력(print)"],
+    "nlp": ["문자열 처리", "토큰화", "딕셔너리 집계", "출력(print)"],
+    "llm": ["함수", "프롬프트 구성", "검증 조건", "출력(print)"],
+    "speech": ["리스트/딕셔너리", "조건 필터링", "통계 계산", "출력(print)"],
+    "prompt": ["문자열 템플릿", "함수", "변수 치환", "출력(print)"],
+    "langchain": ["단계 함수", "체인 구성", "중간 상태 점검", "출력(print)"],
+    "rag": ["검색 함수", "유사도 계산", "근거 결합", "출력(print)"],
+    "generic": ["함수", "조건문", "반복문", "출력(print)"],
+}
+
+TRACK_FLOW_STEPS = {
+    "python": [
+        "입력값과 요구사항을 확인한다",
+        "조건문/반복문으로 핵심 로직을 구현한다",
+        "함수 단위로 코드를 분리한다",
+        "출력 결과를 테스트 케이스로 검증한다",
+    ],
+    "data": [
+        "원본 데이터를 로딩하고 구조를 확인한다",
+        "결측치/이상치를 전처리한다",
+        "집계·변환으로 분석용 데이터를 만든다",
+        "요약 결과를 표/리포트로 검증한다",
+    ],
+    "ml": [
+        "학습 데이터(X,y)를 준비한다",
+        "예측 규칙(모델)을 학습/계산한다",
+        "오차 지표를 계산해 성능을 확인한다",
+        "오차 원인을 분석해 개선 포인트를 정리한다",
+    ],
+    "nlp": [
+        "텍스트를 정제하고 토큰 단위로 분해한다",
+        "핵심 특징(빈도/패턴)을 계산한다",
+        "주요 태스크를 실행해 결과를 생성한다",
+        "오탐/누락 사례를 점검해 규칙을 보완한다",
+    ],
+    "llm": [
+        "요구사항을 프롬프트 구조로 정리한다",
+        "생성 파라미터와 출력 형식을 설정한다",
+        "안전성/환각 기준으로 답변을 검증한다",
+        "도메인 맥락을 반영해 최종 답변을 보정한다",
+    ],
+    "speech": [
+        "음성 데이터와 라벨 품질을 점검한다",
+        "특징(MFCC 등)을 추출하고 전처리한다",
+        "STT/TTS 추론 또는 학습 단계를 실행한다",
+        "품질 지표를 계산해 결과를 검증한다",
+    ],
+    "prompt": [
+        "역할/목표/형식을 명확히 정의한다",
+        "프롬프트 템플릿을 작성한다",
+        "예시를 바꿔 응답 품질을 비교한다",
+        "평가 기준에 맞게 프롬프트를 튜닝한다",
+    ],
+    "langchain": [
+        "체인 단계(입력/처리/출력)를 설계한다",
+        "모델·도구·메모리를 연결한다",
+        "중간 상태 로그를 확인한다",
+        "워크플로우 전체 결과를 검증한다",
+    ],
+    "rag": [
+        "문서를 로딩하고 청크를 구성한다",
+        "임베딩/벡터 검색으로 관련 문서를 찾는다",
+        "검색 근거를 컨텍스트로 결합한다",
+        "출처 포함 답변을 생성하고 검증한다",
+    ],
+    "generic": [
+        "핵심 개념을 정리한다",
+        "최소 실행 예제를 구현한다",
+        "입력값을 바꿔 결과를 비교한다",
+        "체크리스트로 학습 결과를 검증한다",
+    ],
+}
+
+
+AUTO_TECH_STACK_START = "<!-- AUTO-GENERATED: TECH_STACK_FLOW START -->"
+AUTO_TECH_STACK_END = "<!-- AUTO-GENERATED: TECH_STACK_FLOW END -->"
+TERM_TOKEN_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9+\-]*|[가-힣]+")
+PARTICLE_SUFFIXES = ("은", "는", "이", "가", "을", "를", "와", "과", "의")
+SKIP_TERMS = {"및", "와", "과", "등"}
+
+TRACK_TERM_CONTEXT = {
+    "python": "코드 문법을 통해 문제를 절차적으로 해결하는 역량을 기르는 교과목입니다.",
+    "data": "데이터 전처리와 시각화를 통해 분석 가능한 정보로 바꾸는 교과목입니다.",
+    "ml": "모델 학습과 성능 평가를 통해 예측 시스템을 설계하는 교과목입니다.",
+    "nlp": "텍스트를 계산 가능한 단위로 바꿔 의미를 다루는 자연어 처리 교과목입니다.",
+    "llm": "거대 언어 모델을 실무 도메인과 연결해 생성 품질을 높이는 교과목입니다.",
+    "speech": "음성 신호를 정제하고 STT/TTS 모델로 연결하는 음성 AI 교과목입니다.",
+    "prompt": "프롬프트 설계로 모델 응답 품질을 제어하는 생성형 AI 교과목입니다.",
+    "langchain": "체인 기반 워크플로우를 구성해 서비스형 AI를 구현하는 교과목입니다.",
+    "rag": "검색 근거를 결합해 신뢰도 높은 답변을 만드는 RAG 교과목입니다.",
+    "generic": "핵심 용어를 기능 단위로 분해해 구현까지 연결하는 실습 중심 교과목입니다.",
+}
+
+TERM_ALIASES = {
+    "langchain": "LangChain",
+    "Langchain": "LangChain",
+    "ml": "ML",
+    "dl": "DL",
+    "llm": "LLM",
+    "stt": "STT",
+    "tts": "TTS",
+    "nlp": "NLP",
+    "rag": "RAG",
+    "api": "API",
+    "벡터db": "벡터DB",
+    "vectorstore": "VectorStore",
+    "prompttemplate": "PromptTemplate",
+    "outputparser": "OutputParser",
+}
+
+TERM_LEXICON: dict[str, dict[str, str]] = {
+    "Python": {
+        "grammar": "고유명사(언어명)",
+        "hanja": "-",
+        "english": "Python",
+        "technical": "데이터 처리와 AI 실습에 널리 쓰이는 범용 프로그래밍 언어입니다.",
+    },
+    "프로그래밍": {
+        "grammar": "명사",
+        "hanja": "-",
+        "english": "programming",
+        "technical": "문제를 알고리즘으로 분해해 코드로 구현하는 활동입니다.",
+    },
+    "전처리": {
+        "grammar": "명사",
+        "hanja": "前處理",
+        "english": "preprocessing",
+        "technical": "원시 데이터를 모델이 다루기 쉬운 형태로 정리하는 단계입니다.",
+    },
+    "시각화": {
+        "grammar": "명사",
+        "hanja": "視覺化",
+        "english": "visualization",
+        "technical": "숫자 데이터를 그래프와 차트로 표현해 패턴을 해석하는 과정입니다.",
+    },
+    "데이터": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "data",
+        "technical": "분석, 학습, 추론의 입력이 되는 관측값 집합입니다.",
+    },
+    "분석": {
+        "grammar": "명사",
+        "hanja": "分析",
+        "english": "analysis",
+        "technical": "데이터를 분해해 의미 있는 결론을 도출하는 과정입니다.",
+    },
+    "머신러닝": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "machine learning",
+        "technical": "데이터에서 패턴을 학습해 예측 규칙을 만드는 기술입니다.",
+    },
+    "딥러닝": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "deep learning",
+        "technical": "다층 신경망으로 복잡한 패턴을 학습하는 머신러닝 하위 분야입니다.",
+    },
+    "자연어": {
+        "grammar": "명사",
+        "hanja": "自然語",
+        "english": "natural language",
+        "technical": "사람이 일상에서 사용하는 언어 텍스트/발화를 의미합니다.",
+    },
+    "음성": {
+        "grammar": "명사",
+        "hanja": "音聲",
+        "english": "speech/audio",
+        "technical": "사람의 발화 신호를 디지털로 표현한 데이터입니다.",
+    },
+    "거대": {
+        "grammar": "관형어",
+        "hanja": "巨大",
+        "english": "large-scale",
+        "technical": "모델 파라미터와 학습 데이터 규모가 매우 큼을 나타냅니다.",
+    },
+    "언어": {
+        "grammar": "명사",
+        "hanja": "言語",
+        "english": "language",
+        "technical": "의미를 전달하기 위한 기호 체계로, NLP의 분석 대상입니다.",
+    },
+    "모델": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "model",
+        "technical": "입력과 출력 관계를 수학적으로 근사한 계산 구조입니다.",
+    },
+    "학습": {
+        "grammar": "명사",
+        "hanja": "學習",
+        "english": "training/learning",
+        "technical": "데이터로부터 모델 파라미터를 조정하는 과정입니다.",
+    },
+    "생성": {
+        "grammar": "명사",
+        "hanja": "生成",
+        "english": "generation",
+        "technical": "모델이 새 텍스트/응답/콘텐츠를 출력하는 과정입니다.",
+    },
+    "활용": {
+        "grammar": "명사/동사 어근",
+        "hanja": "活用",
+        "english": "utilization",
+        "technical": "이론이나 도구를 실제 문제 해결 맥락에 적용하는 행위입니다.",
+    },
+    "개발": {
+        "grammar": "명사",
+        "hanja": "開發",
+        "english": "development",
+        "technical": "기능 기획, 구현, 검증을 통해 소프트웨어를 완성하는 과정입니다.",
+    },
+    "프롬프트": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "prompt",
+        "technical": "모델의 응답 방향을 결정하는 입력 지시문입니다.",
+    },
+    "엔지니어링": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "engineering",
+        "technical": "재현 가능한 품질을 목표로 설계·검증하는 공학적 접근입니다.",
+    },
+    "도메인": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "domain",
+        "technical": "문제를 푸는 특정 업무 영역(예: 의료, 법률, 제조)을 뜻합니다.",
+    },
+    "적용": {
+        "grammar": "명사/동사 어근",
+        "hanja": "適用",
+        "english": "application",
+        "technical": "일반 기술을 실제 업무 요구사항에 맞게 구현하는 단계입니다.",
+    },
+    "시나리오": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "scenario",
+        "technical": "사용자 행동, 입력, 예외를 포함한 실행 흐름 설계 문서입니다.",
+    },
+    "안전성": {
+        "grammar": "명사",
+        "hanja": "安全性",
+        "english": "safety",
+        "technical": "유해 출력, 오남용, 규정 위반을 줄이는 모델 운영 특성입니다.",
+    },
+    "환각": {
+        "grammar": "명사",
+        "hanja": "幻覺",
+        "english": "hallucination",
+        "technical": "모델이 사실 근거 없이 그럴듯한 잘못된 답을 생성하는 현상입니다.",
+    },
+    "관리": {
+        "grammar": "명사",
+        "hanja": "管理",
+        "english": "management",
+        "technical": "정책, 검증, 모니터링으로 품질을 지속 통제하는 활동입니다.",
+    },
+    "API": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Application Programming Interface",
+        "technical": "서비스 간 기능을 호출하기 위한 표준 인터페이스입니다.",
+    },
+    "연동": {
+        "grammar": "명사",
+        "hanja": "連動",
+        "english": "integration",
+        "technical": "서로 다른 시스템을 연결해 데이터와 기능을 교환하는 과정입니다.",
+    },
+    "서비스": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "service",
+        "technical": "사용자에게 기능을 제공하는 실행 가능한 애플리케이션 단위입니다.",
+    },
+    "구현": {
+        "grammar": "명사",
+        "hanja": "具現",
+        "english": "implementation",
+        "technical": "설계를 실제 코드와 시스템 동작으로 구체화하는 과정입니다.",
+    },
+    "요약": {
+        "grammar": "명사",
+        "hanja": "要約",
+        "english": "summarization",
+        "technical": "원문 핵심 정보를 압축해 짧은 문장으로 재구성하는 작업입니다.",
+    },
+    "분류": {
+        "grammar": "명사",
+        "hanja": "分類",
+        "english": "classification",
+        "technical": "입력을 사전 정의된 카테고리로 할당하는 지도학습 과제입니다.",
+    },
+    "추출": {
+        "grammar": "명사",
+        "hanja": "抽出",
+        "english": "extraction",
+        "technical": "원문에서 필요한 구조화 정보만 뽑아내는 작업입니다.",
+    },
+    "토큰": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "token",
+        "technical": "모델이 처리하는 최소 단위 문자열 조각입니다.",
+    },
+    "컨텍스트": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "context",
+        "technical": "현재 답변 생성에 사용되는 주변 정보 범위입니다.",
+    },
+    "파라미터": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "parameter",
+        "technical": "모델 동작을 제어하거나 학습으로 조정되는 수치 변수입니다.",
+    },
+    "대화형": {
+        "grammar": "관형어형 명사",
+        "hanja": "對話型",
+        "english": "conversational",
+        "technical": "사용자-시스템 상호작용이 왕복 구조로 진행됨을 나타냅니다.",
+    },
+    "응답": {
+        "grammar": "명사",
+        "hanja": "應答",
+        "english": "response",
+        "technical": "모델이 입력 프롬프트에 대해 반환하는 출력 텍스트입니다.",
+    },
+    "LLM": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Large Language Model",
+        "technical": "대규모 텍스트로 사전학습된 생성형 언어 모델입니다.",
+    },
+    "NLP": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Natural Language Processing",
+        "technical": "자연어를 분석·이해·생성하는 인공지능 분야입니다.",
+    },
+    "STT": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Speech-to-Text",
+        "technical": "음성 신호를 텍스트로 변환하는 기술입니다.",
+    },
+    "TTS": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Text-to-Speech",
+        "technical": "텍스트를 자연스러운 음성으로 합성하는 기술입니다.",
+    },
+    "ML": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Machine Learning",
+        "technical": "데이터 기반 학습으로 예측 규칙을 만드는 방법론입니다.",
+    },
+    "DL": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Deep Learning",
+        "technical": "심층 신경망으로 표현학습을 수행하는 방법론입니다.",
+    },
+    "LangChain": {
+        "grammar": "고유명사(프레임워크명)",
+        "hanja": "-",
+        "english": "LangChain",
+        "technical": "LLM 애플리케이션을 체인/도구 기반으로 구성하는 프레임워크입니다.",
+    },
+    "RAG": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Retrieval-Augmented Generation",
+        "technical": "검색 결과를 근거로 생성 품질과 신뢰도를 높이는 구조입니다.",
+    },
+    "Retrieval-Augmented": {
+        "grammar": "복합 형용어",
+        "hanja": "-",
+        "english": "retrieval-augmented",
+        "technical": "검색 결과를 생성 과정에 보강한다는 RAG 핵심 속성입니다.",
+    },
+    "Generation": {
+        "grammar": "명사(영어)",
+        "hanja": "-",
+        "english": "generation",
+        "technical": "모델이 새 출력 텍스트를 만들어내는 단계입니다.",
+    },
+    "PromptTemplate": {
+        "grammar": "복합명사(클래스명)",
+        "hanja": "-",
+        "english": "PromptTemplate",
+        "technical": "변수 기반 프롬프트를 재사용 가능하게 만드는 템플릿 구성요소입니다.",
+    },
+    "OutputParser": {
+        "grammar": "복합명사(클래스명)",
+        "hanja": "-",
+        "english": "OutputParser",
+        "technical": "모델 출력을 지정된 구조(JSON 등)로 파싱하는 구성요소입니다.",
+    },
+    "Chain": {
+        "grammar": "명사(영어)",
+        "hanja": "-",
+        "english": "chain",
+        "technical": "여러 처리 단계를 순차 연결한 실행 파이프라인입니다.",
+    },
+    "Memory": {
+        "grammar": "명사(영어)",
+        "hanja": "-",
+        "english": "memory",
+        "technical": "대화/상태 정보를 보존해 문맥 일관성을 높이는 저장 장치입니다.",
+    },
+    "Tool": {
+        "grammar": "명사(영어)",
+        "hanja": "-",
+        "english": "tool",
+        "technical": "모델이 외부 기능(API, 계산기 등)을 호출할 수 있게 한 모듈입니다.",
+    },
+    "Agent": {
+        "grammar": "명사(영어)",
+        "hanja": "-",
+        "english": "agent",
+        "technical": "목표 달성을 위해 도구 선택과 실행 순서를 스스로 결정하는 실행자입니다.",
+    },
+    "VectorStore": {
+        "grammar": "복합명사(영어)",
+        "hanja": "-",
+        "english": "vector store",
+        "technical": "임베딩 벡터를 저장하고 유사도 검색을 수행하는 저장소입니다.",
+    },
+    "벡터DB": {
+        "grammar": "복합명사",
+        "hanja": "-",
+        "english": "vector database",
+        "technical": "고차원 벡터 검색을 최적화한 데이터베이스입니다.",
+    },
+    "문서": {
+        "grammar": "명사",
+        "hanja": "文書",
+        "english": "document",
+        "technical": "RAG 검색과 근거 생성에 사용하는 텍스트 단위 데이터입니다.",
+    },
+    "검색": {
+        "grammar": "명사",
+        "hanja": "搜索",
+        "english": "retrieval/search",
+        "technical": "질문과 유사한 문서를 찾는 단계로 RAG 품질을 좌우합니다.",
+    },
+    "출처화": {
+        "grammar": "명사",
+        "hanja": "-",
+        "english": "citation grounding",
+        "technical": "답변 문장별 근거 문서를 연결해 신뢰성을 높이는 작업입니다.",
+    },
+    "검증": {
+        "grammar": "명사",
+        "hanja": "檢證",
+        "english": "validation",
+        "technical": "결과가 요구사항과 기준을 만족하는지 확인하는 절차입니다.",
+    },
+    "임베딩": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "embedding",
+        "technical": "텍스트/신호를 벡터 공간에 사상해 의미 유사도를 계산하는 표현입니다.",
+    },
+    "파이프라인": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "pipeline",
+        "technical": "여러 처리 단계를 자동으로 연결한 실행 흐름입니다.",
+    },
+    "오디오": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "audio",
+        "technical": "디지털 음성 신호 파일/스트림 데이터를 의미합니다.",
+    },
+    "발화": {
+        "grammar": "명사",
+        "hanja": "發話",
+        "english": "utterance",
+        "technical": "화자가 실제로 말한 하나의 문장 단위 음성 샘플입니다.",
+    },
+    "화자": {
+        "grammar": "명사",
+        "hanja": "話者",
+        "english": "speaker",
+        "technical": "음성을 발화한 사람(또는 음색 정체성)을 나타냅니다.",
+    },
+    "특징": {
+        "grammar": "명사",
+        "hanja": "特徵",
+        "english": "feature",
+        "technical": "모델이 학습에 사용하는 입력 속성값입니다.",
+    },
+    "MFCC": {
+        "grammar": "약어명사",
+        "hanja": "-",
+        "english": "Mel-Frequency Cepstral Coefficients",
+        "technical": "음성 스펙트럼 특성을 요약하는 대표 음향 특징 벡터입니다.",
+    },
+    "변수": {
+        "grammar": "명사",
+        "hanja": "變數",
+        "english": "variable",
+        "technical": "값을 저장하고 재사용하기 위한 이름 붙은 메모리 공간입니다.",
+    },
+    "자료형": {
+        "grammar": "명사",
+        "hanja": "資料型",
+        "english": "data type",
+        "technical": "값의 종류와 연산 방식을 정의하는 타입 체계입니다.",
+    },
+    "연산자": {
+        "grammar": "명사",
+        "hanja": "演算子",
+        "english": "operator",
+        "technical": "피연산자에 연산 규칙을 적용하는 기호/키워드입니다.",
+    },
+    "조건문": {
+        "grammar": "명사",
+        "hanja": "條件文",
+        "english": "conditional statement",
+        "technical": "조건 평가 결과에 따라 실행 분기를 선택하는 문법입니다.",
+    },
+    "반복문": {
+        "grammar": "명사",
+        "hanja": "反復文",
+        "english": "loop statement",
+        "technical": "동일 로직을 조건/횟수 기준으로 반복 실행하는 문법입니다.",
+    },
+    "흐름제어": {
+        "grammar": "명사",
+        "hanja": "흐름制御",
+        "english": "flow control",
+        "technical": "실행 순서를 분기, 반복, 중단으로 조절하는 기술입니다.",
+    },
+    "함수": {
+        "grammar": "명사",
+        "hanja": "函數",
+        "english": "function",
+        "technical": "입력을 받아 결과를 반환하는 재사용 가능한 코드 블록입니다.",
+    },
+    "모듈": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "module",
+        "technical": "관련 함수/클래스를 묶은 코드 파일 단위입니다.",
+    },
+    "컬렉션": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "collection",
+        "technical": "리스트, 딕셔너리 등 여러 데이터를 저장하는 자료구조군입니다.",
+    },
+    "자료구조": {
+        "grammar": "명사",
+        "hanja": "資料構造",
+        "english": "data structure",
+        "technical": "데이터 저장 방식과 접근 효율을 결정하는 구조입니다.",
+    },
+    "파일": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "file",
+        "technical": "디스크에 저장되는 데이터 단위입니다.",
+    },
+    "입출력": {
+        "grammar": "명사",
+        "hanja": "入出力",
+        "english": "input/output",
+        "technical": "외부 데이터의 읽기/쓰기 과정을 의미합니다.",
+    },
+    "예외처리": {
+        "grammar": "명사",
+        "hanja": "例外處理",
+        "english": "exception handling",
+        "technical": "실행 중 오류 상황을 안전하게 제어하는 기법입니다.",
+    },
+    "디버깅": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "debugging",
+        "technical": "오류 원인을 추적하고 수정하는 개발 절차입니다.",
+    },
+    "객체지향": {
+        "grammar": "명사",
+        "hanja": "客體指向",
+        "english": "object-oriented",
+        "technical": "데이터와 동작을 객체 단위로 모델링하는 설계 패러다임입니다.",
+    },
+    "NumPy": {
+        "grammar": "고유명사(라이브러리명)",
+        "hanja": "-",
+        "english": "NumPy",
+        "technical": "배열 연산과 선형대수 계산을 위한 파이썬 핵심 라이브러리입니다.",
+    },
+    "Pandas": {
+        "grammar": "고유명사(라이브러리명)",
+        "hanja": "-",
+        "english": "pandas",
+        "technical": "테이블형 데이터 조작과 분석에 특화된 파이썬 라이브러리입니다.",
+    },
+    "데이터프레임": {
+        "grammar": "명사(복합 외래어)",
+        "hanja": "-",
+        "english": "DataFrame",
+        "technical": "행/열 기반 표 데이터를 다루는 판다스의 핵심 자료구조입니다.",
+    },
+    "결측치": {
+        "grammar": "명사",
+        "hanja": "缺測値",
+        "english": "missing value",
+        "technical": "값이 비어 있거나 측정되지 않은 데이터 항목입니다.",
+    },
+    "이상치": {
+        "grammar": "명사",
+        "hanja": "異常値",
+        "english": "outlier",
+        "technical": "분포에서 비정상적으로 벗어난 값으로 모델 품질에 영향이 큽니다.",
+    },
+    "문자열": {
+        "grammar": "명사",
+        "hanja": "文字列",
+        "english": "string",
+        "technical": "텍스트 데이터를 표현하는 기본 자료형입니다.",
+    },
+    "날짜": {
+        "grammar": "명사",
+        "hanja": "날짜",
+        "english": "date",
+        "technical": "시간 축 분석과 정렬/집계에 필요한 시계열 데이터입니다.",
+    },
+    "그룹화": {
+        "grammar": "명사",
+        "hanja": "그룹化",
+        "english": "grouping",
+        "technical": "공통 키 기준으로 데이터를 묶어 집계 가능한 형태로 만듭니다.",
+    },
+    "집계": {
+        "grammar": "명사",
+        "hanja": "集計",
+        "english": "aggregation",
+        "technical": "합계, 평균, 개수 등 통계량을 계산하는 단계입니다.",
+    },
+    "병합": {
+        "grammar": "명사",
+        "hanja": "倂合",
+        "english": "merge",
+        "technical": "여러 데이터 소스를 키 기준으로 결합하는 작업입니다.",
+    },
+    "변환": {
+        "grammar": "명사",
+        "hanja": "變換",
+        "english": "transformation",
+        "technical": "데이터 스키마, 타입, 값 표현을 목적에 맞게 바꾸는 과정입니다.",
+    },
+    "Matplotlib": {
+        "grammar": "고유명사(라이브러리명)",
+        "hanja": "-",
+        "english": "Matplotlib",
+        "technical": "파이썬 기본 시각화 라이브러리로 정적 그래프 생성에 강점이 있습니다.",
+    },
+    "Seaborn": {
+        "grammar": "고유명사(라이브러리명)",
+        "hanja": "-",
+        "english": "Seaborn",
+        "technical": "통계 시각화를 고수준 API로 제공하는 Matplotlib 기반 라이브러리입니다.",
+    },
+    "차트": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "chart",
+        "technical": "데이터를 시각적 기호로 표현한 그래프 결과물입니다.",
+    },
+    "회귀": {
+        "grammar": "명사",
+        "hanja": "回歸",
+        "english": "regression",
+        "technical": "연속형 수치를 예측하는 지도학습 문제 유형입니다.",
+    },
+    "과적합": {
+        "grammar": "명사",
+        "hanja": "過適合",
+        "english": "overfitting",
+        "technical": "학습 데이터에 과도하게 맞춰 일반화 성능이 떨어지는 현상입니다.",
+    },
+    "일반화": {
+        "grammar": "명사",
+        "hanja": "一般化",
+        "english": "generalization",
+        "technical": "보지 못한 데이터에서도 성능을 유지하는 모델 능력입니다.",
+    },
+    "신경망": {
+        "grammar": "명사",
+        "hanja": "神經網",
+        "english": "neural network",
+        "technical": "뉴런 계층을 연결해 비선형 함수를 학습하는 모델 구조입니다.",
+    },
+    "특성공학": {
+        "grammar": "명사",
+        "hanja": "特性工學",
+        "english": "feature engineering",
+        "technical": "모델 성능 향상을 위해 입력 특성을 설계·가공하는 작업입니다.",
+    },
+    "평가": {
+        "grammar": "명사",
+        "hanja": "評價",
+        "english": "evaluation",
+        "technical": "지표 기반으로 모델이나 결과물 품질을 측정하는 단계입니다.",
+    },
+    "지표": {
+        "grammar": "명사",
+        "hanja": "指標",
+        "english": "metric",
+        "technical": "정확도, F1, MAE처럼 성능을 수치화하는 기준값입니다.",
+    },
+    "튜닝": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "tuning",
+        "technical": "파라미터/하이퍼파라미터 조정으로 성능을 개선하는 작업입니다.",
+    },
+}
+
+
+def normalize_term(term: str) -> str:
+    raw = term.strip().strip(".,")
+    if not raw:
+        return ""
+    if raw in SKIP_TERMS:
+        return ""
+
+    alias = TERM_ALIASES.get(raw)
+    if alias:
+        return alias
+    alias_lower = TERM_ALIASES.get(raw.lower())
+    if alias_lower:
+        return alias_lower
+
+    if raw in TERM_LEXICON:
+        return raw
+
+    for suffix in PARTICLE_SUFFIXES:
+        if raw.endswith(suffix) and len(raw) > len(suffix) + 1:
+            candidate = raw[: -len(suffix)]
+            if candidate in TERM_LEXICON:
+                return candidate
+            alias_candidate = TERM_ALIASES.get(candidate) or TERM_ALIASES.get(candidate.lower())
+            if alias_candidate:
+                return alias_candidate
+
+    if raw.endswith("하기") and len(raw) > 2:
+        candidate = raw[:-2]
+        if candidate in TERM_LEXICON:
+            return candidate
+    if raw.endswith("한") and len(raw) > 1:
+        candidate = raw[:-1]
+        if candidate in TERM_LEXICON:
+            return candidate
+
+    return raw
+
+
+def collect_key_terms(text: str, max_terms: int = 6) -> list[str]:
+    normalized_text = (
+        text.replace("(", " ")
+        .replace(")", " ")
+        .replace("/", " ")
+        .replace("+", " ")
+        .replace(",", " ")
+    )
+    tokens = TERM_TOKEN_PATTERN.findall(normalized_text)
+    terms: list[str] = []
+    seen: set[str] = set()
+    for token in tokens:
+        base = normalize_term(token)
+        if not base or base in SKIP_TERMS:
+            continue
+        key = base.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        terms.append(base)
+        if len(terms) >= max_terms:
+            break
+    return terms
+
+
+def lookup_term_info(term: str) -> dict[str, str]:
+    if term in TERM_LEXICON:
+        return TERM_LEXICON[term]
+    lowered = term.lower()
+    for key, value in TERM_LEXICON.items():
+        if key.lower() == lowered:
+            return value
+
+    if re.fullmatch(r"[A-Za-z][A-Za-z0-9+\-]*", term):
+        return {
+            "grammar": "영문 기술명/약어",
+            "hanja": "-",
+            "english": term,
+            "technical": f"용어 `{term}`: 이번 차시에서 쓰이는 핵심 기술 용어입니다.",
+        }
+
+    return {
+        "grammar": "명사(기술 개념어)",
+        "hanja": "-",
+        "english": "(context-specific)",
+        "technical": f"용어 `{term}`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다.",
+    }
+
+
+def describe_phrase_grammar(phrase: str) -> str:
+    if "을 활용한" in phrase or "를 활용한" in phrase:
+        return "목적어(…을/를) + 관형절(활용한) + 중심 명사 구조로, 적용 대상을 문법적으로 분명히 드러냅니다."
+    if "및" in phrase:
+        return "명사구를 연결어 '및'으로 병렬 연결한 구조입니다. 동등한 학습 범위를 함께 제시합니다."
+    if "와" in phrase or "과" in phrase:
+        return "명사와 명사를 대등하게 묶는 병렬 명사구 구조입니다."
+    if phrase.endswith("하기"):
+        return "동사 어간 + '-기' 명사형 구조입니다. 학습 행동 자체를 주제로 명사화한 표현입니다."
+    return "핵심 개념 명사를 중심으로 한 명사구 구조입니다."
+
+
+def format_hangul_hanja(term: str, hanja: str) -> str:
+    if hanja == "-":
+        return f"{term} (한자 없음)"
+    return f"{term} ({hanja})"
+
+
+def escape_table_cell(value: str) -> str:
+    return value.replace("|", "\\|")
+
+
+def render_term_table(terms: list[str]) -> str:
+    if not terms:
+        return "- (추출된 핵심 용어가 없습니다.)"
+
+    lines = [
+        "| 용어 | 문법/품사 | 한글·한자 | 영어 | 기술 설명 |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for term in terms:
+        info = lookup_term_info(term)
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    f"`{escape_table_cell(term)}`",
+                    escape_table_cell(info["grammar"]),
+                    escape_table_cell(format_hangul_hanja(term, info["hanja"])),
+                    escape_table_cell(info["english"]),
+                    escape_table_cell(info["technical"]),
+                ]
+            )
+            + " |"
+        )
+    return "\n".join(lines)
+
+
+def render_term_guide(subject_name: str, module: str, track: str) -> str:
+    subject_terms = collect_key_terms(subject_name, max_terms=6)
+    module_terms = collect_key_terms(module, max_terms=6)
+    subject_table = render_term_table(subject_terms)
+    module_table = render_term_table(module_terms)
+    subject_context = TRACK_TERM_CONTEXT.get(track, TRACK_TERM_CONTEXT["generic"])
+    lines = [
+        f"#### 교과목 표현 분석: `{subject_name}`",
+        f"- 문법 포인트: {describe_phrase_grammar(subject_name)}",
+        f"- 기술 포인트: {subject_context}",
+        subject_table,
+        "",
+        f"#### 학습주제 표현 분석: `{module}`",
+        f"- 문법 포인트: {describe_phrase_grammar(module)}",
+        f"- 기술 포인트: 이번 차시는 `{module}` 용어를 중심으로 문제 정의, 코드 구현, 결과 검증까지 연결합니다.",
+        module_table,
+    ]
+    return "\n".join(lines)
+
+
+def sanitize_mermaid_label(text: str) -> str:
+    cleaned = text.replace('"', "'").replace("\n", " ").strip()
+    return cleaned
+
+
+def build_flow_steps(
+    row: dict[str, str],
+    track: str,
+    example_file: str,
+    next_row: dict[str, str] | None,
+) -> list[str]:
+    class_id = row["class"]
+    module = row["module"]
+    session = row["subject_session"]
+    level = row["level"]
+    track_steps = TRACK_FLOW_STEPS.get(track, TRACK_FLOW_STEPS["generic"])
+
+    steps = [
+        f"시작: {class_id} ({session}, {level})",
+        f"학습 주제 파악: {module}",
+        f"1단계: {track_steps[0]}",
+        f"2단계: {track_steps[1]}",
+        f"3단계: {track_steps[2]}",
+        f"4단계: {track_steps[3]}",
+        f"예제 실행: python {class_id}/{example_file}",
+    ]
+    if next_row is None:
+        steps.append("마무리: 학습 노트 작성 및 전체 복습")
+    else:
+        steps.append(f"다음 준비: {next_row['module']} 연결 포인트 정리")
+    return steps
+
+
+def render_mermaid_flowchart(steps: list[str]) -> str:
+    lines = ["flowchart TD"]
+    for idx, step in enumerate(steps, start=1):
+        lines.append(f'    N{idx}["{sanitize_mermaid_label(step)}"]')
+    for idx in range(1, len(steps)):
+        lines.append(f"    N{idx} --> N{idx + 1}")
+    return "\n".join(lines)
+
+
+def render_auto_tech_stack_block(
+    class_id: str,
+    module: str,
+    example_file: str,
+    track: str,
+    mermaid_flow: str,
+    flow_image_file: str,
+) -> str:
+    syntax = TRACK_MAIN_SYNTAX.get(track, TRACK_MAIN_SYNTAX["generic"])
+    syntax_text = ", ".join(f"`{item}`" for item in syntax)
+    block = f"""
+    {AUTO_TECH_STACK_START}
+    ### 기술 스택
+    - 언어: `Python 3`
+    - 실행: `CLI` (`python {class_id}/{example_file}`)
+    - 주요 문법: {syntax_text}
+    - 학습 포커스: `{module}`
+
+    ### 실습 example.py 동작 원리 (Mermaid Flowchart)
+    ```mermaid
+    {mermaid_flow}
+    ```
+
+    ### Flow PNG 캡처
+    ![{class_id} flow]({flow_image_file})
+    {AUTO_TECH_STACK_END}
+    """
+    return dedent(block).strip()
+
+
+def load_flow_font(size: int) -> ImageFont.ImageFont:
+    for font_path in [
+        "C:/Windows/Fonts/malgun.ttf",
+        "C:/Windows/Fonts/malgunbd.ttf",
+        "C:/Windows/Fonts/segoeui.ttf",
+    ]:
+        try:
+            return ImageFont.truetype(font_path, size=size)
+        except OSError:
+            continue
+    return ImageFont.load_default()
+
+
+def wrap_text_by_width(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.ImageFont, max_width: int) -> list[str]:
+    lines: list[str] = []
+    current = ""
+    for ch in text:
+        test = current + ch
+        left, top, right, bottom = draw.textbbox((0, 0), test, font=font)
+        if (right - left) <= max_width:
+            current = test
+            continue
+        if current:
+            lines.append(current)
+            current = ch
+        else:
+            lines.append(ch)
+            current = ""
+    if current:
+        lines.append(current)
+    return lines or [text]
+
+
+def save_flow_png(steps: list[str], out_path: Path, class_id: str, module: str) -> None:
+    margin_x = 90
+    margin_y = 70
+    box_width = 1160
+    vertical_gap = 52
+    line_height = 30
+    min_box_height = 62
+
+    title_font = load_flow_font(28)
+    text_font = load_flow_font(22)
+
+    temp_image = Image.new("RGB", (box_width + margin_x * 2, 1000), "white")
+    temp_draw = ImageDraw.Draw(temp_image)
+
+    wrapped_steps: list[list[str]] = []
+    box_heights: list[int] = []
+    for step in steps:
+        wrapped = wrap_text_by_width(temp_draw, step, text_font, box_width - 70)
+        wrapped_steps.append(wrapped)
+        height = max(min_box_height, 24 + line_height * len(wrapped))
+        box_heights.append(height)
+
+    title_height = 56
+    content_height = sum(box_heights) + vertical_gap * (len(steps) - 1)
+    canvas_height = margin_y * 2 + title_height + content_height
+    canvas_width = box_width + margin_x * 2
+
+    image = Image.new("RGB", (canvas_width, canvas_height), "#F8FAFC")
+    draw = ImageDraw.Draw(image)
+
+    title = f"{class_id} Flow - {module}"
+    draw.text((margin_x, margin_y - 8), title, fill="#0F172A", font=title_font)
+
+    colors = ["#E2E8F0", "#DBEAFE", "#DCFCE7", "#FEF3C7", "#FCE7F3", "#E0E7FF"]
+    x1 = margin_x
+    x2 = margin_x + box_width
+    center_x = margin_x + box_width // 2
+    y = margin_y + title_height
+
+    for idx, wrapped in enumerate(wrapped_steps):
+        box_h = box_heights[idx]
+        y1 = y
+        y2 = y + box_h
+        fill_color = colors[idx % len(colors)]
+        draw.rounded_rectangle((x1, y1, x2, y2), radius=20, fill=fill_color, outline="#334155", width=3)
+
+        text_block_h = line_height * len(wrapped)
+        text_y = y1 + (box_h - text_block_h) // 2
+        for line in wrapped:
+            left, top, right, bottom = draw.textbbox((0, 0), line, font=text_font)
+            text_w = right - left
+            draw.text((center_x - text_w // 2, text_y), line, fill="#0F172A", font=text_font)
+            text_y += line_height
+
+        if idx < len(wrapped_steps) - 1:
+            arrow_start_y = y2
+            arrow_end_y = y2 + vertical_gap - 14
+            draw.line((center_x, arrow_start_y, center_x, arrow_end_y), fill="#1E293B", width=4)
+            draw.polygon(
+                [
+                    (center_x, arrow_end_y + 12),
+                    (center_x - 10, arrow_end_y - 2),
+                    (center_x + 10, arrow_end_y - 2),
+                ],
+                fill="#1E293B",
+            )
+
+        y = y2 + vertical_gap
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(out_path, format="PNG")
+
+
 def choose_track(subject_name: str, module: str) -> str:
     text = f"{subject_name} {module}"
     lowered = text.lower()
@@ -211,6 +1303,26 @@ def choose_track(subject_name: str, module: str) -> str:
         return "rag"
     if "langchain" in lowered:
         return "langchain"
+    if any(keyword in module for keyword in ["텍스트", "토큰", "임베딩", "자연어", "요약/분류/추출", "언어모델 입력 구조"]):
+        return "nlp"
+    if any(keyword in module for keyword in ["음성", "STT", "TTS", "오디오", "발화", "화자", "MFCC"]):
+        return "speech"
+    if any(
+        keyword in text
+        for keyword in [
+            "거대 언어 모델",
+            "언어 모델",
+            "LLM 개요",
+            "생성 파라미터",
+            "프롬프트 기반 생성",
+            "대화형 응답 설계",
+            "안전성/환각 관리",
+            "도메인 적용 시나리오",
+            "API 연동 실습",
+            "생성형 서비스",
+        ]
+    ):
+        return "llm"
     if any(keyword in text for keyword in ["프롬프트", "LLM", "언어모델", "생성 파라미터", "응답 설계"]):
         return "prompt"
     if any(keyword in text for keyword in ["음성", "TTS", "STT", "오디오", "발화", "화자"]):
@@ -483,6 +1595,7 @@ def render_markdown(
     quiz_file: str,
     prev_row: dict[str, str] | None,
     next_row: dict[str, str] | None,
+    tech_stack_block: str,
 ) -> str:
     class_id = row["class"]
     day = int(row["day"])
@@ -494,6 +1607,8 @@ def render_markdown(
     info = TRACK_INFO[track]
     day_text = f"Day {day:02d}"
     slot_text = f"{slot}교시"
+    term_guide_block = render_term_guide(subject_name=subject_name, module=module, track=track)
+    tech_stack_section = tech_stack_block.strip()
 
     if prev_row is None:
         prev_block = (
@@ -537,6 +1652,9 @@ def render_markdown(
     - 일정: **{day_text} / {slot_text}**
     - 난이도: **{level}**
 
+    ### 교과목·학습주제 어휘 해설 (IT 강사 스타일)
+    __TERM_GUIDE_BLOCK__
+
     ## 2) 이전에 배운 내용 (복습)
     {prev_block}
 
@@ -579,6 +1697,8 @@ def render_markdown(
     ```bash
     python {class_id}/{example_file}
     ```
+
+    __TECH_STACK_SECTION__
 
     ### 예제 코드를 볼 때 집중할 포인트
     1. 입력이 무엇인지 먼저 찾기
@@ -625,6 +1745,12 @@ def render_markdown(
     - 오늘 코드를 복사하지 말고, 직접 다시 작성해 보세요.
     """
     body = dedent(content).strip() + "\n"
+    body = body.replace("__TERM_GUIDE_BLOCK__", term_guide_block)
+    if tech_stack_section:
+        body = body.replace("__TECH_STACK_SECTION__", tech_stack_section)
+    else:
+        body = body.replace("__TECH_STACK_SECTION__\n", "")
+        body = body.replace("__TECH_STACK_SECTION__", "")
     return f"<!-- {COPYRIGHT_TEXT} -->\n{body}"
 
 
@@ -663,6 +1789,29 @@ def build_self_study_materials() -> None:
         example_path = class_dir / f"{class_id}_example.py"
         quiz_path = class_dir / f"{class_id}_quiz.html"
 
+        flow_steps = build_flow_steps(
+            row=row,
+            track=track,
+            example_file=example_path.name,
+            next_row=next_row,
+        )
+        flow_mermaid = render_mermaid_flowchart(flow_steps)
+        flow_image_file = f"{class_id}_flow.png"
+        save_flow_png(
+            steps=flow_steps,
+            out_path=class_dir / flow_image_file,
+            class_id=class_id,
+            module=module,
+        )
+        tech_stack_block = render_auto_tech_stack_block(
+            class_id=class_id,
+            module=module,
+            example_file=example_path.name,
+            track=track,
+            mermaid_flow=flow_mermaid,
+            flow_image_file=flow_image_file,
+        )
+
         md_path.write_text(
             render_markdown(
                 row=row,
@@ -671,6 +1820,7 @@ def build_self_study_materials() -> None:
                 quiz_file=quiz_path.name,
                 prev_row=prev_row,
                 next_row=next_row,
+                tech_stack_block=tech_stack_block,
             ),
             encoding="utf-8",
             newline="\n",
