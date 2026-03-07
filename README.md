@@ -119,12 +119,74 @@ $env:OPENAI_API_KEY="YOUR_KEY"
 export OPENAI_API_KEY="YOUR_KEY"
 ```
 
+### 4.8 WSL(Windows Subsystem for Linux) 환경 구성
+1. 관리자 권한 PowerShell 실행
+2. WSL 설치
+```powershell
+wsl --install
+```
+3. 재부팅 후 설치 상태 확인
+```powershell
+wsl --status
+wsl -l -v
+```
+
+### 4.9 Ubuntu 배포판 설치 (WSL)
+1. Microsoft Store에서 `Ubuntu` 설치(권장: Ubuntu 22.04 LTS 이상)
+2. 또는 PowerShell에서 직접 설치
+```powershell
+wsl --list --online
+wsl --install -d Ubuntu
+```
+3. 최초 실행 후 Linux 사용자 계정 생성
+4. Ubuntu 버전 확인
+```bash
+lsb_release -a
+uname -a
+```
+
+### 4.10 WSL Ubuntu 기반 Docker 설치 및 확인
+아래는 Docker Engine을 Ubuntu(WSL) 내부에 직접 설치하는 절차입니다.
+
+1. 패키지 인덱스 갱신 및 필수 도구 설치
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+```
+2. Docker 공식 GPG 키/저장소 등록
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo $VERSION_CODENAME) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+3. Docker Engine 설치
+```bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+4. 권한 설정(재로그인 필요)
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+5. 설치 확인 명령
+```bash
+docker --version
+docker compose version
+docker run hello-world
+```
+
 ## 5) VS Code 권장 확장팩
 - `Python` (`ms-python.python`)
 - `Pylance` (`ms-python.vscode-pylance`)
 - `Jupyter` (`ms-toolsai.jupyter`) - 선택
 - `Markdown All in One` (`yzhang.markdown-all-in-one`)
 - `Markdown Preview Mermaid Support` (`bierner.markdown-mermaid`)
+- `Live Server` (`ritwickdey.LiveServer`) - 퀴즈 HTML 빠른 실행용
 - `Docker` (`ms-azuretools.vscode-docker`) - Docker 실습 시
 - `Git Graph` (`mhutchie.git-graph`) - 선택
 
@@ -133,7 +195,14 @@ export OPENAI_API_KEY="YOUR_KEY"
 2. 확장 이름 검색
 3. `Install`
 
-## 5-1) 솔루션/플랫폼 화면 캡처 (가상 아이디 모의)
+### 5-1) Live Server로 `classXXX_quiz.html` 실행
+1. VS Code Extensions (`Ctrl+Shift+X`)에서 `Live Server` (`ritwickdey.LiveServer`) 설치
+2. 원하는 퀴즈 파일 열기 (예: `pyBasics/class001/class001_quiz.html`)
+3. 에디터 우측 하단 `Go Live` 클릭
+4. 브라우저에서 자동으로 열린 주소에서 퀴즈 풀이
+5. 정지할 때는 하단 상태바의 `Port:5500`(또는 `Go Live`) 클릭
+
+## 5-2) 솔루션/플랫폼 화면 캡처 (가상 아이디 모의)
 보안/개인정보 보호를 위해 아래 이미지는 **가상 아이디 기반 모의 캡처**입니다.
 
 ### ChatGPT 가입/로그인
