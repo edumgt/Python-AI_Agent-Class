@@ -1,11 +1,13 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 from __future__ import annotations
 
+import csv
 import importlib.util
 import json
 import math
 import traceback
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -26,7 +28,41 @@ def load_module(module_path: Path, module_name: str):
     return mod
 
 
+def read_index_rows(index_file: Path) -> list[dict[str, str]]:
+    with index_file.open(encoding="utf-8-sig", newline="") as fp:
+        lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
+        raw_rows = list(csv.DictReader(lines))
+    rows: list[dict[str, str]] = []
+    for raw in raw_rows:
+        rows.append({str(key).lstrip("\ufeff"): value for key, value in raw.items()})
+    return rows
+
+
+@lru_cache(maxsize=4)
+def load_class_dir_map(index_file_str: str) -> dict[str, str]:
+    index_file = Path(index_file_str)
+    if not index_file.exists():
+        return {}
+
+    mapping: dict[str, str] = {}
+    for row in read_index_rows(index_file):
+        class_id = row.get("class", "").strip()
+        md_rel = (row.get("md_file") or "").strip()
+        if not class_id:
+            continue
+        if md_rel:
+            mapping[class_id] = Path(md_rel).parent.as_posix()
+        else:
+            mapping[class_id] = class_id
+    return mapping
+
+
 def class_dir_from_id(root: Path, class_id: str) -> Path:
+    index_file = root / "curriculum_index.csv"
+    mapping = load_class_dir_map(str(index_file))
+    rel_dir = mapping.get(class_id)
+    if rel_dir:
+        return root / rel_dir
     return root / class_id
 
 

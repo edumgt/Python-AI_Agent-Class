@@ -22,11 +22,14 @@
 - Optional Infra: `Docker`, `Docker Compose` (RAG/LLM 실습용)
 
 ## 3) 저장소 구조
-- `class001/` ~ `class500/`
+- 과목별 상위 폴더(영문 camelCase, 10자 내외) 아래에 `classXXX/` 배치
+- 각 `classXXX/` 공통 파일
   - `classXXX.md`: 자기주도 학습 가이드(개념, 실습, 퀴즈 안내)
   - `classXXX_flow.png`: 해당 차시 흐름도 PNG
   - `classXXX.py`: 실행 런처
   - `classXXX_example.py`: 예제 코드
+  - `classXXX_example2.py`: 확장 예제 코드
+  - `classXXX_example3.py`: 자가점검/챌린지 예제 코드
   - `classXXX_solution.py`: 정답 코드
   - `classXXX_assignment.py`: 과제 디스패처
   - `classXXX_assignment_basic.py`: 기본 과제
@@ -38,6 +41,19 @@
 - `curriculum_index.csv`: 전체 차시 인덱스
 - `INSTRUCTOR_GUIDE.md`: 강의 운영 가이드
 - `AUTOGRADING.md`, `SUBMISSION_GRADING_GUIDE.md`: 채점/제출 가이드
+
+## 3-1) 과목 폴더 매핑 및 상세 학습 내용
+| 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
+| --- | --- | --- | --- |
+| Python 프로그래밍 | `pyBasics` | class001~class040 | 변수/상수 관례, 배열(list), 타입 시스템, 함수/모듈, 클래스(OOP), 예외처리까지 PL 기본기를 단계적으로 강화 |
+| Python 전처리 및 시각화 | `dataVizPrep` | class041~class080 | NumPy/Pandas 기반 전처리, 결측/이상치 처리, 집계/변환, Matplotlib/Seaborn 시각화 실습 |
+| 머신러닝과 딥러닝 | `mlDeepDive` | class081~class128 | 지도학습, 회귀/분류, 모델 평가, 특성공학, 과적합 제어, 신경망 기초와 실전 예측 프로젝트 |
+| 자연어 및 음성 데이터 활용 및 모델 개발 | `nlpSpeechAI` | class129~class224 | 텍스트 토큰화/임베딩과 음성 데이터 전처리를 통합해 NLP·Speech 모델 파이프라인 설계 |
+| 음성 데이터 활용한 TTS와 STT 모델 개발 | `speechTtsStt` | class225~class288 | 발화/화자 데이터 구성, 오디오 특징 추출, STT·TTS 모델 구성/평가, 품질 개선 루프 실습 |
+| 거대 언어 모델을 활용한 자연어 생성 | `llmTextGen` | class289~class352 | LLM 기본 원리, 생성 파라미터, 안전성/환각 대응, 도메인 적용 시나리오 기반 생성 실습 |
+| 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
+| Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
+| RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
 
 ## 4) 사전 준비 (필수 설치)
 
@@ -235,22 +251,22 @@ git pull origin main
 ## 10) 학습 시작 명령
 빠른 실행:
 ```bash
-python class001/class001.py
+python pyBasics/class001/class001.py
 ```
 
 기본 과제:
 ```bash
-python class001/class001_assignment.py
+python pyBasics/class001/class001_assignment.py
 ```
 
 심화 과제:
 ```bash
-CLASS_TIER=advanced python class001/class001_assignment.py
+CLASS_TIER=advanced python pyBasics/class001/class001_assignment.py
 ```
 
 챌린지 과제:
 ```bash
-CLASS_TIER=challenge python class001/class001_assignment.py
+CLASS_TIER=challenge python pyBasics/class001/class001_assignment.py
 ```
 
 자동채점:
@@ -260,6 +276,11 @@ python grade_all.py --tier basic
 ```
 
 ## 11) Mermaid/Flow 재생성 관련
+과목별 폴더 구조 재정렬(`curriculum_index.csv` 기준):
+```bash
+python tools/organize_subject_folders.py
+```
+
 차시 자료 재생성 스크립트:
 ```bash
 python tools/rebuild_self_study_materials.py
@@ -274,6 +295,12 @@ README용 모의 캡처 이미지 재생성:
 ```bash
 python tools/generate_readme_mock_screenshots.py
 ```
+
+첨부 커리큘럼 기준 반영 점검 리포트 생성:
+```bash
+python tools/audit_curriculum_alignment.py
+```
+- 생성 파일: `docs/curriculum_alignment_report.md`
 
 ## 12) RAG/LLM 실습용 Docker 구성 가이드
 

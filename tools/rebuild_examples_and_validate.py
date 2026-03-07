@@ -14,13 +14,22 @@ COPYRIGHT_TEXT = "이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작�
 
 
 def read_rows() -> list[dict[str, str]]:
-    with INDEX_FILE.open(encoding="utf-8", newline="") as fp:
+    with INDEX_FILE.open(encoding="utf-8-sig", newline="") as fp:
         lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
         raw_rows = list(csv.DictReader(lines))
     rows: list[dict[str, str]] = []
     for raw in raw_rows:
         rows.append({str(k).lstrip("\ufeff"): v for k, v in raw.items()})
     return rows
+
+
+def class_dir_from_row(row: dict[str, str]) -> Path:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        md_path = ROOT / Path(md_rel)
+        if md_path.name:
+            return md_path.parent
+    return ROOT / row["class"]
 
 
 def pick_template(module: str, subject: str) -> str:
@@ -460,6 +469,27 @@ def render_example_code(class_id: str, module: str, template: str, variant: int)
             main()
             print("확장 미션:", extension_mission())
         """
+    elif variant == 3:
+        body += """
+
+        def self_check():
+            return [
+                "입력/출력 형식을 다시 설명할 수 있는가?",
+                "오류 상황 1가지를 직접 만들어 테스트했는가?",
+                "핵심 로직을 함수 단위로 분리했는가?",
+            ]
+
+        def challenge_case():
+            return {
+                "task": "같은 로직을 새로운 입력 데이터로 재실행",
+                "goal": "결과 차이를 한 문장으로 요약",
+            }
+
+        if __name__ == "__main__":
+            main()
+            print("자가 점검:", self_check())
+            print("챌린지:", challenge_case())
+        """
     else:
         body += """
 
@@ -477,12 +507,15 @@ def rebuild_examples(rows: list[dict[str, str]]) -> None:
         subject = row["subject_name"]
         template = pick_template(module, subject)
 
-        class_dir = ROOT / class_id
+        class_dir = class_dir_from_row(row)
+        class_dir.mkdir(parents=True, exist_ok=True)
         example1 = class_dir / f"{class_id}_example.py"
         example2 = class_dir / f"{class_id}_example2.py"
+        example3 = class_dir / f"{class_id}_example3.py"
 
         example1.write_text(render_example_code(class_id, module, template, 1), encoding="utf-8", newline="\n")
         example2.write_text(render_example_code(class_id, module, template, 2), encoding="utf-8", newline="\n")
+        example3.write_text(render_example_code(class_id, module, template, 3), encoding="utf-8", newline="\n")
 
 
 def validate_examples(rows: list[dict[str, str]]) -> tuple[int, list[str]]:
@@ -494,9 +527,9 @@ def validate_examples(rows: list[dict[str, str]]) -> tuple[int, list[str]]:
         module = row["module"]
         subject = row["subject_name"]
         expected = pick_template(module, subject)
-        class_dir = ROOT / class_id
+        class_dir = class_dir_from_row(row)
 
-        for suffix in ("example", "example2"):
+        for suffix in ("example", "example2", "example3"):
             path = class_dir / f"{class_id}_{suffix}.py"
             checked += 1
             if not path.exists():
@@ -524,7 +557,7 @@ def main() -> None:
     rebuild_examples(rows)
     checked, errors = validate_examples(rows)
 
-    print(f"Examples rebuilt: {len(rows) * 2}")
+    print(f"Examples rebuilt: {len(rows) * 3}")
     print(f"Validation checked: {checked}")
     print(f"Validation errors: {len(errors)}")
     if errors:

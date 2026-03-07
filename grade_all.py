@@ -2,11 +2,30 @@
 from __future__ import annotations
 
 import argparse
+import csv
 from pathlib import Path
 
 from grader_core import grade_class
 
 ROOT = Path(__file__).resolve().parent
+
+
+def load_class_ids_from_index(root: Path) -> list[str]:
+    index_file = root / "curriculum_index.csv"
+    if not index_file.exists():
+        return []
+
+    with index_file.open(encoding="utf-8-sig", newline="") as fp:
+        lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
+        raw_rows = list(csv.DictReader(lines))
+
+    class_ids: list[str] = []
+    for raw in raw_rows:
+        row = {str(key).lstrip("\ufeff"): value for key, value in raw.items()}
+        class_id = (row.get("class") or "").strip()
+        if class_id and class_id not in class_ids:
+            class_ids.append(class_id)
+    return sorted(class_ids)
 
 
 def main() -> int:
@@ -17,8 +36,10 @@ def main() -> int:
     ap.add_argument('--fail-fast', action='store_true', help='실패 시 즉시 중단')
     args = ap.parse_args()
 
-    class_dirs = sorted([p.name for p in ROOT.glob('class*') if p.is_dir() and p.name.startswith('class')])
-    target = [cid for cid in class_dirs if args.start <= cid <= args.end]
+    class_ids = load_class_ids_from_index(ROOT)
+    if not class_ids:
+        class_ids = sorted([p.name for p in ROOT.glob('class*') if p.is_dir() and p.name.startswith('class')])
+    target = [cid for cid in class_ids if args.start <= cid <= args.end]
 
     total = len(target)
     passed = 0

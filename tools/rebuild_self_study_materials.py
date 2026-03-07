@@ -305,6 +305,397 @@ TRACK_FLOW_STEPS = {
 }
 
 
+PYTHON_PL_MODULE_PROFILES = {
+    "오리엔테이션 및 개발환경 준비": {
+        "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
+        "why": "인터프리터, 가상환경, 패키지 의존성을 이해해야 이후 변수·함수·클래스 실습 결과를 재현할 수 있습니다.",
+        "concepts": [
+            "`인터프리터`는 소스 코드를 해석해 실행하며 `python 파일.py`가 기본 실행 경로입니다.",
+            "`가상환경(venv)`은 프로젝트별 라이브러리를 분리해 버전 충돌을 막는 실행 격리층입니다.",
+            "`requirements.txt`는 의존성 버전을 고정해 팀/장비가 달라도 동일한 환경을 재구성하게 해줍니다.",
+        ],
+        "analogy": "실험 전에 실험대와 장비를 먼저 교정하는 준비 단계와 같습니다.",
+        "practice_steps": [
+            "`python --version`과 `where python`으로 현재 인터프리터 경로를 확인하세요.",
+            "`python -m venv .venv` 후 활성화하고 `pip install -r requirements.txt`를 실행하세요.",
+            "샘플 코드를 실행하고 `ModuleNotFoundError`가 나면 인터프리터/패키지 경로를 점검하세요.",
+        ],
+        "checklist": [
+            "전역 Python과 프로젝트 `.venv`의 차이를 설명할 수 있다.",
+            "가상환경 생성/활성화/비활성화 과정을 스스로 재현할 수 있다.",
+            "`requirements.txt`의 의미(재현 가능한 환경)를 설명할 수 있다.",
+        ],
+        "next_tip": "다음 차시에서는 준비된 환경에서 변수·상수·타입을 다루며 PL 기본기를 시작합니다.",
+        "syntax": ["모듈 import", "변수 할당", "실행 진입점(`__name__`)", "출력(`print`)"],
+        "flow_steps": [
+            "Python 인터프리터 버전과 실행 경로를 확인한다",
+            "가상환경을 만들고 의존성 패키지를 설치한다",
+            "샘플 스크립트를 실행해 런타임 동작을 검증한다",
+            "실행 오류 메시지를 읽고 환경 설정을 수정한다",
+        ],
+        "focus_points": [
+            "코드가 `__name__ == \"__main__\"` 블록에서 시작되는지 확인하기",
+            "현재 터미널의 인터프리터가 프로젝트 `.venv`인지 확인하기",
+            "필수 패키지 import 테스트로 실행환경을 검증하기",
+        ],
+    },
+    "변수와 자료형": {
+        "kid_summary": "변수, 상수 관례, 자료형(Type), 배열(List) 등 PL 데이터 모델의 핵심을 다룹니다.",
+        "why": "값을 어떤 타입으로 저장하고 변환하는지 이해해야 조건문·함수·클래스를 정확히 설계할 수 있습니다.",
+        "concepts": [
+            "`변수(variable)`는 값에 이름을 붙인 바인딩이며 Python은 실행 시 타입이 결정되는 동적 타이핑 언어입니다.",
+            "`상수(constant)`는 키워드가 아니라 `UPPER_CASE` 네이밍 관례로 변경 금지 의도를 표현합니다.",
+            "`배열`은 Python에서 보통 `list`로 구현하며 인덱싱/슬라이싱/가변성이 핵심 특성입니다.",
+        ],
+        "analogy": "라벨이 붙은 서랍(변수)에 물건(값)을 넣고 종류표(타입)로 분류하는 과정과 같습니다.",
+        "practice_steps": [
+            "숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요.",
+            "`MAX_RETRY` 같은 상수 이름을 정의하고 일반 변수와 역할을 구분해 보세요.",
+            "리스트를 배열처럼 사용해 인덱싱/슬라이싱/추가·수정 동작을 실험하세요.",
+        ],
+        "checklist": [
+            "변수와 상수 관례의 차이를 예시 코드로 설명할 수 있다.",
+            "`int`, `float`, `str`, `bool`, `list` 타입을 구분해 설명할 수 있다.",
+            "리스트 인덱스 접근 시 범위 오류를 점검하는 습관을 적용했다.",
+        ],
+        "next_tip": "다음 차시에서는 타입 기반 표현식을 연산자와 조건문으로 확장합니다.",
+        "syntax": ["변수 할당(`=`)", "상수 관례(`UPPER_CASE`)", "타입 확인(`type`, `isinstance`)", "배열/리스트(`list`)"],
+        "flow_steps": [
+            "문제에서 필요한 값을 변수와 상수로 분리한다",
+            "각 값의 타입을 확인하고 필요한 타입 변환을 정의한다",
+            "배열(list) 인덱싱/슬라이싱으로 데이터 접근 규칙을 만든다",
+            "경계값 입력으로 타입 가정이 맞는지 테스트한다",
+        ],
+        "focus_points": [
+            "변수명만 보고도 의미와 타입이 추론되는지 확인하기",
+            "`type()`/`isinstance()`로 타입 가정이 실제와 일치하는지 검증하기",
+            "리스트 인덱스 접근이 범위를 벗어나지 않는지 점검하기",
+        ],
+    },
+    "연산자와 조건문": {
+        "kid_summary": "연산자와 조건문으로 프로그램의 의사결정 규칙을 코드화하는 차시입니다.",
+        "why": "PL에서 분기(Branch)를 정확히 다루어야 동일 입력에 항상 동일한 출력을 보장할 수 있습니다.",
+        "concepts": [
+            "`산술·비교·논리 연산자`는 표현식(expression)을 만들고 최종적으로 불리언 값으로 귀결됩니다.",
+            "`if / elif / else`는 조건식 평가 결과에 따라 실행 경로를 분리하는 기본 제어 구조입니다.",
+            "`단락 평가(short-circuit)`는 `and/or`에서 불필요한 식 평가를 생략해 오류와 비용을 줄입니다.",
+        ],
+        "analogy": "체크리스트 조건을 만족한 사람만 다음 단계로 통과시키는 심사 절차와 같습니다.",
+        "practice_steps": [
+            "같은 입력에 대해 산술/비교/논리 연산 결과를 표로 정리해 보세요.",
+            "경계값(0, 음수, 빈 문자열) 조건을 포함한 `if/elif/else` 분기를 작성하세요.",
+            "`and/or` 단락 평가로 예외가 줄어드는 케이스를 직접 실행해 확인하세요.",
+        ],
+        "checklist": [
+            "조건식이 어떤 불리언 값으로 평가되는지 설명할 수 있다.",
+            "분기 누락 없이 `if/elif/else` 경로를 모두 테스트했다.",
+            "연산자 우선순위가 헷갈리는 부분에 괄호를 사용해 의도를 명확히 했다.",
+        ],
+        "next_tip": "다음 차시에서는 조건 분기를 반복문과 결합해 처리량을 늘립니다.",
+        "syntax": ["산술/비교/논리 연산자", "`if / elif / else`", "단락 평가(`and`, `or`)", "멤버십(`in`, `not in`)"],
+        "flow_steps": [
+            "요구사항을 불리언 조건식으로 변환한다",
+            "연산자 우선순위를 정리해 조건식을 확정한다",
+            "if/elif/else로 분기 경로를 구현한다",
+            "경계값 테스트로 분기 누락 여부를 검증한다",
+        ],
+        "focus_points": [
+            "조건식이 최종적으로 `True/False`로 귀결되는지 확인하기",
+            "분기별 출력이 명확하게 구분되는지 확인하기",
+            "단락 평가를 활용해 불필요한 계산과 오류를 줄였는지 점검하기",
+        ],
+    },
+    "반복문과 흐름제어": {
+        "kid_summary": "반복문으로 데이터를 순회하고 흐름제어문으로 실행 경로를 제어합니다.",
+        "why": "배열/컬렉션을 반복 처리하는 능력은 실무 코드의 생산성과 정확도를 동시에 높입니다.",
+        "concepts": [
+            "`for`는 시퀀스 순회, `while`은 조건 기반 반복으로 반복 패턴이 다릅니다.",
+            "`break`와 `continue`는 반복 흐름을 조기 종료/건너뛰기 하여 분기 비용을 줄입니다.",
+            "`누적 변수(accumulator)` 패턴은 합계/카운트/최댓값 같은 집계 로직의 기본입니다.",
+        ],
+        "analogy": "출석부를 한 줄씩 읽으며 조건에 맞는 학생만 체크하는 과정과 같습니다.",
+        "practice_steps": [
+            "`for`와 `while`로 같은 문제를 풀어 반복 패턴 차이를 비교하세요.",
+            "리스트 순회 중 `break/continue`를 넣어 흐름이 어떻게 바뀌는지 확인하세요.",
+            "합계·평균·개수 집계를 누적 변수로 작성하고 결과를 검증하세요.",
+        ],
+        "checklist": [
+            "반복문 종료 조건을 명확히 설명할 수 있다.",
+            "무한 루프 가능성을 사전에 점검했다.",
+            "누적 변수 초기값과 갱신 규칙을 정확히 설정했다.",
+        ],
+        "next_tip": "다음 차시에서는 반복 로직을 함수로 추상화해 재사용 구조로 바꿉니다.",
+        "syntax": ["`for`/`while`", "`range`/`enumerate`", "`break`/`continue`", "누적 변수 패턴"],
+        "flow_steps": [
+            "반복 대상 데이터와 종료 조건을 정의한다",
+            "for/while 중 적합한 반복 구조를 선택한다",
+            "break/continue로 예외 흐름을 제어한다",
+            "누적 결과를 검증해 반복 로직 정확성을 확인한다",
+        ],
+        "focus_points": [
+            "반복 대상(iterable)과 종료 조건이 명확한지 확인하기",
+            "반복문 내부 상태값이 의도대로 갱신되는지 추적하기",
+            "break/continue 사용이 누락 케이스를 만들지 점검하기",
+        ],
+    },
+    "함수와 모듈": {
+        "kid_summary": "함수 추상화와 모듈 분리를 통해 PL의 재사용 구조를 설계하는 차시입니다.",
+        "why": "함수 시그니처와 모듈 경계를 명확히 해야 유지보수성과 테스트 가능성이 올라갑니다.",
+        "concepts": [
+            "`함수(function)`는 입력(매개변수)과 출력(반환값)을 명시하는 최소 실행 단위입니다.",
+            "`스코프(scope)` 규칙은 지역/전역 이름 해석 범위를 정해 사이드이펙트를 제어합니다.",
+            "`모듈(module)` 분리는 책임을 나눠 코드 결합도를 낮추고 재사용성을 높입니다.",
+        ],
+        "analogy": "조립 라인 공정을 파트별 작업자(함수)로 나눠 협업하는 방식과 같습니다.",
+        "practice_steps": [
+            "중복 코드를 함수로 추출하고 매개변수/반환값을 명시하세요.",
+            "한 파일의 함수를 다른 파일에서 `import`해 모듈 호출을 실습하세요.",
+            "함수 단위 테스트 입력을 3개 이상 만들어 정상/경계 케이스를 검증하세요.",
+        ],
+        "checklist": [
+            "함수 이름만 보고 책임을 설명할 수 있다.",
+            "매개변수 타입/의미와 반환값을 문장으로 정리했다.",
+            "모듈 분리 후 import 경로 오류 없이 실행했다.",
+        ],
+        "next_tip": "다음 차시에서는 리스트·딕셔너리 같은 컬렉션 자료구조를 함수와 결합합니다.",
+        "syntax": ["`def`", "매개변수/반환값", "스코프(`local/global`)", "`import`/`from ... import`"],
+        "flow_steps": [
+            "요구사항을 함수 단위 책임으로 분해한다",
+            "함수 시그니처(입력/출력)를 설계한다",
+            "모듈 파일로 분리하고 import 경로를 연결한다",
+            "함수 단위 테스트로 동작을 검증한다",
+        ],
+        "focus_points": [
+            "함수 시그니처가 입력/출력을 명확히 드러내는지 확인하기",
+            "전역 변수 의존 없이 함수가 독립적으로 동작하는지 점검하기",
+            "모듈 import 경로와 순환 의존 가능성을 점검하기",
+        ],
+    },
+    "컬렉션 자료구조": {
+        "kid_summary": "리스트·튜플·딕셔너리·셋을 통해 데이터 구조와 연산 비용 감각을 익히는 차시입니다.",
+        "why": "문제 특성에 맞는 자료구조를 고르면 코드 단순성·성능·안정성이 동시에 좋아집니다.",
+        "concepts": [
+            "`list`는 순서·가변성을 가지며 배열처럼 인덱스 기반 접근에 강합니다.",
+            "`tuple`은 불변 시퀀스, `dict`는 키-값 매핑, `set`은 중복 제거·집합 연산에 특화됩니다.",
+            "`컴프리헨션`은 컬렉션 변환을 선언적으로 표현해 가독성과 생산성을 높입니다.",
+        ],
+        "analogy": "자료 종류별로 서랍·파일철·명단통을 다르게 쓰는 정리 방식과 같습니다.",
+        "practice_steps": [
+            "동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+            "리스트 슬라이싱과 딕셔너리 키 조회를 섞어 데이터 추출 코드를 작성하세요.",
+            "컴프리헨션으로 필터링·변환 로직을 한 줄로 표현해 보세요.",
+        ],
+        "checklist": [
+            "각 컬렉션의 사용 목적을 예시와 함께 설명할 수 있다.",
+            "가변/불변 특성 차이를 코드로 확인했다.",
+            "중복 제거, 검색, 순회 목적에 맞는 구조를 선택했다.",
+        ],
+        "next_tip": "다음 차시에서는 컬렉션 데이터를 파일로 저장하고 다시 읽는 입출력을 다룹니다.",
+        "syntax": ["`list`/`tuple`", "`dict`/`set`", "슬라이싱/언패킹", "컴프리헨션"],
+        "flow_steps": [
+            "문제 요구에 맞는 컬렉션 타입을 선택한다",
+            "컬렉션 생성/갱신/조회 규칙을 구현한다",
+            "슬라이싱·컴프리헨션으로 변환 로직을 단순화한다",
+            "샘플 데이터로 구조 선택이 타당한지 검증한다",
+        ],
+        "focus_points": [
+            "데이터 접근 패턴에 맞는 컬렉션을 선택했는지 확인하기",
+            "가변 객체 공유(얕은 복사)로 인한 부작용이 없는지 점검하기",
+            "컴프리헨션이 가독성을 해치지 않는 수준으로 작성됐는지 확인하기",
+        ],
+    },
+    "파일 입출력": {
+        "kid_summary": "메모리 데이터를 파일로 직렬화하고 다시 복원하는 I/O 기본기를 다룹니다.",
+        "why": "입출력을 정확히 다루어야 프로그램 상태를 저장하고 외부 시스템과 데이터를 교환할 수 있습니다.",
+        "concepts": [
+            "`with open()`은 컨텍스트 매니저로 파일 핸들을 안전하게 열고 자동으로 닫습니다.",
+            "`인코딩(encoding)`은 문자열과 바이트 변환 규칙으로, 한글 처리에서는 `utf-8` 지정이 중요합니다.",
+            "`JSON/CSV` 직렬화는 구조화된 데이터를 텍스트 파일로 저장·교환하는 표준 방식입니다.",
+        ],
+        "analogy": "노트를 읽고 쓰되 반드시 책을 닫아 보관하는 문서 관리 절차와 같습니다.",
+        "practice_steps": [
+            "`with open(..., encoding='utf-8')`으로 텍스트 파일 읽기/쓰기를 실습하세요.",
+            "리스트/딕셔너리를 JSON으로 저장하고 다시 로드해 동일성 여부를 확인하세요.",
+            "없는 파일 경로를 의도적으로 실행해 예외 메시지를 확인하세요.",
+        ],
+        "checklist": [
+            "파일 경로, 모드(`r/w/a`), 인코딩 의미를 설명할 수 있다.",
+            "저장한 데이터와 로드한 데이터의 일치 여부를 검증했다.",
+            "입출력 실패 시 예외 처리 흐름을 포함했다.",
+        ],
+        "next_tip": "다음 차시에서는 파일/네트워크 오류를 안정적으로 다루는 예외처리를 심화합니다.",
+        "syntax": ["`with open()`", "`read`/`write`", "인코딩(`utf-8`)", "`json`/`csv`"],
+        "flow_steps": [
+            "입출력 파일 경로와 모드를 정의한다",
+            "파일을 읽어 데이터 구조로 파싱한다",
+            "처리 결과를 파일로 직렬화해 저장한다",
+            "저장/재로딩 검증으로 데이터 무결성을 확인한다",
+        ],
+        "focus_points": [
+            "파일 열기 모드와 인코딩이 요구사항과 맞는지 확인하기",
+            "입출력 전후 데이터 구조가 보존되는지 검증하기",
+            "파일 미존재/권한 오류를 대비한 예외 처리가 있는지 점검하기",
+        ],
+    },
+    "예외처리와 디버깅": {
+        "kid_summary": "오류를 재현·분석·수정하는 디버깅 루프와 예외처리 구조를 학습합니다.",
+        "why": "PL 관점에서 실패 경로를 명시해야 프로그램이 비정상 입력에서도 안정적으로 동작합니다.",
+        "concepts": [
+            "`try/except/else/finally`는 정상 경로와 오류 경로를 분리해 제어 흐름을 명확히 합니다.",
+            "`raise`는 도메인 규칙 위반을 명시적으로 신호해 호출자에게 책임을 전달합니다.",
+            "`traceback`과 로그는 오류 위치·원인·입력 상태를 추적하는 핵심 디버깅 근거입니다.",
+        ],
+        "analogy": "장비 고장 시 원인 로그를 남기고 안전 절차대로 복구하는 운영 프로세스와 같습니다.",
+        "practice_steps": [
+            "의도적으로 예외를 발생시켜 traceback의 파일/라인 정보를 읽어 보세요.",
+            "입력 검증 실패 시 `raise ValueError`로 도메인 규칙을 명시하세요.",
+            "예외 처리 전후 코드를 비교해 사용자 메시지와 로그 품질을 개선하세요.",
+        ],
+        "checklist": [
+            "예외 타입별 처리 정책을 구분해 설명할 수 있다.",
+            "except에서 오류를 숨기지 않고 원인 정보를 남겼다.",
+            "수정 후 동일 오류가 재발하지 않는지 회귀 테스트를 수행했다.",
+        ],
+        "next_tip": "다음 차시에서는 클래스 구조 안에 예외처리 정책을 포함해 객체지향 설계로 확장합니다.",
+        "syntax": ["`try/except/else/finally`", "`raise`", "예외 클래스", "디버깅 로그(`print`/`logging`)"],
+        "flow_steps": [
+            "오류 상황을 재현해 입력·상태를 기록한다",
+            "traceback으로 실패 지점을 식별한다",
+            "try/except와 raise로 예외 경로를 명시한다",
+            "회귀 테스트로 수정 효과를 검증한다",
+        ],
+        "focus_points": [
+            "예외를 포착할 위치와 전파할 위치가 분리됐는지 확인하기",
+            "오류 메시지가 원인 파악에 충분한 정보를 제공하는지 점검하기",
+            "수정 후 동일 입력에서 정상 동작하는지 재실행으로 확인하기",
+        ],
+    },
+    "객체지향 기초": {
+        "kid_summary": "클래스와 객체를 사용해 상태와 동작을 함께 모델링하는 OOP 기초 차시입니다.",
+        "why": "데이터와 로직을 객체로 묶으면 복잡한 도메인을 확장 가능하게 설계할 수 있습니다.",
+        "concepts": [
+            "`클래스(class)`는 객체의 설계도이고, `인스턴스(instance)`는 런타임에 생성된 실제 객체입니다.",
+            "`속성(attribute)`과 `메서드(method)`를 분리해 상태(state)와 동작(behavior)을 명시합니다.",
+            "`상속(inheritance)`은 공통 기능 재사용을 돕지만 과도한 상속보다 조합(composition) 설계가 중요합니다.",
+        ],
+        "analogy": "건물 설계도(클래스)로 여러 건물(인스턴스)을 짓고, 방 구조(속성)와 기능(메서드)을 배치하는 과정과 같습니다.",
+        "practice_steps": [
+            "도메인 개체를 하나 정해 클래스와 생성자(`__init__`)를 작성하세요.",
+            "상태 변경 메서드와 조회 메서드를 분리해 호출해 보세요.",
+            "부모 클래스를 만들고 `super()`로 공통 로직을 재사용해 보세요.",
+        ],
+        "checklist": [
+            "클래스 책임과 인스턴스 책임을 구분해 설명할 수 있다.",
+            "`self`가 가리키는 객체 맥락을 코드로 설명할 수 있다.",
+            "캡슐화된 메서드 호출로 상태 변경 흐름을 검증했다.",
+        ],
+        "next_tip": "다음 차시에서는 함수·클래스·예외처리를 묶어 미니 프로젝트를 완성합니다.",
+        "syntax": ["`class`", "`__init__`", "`self`/인스턴스 메서드", "상속(`super()`)"],
+        "flow_steps": [
+            "요구사항의 핵심 개체를 클래스 단위로 식별한다",
+            "속성과 메서드로 상태/동작을 설계한다",
+            "인스턴스를 생성해 객체 협력 흐름을 구현한다",
+            "테스트 시나리오로 객체 상태 전이를 검증한다",
+        ],
+        "focus_points": [
+            "클래스가 한 가지 책임만 갖도록 설계됐는지 확인하기",
+            "생성자에서 필수 상태가 빠짐없이 초기화되는지 점검하기",
+            "메서드 호출 전후 객체 상태가 일관적인지 검증하기",
+        ],
+    },
+    "미니 실습 프로젝트": {
+        "kid_summary": "변수·타입·함수·클래스·예외처리를 통합해 작은 프로그램을 완성하는 차시입니다.",
+        "why": "PL 기본 요소를 통합 적용해야 실제 문제를 구조화하고 유지보수 가능한 코드로 완성할 수 있습니다.",
+        "concepts": [
+            "`요구사항 분해`는 입력/처리/출력과 예외 경로를 먼저 모델링하는 설계 활동입니다.",
+            "`아키텍처 분리`는 함수·클래스·모듈 경계를 정해 변경 영향 범위를 줄입니다.",
+            "`테스트/리팩터링` 루프는 동작 보존을 확인하며 코드 품질을 높이는 핵심 절차입니다.",
+        ],
+        "analogy": "작은 서비스 프로토타입을 만들며 설계도, 구현, 검수 단계를 반복하는 프로젝트와 같습니다.",
+        "practice_steps": [
+            "프로젝트 요구사항을 기능 목록(TODO)과 데이터 모델로 분해하세요.",
+            "핵심 기능을 먼저 동작시키고 함수/클래스로 구조를 정리하세요.",
+            "예외 케이스 테스트를 추가하고 리팩터링 전후 결과를 비교하세요.",
+        ],
+        "checklist": [
+            "입력·처리·출력·예외 흐름이 문서와 코드에 일치한다.",
+            "함수/클래스 분리가 중복을 줄이고 책임을 명확히 했다.",
+            "핵심 기능에 대해 최소 테스트 시나리오를 통과했다.",
+        ],
+        "next_tip": "Python PL 기초 사이클을 완료했으니, 이후 교과목에서 동일한 설계 원칙을 확장 적용하세요.",
+        "syntax": ["요구사항 분해", "함수·클래스 조합", "모듈 분리(import)", "테스트/리팩터링"],
+        "flow_steps": [
+            "요구사항과 데이터 모델을 정의한다",
+            "핵심 기능의 최소 동작 버전을 구현한다",
+            "함수·클래스·모듈 구조로 리팩터링한다",
+            "테스트와 예외 시나리오로 완성도를 검증한다",
+        ],
+        "focus_points": [
+            "기능 단위와 코드 구조(함수/클래스/모듈)가 1:1로 대응되는지 확인하기",
+            "정상 경로뿐 아니라 실패 경로(예외)까지 테스트하는지 점검하기",
+            "리팩터링 후에도 기존 동작이 유지되는지 회귀 테스트로 검증하기",
+        ],
+    },
+}
+
+DEFAULT_CODE_FOCUS_POINTS = [
+    "입력이 무엇인지 먼저 찾기",
+    "처리 규칙(함수/조건/반복) 확인하기",
+    "출력 결과가 목표와 맞는지 점검하기",
+]
+
+
+def is_python_pl_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "Python 프로그래밍"
+
+
+def get_python_pl_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_python_pl_subject(subject_name):
+        return None
+    return PYTHON_PL_MODULE_PROFILES.get(module)
+
+
+def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
+    info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
+    profile = get_python_pl_profile(subject_name, module)
+    if not profile:
+        return info
+    for key in ("kid_summary", "why", "concepts", "analogy", "practice_steps", "checklist", "next_tip"):
+        if key in profile:
+            info[key] = profile[key]
+    return info
+
+
+def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
+    profile = get_python_pl_profile(subject_name, module)
+    syntax = profile.get("syntax") if profile else None
+    if isinstance(syntax, list) and syntax:
+        return syntax
+    return TRACK_MAIN_SYNTAX.get(track, TRACK_MAIN_SYNTAX["generic"])
+
+
+def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
+    profile = get_python_pl_profile(subject_name, module)
+    flow_steps = profile.get("flow_steps") if profile else None
+    if isinstance(flow_steps, list) and len(flow_steps) >= 4:
+        return flow_steps
+    return TRACK_FLOW_STEPS.get(track, TRACK_FLOW_STEPS["generic"])
+
+
+def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
+    profile = get_python_pl_profile(subject_name, module)
+    points = profile.get("focus_points") if profile else None
+    if isinstance(points, list) and len(points) >= 3:
+        return points[:3]
+    if track == "python":
+        return [
+            "변수/상수/타입 정의가 요구사항과 일치하는지 확인하기",
+            "배열(list)·조건·반복이 데이터 흐름을 올바르게 반영하는지 확인하기",
+            "함수/클래스 경계가 명확하고 테스트 가능한 구조인지 점검하기",
+        ]
+    return DEFAULT_CODE_FOCUS_POINTS
+
+
 AUTO_TECH_STACK_START = "<!-- AUTO-GENERATED: TECH_STACK_FLOW START -->"
 AUTO_TECH_STACK_END = "<!-- AUTO-GENERATED: TECH_STACK_FLOW END -->"
 TERM_TOKEN_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9+\-]*|[가-힣]+")
@@ -1126,6 +1517,7 @@ def sanitize_mermaid_label(text: str) -> str:
 def build_flow_steps(
     row: dict[str, str],
     track: str,
+    class_rel_dir: str,
     example_file: str,
     next_row: dict[str, str] | None,
 ) -> list[str]:
@@ -1133,7 +1525,7 @@ def build_flow_steps(
     module = row["module"]
     session = row["subject_session"]
     level = row["level"]
-    track_steps = TRACK_FLOW_STEPS.get(track, TRACK_FLOW_STEPS["generic"])
+    track_steps = resolve_flow_steps(track=track, subject_name=row["subject_name"], module=module)
 
     steps = [
         f"시작: {class_id} ({session}, {level})",
@@ -1142,7 +1534,7 @@ def build_flow_steps(
         f"2단계: {track_steps[1]}",
         f"3단계: {track_steps[2]}",
         f"4단계: {track_steps[3]}",
-        f"예제 실행: python {class_id}/{example_file}",
+        f"예제 실행: python {class_rel_dir}/{example_file}",
     ]
     if next_row is None:
         steps.append("마무리: 학습 노트 작성 및 전체 복습")
@@ -1162,19 +1554,21 @@ def render_mermaid_flowchart(steps: list[str]) -> str:
 
 def render_auto_tech_stack_block(
     class_id: str,
+    class_rel_dir: str,
+    subject_name: str,
     module: str,
     example_file: str,
     track: str,
     mermaid_flow: str,
     flow_image_file: str,
 ) -> str:
-    syntax = TRACK_MAIN_SYNTAX.get(track, TRACK_MAIN_SYNTAX["generic"])
-    syntax_text = ", ".join(f"`{item}`" for item in syntax)
+    syntax = resolve_main_syntax(track=track, subject_name=subject_name, module=module)
+    syntax_text = ", ".join(f"`{item.replace('`', '')}`" for item in syntax)
     block = f"""
     {AUTO_TECH_STACK_START}
     ### 기술 스택
     - 언어: `Python 3`
-    - 실행: `CLI` (`python {class_id}/{example_file}`)
+    - 실행: `CLI` (`python {class_rel_dir}/{example_file}`)
     - 주요 문법: {syntax_text}
     - 학습 포커스: `{module}`
 
@@ -1591,6 +1985,7 @@ def render_example(track: str, class_id: str, module: str) -> str:
 def render_markdown(
     row: dict[str, str],
     track: str,
+    class_rel_dir: str,
     example_file: str,
     quiz_file: str,
     prev_row: dict[str, str] | None,
@@ -1604,7 +1999,8 @@ def render_markdown(
     module = row["module"]
     level = row["level"]
     session = row["subject_session"]
-    info = TRACK_INFO[track]
+    info = resolve_learning_info(track=track, subject_name=subject_name, module=module)
+    focus_points = resolve_focus_points(track=track, subject_name=subject_name, module=module)
     day_text = f"Day {day:02d}"
     slot_text = f"{slot}교시"
     term_guide_block = render_term_guide(subject_name=subject_name, module=module, track=track)
@@ -1695,21 +2091,21 @@ def render_markdown(
     - 예제 파일: `{example_file}`
     - 실행 명령:
     ```bash
-    python {class_id}/{example_file}
+    python {class_rel_dir}/{example_file}
     ```
 
     __TECH_STACK_SECTION__
 
     ### 예제 코드를 볼 때 집중할 포인트
-    1. 입력이 무엇인지 먼저 찾기
-    2. 처리 규칙(함수/조건/반복) 확인하기
-    3. 출력 결과가 목표와 맞는지 점검하기
+    1. {focus_points[0]}
+    2. {focus_points[1]}
+    3. {focus_points[2]}
 
     ## 6) 퀴즈로 복습하기 (5문항)
     - 퀴즈 파일: `{quiz_file}`
     - 브라우저에서 열기:
     ```bash
-    {class_id}/{quiz_file}
+    {class_rel_dir}/{quiz_file}
     ```
     - 버튼 설명:
     1. `채점하기`: 현재 선택한 답으로 점수를 계산해요.
@@ -1754,11 +2150,27 @@ def render_markdown(
     return f"<!-- {COPYRIGHT_TEXT} -->\n{body}"
 
 
+def class_dir_from_row(row: dict[str, str]) -> Path:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        md_path = ROOT / Path(md_rel)
+        if md_path.name:
+            return md_path.parent
+    return ROOT / row["class"]
+
+
+def class_rel_dir_from_row(row: dict[str, str]) -> str:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        return Path(md_rel).parent.as_posix()
+    return row["class"]
+
+
 def build_self_study_materials() -> None:
     if not INDEX_FILE.exists():
         raise FileNotFoundError(f"Cannot find index file: {INDEX_FILE}")
 
-    with INDEX_FILE.open(encoding="utf-8", newline="") as fp:
+    with INDEX_FILE.open(encoding="utf-8-sig", newline="") as fp:
         lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
         raw_rows = list(csv.DictReader(lines))
 
@@ -1784,7 +2196,9 @@ def build_self_study_materials() -> None:
         track = choose_track(subject_name, module)
         prev_row, next_row = neighbors[class_id]
 
-        class_dir = ROOT / class_id
+        class_dir = class_dir_from_row(row)
+        class_rel_dir = class_rel_dir_from_row(row)
+        class_dir.mkdir(parents=True, exist_ok=True)
         md_path = class_dir / f"{class_id}.md"
         example_path = class_dir / f"{class_id}_example.py"
         quiz_path = class_dir / f"{class_id}_quiz.html"
@@ -1792,6 +2206,7 @@ def build_self_study_materials() -> None:
         flow_steps = build_flow_steps(
             row=row,
             track=track,
+            class_rel_dir=class_rel_dir,
             example_file=example_path.name,
             next_row=next_row,
         )
@@ -1805,6 +2220,8 @@ def build_self_study_materials() -> None:
         )
         tech_stack_block = render_auto_tech_stack_block(
             class_id=class_id,
+            class_rel_dir=class_rel_dir,
+            subject_name=subject_name,
             module=module,
             example_file=example_path.name,
             track=track,
@@ -1816,6 +2233,7 @@ def build_self_study_materials() -> None:
             render_markdown(
                 row=row,
                 track=track,
+                class_rel_dir=class_rel_dir,
                 example_file=example_path.name,
                 quiz_file=quiz_path.name,
                 prev_row=prev_row,

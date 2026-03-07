@@ -105,6 +105,7 @@ def tier_text(tier: str) -> tuple[str, str, str]:
 
 def build_docstring(row: dict[str, str], tier: str, track: str) -> str:
     class_id = row["class"]
+    class_rel_dir = class_rel_dir_from_row(row)
     subject_name = row["subject_name"]
     module = row["module"]
     day = int(row["day"])
@@ -143,7 +144,7 @@ def build_docstring(row: dict[str, str], tier: str, track: str) -> str:
 5) pip install -r requirements.txt
 
 [실행 방법]
-- python {class_id}/{class_id}_assignment_{tier}.py
+- python {class_rel_dir}/{class_id}_assignment_{tier}.py
 
 [쉬운 학습 포인트]
 - {tips["kid_point"]}
@@ -191,13 +192,29 @@ def replace_leading_docstring(path: Path, new_docstring: str) -> bool:
 
 
 def read_rows() -> list[dict[str, str]]:
-    with INDEX_FILE.open(encoding="utf-8", newline="") as fp:
+    with INDEX_FILE.open(encoding="utf-8-sig", newline="") as fp:
         lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
         raw_rows = list(csv.DictReader(lines))
     rows: list[dict[str, str]] = []
     for raw in raw_rows:
         rows.append({str(key).lstrip("\ufeff"): value for key, value in raw.items()})
     return rows
+
+
+def class_dir_from_row(row: dict[str, str]) -> Path:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        md_path = ROOT / Path(md_rel)
+        if md_path.name:
+            return md_path.parent
+    return ROOT / row["class"]
+
+
+def class_rel_dir_from_row(row: dict[str, str]) -> str:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        return Path(md_rel).parent.as_posix()
+    return row["class"]
 
 
 def rebuild_assignment_guides() -> None:
@@ -208,7 +225,7 @@ def rebuild_assignment_guides() -> None:
     for row in rows:
         class_id = row["class"]
         track = choose_track(row["subject_name"], row["module"])
-        class_dir = ROOT / class_id
+        class_dir = class_dir_from_row(row)
 
         for tier in TIERS:
             path = class_dir / f"{class_id}_assignment_{tier}.py"

@@ -6,6 +6,7 @@
 # 강사용 운영 가이드 (전체)
 
 ## 폴더 구조
+- 과목 폴더(예: `pyBasics`, `dataVizPrep`, `mlDeepDive`) 아래 `classXXX/`가 위치
 - classXXX/
   - classXXX.md : 차시 개요(설명/실습/정리)
   - classXXX.py : 기본 실행 런처(과제 실행)
@@ -28,8 +29,8 @@
   - pip install -r requirements.txt
 
 - 개별 차시:
-  - python class001/class001.py
-  - 또는 python class001/class001_assignment.py
+  - python pyBasics/class001/class001.py
+  - 또는 python pyBasics/class001/class001_assignment.py
 
 ## 채점/피드백
 - 기능(70) / 가독성(20) / 확장(10) 루브릭을 instructor_notes.md에 기본 제공

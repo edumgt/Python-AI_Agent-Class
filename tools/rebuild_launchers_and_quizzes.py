@@ -84,6 +84,88 @@ TRACK_QUIZ_BANK = {
 }
 
 
+PYTHON_PL_QUIZ_BANK = {
+    "오리엔테이션 및 개발환경 준비": {
+        "concept": "인터프리터·가상환경·의존성 고정은 실행 재현성의 기본이다.",
+        "action": "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "pitfall": "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다.",
+        "check": "`sys.executable` 경로가 프로젝트 `.venv`를 가리키는지 확인하고 샘플 import 테스트를 통과한다.",
+        "outcome": "실습 환경을 스스로 재현하고 환경 이슈를 분리해 해결할 수 있다.",
+    },
+    "변수와 자료형": {
+        "concept": "변수/상수 관례/타입/배열(list) 모델을 구분해 데이터를 안전하게 다룬다.",
+        "action": "값을 할당한 뒤 `type()`과 `isinstance()`로 타입 가정을 즉시 검증한다.",
+        "pitfall": "문자열 숫자를 정수로 변환하지 않아 연산 결과가 의도와 달라진다.",
+        "check": "변수·상수·list를 포함한 예제를 만들고 경계 인덱스까지 테스트한다.",
+        "outcome": "PL 기초 데이터 모델(바인딩·타입·배열)을 코드로 설명할 수 있다.",
+    },
+    "연산자와 조건문": {
+        "concept": "연산자와 조건식은 불리언 평가를 통해 분기 경로를 결정한다.",
+        "action": "조건식을 괄호로 명확히 하고 경계값 입력으로 각 분기 결과를 확인한다.",
+        "pitfall": "연산자 우선순위를 오해해 의도와 다른 조건 분기가 실행된다.",
+        "check": "`if/elif/else`의 모든 경로를 최소 1회 이상 실행해 분기 누락이 없는지 확인한다.",
+        "outcome": "표현식과 분기 로직을 예측 가능하게 설계할 수 있다.",
+    },
+    "반복문과 흐름제어": {
+        "concept": "for/while 반복과 흐름제어문은 시퀀스 처리 성능과 정확도를 좌우한다.",
+        "action": "반복 변수와 누적 변수 변화를 `print()`로 추적하며 루프를 검증한다.",
+        "pitfall": "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다.",
+        "check": "`break/continue` 유무에 따른 결과 차이를 비교하고 종료 조건을 문서화한다.",
+        "outcome": "반복 처리 로직을 안정적으로 설계하고 디버깅할 수 있다.",
+    },
+    "함수와 모듈": {
+        "concept": "함수 시그니처와 모듈 분리는 재사용성과 테스트 가능성을 높인다.",
+        "action": "중복 코드를 함수로 추출하고 입력·출력 계약을 먼저 정의한다.",
+        "pitfall": "전역 상태에 의존해 함수 재사용 시 부작용이 발생한다.",
+        "check": "함수별 정상/경계 테스트를 수행하고 다른 모듈에서 import 실행을 확인한다.",
+        "outcome": "책임 분리된 함수·모듈 구조로 코드를 확장할 수 있다.",
+    },
+    "컬렉션 자료구조": {
+        "concept": "list/tuple/dict/set 선택은 데이터 접근 패턴과 연산 효율을 결정한다.",
+        "action": "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
+        "pitfall": "가변 객체 공유(얕은 복사)를 놓쳐 예상치 못한 동시 변경이 발생한다.",
+        "check": "컬렉션별 장단점을 근거로 구조 선택 이유를 설명하고 컴프리헨션 결과를 검증한다.",
+        "outcome": "문제 특성에 맞는 자료구조를 선택해 코드 품질을 높일 수 있다.",
+    },
+    "파일 입출력": {
+        "concept": "파일 입출력은 경로·모드·인코딩·직렬화 규칙을 함께 다뤄야 안전하다.",
+        "action": "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다.",
+        "pitfall": "인코딩이나 파일 모드를 명시하지 않아 데이터가 깨지거나 누락된다.",
+        "check": "저장 전후 데이터 동등성 확인과 파일 예외 케이스(미존재/권한)를 점검한다.",
+        "outcome": "영속 데이터 처리 파이프라인을 안정적으로 구현할 수 있다.",
+    },
+    "예외처리와 디버깅": {
+        "concept": "예외처리는 정상 경로와 실패 경로를 분리해 프로그램 복원력을 높인다.",
+        "action": "오류를 재현한 뒤 traceback 라인 기준으로 원인을 좁히고 `try/except`를 적용한다.",
+        "pitfall": "광범위한 `except Exception`으로 원인을 숨겨 디버깅 정보를 잃는다.",
+        "check": "예외 타입별 처리 정책을 분리하고 회귀 테스트로 재발 방지를 확인한다.",
+        "outcome": "디버깅 근거를 남기며 안정적인 오류 처리 코드를 작성할 수 있다.",
+    },
+    "객체지향 기초": {
+        "concept": "클래스는 상태와 동작을 캡슐화해 복잡한 도메인을 모델링한다.",
+        "action": "핵심 개체를 클래스화하고 `__init__`·메서드·상태 전이를 테스트한다.",
+        "pitfall": "책임이 다른 로직을 한 클래스에 몰아 결합도가 과도해진다.",
+        "check": "객체 생성/메서드 호출 전후 상태 불변식을 검증하고 필요 시 상속을 최소 적용한다.",
+        "outcome": "클래스 설계 원칙으로 확장 가능한 구조를 만들 수 있다.",
+    },
+    "미니 실습 프로젝트": {
+        "concept": "프로젝트는 변수·함수·클래스·예외처리를 통합한 PL 종합 적용 단계다.",
+        "action": "요구사항을 TODO로 분해하고 최소 기능부터 구현 후 반복 개선한다.",
+        "pitfall": "설계 없이 구현부터 시작해 모듈 경계와 테스트 전략이 무너진다.",
+        "check": "핵심 시나리오 테스트를 통과하고 리팩터링 전후 동작 동일성을 확인한다.",
+        "outcome": "작동하는 프로그램을 구조적으로 완성하고 개선 루프를 운영할 수 있다.",
+    },
+}
+
+
+def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, str]:
+    if subject_name.strip() == "Python 프로그래밍":
+        module_bank = PYTHON_PL_QUIZ_BANK.get(module)
+        if module_bank:
+            return module_bank
+    return TRACK_QUIZ_BANK[track]
+
+
 class LearningPoints(TypedDict):
     summary: str
     concepts: list[str]
@@ -92,7 +174,7 @@ class LearningPoints(TypedDict):
 
 
 def read_rows() -> list[dict[str, str]]:
-    with INDEX_FILE.open(encoding="utf-8", newline="") as fp:
+    with INDEX_FILE.open(encoding="utf-8-sig", newline="") as fp:
         lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
         raw_rows = list(csv.DictReader(lines))
 
@@ -100,6 +182,15 @@ def read_rows() -> list[dict[str, str]]:
     for raw in raw_rows:
         rows.append({str(key).lstrip("\ufeff"): value for key, value in raw.items()})
     return rows
+
+
+def class_dir_from_row(row: dict[str, str]) -> Path:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        md_path = ROOT / Path(md_rel)
+        if md_path.name:
+            return md_path.parent
+    return ROOT / row["class"]
 
 
 def choose_track(subject_name: str, module: str) -> str:
@@ -248,7 +339,8 @@ def class_check_point(row: dict[str, str]) -> str:
             return f"{module} 점검: {text}"
 
     track = choose_track(row["subject_name"], row["module"])
-    return f"{module} 점검: {TRACK_QUIZ_BANK[track]['check']}"
+    bank = resolve_quiz_bank(subject_name=row["subject_name"], module=row["module"], track=track)
+    return f"{module} 점검: {bank['check']}"
 
 
 def find_prev_next_modules(current: dict[str, str], same_subject_rows: list[dict[str, str]]) -> tuple[str | None, str | None]:
@@ -314,15 +406,24 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
     slot = int(row["slot"])
     session = row["subject_session"]
     track = choose_track(subject_name, module)
-    bank = TRACK_QUIZ_BANK[track]
+    bank = resolve_quiz_bank(subject_name=subject_name, module=module, track=track)
 
     same_subject_rows = [r for r in rows if r["subject_name"] == subject_name]
     same_subject_modules = [r["module"] for r in same_subject_rows]
     prev_module, next_module = find_prev_next_modules(row, same_subject_rows)
 
-    all_concepts = [TRACK_QUIZ_BANK[t]["concept"] for t in TRACK_QUIZ_BANK]
-    all_actions = [TRACK_QUIZ_BANK[t]["action"] for t in TRACK_QUIZ_BANK]
-    all_pitfalls = [TRACK_QUIZ_BANK[t]["pitfall"] for t in TRACK_QUIZ_BANK]
+    all_banks = [
+        resolve_quiz_bank(
+            subject_name=candidate["subject_name"],
+            module=candidate["module"],
+            track=choose_track(candidate["subject_name"], candidate["module"]),
+        )
+        for candidate in rows
+    ]
+    all_concepts = [candidate_bank["concept"] for candidate_bank in all_banks]
+    all_actions = [candidate_bank["action"] for candidate_bank in all_banks]
+    all_pitfalls = [candidate_bank["pitfall"] for candidate_bank in all_banks]
+    all_checks = [candidate_bank["check"] for candidate_bank in all_banks]
 
     subject_focus_points = [class_focus_point(r) for r in same_subject_rows]
     all_focus_points = [class_focus_point(r) for r in rows]
@@ -338,7 +439,7 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
     check_point = class_check_point(row)
     check_candidates = ensure_min_candidates(
         subject_check_points,
-        merge_candidates(all_check_points, [TRACK_QUIZ_BANK[t]["check"] for t in TRACK_QUIZ_BANK]),
+        merge_candidates(all_check_points, all_checks),
         minimum=6,
     )
     module_candidates = ensure_min_candidates(same_subject_modules, [r["module"] for r in rows], minimum=6)
@@ -599,7 +700,8 @@ def rebuild_launchers_and_quizzes() -> None:
 
     for row in rows:
         class_id = row["class"]
-        class_dir = ROOT / class_id
+        class_dir = class_dir_from_row(row)
+        class_dir.mkdir(parents=True, exist_ok=True)
 
         launcher_path = class_dir / f"{class_id}.py"
         launcher_path.write_text(build_launcher_py(class_id), encoding="utf-8", newline="\n")
