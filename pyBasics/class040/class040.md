@@ -70,6 +70,34 @@ pip install -r requirements.txt
 python pyBasics/class040/class040_example.py
 ```
 
+
+<!-- AUTO-GENERATED: OS_COMMANDS START -->
+## 5-1) 운영체제별 실행 명령 예시
+### PowerShell (Windows)
+```powershell
+cd C:\DevOps\Python-AI_Agent-Class
+python .\pyBasics\class040\class040.py
+python .\pyBasics\class040\class040_example.py
+python .\pyBasics\class040\class040_assignment.py
+start .\pyBasics\class040\class040_quiz.html
+```
+
+### WSL Ubuntu (bash)
+```bash
+cd /mnt/c/DevOps/Python-AI_Agent-Class
+python3 pyBasics/class040/class040.py
+python3 pyBasics/class040/class040_example.py
+python3 pyBasics/class040/class040_assignment.py
+explorer.exe "$(wslpath -w 'pyBasics/class040/class040_quiz.html')"
+```
+
+### run_class/run_day 스크립트 연동 (WSL bash)
+```bash
+./run_class.sh class040
+./run_day.sh 5 launcher
+```
+<!-- AUTO-GENERATED: OS_COMMANDS END -->
+
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`

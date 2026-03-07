@@ -74,6 +74,34 @@ pip install -r requirements.txt
 python llmTextGen/class339/class339_example.py
 ```
 
+
+<!-- AUTO-GENERATED: OS_COMMANDS START -->
+## 5-1) 운영체제별 실행 명령 예시
+### PowerShell (Windows)
+```powershell
+cd C:\DevOps\Python-AI_Agent-Class
+python .\llmTextGen\class339\class339.py
+python .\llmTextGen\class339\class339_example.py
+python .\llmTextGen\class339\class339_assignment.py
+start .\llmTextGen\class339\class339_quiz.html
+```
+
+### WSL Ubuntu (bash)
+```bash
+cd /mnt/c/DevOps/Python-AI_Agent-Class
+python3 llmTextGen/class339/class339.py
+python3 llmTextGen/class339/class339_example.py
+python3 llmTextGen/class339/class339_assignment.py
+explorer.exe "$(wslpath -w 'llmTextGen/class339/class339_quiz.html')"
+```
+
+### run_class/run_day 스크립트 연동 (WSL bash)
+```bash
+./run_class.sh class339
+./run_day.sh 43 launcher
+```
+<!-- AUTO-GENERATED: OS_COMMANDS END -->
+
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`

@@ -69,6 +69,34 @@ pip install -r requirements.txt
 python langChainLab/class426/class426_example.py
 ```
 
+
+<!-- AUTO-GENERATED: OS_COMMANDS START -->
+## 5-1) 운영체제별 실행 명령 예시
+### PowerShell (Windows)
+```powershell
+cd C:\DevOps\Python-AI_Agent-Class
+python .\langChainLab\class426\class426.py
+python .\langChainLab\class426\class426_example.py
+python .\langChainLab\class426\class426_assignment.py
+start .\langChainLab\class426\class426_quiz.html
+```
+
+### WSL Ubuntu (bash)
+```bash
+cd /mnt/c/DevOps/Python-AI_Agent-Class
+python3 langChainLab/class426/class426.py
+python3 langChainLab/class426/class426_example.py
+python3 langChainLab/class426/class426_assignment.py
+explorer.exe "$(wslpath -w 'langChainLab/class426/class426_quiz.html')"
+```
+
+### run_class/run_day 스크립트 연동 (WSL bash)
+```bash
+./run_class.sh class426
+./run_day.sh 54 launcher
+```
+<!-- AUTO-GENERATED: OS_COMMANDS END -->
+
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`

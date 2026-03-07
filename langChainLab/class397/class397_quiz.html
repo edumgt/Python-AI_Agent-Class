@@ -31,7 +31,16 @@
       </button>
     </div>
 
-    <section id="result-root" class="mt-6 hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200"></section>
+    <div id="result-modal" class="fixed inset-0 z-50 hidden items-end justify-center p-3 sm:items-center sm:p-4" aria-hidden="true">
+  <div id="result-backdrop" class="absolute inset-0 bg-slate-900/55 opacity-0 transition-opacity duration-200"></div>
+  <section id="result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-modal-title" class="relative z-10 w-full max-w-3xl translate-y-2 scale-[0.98] rounded-2xl bg-white p-5 opacity-0 shadow-xl ring-1 ring-slate-200 transition-all duration-200 sm:p-6">
+    <div class="flex items-center justify-between gap-3">
+      <h2 id="result-modal-title" class="text-lg font-bold text-slate-900">채점 결과</h2>
+      <button id="result-close-btn" type="button" class="rounded-lg bg-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-300">닫기</button>
+    </div>
+    <section id="result-root" class="mt-4 max-h-[70vh] overflow-y-auto pr-1"></section>
+  </section>
+</div>
   </main>
 
   <script>
@@ -165,12 +174,25 @@
       });
 
       const resultRoot = document.getElementById("result-root");
-      resultRoot.classList.remove("hidden");
+      const resultModal = document.getElementById("result-modal");
 
+      const percentage = Math.round((score / total) * 100);
       const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
+      const badgeClass = score === total
+        ? "bg-emerald-100 text-emerald-700"
+        : "bg-amber-100 text-amber-700";
+      const barClass = score === total ? "bg-emerald-500" : "bg-amber-500";
       const summary = `
-        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
-        <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
+            <span class="rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}">정답률 ${percentage}%</span>
+          </div>
+          <div class="mt-3 h-2.5 w-full rounded-full bg-slate-200">
+            <div class="h-full rounded-full ${barClass}" style="width: ${percentage}%;"></div>
+          </div>
+        </div>
+        <p class="mt-3 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
         <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
       `;
 
@@ -187,19 +209,50 @@
         ${summary}
         <ul class="mt-4 space-y-2">${rows}</ul>
       `;
+      const resultBackdrop = document.getElementById("result-backdrop");
+      const resultDialog = document.getElementById("result-dialog");
+
+      resultModal.classList.remove("hidden");
+      resultModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("overflow-hidden");
+
+      requestAnimationFrame(() => {
+        resultBackdrop.classList.remove("opacity-0");
+        resultDialog.classList.remove("opacity-0", "translate-y-2", "scale-[0.98]");
+      });
+    }
+
+    function closeResultModal() {
+      const resultModal = document.getElementById("result-modal");
+      const resultBackdrop = document.getElementById("result-backdrop");
+      const resultDialog = document.getElementById("result-dialog");
+      const resultRoot = document.getElementById("result-root");
+
+      resultBackdrop.classList.add("opacity-0");
+      resultDialog.classList.add("opacity-0", "translate-y-2", "scale-[0.98]");
+      resultModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("overflow-hidden");
+
+      window.setTimeout(() => {
+        resultModal.classList.add("hidden");
+        resultRoot.innerHTML = "";
+      }, 200);
     }
 
     function resetQuiz() {
       document.querySelectorAll('input[type="radio"]').forEach((el) => {
         el.checked = false;
       });
-      const resultRoot = document.getElementById("result-root");
-      resultRoot.classList.add("hidden");
-      resultRoot.innerHTML = "";
+      closeResultModal();
     }
 
     document.getElementById("grade-btn").addEventListener("click", gradeQuiz);
     document.getElementById("reset-btn").addEventListener("click", resetQuiz);
+    document.getElementById("result-close-btn").addEventListener("click", closeResultModal);
+    document.getElementById("result-backdrop").addEventListener("click", closeResultModal);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeResultModal();
+    });
     renderQuiz();
   </script>
 </body>

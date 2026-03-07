@@ -72,6 +72,34 @@ pip install -r requirements.txt
 python ragPipeline/class496/class496_example.py
 ```
 
+
+<!-- AUTO-GENERATED: OS_COMMANDS START -->
+## 5-1) 운영체제별 실행 명령 예시
+### PowerShell (Windows)
+```powershell
+cd C:\DevOps\Python-AI_Agent-Class
+python .\ragPipeline\class496\class496.py
+python .\ragPipeline\class496\class496_example.py
+python .\ragPipeline\class496\class496_assignment.py
+start .\ragPipeline\class496\class496_quiz.html
+```
+
+### WSL Ubuntu (bash)
+```bash
+cd /mnt/c/DevOps/Python-AI_Agent-Class
+python3 ragPipeline/class496/class496.py
+python3 ragPipeline/class496/class496_example.py
+python3 ragPipeline/class496/class496_assignment.py
+explorer.exe "$(wslpath -w 'ragPipeline/class496/class496_quiz.html')"
+```
+
+### run_class/run_day 스크립트 연동 (WSL bash)
+```bash
+./run_class.sh class496
+./run_day.sh 62 launcher
+```
+<!-- AUTO-GENERATED: OS_COMMANDS END -->
+
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`

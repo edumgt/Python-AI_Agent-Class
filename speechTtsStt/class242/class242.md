@@ -74,6 +74,34 @@ pip install -r requirements.txt
 python speechTtsStt/class242/class242_example.py
 ```
 
+
+<!-- AUTO-GENERATED: OS_COMMANDS START -->
+## 5-1) 운영체제별 실행 명령 예시
+### PowerShell (Windows)
+```powershell
+cd C:\DevOps\Python-AI_Agent-Class
+python .\speechTtsStt\class242\class242.py
+python .\speechTtsStt\class242\class242_example.py
+python .\speechTtsStt\class242\class242_assignment.py
+start .\speechTtsStt\class242\class242_quiz.html
+```
+
+### WSL Ubuntu (bash)
+```bash
+cd /mnt/c/DevOps/Python-AI_Agent-Class
+python3 speechTtsStt/class242/class242.py
+python3 speechTtsStt/class242/class242_example.py
+python3 speechTtsStt/class242/class242_assignment.py
+explorer.exe "$(wslpath -w 'speechTtsStt/class242/class242_quiz.html')"
+```
+
+### run_class/run_day 스크립트 연동 (WSL bash)
+```bash
+./run_class.sh class242
+./run_day.sh 31 launcher
+```
+<!-- AUTO-GENERATED: OS_COMMANDS END -->
+
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
