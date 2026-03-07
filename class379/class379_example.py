@@ -1,21 +1,26 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class379 쉬운 예제: 평가와 개선"""
+"""class379 example1: 평가와 개선"""
 
 TOPIC = "평가와 개선"
+EXAMPLE_TEMPLATE = "ml"
 
-def build_prompt(role, question):
-    template = (
-        "너는 {role}야.\n"
-        "질문: {question}\n"
-        "답변은 3줄 이내로 쉽게 설명해 줘."
-    )
-    return template.format(role=role, question=question)
+def make_data():
+    return [(1, 52), (2, 61), (3, 70), (4, 82)]
+
+def mean_predict(train):
+    return sum(y for _, y in train) / len(train)
+
+def mae(train, pred):
+    return sum(abs(y - pred) for _, y in train) / len(train)
 
 def main():
-    prompt = build_prompt("친절한 과학 선생님", "중력이 뭐야?")
+    data = make_data()
+    pred = mean_predict(data)
     print("오늘 주제:", TOPIC)
-    print(prompt)
+    print("기본 예측값:", round(pred, 2))
+    print("MAE:", round(mae(data, pred), 2))
+
 
 if __name__ == "__main__":
     main()

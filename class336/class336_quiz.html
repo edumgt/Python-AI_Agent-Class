@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>class336 3문항 퀴즈</title>
+  <title>class336 5문항 퀴즈</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900">
@@ -16,7 +16,7 @@
         교과목: 거대 언어 모델을 활용한 자연어 생성 · 세부 시퀀스: 48/64 · 난이도: 실전심화 · Day 42 / 8교시
       </p>
       <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-        학습 내용 기반 3문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
+        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
       </p>
     </section>
 
@@ -44,7 +44,7 @@
   "track_outcome": "주요 단어 빈도를 계산해 핵심 내용을 찾을 수 있다.",
   "questions": [
     {
-      "question": "이번 차시의 핵심 학습 주제로 가장 알맞은 것은 무엇인가요?",
+      "question": "class336 (거대 언어 모델을 활용한 자연어 생성 48/64) 차시의 실제 학습 주제는 무엇인가요?",
       "options": [
         "LLM 개요",
         "토큰/컨텍스트 이해",
@@ -52,21 +52,21 @@
         "생성형 서비스 미니 구현"
       ],
       "answer_index": 2,
-      "explanation": "정답은 '도메인 적용 시나리오' 입니다."
+      "explanation": "정답은 '도메인 적용 시나리오' 입니다. 이전 모듈은 '안전성/환각 관리', 다음 모듈은 'API 연동 실습' 입니다."
     },
     {
-      "question": "'도메인 적용 시나리오'를 학습할 때 핵심 개념으로 가장 적절한 설명은 무엇인가요?",
+      "question": "'도메인 적용 시나리오' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "입력값을 조건문과 반복문으로 처리해 원하는 출력으로 만든다.",
-        "역할(role), 목표(goal), 형식(format)을 분명히 써야 답변 품질이 오른다.",
-        "문장을 정제하고 토큰으로 나눠 패턴을 분석한다.",
-        "복잡한 문제를 작은 단계로 나누면 해결이 쉬워진다."
+        "도메인 적용 시나리오 실습: 예제 문장을 토큰 리스트로 바꿔 결과를 확인해요.",
+        "대화형 응답 설계 실습: 예제 템플릿에서 역할과 질문을 바꿔 실행해 봐요.",
+        "프롬프트 기반 생성 실습: 예제 템플릿에서 역할과 질문을 바꿔 실행해 봐요.",
+        "LLM 개요 실습: 예제 템플릿에서 역할과 질문을 바꿔 실행해 봐요."
       ],
-      "answer_index": 2,
-      "explanation": "핵심 개념은 수업 주제의 기본 원리를 정확히 설명해야 합니다."
+      "answer_index": 0,
+      "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
     },
     {
-      "question": "'도메인 적용 시나리오' 실습을 시작할 때 가장 좋은 방법은 무엇인가요?",
+      "question": "'도메인 적용 시나리오' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
         "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
         "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
@@ -74,9 +74,32 @@
         "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다."
       ],
       "answer_index": 2,
-      "explanation": "정답은 실제 실습 성공률을 높이는 시작 루틴입니다."
+      "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
+    },
+    {
+      "question": "'도메인 적용 시나리오' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
+      "options": [
+        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
+        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
+        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
+        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다."
+      ],
+      "answer_index": 2,
+      "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
+    },
+    {
+      "question": "'도메인 적용 시나리오'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
+      "options": [
+        "도메인 적용 시나리오 점검: 토큰화 전/후 차이를 설명할 수 있다.",
+        "생성 파라미터 점검: 역할/목표/형식을 각각 설명할 수 있다.",
+        "대화형 응답 설계 점검: 역할/목표/형식을 각각 설명할 수 있다.",
+        "LLM 개요 점검: 역할/목표/형식을 각각 설명할 수 있다."
+      ],
+      "answer_index": 0,
+      "explanation": "이 차시는 '전처리 전후 토큰 샘플을 비교하고 빈도 변화 이유를 설명한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     }
   ],
+  "question_count": 5,
   "day": 42,
   "slot": 8
 };
@@ -124,6 +147,7 @@
     function gradeQuiz() {
       let score = 0;
       const details = [];
+      const total = QUIZ_DATA.questions.length;
 
       QUIZ_DATA.questions.forEach((q, qIndex) => {
         const selected = document.querySelector(`input[name="q-${qIndex}"]:checked`);
@@ -143,9 +167,9 @@
       const resultRoot = document.getElementById("result-root");
       resultRoot.classList.remove("hidden");
 
-      const headerClass = score === 3 ? "text-emerald-700" : "text-amber-700";
+      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
       const summary = `
-        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / 3</h3>
+        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
         <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
         <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
       `;

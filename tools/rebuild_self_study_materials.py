@@ -476,7 +476,14 @@ def render_example(track: str, class_id: str, module: str) -> str:
     return f"# {COPYRIGHT_TEXT}\n\n{content}"
 
 
-def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_file: str) -> str:
+def render_markdown(
+    row: dict[str, str],
+    track: str,
+    example_file: str,
+    quiz_file: str,
+    prev_row: dict[str, str] | None,
+    next_row: dict[str, str] | None,
+) -> str:
     class_id = row["class"]
     day = int(row["day"])
     slot = int(row["slot"])
@@ -487,6 +494,39 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     info = TRACK_INFO[track]
     day_text = f"Day {day:02d}"
     slot_text = f"{slot}교시"
+
+    if prev_row is None:
+        prev_block = (
+            "- 이전 차시가 없습니다. 이 차시는 전체 과정의 시작점입니다.\n"
+            "    - 오늘은 학습 규칙과 기본 흐름을 만드는 데 집중하세요."
+        )
+    else:
+        prev_day = int(prev_row["day"])
+        prev_slot = int(prev_row["slot"])
+        prev_block = (
+            f"- 이전 차시: **{prev_row['class']} / {prev_row['module']}** "
+            f"(Day {prev_day:02d} / {prev_slot}교시)\n"
+            f"    - 복습 연결: 이전에 배운 **{prev_row['module']}** 를 떠올리며, "
+            f"오늘 **{module}** 와 어떤 점이 이어지는지 비교해 보세요."
+        )
+
+    if next_row is None:
+        next_block = (
+            "- 다음 차시는 없습니다. 이 차시는 전체 과정의 마지막입니다.\n"
+            "    - 지금까지 학습한 내용을 한 번에 요약해 나만의 정리 노트를 만들어 보세요."
+        )
+        connection_tip = "과정이 끝났으니, 지금까지 만든 코드와 노트를 묶어 나만의 포트폴리오로 정리해 보세요."
+    else:
+        next_day = int(next_row["day"])
+        next_slot = int(next_row["slot"])
+        next_block = (
+            f"- 다음 차시: **{next_row['class']} / {next_row['module']}** "
+            f"(Day {next_day:02d} / {next_slot}교시)\n"
+            f"    - 미리보기: 다음 차시 전에 **{module}** 핵심 코드 1개를 다시 실행해 두면 "
+            f"{next_row['module']} 학습이 더 쉬워집니다."
+        )
+        connection_tip = info["next_tip"]
+
     content = f"""
     # {class_id} 자기주도 학습 가이드
 
@@ -497,7 +537,10 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     - 일정: **{day_text} / {slot_text}**
     - 난이도: **{level}**
 
-    ## 2) 주제를 아주 쉽게 이해하기
+    ## 2) 이전에 배운 내용 (복습)
+    {prev_block}
+
+    ## 3) 주제를 아주 쉽게 이해하기
     - 한 줄 설명: {info["kid_summary"]}
     - 왜 배우나요?: {info["why"]}
 
@@ -509,7 +552,7 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     ### 비유로 이해하기
     - {info["analogy"]}
 
-    ## 3) 실습 환경 만들기 (항상 먼저)
+    ## 4) 실습 환경 만들기 (항상 먼저)
     아래 명령은 **처음 한 번** 준비해 두면 이후 학습이 쉬워집니다.
 
     ### Windows PowerShell
@@ -530,7 +573,7 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     pip install -r requirements.txt
     ```
 
-    ## 4) 오늘의 예제 코드
+    ## 5) 오늘의 예제 코드
     - 예제 파일: `{example_file}`
     - 실행 명령:
     ```bash
@@ -542,7 +585,7 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     2. 처리 규칙(함수/조건/반복) 확인하기
     3. 출력 결과가 목표와 맞는지 점검하기
 
-    ## 5) 퀴즈로 복습하기 (3문항)
+    ## 6) 퀴즈로 복습하기 (5문항)
     - 퀴즈 파일: `{quiz_file}`
     - 브라우저에서 열기:
     ```bash
@@ -552,7 +595,7 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     1. `채점하기`: 현재 선택한 답으로 점수를 계산해요.
     2. `다시풀기`: 선택을 모두 지우고 처음부터 다시 풀어요.
 
-    ## 6) 혼자 실습 순서 (초등학생 버전)
+    ## 7) 혼자 실습 순서 (초등학생 버전)
     1. 코드를 한 번 그대로 실행해요.
     2. 숫자/문장 값을 1개 바꿔요.
     3. 결과가 왜 바뀌었는지 한 줄로 적어요.
@@ -563,19 +606,22 @@ def render_markdown(row: dict[str, str], track: str, example_file: str, quiz_fil
     2. {info["practice_steps"][1]}
     3. {info["practice_steps"][2]}
 
-    ## 7) 스스로 점검 체크리스트
+    ## 8) 스스로 점검 체크리스트
     - [ ] {info["checklist"][0]}
     - [ ] {info["checklist"][1]}
     - [ ] {info["checklist"][2]}
 
-    ## 8) 막히면 이렇게 해결해요
+    ## 9) 막히면 이렇게 해결해요
     1. 에러 메시지 마지막 줄을 먼저 읽어요.
     2. 함수 이름과 괄호 짝을 확인해요.
     3. `print()`를 넣어 중간 값을 확인해요.
     4. 그래도 안 되면 어제 성공한 코드와 한 줄씩 비교해요.
 
-    ## 9) 다음 차시 연결
-    - {info["next_tip"]}
+    ## 10) 학습 후 다음에 배울 내용
+    {next_block}
+
+    ## 11) 다음 차시 연결
+    - {connection_tip}
     - 오늘 코드를 복사하지 말고, 직접 다시 작성해 보세요.
     """
     body = dedent(content).strip() + "\n"
@@ -595,11 +641,22 @@ def build_self_study_materials() -> None:
         cleaned = {str(key).lstrip("\ufeff"): value for key, value in raw.items()}
         rows.append(cleaned)
 
-    for row in rows:
+    def class_number(class_id: str) -> int:
+        return int(class_id.replace("class", ""))
+
+    ordered_rows = sorted(rows, key=lambda r: class_number(r["class"]))
+    neighbors: dict[str, tuple[dict[str, str] | None, dict[str, str] | None]] = {}
+    for i, current in enumerate(ordered_rows):
+        prev_row = ordered_rows[i - 1] if i > 0 else None
+        next_row = ordered_rows[i + 1] if i + 1 < len(ordered_rows) else None
+        neighbors[current["class"]] = (prev_row, next_row)
+
+    for row in ordered_rows:
         class_id = row["class"]
         module = row["module"]
         subject_name = row["subject_name"]
         track = choose_track(subject_name, module)
+        prev_row, next_row = neighbors[class_id]
 
         class_dir = ROOT / class_id
         md_path = class_dir / f"{class_id}.md"
@@ -612,17 +669,20 @@ def build_self_study_materials() -> None:
                 track=track,
                 example_file=example_path.name,
                 quiz_file=quiz_path.name,
+                prev_row=prev_row,
+                next_row=next_row,
             ),
             encoding="utf-8",
             newline="\n",
         )
-        example_path.write_text(
-            render_example(track=track, class_id=class_id, module=module),
-            encoding="utf-8",
-            newline="\n",
-        )
+        if not example_path.exists():
+            example_path.write_text(
+                render_example(track=track, class_id=class_id, module=module),
+                encoding="utf-8",
+                newline="\n",
+            )
 
-    print(f"Updated {len(rows)} class markdown files and example python files.")
+    print(f"Updated {len(ordered_rows)} class markdown files.")
 
 
 if __name__ == "__main__":

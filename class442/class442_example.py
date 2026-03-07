@@ -1,27 +1,37 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class442 쉬운 예제: VectorStore 연동"""
+"""class442 example1: VectorStore 연동"""
 
 TOPIC = "VectorStore 연동"
+EXAMPLE_TEMPLATE = "rag"
 
-def step_collect(question):
-    return f"[수집] 질문 받음: {question}"
+def retrieve(question, docs):
+    q = set(question.split())
+    scored = []
+    for doc in docs:
+        overlap = len(q & set(doc["text"].split()))
+        scored.append((overlap, doc))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [doc for score, doc in scored if score > 0][:2]
 
-def step_summarize(text):
-    return f"[요약] 핵심: {text[-10:]}"
-
-def step_answer(summary):
-    return f"[응답] {summary} 를 바탕으로 답변 생성"
+def answer(question, docs):
+    if not docs:
+        return "관련 문서를 찾지 못했어요."
+    joined = " / ".join(d["text"] for d in docs)
+    return f"질문: {question}\n근거: {joined}"
 
 def main():
-    question = "지구가 태양 주위를 도는 이유를 알려줘"
-    collected = step_collect(question)
-    summary = step_summarize(collected)
-    answer = step_answer(summary)
+    docs = [
+        {"id": 1, "text": "RAG는 검색 결과를 근거로 답변한다"},
+        {"id": 2, "text": "벡터 검색으로 관련 문서를 찾는다"},
+        {"id": 3, "text": "프롬프트 설계도 중요하다"},
+    ]
+    q = "RAG 답변 근거"
+    picked = retrieve(q, docs)
     print("오늘 주제:", TOPIC)
-    print(collected)
-    print(summary)
-    print(answer)
+    print("선택 문서:", [d["id"] for d in picked])
+    print(answer(q, picked))
+
 
 if __name__ == "__main__":
     main()

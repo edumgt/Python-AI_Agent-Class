@@ -1,21 +1,21 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class321 쉬운 예제: 대화형 응답 설계"""
+"""class321 example1: 대화형 응답 설계"""
 
 TOPIC = "대화형 응답 설계"
+EXAMPLE_TEMPLATE = "llm_gen"
 
-def build_prompt(role, question):
-    template = (
-        "너는 {role}야.\n"
-        "질문: {question}\n"
-        "답변은 3줄 이내로 쉽게 설명해 줘."
-    )
-    return template.format(role=role, question=question)
+def build_generation_config():
+    return {"temperature": 0.7, "max_tokens": 200, "top_p": 0.9}
+
+def simulate_response(prompt, cfg):
+    return f"[생성 결과]\n프롬프트: {prompt}\n설정: {cfg}"
 
 def main():
-    prompt = build_prompt("친절한 과학 선생님", "중력이 뭐야?")
+    cfg = build_generation_config()
     print("오늘 주제:", TOPIC)
-    print(prompt)
+    print(simulate_response("한 줄 자기소개를 써줘", cfg))
+
 
 if __name__ == "__main__":
     main()

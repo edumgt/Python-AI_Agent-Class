@@ -1,26 +1,22 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class041 쉬운 예제: 데이터 분석 환경 구성"""
+"""class041 example1: 데이터 분석 환경 구성"""
 
 TOPIC = "데이터 분석 환경 구성"
+EXAMPLE_TEMPLATE = "dev_setup"
 
-def add_average(rows):
-    for row in rows:
-        row["avg"] = round((row["math"] + row["science"]) / 2, 1)
-    return rows
-
-def print_report(rows):
-    print("오늘 주제:", TOPIC)
-    for row in rows:
-        print(f"{row['name']} -> 평균 {row['avg']}")
+def checklist():
+    return [
+        "python -m venv .venv",
+        "가상환경 활성화",
+        "pip install -r requirements.txt",
+    ]
 
 def main():
-    students = [
-        {"name": "민수", "math": 90, "science": 80},
-        {"name": "지유", "math": 75, "science": 95},
-    ]
-    result = add_average(students)
-    print_report(result)
+    print("오늘 주제:", TOPIC)
+    for idx, step in enumerate(checklist(), start=1):
+        print(f"{idx}. {step}")
+
 
 if __name__ == "__main__":
     main()

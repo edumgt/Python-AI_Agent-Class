@@ -1,21 +1,26 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class168 쉬운 예제: 언어모델 입력 구조"""
+"""class168 example1: 언어모델 입력 구조"""
 
 TOPIC = "언어모델 입력 구조"
+EXAMPLE_TEMPLATE = "nlp"
 
-def build_prompt(role, question):
-    template = (
-        "너는 {role}야.\n"
-        "질문: {question}\n"
-        "답변은 3줄 이내로 쉽게 설명해 줘."
-    )
-    return template.format(role=role, question=question)
+def tokenize(text):
+    cleaned = text.replace(",", " ").replace(".", " ")
+    return [tok.lower() for tok in cleaned.split() if tok]
+
+def top_words(tokens):
+    freq = {}
+    for tok in tokens:
+        freq[tok] = freq.get(tok, 0) + 1
+    return sorted(freq.items(), key=lambda x: x[1], reverse=True)
 
 def main():
-    prompt = build_prompt("친절한 과학 선생님", "중력이 뭐야?")
     print("오늘 주제:", TOPIC)
-    print(prompt)
+    tokens = tokenize("AI 수업은 재미있고, AI 실습은 유익하다.")
+    print("토큰:", tokens)
+    print("빈도:", top_words(tokens))
+
 
 if __name__ == "__main__":
     main()

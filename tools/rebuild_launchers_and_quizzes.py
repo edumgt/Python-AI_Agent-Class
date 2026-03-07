@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import csv
+from functools import lru_cache
 import json
 import random
+import re
 from pathlib import Path
 from textwrap import dedent
+from typing import TypedDict
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,49 +21,74 @@ TRACK_QUIZ_BANK = {
     "python": {
         "concept": "입력값을 조건문과 반복문으로 처리해 원하는 출력으로 만든다.",
         "action": "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
+        "pitfall": "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
+        "check": "같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.",
         "outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
     },
     "data": {
         "concept": "데이터 전처리로 열 구조를 정리한 뒤 통계를 계산한다.",
         "action": "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
+        "pitfall": "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
+        "check": "전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.",
         "outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
     },
     "ml": {
         "concept": "입력(X)과 정답(y)을 사용해 예측 규칙(모델)을 학습한다.",
         "action": "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
+        "pitfall": "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
+        "check": "훈련/검증 분리를 유지하고 오차 지표(MSE/정확도)를 함께 기록한다.",
         "outcome": "예측 결과와 오차를 해석해 개선 아이디어를 낼 수 있다.",
     },
     "nlp": {
         "concept": "문장을 정제하고 토큰으로 나눠 패턴을 분석한다.",
         "action": "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
+        "pitfall": "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
+        "check": "전처리 전후 토큰 샘플을 비교하고 빈도 변화 이유를 설명한다.",
         "outcome": "주요 단어 빈도를 계산해 핵심 내용을 찾을 수 있다.",
     },
     "speech": {
         "concept": "음성 데이터는 길이, 텍스트 라벨, 품질 정보를 함께 다룬다.",
         "action": "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
+        "pitfall": "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
+        "check": "샘플 청취와 라벨 점검 후 길이/잡음 기준 필터링 로그를 남긴다.",
         "outcome": "음성 데이터 품질 지표를 계산하고 해석할 수 있다.",
     },
     "prompt": {
         "concept": "역할(role), 목표(goal), 형식(format)을 분명히 써야 답변 품질이 오른다.",
         "action": "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
+        "pitfall": "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
+        "check": "같은 질문을 2회 이상 실행해 형식 일관성과 누락 항목을 점검한다.",
         "outcome": "좋은 프롬프트와 나쁜 프롬프트의 차이를 설명할 수 있다.",
     },
     "langchain": {
         "concept": "작업을 단계별 체인으로 분리하면 재사용과 디버깅이 쉬워진다.",
         "action": "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
+        "pitfall": "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
+        "check": "각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.",
         "outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
     },
     "rag": {
         "concept": "질문과 관련 문서를 검색하고 근거를 바탕으로 답변을 만든다.",
         "action": "검색 결과와 최종 답변을 분리해서 출력한다.",
+        "pitfall": "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
+        "check": "답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.",
         "outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
     },
     "generic": {
         "concept": "복잡한 문제를 작은 단계로 나누면 해결이 쉬워진다.",
         "action": "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
+        "pitfall": "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
+        "check": "작업을 TODO 단위로 나누고 단계별 성공 조건을 체크리스트로 검증한다.",
         "outcome": "문제를 구조화해 스스로 학습 흐름을 만들 수 있다.",
     },
 }
+
+
+class LearningPoints(TypedDict):
+    summary: str
+    concepts: list[str]
+    missions: list[str]
+    checklist: list[str]
 
 
 def read_rows() -> list[dict[str, str]]:
@@ -94,6 +122,160 @@ def choose_track(subject_name: str, module: str) -> str:
     if "python" in lowered:
         return "python"
     return "generic"
+
+
+def parse_session_order(subject_session: str) -> int:
+    raw = subject_session.split("/", maxsplit=1)[0].strip()
+    if raw.isdigit():
+        return int(raw)
+    return 0
+
+
+def clean_learning_line(line: str) -> str:
+    cleaned = line.strip()
+    cleaned = re.sub(r"^\d+\.\s*", "", cleaned)
+    cleaned = re.sub(r"^- \[[ xX]\]\s*", "", cleaned)
+    cleaned = re.sub(r"^-\s*", "", cleaned)
+    return cleaned.strip()
+
+
+@lru_cache(maxsize=None)
+def load_learning_points(md_rel_path: str) -> LearningPoints:
+    empty: LearningPoints = {
+        "summary": "",
+        "concepts": [],
+        "missions": [],
+        "checklist": [],
+    }
+    if not md_rel_path:
+        return empty
+
+    md_path = ROOT / md_rel_path
+    if not md_path.exists():
+        return empty
+
+    summary = ""
+    concepts: list[str] = []
+    missions: list[str] = []
+    checklist: list[str] = []
+    section = ""
+
+    with md_path.open(encoding="utf-8") as fp:
+        for raw in fp:
+            line = raw.strip()
+            if not line:
+                continue
+
+            if line.startswith("- 한 줄 설명:"):
+                summary = line.split(":", maxsplit=1)[1].strip()
+                continue
+
+            if line.startswith("### 핵심 개념 3가지"):
+                section = "concepts"
+                continue
+            if line.startswith("### 실습 미션"):
+                section = "missions"
+                continue
+            if line.startswith("## 8) 스스로 점검 체크리스트"):
+                section = "checklist"
+                continue
+            if line.startswith("## "):
+                section = ""
+                continue
+
+            if section in {"concepts", "missions"} and re.match(r"^\d+\.\s+", line):
+                normalized = clean_learning_line(line)
+                if normalized:
+                    if section == "concepts":
+                        concepts.append(normalized)
+                    else:
+                        missions.append(normalized)
+                continue
+
+            if section == "checklist" and line.startswith("- [ ]"):
+                normalized = clean_learning_line(line)
+                if normalized:
+                    checklist.append(normalized)
+
+    return {
+        "summary": summary,
+        "concepts": concepts,
+        "missions": missions,
+        "checklist": checklist,
+    }
+
+
+def merge_candidates(*pools: list[str]) -> list[str]:
+    merged: list[str] = []
+    for pool in pools:
+        for item in pool:
+            text = item.strip()
+            if text and text not in merged:
+                merged.append(text)
+    return merged
+
+
+def ensure_min_candidates(primary: list[str], fallback: list[str], minimum: int = 4) -> list[str]:
+    candidates = merge_candidates(primary)
+    if len(candidates) >= minimum:
+        return candidates
+
+    for item in fallback:
+        text = item.strip()
+        if text and text not in candidates:
+            candidates.append(text)
+            if len(candidates) >= minimum:
+                break
+    return candidates
+
+
+def class_focus_point(row: dict[str, str]) -> str:
+    points = load_learning_points(row.get("md_file", ""))
+    module = row["module"]
+    for text in points["missions"] + points["concepts"]:
+        if text:
+            return f"{module} 실습: {text}"
+    if points["summary"]:
+        return f"{module} 핵심: {points['summary']}"
+    return f"{module} 학습 절차를 순서대로 설명할 수 있다."
+
+
+def class_check_point(row: dict[str, str]) -> str:
+    points = load_learning_points(row.get("md_file", ""))
+    module = row["module"]
+    for text in points["checklist"]:
+        if text:
+            return f"{module} 점검: {text}"
+
+    track = choose_track(row["subject_name"], row["module"])
+    return f"{module} 점검: {TRACK_QUIZ_BANK[track]['check']}"
+
+
+def find_prev_next_modules(current: dict[str, str], same_subject_rows: list[dict[str, str]]) -> tuple[str | None, str | None]:
+    ordered = sorted(
+        same_subject_rows,
+        key=lambda item: (parse_session_order(item["subject_session"]), item["class"]),
+    )
+
+    current_index = next((i for i, item in enumerate(ordered) if item["class"] == current["class"]), -1)
+    if current_index < 0:
+        return None, None
+
+    prev_module: str | None = None
+    for i in range(current_index - 1, -1, -1):
+        candidate = ordered[i]["module"]
+        if candidate != current["module"]:
+            prev_module = candidate
+            break
+
+    next_module: str | None = None
+    for i in range(current_index + 1, len(ordered)):
+        candidate = ordered[i]["module"]
+        if candidate != current["module"]:
+            next_module = candidate
+            break
+
+    return prev_module, next_module
 
 
 def stable_sample(pool: list[str], k: int, seed: str) -> list[str]:
@@ -134,31 +316,68 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
     track = choose_track(subject_name, module)
     bank = TRACK_QUIZ_BANK[track]
 
-    same_subject_modules = [r["module"] for r in rows if r["subject_name"] == subject_name]
+    same_subject_rows = [r for r in rows if r["subject_name"] == subject_name]
+    same_subject_modules = [r["module"] for r in same_subject_rows]
+    prev_module, next_module = find_prev_next_modules(row, same_subject_rows)
+
     all_concepts = [TRACK_QUIZ_BANK[t]["concept"] for t in TRACK_QUIZ_BANK]
     all_actions = [TRACK_QUIZ_BANK[t]["action"] for t in TRACK_QUIZ_BANK]
+    all_pitfalls = [TRACK_QUIZ_BANK[t]["pitfall"] for t in TRACK_QUIZ_BANK]
+
+    subject_focus_points = [class_focus_point(r) for r in same_subject_rows]
+    all_focus_points = [class_focus_point(r) for r in rows]
+    focus_point = class_focus_point(row)
+    focus_candidates = ensure_min_candidates(
+        subject_focus_points,
+        merge_candidates(all_focus_points, all_concepts),
+        minimum=6,
+    )
+
+    subject_check_points = [class_check_point(r) for r in same_subject_rows]
+    all_check_points = [class_check_point(r) for r in rows]
+    check_point = class_check_point(row)
+    check_candidates = ensure_min_candidates(
+        subject_check_points,
+        merge_candidates(all_check_points, [TRACK_QUIZ_BANK[t]["check"] for t in TRACK_QUIZ_BANK]),
+        minimum=6,
+    )
+    module_candidates = ensure_min_candidates(same_subject_modules, [r["module"] for r in rows], minimum=6)
 
     questions = [
         build_question(
-            question="이번 차시의 핵심 학습 주제로 가장 알맞은 것은 무엇인가요?",
+            question=f"{class_id} ({subject_name} {session}) 차시의 실제 학습 주제는 무엇인가요?",
             correct=module,
-            candidates=same_subject_modules if len(same_subject_modules) >= 4 else [r["module"] for r in rows],
+            candidates=module_candidates,
             seed=f"{class_id}-q1-module",
-            explanation=f"정답은 '{module}' 입니다.",
+            explanation=f"정답은 '{module}' 입니다. 이전 모듈은 '{prev_module or '없음'}', 다음 모듈은 '{next_module or '없음'}' 입니다.",
         ),
         build_question(
-            question=f"'{module}'를 학습할 때 핵심 개념으로 가장 적절한 설명은 무엇인가요?",
-            correct=bank["concept"],
-            candidates=all_concepts,
-            seed=f"{class_id}-q2-concept",
-            explanation="핵심 개념은 수업 주제의 기본 원리를 정확히 설명해야 합니다.",
+            question=f"'{module}' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
+            correct=focus_point,
+            candidates=focus_candidates,
+            seed=f"{class_id}-q2-focus",
+            explanation="정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다.",
         ),
         build_question(
-            question=f"'{module}' 실습을 시작할 때 가장 좋은 방법은 무엇인가요?",
+            question=f"'{module}' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
             correct=bank["action"],
             candidates=all_actions,
             seed=f"{class_id}-q3-action",
-            explanation="정답은 실제 실습 성공률을 높이는 시작 루틴입니다.",
+            explanation="정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다.",
+        ),
+        build_question(
+            question=f"'{module}' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
+            correct=bank["pitfall"],
+            candidates=all_pitfalls,
+            seed=f"{class_id}-q4-pitfall",
+            explanation="정답은 현장에서 자주 발생하는 품질 저하 패턴입니다.",
+        ),
+        build_question(
+            question=f"'{module}'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
+            correct=check_point,
+            candidates=check_candidates,
+            seed=f"{class_id}-q5-check",
+            explanation=f"이 차시는 '{bank['check']}' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다.",
         ),
     ]
 
@@ -170,6 +389,7 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
         "session": session,
         "track_outcome": bank["outcome"],
         "questions": questions,
+        "question_count": len(questions),
         "day": day,
         "slot": slot,
     }
@@ -192,7 +412,7 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{class_id} 3문항 퀴즈</title>
+  <title>{class_id} 5문항 퀴즈</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900">
@@ -204,7 +424,7 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
         교과목: {subject_name} · 세부 시퀀스: {session} · 난이도: {level} · Day {day:02d} / {slot}교시
       </p>
       <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-        학습 내용 기반 3문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
+        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
       </p>
     </section>
 
@@ -268,6 +488,7 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
     function gradeQuiz() {{
       let score = 0;
       const details = [];
+      const total = QUIZ_DATA.questions.length;
 
       QUIZ_DATA.questions.forEach((q, qIndex) => {{
         const selected = document.querySelector(`input[name="q-${{qIndex}}"]:checked`);
@@ -287,9 +508,9 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
       const resultRoot = document.getElementById("result-root");
       resultRoot.classList.remove("hidden");
 
-      const headerClass = score === 3 ? "text-emerald-700" : "text-amber-700";
+      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
       const summary = `
-        <h3 class="text-lg font-bold ${{headerClass}}">점수: ${{score}} / 3</h3>
+        <h3 class="text-lg font-bold ${{headerClass}}">점수: ${{score}} / ${{total}}</h3>
         <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
         <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${{QUIZ_DATA.track_outcome}}</p>
       `;

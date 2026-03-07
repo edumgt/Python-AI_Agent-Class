@@ -1,22 +1,23 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class025 쉬운 예제: 파일 입출력"""
+"""class025 example1: 파일 입출력"""
 
 TOPIC = "파일 입출력"
+EXAMPLE_TEMPLATE = "file_io"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
+from pathlib import Path
 
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def save_and_read(text):
+    out = Path(__file__).with_name("class025_note.txt")
+    out.write_text(text, encoding="utf-8")
+    return out.read_text(encoding="utf-8")
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    msg = "파일에 저장하고 다시 읽기 성공"
+    loaded = save_and_read(msg)
+    print("읽은 내용:", loaded)
+
 
 if __name__ == "__main__":
     main()

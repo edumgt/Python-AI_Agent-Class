@@ -1,22 +1,18 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class007 쉬운 예제: 변수와 자료형"""
+"""class007 example1: 변수와 자료형"""
 
 TOPIC = "변수와 자료형"
+EXAMPLE_TEMPLATE = "variables"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
-
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def inspect_values():
+    sample = {"name": "민수", "age": 11, "height": 140.5, "is_student": True}
+    return {k: type(v).__name__ for k, v in sample.items()}
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    print("자료형 확인:", inspect_values())
+
 
 if __name__ == "__main__":
     main()

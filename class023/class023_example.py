@@ -1,22 +1,23 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class023 쉬운 예제: 컬렉션 자료구조"""
+"""class023 example1: 컬렉션 자료구조"""
 
 TOPIC = "컬렉션 자료구조"
+EXAMPLE_TEMPLATE = "collection"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
-
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def summarize_scores(scores):
+    return {
+        "count": len(scores),
+        "max": max(scores),
+        "min": min(scores),
+        "avg": round(sum(scores) / len(scores), 2),
+    }
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
+    scores = [75, 88, 92, 81]
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    print("요약:", summarize_scores(scores))
+
 
 if __name__ == "__main__":
     main()

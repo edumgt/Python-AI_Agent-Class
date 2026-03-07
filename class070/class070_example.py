@@ -1,26 +1,29 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class070 쉬운 예제: Matplotlib 시각화 기초"""
+"""class070 example1: Matplotlib 시각화 기초"""
 
 TOPIC = "Matplotlib 시각화 기초"
+EXAMPLE_TEMPLATE = "visualization"
 
-def add_average(rows):
-    for row in rows:
-        row["avg"] = round((row["math"] + row["science"]) / 2, 1)
-    return rows
+from pathlib import Path
+import matplotlib.pyplot as plt
 
-def print_report(rows):
-    print("오늘 주제:", TOPIC)
-    for row in rows:
-        print(f"{row['name']} -> 평균 {row['avg']}")
+def make_plot():
+    x = [1, 2, 3, 4]
+    y = [2, 4, 3, 5]
+    plt.figure(figsize=(4, 3))
+    plt.plot(x, y, marker="o")
+    plt.title(TOPIC)
+    out = Path(__file__).with_name("class070_plot.png")
+    plt.tight_layout()
+    plt.savefig(out)
+    plt.close()
+    return out
 
 def main():
-    students = [
-        {"name": "민수", "math": 90, "science": 80},
-        {"name": "지유", "math": 75, "science": 95},
-    ]
-    result = add_average(students)
-    print_report(result)
+    print("오늘 주제:", TOPIC)
+    print("그래프 저장:", make_plot())
+
 
 if __name__ == "__main__":
     main()

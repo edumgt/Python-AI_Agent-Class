@@ -1,22 +1,23 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class033 쉬운 예제: 객체지향 기초"""
+"""class033 example1: 객체지향 기초"""
 
 TOPIC = "객체지향 기초"
+EXAMPLE_TEMPLATE = "oop"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
+class Student:
+    def __init__(self, name, level):
+        self.name = name
+        self.level = level
 
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+    def introduce(self):
+        return f"안녕하세요, 저는 {self.name}이고 {self.level} 단계예요."
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    student = Student("지유", "기초응용")
+    print(student.introduce())
+
 
 if __name__ == "__main__":
     main()

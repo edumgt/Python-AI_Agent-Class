@@ -1,26 +1,28 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class057 쉬운 예제: 문자열/날짜 전처리"""
+"""class057 example1: 문자열/날짜 전처리"""
 
 TOPIC = "문자열/날짜 전처리"
+EXAMPLE_TEMPLATE = "data_preprocess"
 
-def add_average(rows):
-    for row in rows:
-        row["avg"] = round((row["math"] + row["science"]) / 2, 1)
-    return rows
+from datetime import datetime
 
-def print_report(rows):
-    print("오늘 주제:", TOPIC)
+def clean_rows(rows):
+    cleaned = []
     for row in rows:
-        print(f"{row['name']} -> 평균 {row['avg']}")
+        text = row["text"].strip().lower()
+        date_obj = datetime.strptime(row["date"], "%Y-%m-%d")
+        cleaned.append({"text": text, "month": date_obj.month})
+    return cleaned
 
 def main():
-    students = [
-        {"name": "민수", "math": 90, "science": 80},
-        {"name": "지유", "math": 75, "science": 95},
+    rows = [
+        {"text": "  Hello AI  ", "date": "2026-03-01"},
+        {"text": "Data  Prep ", "date": "2026-04-02"},
     ]
-    result = add_average(students)
-    print_report(result)
+    print("오늘 주제:", TOPIC)
+    print(clean_rows(rows))
+
 
 if __name__ == "__main__":
     main()

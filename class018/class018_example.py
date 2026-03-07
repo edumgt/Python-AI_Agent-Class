@@ -1,22 +1,20 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class018 쉬운 예제: 함수와 모듈"""
+"""class018 example1: 함수와 모듈"""
 
 TOPIC = "함수와 모듈"
+EXAMPLE_TEMPLATE = "function_module"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
+import math
 
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def area_circle(radius):
+    return round(math.pi * radius * radius, 2)
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
+    r = 3
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    print(f"반지름 {r} 원의 넓이:", area_circle(r))
+
 
 if __name__ == "__main__":
     main()

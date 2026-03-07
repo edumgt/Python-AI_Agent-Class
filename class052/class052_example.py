@@ -1,26 +1,26 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class052 쉬운 예제: Pandas 데이터프레임 기초"""
+"""class052 example1: Pandas 데이터프레임 기초"""
 
 TOPIC = "Pandas 데이터프레임 기초"
+EXAMPLE_TEMPLATE = "pandas"
 
-def add_average(rows):
-    for row in rows:
-        row["avg"] = round((row["math"] + row["science"]) / 2, 1)
-    return rows
+import pandas as pd
 
-def print_report(rows):
-    print("오늘 주제:", TOPIC)
-    for row in rows:
-        print(f"{row['name']} -> 평균 {row['avg']}")
+def build_frame():
+    df = pd.DataFrame(
+        [
+            {"name": "민수", "score": 90},
+            {"name": "지유", "score": 85},
+        ]
+    )
+    df["pass"] = df["score"] >= 80
+    return df
 
 def main():
-    students = [
-        {"name": "민수", "math": 90, "science": 80},
-        {"name": "지유", "math": 75, "science": 95},
-    ]
-    result = add_average(students)
-    print_report(result)
+    print("오늘 주제:", TOPIC)
+    print(build_frame())
+
 
 if __name__ == "__main__":
     main()

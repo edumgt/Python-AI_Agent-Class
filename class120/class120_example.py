@@ -1,24 +1,22 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class120 쉬운 예제: 딥러닝 학습 구조"""
+"""class120 example1: 딥러닝 학습 구조"""
 
 TOPIC = "딥러닝 학습 구조"
+EXAMPLE_TEMPLATE = "deep_learning"
 
-def average_predictor(samples):
-    total = sum(score for _, score in samples)
-    return total / len(samples)
+def relu(x):
+    return x if x > 0 else 0
 
-def mae(samples, prediction):
-    errors = [abs(score - prediction) for _, score in samples]
-    return sum(errors) / len(errors)
+def dense_step(inputs, weights, bias):
+    total = sum(i * w for i, w in zip(inputs, weights)) + bias
+    return relu(total)
 
 def main():
-    data = [(1, 50), (2, 60), (3, 70), (4, 80)]
-    pred = average_predictor(data)
-    error = mae(data, pred)
     print("오늘 주제:", TOPIC)
-    print("예측값(평균):", round(pred, 2))
-    print("평균 절대 오차:", round(error, 2))
+    out = dense_step([0.8, -0.2, 0.5], [0.4, 0.6, 0.3], 0.1)
+    print("뉴런 출력:", round(out, 3))
+
 
 if __name__ == "__main__":
     main()

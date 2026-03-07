@@ -1,25 +1,26 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class194 쉬운 예제: 텍스트 분류 기초"""
+"""class194 example1: 텍스트 분류 기초"""
 
 TOPIC = "텍스트 분류 기초"
+EXAMPLE_TEMPLATE = "nlp"
 
-def filter_short_clips(items, max_seconds):
-    return [item for item in items if item["seconds"] <= max_seconds]
+def tokenize(text):
+    cleaned = text.replace(",", " ").replace(".", " ")
+    return [tok.lower() for tok in cleaned.split() if tok]
 
-def average_seconds(items):
-    return sum(item["seconds"] for item in items) / len(items)
+def top_words(tokens):
+    freq = {}
+    for tok in tokens:
+        freq[tok] = freq.get(tok, 0) + 1
+    return sorted(freq.items(), key=lambda x: x[1], reverse=True)
 
 def main():
-    clips = [
-        {"id": "utt1", "text": "안녕하세요", "seconds": 1.2},
-        {"id": "utt2", "text": "오늘도 화이팅", "seconds": 2.4},
-        {"id": "utt3", "text": "파이썬은 재밌다", "seconds": 1.8},
-    ]
-    short_clips = filter_short_clips(clips, 2.0)
     print("오늘 주제:", TOPIC)
-    print("짧은 발화:", [item["id"] for item in short_clips])
-    print("평균 길이:", round(average_seconds(clips), 2))
+    tokens = tokenize("AI 수업은 재미있고, AI 실습은 유익하다.")
+    print("토큰:", tokens)
+    print("빈도:", top_words(tokens))
+
 
 if __name__ == "__main__":
     main()

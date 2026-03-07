@@ -1,22 +1,24 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class011 쉬운 예제: 연산자와 조건문"""
+"""class011 example1: 연산자와 조건문"""
 
 TOPIC = "연산자와 조건문"
+EXAMPLE_TEMPLATE = "condition"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
-
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def grade(score):
+    if score >= 90:
+        return "A"
+    if score >= 80:
+        return "B"
+    if score >= 70:
+        return "C"
+    return "D"
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
+    score = 86
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    print(f"점수 {score} -> 등급 {grade(score)}")
+
 
 if __name__ == "__main__":
     main()

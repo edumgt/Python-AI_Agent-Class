@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>class459 3문항 퀴즈</title>
+  <title>class459 5문항 퀴즈</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900">
@@ -16,7 +16,7 @@
         교과목: RAG(Retrieval-Augmented Generation) · 세부 시퀀스: 11/52 · 난이도: 기초응용 · Day 58 / 3교시
       </p>
       <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-        학습 내용 기반 3문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
+        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
       </p>
     </section>
 
@@ -44,7 +44,7 @@
   "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
   "questions": [
     {
-      "question": "이번 차시의 핵심 학습 주제로 가장 알맞은 것은 무엇인가요?",
+      "question": "class459 (RAG(Retrieval-Augmented Generation) 11/52) 차시의 실제 학습 주제는 무엇인가요?",
       "options": [
         "문서 청크 설계",
         "평가 지표 설계",
@@ -52,21 +52,21 @@
         "임베딩 생성"
       ],
       "answer_index": 2,
-      "explanation": "정답은 '문서 수집 전략' 입니다."
+      "explanation": "정답은 '문서 수집 전략' 입니다. 이전 모듈은 'RAG 개요', 다음 모듈은 '문서 청크 설계' 입니다."
     },
     {
-      "question": "'문서 수집 전략'를 학습할 때 핵심 개념으로 가장 적절한 설명은 무엇인가요?",
+      "question": "'문서 수집 전략' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "작업을 단계별 체인으로 분리하면 재사용과 디버깅이 쉬워진다.",
-        "질문과 관련 문서를 검색하고 근거를 바탕으로 답변을 만든다.",
-        "복잡한 문제를 작은 단계로 나누면 해결이 쉬워진다.",
-        "음성 데이터는 길이, 텍스트 라벨, 품질 정보를 함께 다룬다."
+        "실전 RAG 미니 프로젝트 실습: 예제 문서 목록에서 질문과 가장 비슷한 문서를 찾아요.",
+        "응답 검증/출처화 실습: 예제 문서 목록에서 질문과 가장 비슷한 문서를 찾아요.",
+        "문서 수집 전략 실습: 예제 문서 목록에서 질문과 가장 비슷한 문서를 찾아요.",
+        "RAG 개요 실습: 예제 문서 목록에서 질문과 가장 비슷한 문서를 찾아요."
       ],
-      "answer_index": 1,
-      "explanation": "핵심 개념은 수업 주제의 기본 원리를 정확히 설명해야 합니다."
+      "answer_index": 2,
+      "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
     },
     {
-      "question": "'문서 수집 전략' 실습을 시작할 때 가장 좋은 방법은 무엇인가요?",
+      "question": "'문서 수집 전략' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
         "검색 결과와 최종 답변을 분리해서 출력한다.",
         "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
@@ -74,9 +74,32 @@
         "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
       ],
       "answer_index": 0,
-      "explanation": "정답은 실제 실습 성공률을 높이는 시작 루틴입니다."
+      "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
+    },
+    {
+      "question": "'문서 수집 전략' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
+      "options": [
+        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
+        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
+        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
+        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+      ],
+      "answer_index": 1,
+      "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
+    },
+    {
+      "question": "'문서 수집 전략'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
+      "options": [
+        "벡터DB 기초 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
+        "문서 수집 전략 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
+        "임베딩 생성 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
+        "RAG 개요 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+      ],
+      "answer_index": 1,
+      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     }
   ],
+  "question_count": 5,
   "day": 58,
   "slot": 3
 };
@@ -124,6 +147,7 @@
     function gradeQuiz() {
       let score = 0;
       const details = [];
+      const total = QUIZ_DATA.questions.length;
 
       QUIZ_DATA.questions.forEach((q, qIndex) => {
         const selected = document.querySelector(`input[name="q-${qIndex}"]:checked`);
@@ -143,9 +167,9 @@
       const resultRoot = document.getElementById("result-root");
       resultRoot.classList.remove("hidden");
 
-      const headerClass = score === 3 ? "text-emerald-700" : "text-amber-700";
+      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
       const summary = `
-        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / 3</h3>
+        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
         <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
         <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
       `;

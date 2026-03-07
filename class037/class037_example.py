@@ -1,22 +1,18 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class037 쉬운 예제: 미니 실습 프로젝트"""
+"""class037 example1: 미니 실습 프로젝트"""
 
 TOPIC = "미니 실습 프로젝트"
+EXAMPLE_TEMPLATE = "generic"
 
-def even_double(numbers):
-    return [n * 2 for n in numbers if n % 2 == 0]
-
-def make_message(values):
-    if not values:
-        return "조건을 만족하는 숫자가 없어요."
-    return f"짝수만 2배: {values}"
+def solve_in_steps(task):
+    return [f"1단계: {task} 이해", "2단계: 작은 예제 작성", "3단계: 결과 확인"]
 
 def main():
-    data = [1, 2, 3, 4, 5, 6]
-    result = even_double(data)
     print("오늘 주제:", TOPIC)
-    print(make_message(result))
+    for line in solve_in_steps(TOPIC):
+        print(line)
+
 
 if __name__ == "__main__":
     main()

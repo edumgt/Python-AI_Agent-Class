@@ -1,27 +1,25 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class394 쉬운 예제: LangChain 개요"""
+"""class394 example1: LangChain 개요"""
 
 TOPIC = "LangChain 개요"
+EXAMPLE_TEMPLATE = "langchain"
 
 def step_collect(question):
-    return f"[수집] 질문 받음: {question}"
+    return {"question": question}
 
-def step_summarize(text):
-    return f"[요약] 핵심: {text[-10:]}"
+def step_plan(state):
+    return {"question": state["question"], "plan": "핵심 개념 3개로 설명"}
 
-def step_answer(summary):
-    return f"[응답] {summary} 를 바탕으로 답변 생성"
+def step_answer(state):
+    return f"[응답] {state['question']} -> {state['plan']}"
 
 def main():
-    question = "지구가 태양 주위를 도는 이유를 알려줘"
-    collected = step_collect(question)
-    summary = step_summarize(collected)
-    answer = step_answer(summary)
     print("오늘 주제:", TOPIC)
-    print(collected)
-    print(summary)
-    print(answer)
+    s1 = step_collect("RAG가 뭐야?")
+    s2 = step_plan(s1)
+    print(step_answer(s2))
+
 
 if __name__ == "__main__":
     main()
