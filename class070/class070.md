@@ -52,6 +52,25 @@ pip install -r requirements.txt
 python class070/class070_example.py
 ```
 
+<!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
+### 기술 스택
+- 언어: `Python 3`
+- 실행: `CLI` (`python class070/class070_example.py`)
+- 주요 문법: `함수`, `조건문`, `출력(print)`
+- 사용 모듈: `matplotlib`, `pathlib`
+
+### 실습 example.py 동작 원리 (Mermaid Flowchart)
+```mermaid
+flowchart TD
+    N1[시작]
+    N1 --> N2[상수/초기 데이터 준비]
+    N2 --> N3[main() 실행]
+    N3 --> N4[결과 출력]
+    N4 --> N5[핵심 로직 처리]
+    N5 --> N6[종료]
+```
+<!-- AUTO-GENERATED: TECH_STACK_FLOW END -->
+
 ### 예제 코드를 볼 때 집중할 포인트
 1. 입력이 무엇인지 먼저 찾기
 2. 처리 규칙(함수/조건/반복) 확인하기
