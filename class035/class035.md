@@ -1,4 +1,4 @@
-<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
+﻿<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
 # class035 자기주도 학습 가이드
 
 ## 1) 오늘의 학습 정보
@@ -61,10 +61,10 @@ python class035/class035_example.py
 
 ### 실습 example.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
-flowchart TD
+graph TD
     N1[시작]
     N1 --> N2[상수/초기 데이터 준비]
-    N2 --> N3[main() 실행]
+    N2 --> N3[main 함수 실행]
     N3 --> N4[결과 출력]
     N4 --> N5[데이터 준비]
     N5 --> N6[핵심 로직 처리]
