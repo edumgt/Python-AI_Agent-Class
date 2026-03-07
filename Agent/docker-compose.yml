@@ -1,0 +1,26 @@
+services:
+  agent-api:
+    build:
+      context: ..
+      dockerfile: Agent/Dockerfile
+    container_name: curriculum-rag-agent
+    env_file:
+      - .env
+    environment:
+      REPO_ROOT: /srv/repo
+      VECTOR_DB_PATH: /srv/vector_db
+      VECTOR_COLLECTION: ${VECTOR_COLLECTION:-curriculum_repo}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      EMBEDDING_DIM: ${EMBEDDING_DIM:-1024}
+      CHUNK_SIZE: ${CHUNK_SIZE:-900}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-150}
+      DEFAULT_TOP_K: ${DEFAULT_TOP_K:-6}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../:/srv/repo:ro
+      - agent_vector_db:/srv/vector_db
+    restart: unless-stopped
+
+volumes:
+  agent_vector_db:

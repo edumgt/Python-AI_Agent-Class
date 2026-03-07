@@ -1,0 +1,245 @@
+from __future__ import annotations
+
+import math
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Iterable
+
+import chromadb
+from sklearn.feature_extraction.text import HashingVectorizer
+
+
+ALLOWED_EXTENSIONS = {
+    ".md",
+    ".py",
+    ".html",
+    ".txt",
+    ".csv",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".ps1",
+    ".sh",
+    ".bat",
+}
+
+EXCLUDED_DIRS = {
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "node_modules",
+    ".idea",
+    ".vscode",
+    "Agent/data",
+}
+
+
+@dataclass
+class ChunkDocument:
+    doc_id: str
+    text: str
+    path: str
+    chunk_index: int
+
+
+class LocalEmbedding:
+    def __init__(self, dim: int = 1024) -> None:
+        self._vectorizer = HashingVectorizer(
+            n_features=dim,
+            alternate_sign=False,
+            norm="l2",
+            token_pattern=r"(?u)\\b\\w+\\b",
+        )
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        if not texts:
+            return []
+        matrix = self._vectorizer.transform(texts)
+        return matrix.toarray().tolist()
+
+
+class RepoRAG:
+    def __init__(self, db_path: Path, collection_name: str, embed_dim: int = 1024) -> None:
+        self._db_path = db_path
+        self._db_path.mkdir(parents=True, exist_ok=True)
+        self._client = chromadb.PersistentClient(path=str(self._db_path))
+        self._collection = self._client.get_or_create_collection(
+            name=collection_name,
+            metadata={"hnsw:space": "cosine"},
+        )
+        self._embedder = LocalEmbedding(embed_dim)
+
+    @property
+    def collection_name(self) -> str:
+        return str(self._collection.name)
+
+    def count(self) -> int:
+        return int(self._collection.count())
+
+    def reset(self) -> None:
+        self._client.delete_collection(self._collection.name)
+        self._collection = self._client.get_or_create_collection(
+            name=self._collection.name,
+            metadata={"hnsw:space": "cosine"},
+        )
+
+    def ingest(self, repo_root: Path, chunk_size: int = 900, chunk_overlap: int = 150) -> tuple[int, int]:
+        chunk_docs = list(self._iter_chunks(repo_root, chunk_size=chunk_size, chunk_overlap=chunk_overlap))
+        if not chunk_docs:
+            return (0, 0)
+
+        ids = [d.doc_id for d in chunk_docs]
+        docs = [d.text for d in chunk_docs]
+        metas = [{"path": d.path, "chunk_index": d.chunk_index} for d in chunk_docs]
+        embs = self._embedder.embed(docs)
+
+        batch_size = 128
+        for i in range(0, len(ids), batch_size):
+            self._collection.add(
+                ids=ids[i : i + batch_size],
+                documents=docs[i : i + batch_size],
+                metadatas=metas[i : i + batch_size],
+                embeddings=embs[i : i + batch_size],
+            )
+
+        unique_files = len({d.path for d in chunk_docs})
+        return unique_files, len(chunk_docs)
+
+    def query(self, question: str, top_k: int = 6, class_hint: str | None = None) -> list[dict]:
+        top_k = max(1, top_k)
+        raw_k = min(max(top_k * 4, 12), 80)
+        docs_triplets: list[tuple[str, dict, float]] = []
+
+        def collect(query_text: str) -> None:
+            q_emb = self._embedder.embed([query_text])[0]
+            result = self._collection.query(
+                query_embeddings=[q_emb],
+                n_results=raw_k,
+                include=["documents", "metadatas", "distances"],
+            )
+            documents = result.get("documents", [[]])[0]
+            metadatas = result.get("metadatas", [[]])[0]
+            distances = result.get("distances", [[]])[0]
+            docs_triplets.extend(zip(documents, metadatas, distances))
+
+        collect(question)
+        if class_hint:
+            collect(f"{class_hint} 학습 가이드 예제 과제 퀴즈")
+
+        output = []
+        for doc, meta, dist in docs_triplets:
+            vector_score = self._distance_to_score(float(dist))
+            lexical = self._lexical_overlap(question, doc)
+            score = round((vector_score * 0.72) + (lexical * 0.28), 6)
+            path = str((meta or {}).get("path", ""))
+            if class_hint and class_hint in path.lower():
+                score = min(1.0, score + 0.35)
+            output.append(
+                {
+                    "path": path,
+                    "score": score,
+                    "vector_score": vector_score,
+                    "lexical_score": lexical,
+                    "chunk": doc,
+                }
+            )
+        output.sort(key=lambda x: x["score"], reverse=True)
+        deduped: list[dict] = []
+        seen_pairs: set[tuple[str, str]] = set()
+        for item in output:
+            path = item.get("path", "")
+            sig = (path, (item.get("chunk", "")[:180]).strip())
+            if sig in seen_pairs:
+                continue
+            seen_pairs.add(sig)
+            deduped.append(item)
+            if len(deduped) >= top_k:
+                break
+        return deduped
+
+    def _iter_chunks(self, repo_root: Path, chunk_size: int, chunk_overlap: int) -> Iterable[ChunkDocument]:
+        for file_path in self._iter_files(repo_root):
+            rel_path = file_path.relative_to(repo_root).as_posix()
+            try:
+                text = file_path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+
+            chunks = self._split_text(text, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+            for idx, chunk in enumerate(chunks):
+                doc_id = f"{rel_path}::{idx}"
+                yield ChunkDocument(doc_id=doc_id, text=chunk, path=rel_path, chunk_index=idx)
+
+    def _iter_files(self, repo_root: Path) -> Iterable[Path]:
+        for path in repo_root.rglob("*"):
+            if not path.is_file():
+                continue
+            if path.suffix.lower() not in ALLOWED_EXTENSIONS:
+                continue
+            rel = path.relative_to(repo_root).as_posix()
+            if any(part in EXCLUDED_DIRS for part in rel.split("/")):
+                continue
+            if rel.startswith("Agent/data/"):
+                continue
+            yield path
+
+    @staticmethod
+    def _split_text(text: str, chunk_size: int = 900, chunk_overlap: int = 150) -> list[str]:
+        cleaned = text.strip()
+        if not cleaned:
+            return []
+
+        if len(cleaned) <= chunk_size:
+            return [cleaned]
+
+        chunks: list[str] = []
+        start = 0
+        n = len(cleaned)
+        step = max(1, chunk_size - chunk_overlap)
+
+        while start < n:
+            end = min(n, start + chunk_size)
+            piece = cleaned[start:end]
+            if end < n:
+                # Prefer splitting at a newline near the boundary.
+                split_pos = piece.rfind("\n")
+                if split_pos >= math.floor(chunk_size * 0.6):
+                    end = start + split_pos
+                    piece = cleaned[start:end]
+            piece = piece.strip()
+            if piece:
+                chunks.append(piece)
+            if end >= n:
+                break
+            start += step
+
+        return chunks
+
+    @staticmethod
+    def _distance_to_score(distance: float) -> float:
+        score = 1.0 - distance
+        if score < 0.0:
+            return 0.0
+        if score > 1.0:
+            return 1.0
+        return score
+
+    @staticmethod
+    def _lexical_overlap(question: str, doc: str) -> float:
+        q_tokens = RepoRAG._tokenize(question)
+        if not q_tokens:
+            return 0.0
+        d_tokens = set(RepoRAG._tokenize(doc))
+        if not d_tokens:
+            return 0.0
+        overlap = sum(1 for t in q_tokens if t in d_tokens)
+        return min(1.0, overlap / max(1, len(set(q_tokens))))
+
+    @staticmethod
+    def _tokenize(text: str) -> list[str]:
+        return [t for t in re.findall(r"[0-9a-zA-Z가-힣_]+", (text or "").lower()) if len(t) >= 2]

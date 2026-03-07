@@ -1,0 +1,322 @@
+from __future__ import annotations
+
+import csv
+import re
+from dataclasses import dataclass
+from pathlib import Path
+
+ALLOWED_CLASS_SEARCH_EXTS = {".md", ".py", ".html", ".txt", ".csv"}
+
+
+@dataclass
+class SubjectRange:
+    subject_name: str
+    class_start: str
+    class_end: str
+    day_start: int
+    day_end: int
+    class_count: int
+
+
+class CurriculumIndex:
+    def __init__(self, repo_root: Path) -> None:
+        self._repo_root = repo_root
+        self._index_file = repo_root / "curriculum_index.csv"
+        self._rows: list[dict[str, str]] = []
+        self._subject_ranges: dict[str, SubjectRange] = {}
+        self._alias_to_subject: dict[str, str] = {}
+        self._class_map: dict[str, dict[str, str]] = {}
+        self.reload()
+
+    def reload(self) -> None:
+        self._rows = self._load_rows()
+        self._subject_ranges = self._build_subject_ranges(self._rows)
+        self._alias_to_subject = self._build_subject_aliases(self._subject_ranges)
+        self._class_map = self._build_class_map(self._rows)
+
+    @property
+    def index_path(self) -> str:
+        return self._index_file.as_posix()
+
+    def resolve_subject(self, raw_subject: str) -> str | None:
+        key = self._normalize(raw_subject)
+        if not key:
+            return None
+        if key in self._alias_to_subject:
+            return self._alias_to_subject[key]
+
+        # Fuzzy containment fallback
+        for alias_key, subject in self._alias_to_subject.items():
+            if key in alias_key or alias_key in key:
+                return subject
+        return None
+
+    def get_subject_range(self, subject_name: str) -> SubjectRange | None:
+        return self._subject_ranges.get(subject_name)
+
+    def detect_subject_in_question(self, question: str) -> str | None:
+        q = self._normalize(question)
+        for alias, subject in self._alias_to_subject.items():
+            if alias and alias in q:
+                return subject
+
+        # Broad keyword heuristics for common labels
+        if any(k in q for k in ["python", "파이썬"]):
+            return self.resolve_subject("Python 프로그래밍")
+        if "프롬프트" in q:
+            return self.resolve_subject("프롬프트 엔지니어링")
+        if "rag" in q:
+            return self.resolve_subject("RAG(Retrieval-Augmented Generation)")
+        if any(k in q for k in ["langchain", "랭체인"]):
+            return self.resolve_subject("Langchain 활용하기")
+        return None
+
+    @staticmethod
+    def is_range_question(question: str) -> bool:
+        q = question.replace(" ", "")
+        patterns = [
+            r"몇번부터몇번",
+            r"어디부터어디",
+            r"범위",
+            r"시작.*끝",
+            r"class\d+.*class\d+",
+        ]
+        return any(re.search(p, q, flags=re.IGNORECASE) for p in patterns)
+
+    def answer_subject_range(self, subject_name: str) -> str | None:
+        rng = self.get_subject_range(subject_name)
+        if not rng:
+            return None
+        return (
+            f"{subject_name} 과정은 {rng.class_start} ~ {rng.class_end} 입니다. "
+            f"(총 {rng.class_count}개 차시, Day {rng.day_start:02d} ~ Day {rng.day_end:02d})"
+        )
+
+    def answer_concept_definition(self, concept: str) -> str | None:
+        concept = (concept or "").strip().lower()
+        glossary: dict[str, dict[str, str]] = {
+            "llm": {
+                "title": "LLM (Large Language Model)",
+                "desc": "LLM은 대규모 텍스트 데이터로 학습된 언어 모델로, 질문 답변/요약/생성 같은 자연어 작업을 수행합니다.",
+                "subject": "거대 언어 모델을 활용한 자연어 생성",
+                "hint": "이 과정에서는 class289 ~ class352에서 핵심 개념과 활용법을 학습합니다.",
+            },
+            "rag": {
+                "title": "RAG (Retrieval-Augmented Generation)",
+                "desc": "RAG는 문서 검색 결과를 근거로 결합해 답변을 생성하는 방식으로, 환각을 줄이고 근거 기반 답변을 강화합니다.",
+                "subject": "RAG(Retrieval-Augmented Generation)",
+                "hint": "이 과정에서는 class449 ~ class500에서 파이프라인 전반을 다룹니다.",
+            },
+            "langchain": {
+                "title": "LangChain",
+                "desc": "LangChain은 LLM 애플리케이션을 체인, 도구, 메모리 구조로 구성할 수 있게 돕는 프레임워크입니다.",
+                "subject": "Langchain 활용하기",
+                "hint": "이 과정에서는 class393 ~ class448에서 실습 중심으로 학습합니다.",
+            },
+            "prompt": {
+                "title": "프롬프트 엔지니어링",
+                "desc": "프롬프트 엔지니어링은 모델이 원하는 형식과 품질로 응답하도록 입력(역할/맥락/출력형식)을 설계하는 방법입니다.",
+                "subject": "프롬프트 엔지니어링",
+                "hint": "이 과정에서는 class353 ~ class392에서 체계적으로 다룹니다.",
+            },
+            "embedding": {
+                "title": "임베딩 (Embedding)",
+                "desc": "임베딩은 텍스트/데이터를 의미를 보존한 벡터로 변환한 표현으로, 검색/유사도 계산의 기반입니다.",
+                "subject": "RAG(Retrieval-Augmented Generation)",
+                "hint": "벡터 검색과 함께 사용되며 class449 이후 차시에서 자주 등장합니다.",
+            },
+            "vector_db": {
+                "title": "벡터 DB (Vector Database)",
+                "desc": "벡터 DB는 임베딩 벡터를 저장하고 유사도 기반 검색을 빠르게 수행하는 데이터베이스입니다.",
+                "subject": "RAG(Retrieval-Augmented Generation)",
+                "hint": "RAG 검색 계층의 핵심 구성요소입니다.",
+            },
+        }
+        item = glossary.get(concept)
+        if not item:
+            return None
+
+        subject_name = self.resolve_subject(item["subject"]) or item["subject"]
+        range_line = ""
+        if subject_name:
+            range_answer = self.answer_subject_range(subject_name)
+            if range_answer:
+                range_line = f" 관련 교과 범위: {range_answer}"
+
+        return f"{item['title']}: {item['desc']} {item['hint']}{range_line}"
+
+    def class_local_search(self, class_id: str, question: str, top_k: int = 6) -> list[dict]:
+        info = self._class_map.get(class_id)
+        if not info:
+            return []
+        class_dir_rel = info.get("class_dir", "")
+        class_dir = self._repo_root / class_dir_rel
+        if not class_dir.exists():
+            return []
+
+        q_tokens = self._tokenize(question)
+        if not q_tokens:
+            return []
+
+        results: list[dict] = []
+        for path in class_dir.rglob("*"):
+            if not path.is_file():
+                continue
+            if path.suffix.lower() not in ALLOWED_CLASS_SEARCH_EXTS:
+                continue
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            lines = text.splitlines()
+            if not lines:
+                continue
+            rel = path.relative_to(self._repo_root).as_posix()
+            best_score = 0.0
+            best_line = ""
+            for line in lines:
+                score = self._lexical_overlap(q_tokens, line)
+                if score > best_score:
+                    best_score = score
+                    best_line = line.strip()
+            if best_score <= 0.0:
+                continue
+            snippet = best_line if len(best_line) <= 300 else best_line[:300] + "..."
+            results.append({"path": rel, "score": round(best_score, 6), "chunk": snippet})
+
+        results.sort(key=lambda x: x["score"], reverse=True)
+        return results[: max(1, top_k)]
+
+    def class_subject(self, class_id: str) -> str | None:
+        info = self._class_map.get(class_id)
+        if not info:
+            return None
+        subject = info.get("subject_name", "").strip()
+        return subject or None
+
+    def answer_class_scoped(self, class_id: str, question: str, sources: list[dict]) -> str | None:
+        info = self._class_map.get(class_id)
+        if not info:
+            return None
+        subject = info.get("subject_name", "")
+        module = info.get("module", "")
+        day = info.get("day", "")
+        slot = info.get("slot", "")
+        day_text = f"{int(day):02d}" if str(day).isdigit() else str(day)
+        if not sources:
+            return (
+                f"{class_id}({subject})의 질문에 대한 근거를 충분히 찾지 못했습니다. "
+                f"{class_id}.md / {class_id}_example.py 중심으로 다시 질문해 주세요."
+            )
+
+        lead = (
+            f"{class_id}는 '{module}' 주제(교과목: {subject}, Day {day_text} / {slot}교시)입니다. "
+            f"질문 '{question}'과 직접 관련된 근거를 우선 정리했습니다."
+        )
+        bullets = []
+        for idx, src in enumerate(sources[:3], start=1):
+            bullets.append(f"{idx}. {src['path']} -> {src['chunk']}")
+        return lead + "\n" + "\n".join(bullets)
+
+    def _load_rows(self) -> list[dict[str, str]]:
+        if not self._index_file.exists():
+            return []
+
+        rows: list[dict[str, str]] = []
+        with self._index_file.open(encoding="utf-8-sig", newline="") as fp:
+            reader = csv.DictReader(line for line in fp if line.strip() and not line.lstrip().startswith("#"))
+            for raw in reader:
+                row = {str(k).lstrip("\ufeff"): str(v).strip() for k, v in raw.items()}
+                if row.get("class"):
+                    rows.append(row)
+        return rows
+
+    @staticmethod
+    def _build_subject_ranges(rows: list[dict[str, str]]) -> dict[str, SubjectRange]:
+        grouped: dict[str, list[dict[str, str]]] = {}
+        for row in rows:
+            subject = row.get("subject_name", "").strip()
+            if not subject:
+                continue
+            grouped.setdefault(subject, []).append(row)
+
+        out: dict[str, SubjectRange] = {}
+        for subject, items in grouped.items():
+            items_sorted = sorted(items, key=lambda r: r.get("class", ""))
+            day_values = [int(i.get("day", "0") or 0) for i in items_sorted if (i.get("day", "0") or "0").isdigit()]
+            out[subject] = SubjectRange(
+                subject_name=subject,
+                class_start=items_sorted[0].get("class", ""),
+                class_end=items_sorted[-1].get("class", ""),
+                day_start=min(day_values) if day_values else 0,
+                day_end=max(day_values) if day_values else 0,
+                class_count=len(items_sorted),
+            )
+        return out
+
+    def _build_subject_aliases(self, subject_ranges: dict[str, SubjectRange]) -> dict[str, str]:
+        aliases: dict[str, str] = {}
+        for subject in subject_ranges.keys():
+            norm = self._normalize(subject)
+            aliases[norm] = subject
+
+            # Keep tokens and common alternates.
+            plain = re.sub(r"\(.*?\)", "", subject).strip()
+            aliases[self._normalize(plain)] = subject
+
+        explicit = {
+            "python": "Python 프로그래밍",
+            "파이썬": "Python 프로그래밍",
+            "python프로그래밍": "Python 프로그래밍",
+            "데이터전처리및시각화": "Python 전처리 및 시각화",
+            "시각화": "Python 전처리 및 시각화",
+            "머신러닝과딥러닝": "머신러닝과 딥러닝",
+            "자연어및음성데이터활용및모델개발": "자연어 및 음성 데이터 활용 및 모델 개발",
+            "tts": "음성 데이터 활용한 TTS와 STT 모델 개발",
+            "stt": "음성 데이터 활용한 TTS와 STT 모델 개발",
+            "llm": "거대 언어 모델을 활용한 자연어 생성",
+            "프롬프트엔지니어링": "프롬프트 엔지니어링",
+            "langchain": "Langchain 활용하기",
+            "rag": "RAG(Retrieval-Augmented Generation)",
+        }
+        for alias, subj in explicit.items():
+            if subj in subject_ranges:
+                aliases[self._normalize(alias)] = subj
+
+        return aliases
+
+    @staticmethod
+    def _build_class_map(rows: list[dict[str, str]]) -> dict[str, dict[str, str]]:
+        out: dict[str, dict[str, str]] = {}
+        for row in rows:
+            class_id = row.get("class", "").strip()
+            md_file = row.get("md_file", "").strip()
+            if not class_id:
+                continue
+            class_dir = Path(md_file).parent.as_posix() if md_file else class_id
+            out[class_id] = {
+                "class_id": class_id,
+                "subject_name": row.get("subject_name", "").strip(),
+                "module": row.get("module", "").strip(),
+                "day": row.get("day", "").strip(),
+                "slot": row.get("slot", "").strip(),
+                "md_file": md_file,
+                "class_dir": class_dir,
+            }
+        return out
+
+    @staticmethod
+    def _normalize(text: str) -> str:
+        return re.sub(r"[^0-9a-zA-Z가-힣]", "", (text or "").lower()).strip()
+
+    @staticmethod
+    def _tokenize(text: str) -> list[str]:
+        return [t for t in re.findall(r"[0-9a-zA-Z가-힣_]+", (text or "").lower()) if len(t) >= 2]
+
+    @staticmethod
+    def _lexical_overlap(q_tokens: list[str], text: str) -> float:
+        d_tokens = set(CurriculumIndex._tokenize(text))
+        if not d_tokens:
+            return 0.0
+        overlap = sum(1 for t in q_tokens if t in d_tokens)
+        return min(1.0, overlap / max(1, len(set(q_tokens))))
