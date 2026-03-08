@@ -26,6 +26,7 @@ class CurriculumIndex:
         self._subject_ranges: dict[str, SubjectRange] = {}
         self._alias_to_subject: dict[str, str] = {}
         self._class_map: dict[str, dict[str, str]] = {}
+        self._subject_dirs: dict[str, list[str]] = {}
         self.reload()
 
     def reload(self) -> None:
@@ -33,6 +34,7 @@ class CurriculumIndex:
         self._subject_ranges = self._build_subject_ranges(self._rows)
         self._alias_to_subject = self._build_subject_aliases(self._subject_ranges)
         self._class_map = self._build_class_map(self._rows)
+        self._subject_dirs = self._build_subject_dirs(self._rows)
 
     @property
     def index_path(self) -> str:
@@ -69,7 +71,14 @@ class CurriculumIndex:
             return self.resolve_subject("RAG(Retrieval-Augmented Generation)")
         if any(k in q for k in ["langchain", "랭체인"]):
             return self.resolve_subject("Langchain 활용하기")
+        if any(k in q for k in ["stt", "tts", "음성", "transcribe", "speech"]):
+            return self.resolve_subject("자연어 및 음성 데이터 활용 및 모델 개발")
         return None
+
+    def subject_directory_hints(self, subject_name: str | None) -> list[str]:
+        if not subject_name:
+            return []
+        return list(self._subject_dirs.get(subject_name, []))
 
     @staticmethod
     def is_range_question(question: str) -> bool:
@@ -130,6 +139,36 @@ class CurriculumIndex:
                 "desc": "벡터 DB는 임베딩 벡터를 저장하고 유사도 기반 검색을 빠르게 수행하는 데이터베이스입니다.",
                 "subject": "RAG(Retrieval-Augmented Generation)",
                 "hint": "RAG 검색 계층의 핵심 구성요소입니다.",
+            },
+            "aws_stt": {
+                "title": "AWS STT 연동 리소스",
+                "desc": "AWS에서 STT 연동의 기본 리소스는 Amazon Transcribe이며, 실시간/배치 음성 전사를 모두 지원합니다.",
+                "subject": "자연어 및 음성 데이터 활용 및 모델 개발",
+                "hint": "파일 기반은 S3 + Transcribe Batch, 실시간은 Transcribe Streaming + API Gateway/Lambda 또는 ECS/EKS 연계를 권장합니다.",
+            },
+            "aws_tts": {
+                "title": "AWS TTS 연동 리소스",
+                "desc": "AWS에서 TTS 연동의 기본 리소스는 Amazon Polly이며, 텍스트를 자연스러운 음성으로 합성합니다.",
+                "subject": "자연어 및 음성 데이터 활용 및 모델 개발",
+                "hint": "Polly 음성 파일을 S3에 저장하고 API Gateway/Lambda 또는 ECS/EKS 서비스에서 재생 API로 연계할 수 있습니다.",
+            },
+            "aws_translate": {
+                "title": "AWS 번역 연동 리소스",
+                "desc": "AWS 다국어 번역의 기본 리소스는 Amazon Translate입니다.",
+                "subject": "자연어 및 음성 데이터 활용 및 모델 개발",
+                "hint": "실시간 번역 API는 API Gateway/Lambda, 대량 배치 번역은 S3 기반 파이프라인(ECS/EKS 포함)으로 구성하는 패턴이 일반적입니다.",
+            },
+            "aws_summarize": {
+                "title": "AWS 요약 연동 리소스",
+                "desc": "AWS에서 문서 요약은 Amazon Bedrock의 LLM 모델을 활용하는 방식이 실무에서 널리 사용됩니다.",
+                "subject": "거대 언어 모델을 활용한 자연어 생성",
+                "hint": "요약 서비스는 S3 입력 + Bedrock 호출 + API Gateway/Lambda 또는 ECS/EKS 배포 구조로 설계할 수 있습니다.",
+            },
+            "aws_comprehend": {
+                "title": "AWS NLP 분석 연동 리소스",
+                "desc": "AWS에서 감정 분석, 개체명 인식, 키프레이즈 추출 같은 NLP 분석은 Amazon Comprehend가 기본 리소스입니다.",
+                "subject": "자연어 및 음성 데이터 활용 및 모델 개발",
+                "hint": "실시간 분석 API는 API Gateway/Lambda, 대량 분석은 S3 + 배치 파이프라인(ECS/EKS)으로 운영할 수 있습니다.",
             },
         }
         item = glossary.get(concept)
@@ -304,6 +343,20 @@ class CurriculumIndex:
                 "class_dir": class_dir,
             }
         return out
+
+    @staticmethod
+    def _build_subject_dirs(rows: list[dict[str, str]]) -> dict[str, list[str]]:
+        out: dict[str, set[str]] = {}
+        for row in rows:
+            subject = row.get("subject_name", "").strip()
+            md_file = row.get("md_file", "").strip()
+            if not subject or not md_file:
+                continue
+            root_dir = Path(md_file).parts[0] if Path(md_file).parts else ""
+            if not root_dir:
+                continue
+            out.setdefault(subject, set()).add(root_dir)
+        return {subject: sorted(list(dirs)) for subject, dirs in out.items()}
 
     @staticmethod
     def _normalize(text: str) -> str:

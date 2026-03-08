@@ -16,11 +16,15 @@ from app.schemas import AskRequest, AskResponse, ReindexResponse, SourceItem
 app = FastAPI(title="Curriculum RAG Agent", version="1.0.0")
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
-rag = RepoRAG(
-    db_path=settings.vector_db_path,
-    collection_name=settings.vector_collection,
-    embed_dim=settings.embedding_dim,
-)
+def _new_rag() -> RepoRAG:
+    return RepoRAG(
+        db_path=settings.vector_db_path,
+        collection_name=settings.vector_collection,
+        embed_dim=settings.embedding_dim,
+    )
+
+
+rag = _new_rag()
 agent = QnaAgent()
 curriculum = CurriculumIndex(repo_root=settings.repo_root)
 router = QueryRouter(curriculum_index=curriculum)
@@ -43,6 +47,7 @@ def health() -> dict:
 
 @app.post("/v1/reindex", response_model=ReindexResponse)
 def reindex(force: bool = True) -> ReindexResponse:
+    global rag
     indexed_files, indexed_chunks, collection = run_ingestion(
         repo_root=str(settings.repo_root),
         db_path=str(settings.vector_db_path),
@@ -53,6 +58,7 @@ def reindex(force: bool = True) -> ReindexResponse:
         force=force,
         skip_if_exists=False,
     )
+    rag = _new_rag()
     curriculum.reload()
     return ReindexResponse(
         indexed_files=indexed_files,
@@ -63,6 +69,7 @@ def reindex(force: bool = True) -> ReindexResponse:
 
 @app.post("/v1/ask", response_model=AskResponse)
 def ask(payload: AskRequest) -> AskResponse:
+    global rag
     question = payload.question.strip()
     if not question:
         raise HTTPException(status_code=400, detail="question is required")
@@ -136,12 +143,24 @@ def ask(payload: AskRequest) -> AskResponse:
             force=False,
             skip_if_exists=False,
         )
+        rag = _new_rag()
 
+    preferred_dirs = curriculum.subject_directory_hints(routed.subject_name)
     sources = rag.query(
         question=question,
         top_k=payload.top_k or settings.default_top_k,
         class_hint=routed.class_id,
+        preferred_dirs=preferred_dirs,
+        query_expansions=routed.query_expansions or [],
     )
+    if not sources and routed.query_expansions:
+        sources = rag.query(
+            question=question,
+            top_k=payload.top_k or settings.default_top_k,
+            class_hint=routed.class_id,
+            preferred_dirs=preferred_dirs,
+            query_expansions=routed.query_expansions,
+        )
     answer = agent.answer(
         question=question,
         sources=sources,

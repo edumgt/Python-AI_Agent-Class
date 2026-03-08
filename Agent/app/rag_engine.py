@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Iterable
 
 import chromadb
+from chromadb.errors import NotFoundError
 from sklearn.feature_extraction.text import HashingVectorizer
 
 
@@ -38,6 +39,12 @@ EXCLUDED_DIRS = {
     "Agent/data",
 }
 
+EXCLUDED_FILE_PATTERNS = (
+    re.compile(r".*_quiz\.html$", re.IGNORECASE),
+    re.compile(r".*_assignment_.*\.py$", re.IGNORECASE),
+    re.compile(r".*instructor_notes\.md$", re.IGNORECASE),
+)
+
 
 @dataclass
 class ChunkDocument:
@@ -68,34 +75,45 @@ class RepoRAG:
         self._db_path = db_path
         self._db_path.mkdir(parents=True, exist_ok=True)
         self._client = chromadb.PersistentClient(path=str(self._db_path))
-        self._collection = self._client.get_or_create_collection(
-            name=collection_name,
-            metadata={"hnsw:space": "cosine"},
-        )
+        self._collection_name = collection_name
+        self._collection = self._client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
         self._embedder = LocalEmbedding(embed_dim)
 
     @property
     def collection_name(self) -> str:
-        return str(self._collection.name)
+        return str(self._collection_name)
 
     def count(self) -> int:
+        self._ensure_collection()
         return int(self._collection.count())
 
-    def reset(self) -> None:
-        self._client.delete_collection(self._collection.name)
+    def reload_collection(self) -> None:
         self._collection = self._client.get_or_create_collection(
-            name=self._collection.name,
+            name=self._collection_name,
             metadata={"hnsw:space": "cosine"},
         )
 
+    def reset(self) -> None:
+        self._ensure_collection()
+        self._client.delete_collection(self._collection_name)
+        self.reload_collection()
+
     def ingest(self, repo_root: Path, chunk_size: int = 900, chunk_overlap: int = 150) -> tuple[int, int]:
+        self._ensure_collection()
         chunk_docs = list(self._iter_chunks(repo_root, chunk_size=chunk_size, chunk_overlap=chunk_overlap))
         if not chunk_docs:
             return (0, 0)
 
         ids = [d.doc_id for d in chunk_docs]
         docs = [d.text for d in chunk_docs]
-        metas = [{"path": d.path, "chunk_index": d.chunk_index} for d in chunk_docs]
+        metas = [
+            {
+                "path": d.path,
+                "chunk_index": d.chunk_index,
+                "root_dir": d.path.split("/", 1)[0] if "/" in d.path else d.path,
+            }
+            for d in chunk_docs
+        ]
         embs = self._embedder.embed(docs)
 
         batch_size = 128
@@ -110,10 +128,20 @@ class RepoRAG:
         unique_files = len({d.path for d in chunk_docs})
         return unique_files, len(chunk_docs)
 
-    def query(self, question: str, top_k: int = 6, class_hint: str | None = None) -> list[dict]:
+    def query(
+        self,
+        question: str,
+        top_k: int = 6,
+        class_hint: str | None = None,
+        preferred_dirs: list[str] | None = None,
+        query_expansions: list[str] | None = None,
+    ) -> list[dict]:
+        self._ensure_collection()
         top_k = max(1, top_k)
         raw_k = min(max(top_k * 4, 12), 80)
         docs_triplets: list[tuple[str, dict, float]] = []
+        preferred_dir_set = {d.lower() for d in (preferred_dirs or []) if d}
+        expansions = [e for e in (query_expansions or []) if e.strip()]
 
         def collect(query_text: str) -> None:
             q_emb = self._embedder.embed([query_text])[0]
@@ -128,6 +156,8 @@ class RepoRAG:
             docs_triplets.extend(zip(documents, metadatas, distances))
 
         collect(question)
+        for expansion in expansions[:3]:
+            collect(expansion)
         if class_hint:
             collect(f"{class_hint} 학습 가이드 예제 과제 퀴즈")
 
@@ -139,6 +169,11 @@ class RepoRAG:
             path = str((meta or {}).get("path", ""))
             if class_hint and class_hint in path.lower():
                 score = min(1.0, score + 0.35)
+            root_dir = path.split("/", 1)[0].lower() if path else ""
+            if preferred_dir_set and root_dir in preferred_dir_set:
+                score = min(1.0, score + 0.28)
+            if self._is_noise_file(path):
+                score = max(0.0, score - 0.35)
             output.append(
                 {
                     "path": path,
@@ -186,7 +221,20 @@ class RepoRAG:
                 continue
             if rel.startswith("Agent/data/"):
                 continue
+            if self._is_noise_file(rel):
+                continue
             yield path
+
+    def _ensure_collection(self) -> None:
+        try:
+            self._collection.count()
+        except NotFoundError:
+            self.reload_collection()
+
+    @staticmethod
+    def _is_noise_file(path: str) -> bool:
+        path_lower = (path or "").lower()
+        return any(pattern.match(path_lower) for pattern in EXCLUDED_FILE_PATTERNS)
 
     @staticmethod
     def _split_text(text: str, chunk_size: int = 900, chunk_overlap: int = 150) -> list[str]:
