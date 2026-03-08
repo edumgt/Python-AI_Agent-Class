@@ -1,7 +1,9 @@
 <!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
 # Python · AI Agent Curriculum (class001 ~ class500)
 
-첨부 커리큘럼의 **정규교과 500시간** 기준으로 세분화한 교육 저장소입니다.  
+최종 목표: `Agent/` 폴더의 실제 시스템 구축을 단계별로 연습하는 개발자 중심 커리큘럼 (500개 고유 학습주제)
+
+첨부 커리큘럼의 **정규교과 500시간** 기준으로 세분화한 교육 저장소이며, 500개 클래스의 학습주제를 모두 고유하게 구성했습니다.  
 프로젝트 과정은 제외되며, `class001`부터 `class500`까지 차시별 학습 자료를 제공합니다.
 
 ## 1) 현재까지 반영된 핵심 작업
@@ -45,7 +47,7 @@
 ## 3-1) 과목 폴더 매핑 및 상세 학습 내용
 | 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
 | --- | --- | --- | --- |
-| Python 프로그래밍 | `pyBasics` | class001~class040 | 변수/상수 관례, 배열(list), 타입 시스템, 함수/모듈, 클래스(OOP), 예외처리까지 PL 기본기를 단계적으로 강화 |
+| Python 프로그래밍 | `pyBasics` | class001~class040 | 변수/자료형/함수 기초 이후, **웹 프론트엔드 기초(HTML/CSS/Vanilla JS)**, **Tailwind CSS UI 모듈 제작**, 외부 라이브러리 활용, API 개념/HTTP, FastAPI·Uvicorn 서버 구현, OpenAPI 명세 문서화까지 개발자 중심으로 구성 |
 | Python 전처리 및 시각화 | `dataVizPrep` | class041~class080 | NumPy/Pandas 기반 전처리, 결측/이상치 처리, 집계/변환, Matplotlib/Seaborn 시각화 실습 |
 | 머신러닝과 딥러닝 | `mlDeepDive` | class081~class128 | 지도학습, 회귀/분류, 모델 평가, 특성공학, 과적합 제어, 신경망 기초와 실전 예측 프로젝트 |
 | 자연어 및 음성 데이터 활용 및 모델 개발 | `nlpSpeechAI` | class129~class224 | 텍스트 토큰화/임베딩과 음성 데이터 전처리를 통합해 NLP·Speech 모델 파이프라인 설계 |
@@ -55,7 +57,83 @@
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
 
+## 3-2) 실무 배포 트랙 (OnPrem + AWS + K8s/EKS)
+| 트랙 | class 범위 | 핵심 학습 항목 | 운영/배포 결과물 |
+| --- | --- | --- | --- |
+| 로컬/OnPrem 개발 표준화 | class001~class128 | 가상환경, 의존성 잠금, Docker 이미지 빌드, API 기본 서빙 | OnPrem 서버에서 재현 가능한 Python 서비스 |
+| ML 학습·추론 분리 | class081~class224 | 모델 학습 파이프라인, 추론 API, 배치/실시간 추론 전략 | 학습 잡 + 추론 서버 분리 배포 |
+| LLM/Prompt 서비스화 | class289~class448 | 외부 라이브러리(LangChain 등) 통합, 안전한 응답 정책, 관측성 | LLM 기반 백엔드 API 운영 |
+| MLOps·클라우드 운영 | class449~class500 | Kubernetes, EKS, CI/CD, 롤링 업데이트, 장애 대응 | AWS EKS에서 운영 가능한 RAG/LLM 서비스 |
+
+## 3-3) 공공 데이터·API Hub 연계 학습
+- 공공데이터포털(`data.go.kr`) OpenAPI: 교통/환경/인구 등 API 수집, 전처리, 시각화, 예측 실습
+- AI Hub(한국지능정보사회진흥원) 데이터셋: 한국어 텍스트/음성 데이터 기반 NLP·STT·TTS 모델 실습
+- 권장 방식: 수집기(배치) + 추론 API(실시간) + 대시보드(모니터링)로 구성해 OnPrem/AWS 모두 배포
+
+
+## 3-4) ML/DL 실사례 Docker 이미지 활용
+| 용도 | 권장 이미지 | 빠른 시작 명령 | 학습 포인트 |
+| --- | --- | --- | --- |
+| PyTorch 학습 환경 | `pytorch/pytorch` | `docker pull pytorch/pytorch` | CUDA/CPU 태그 선택, 실험 재현성 확보 |
+| TensorFlow 모델 서빙 | `tensorflow/serving` | `docker run -p 8501:8501 tensorflow/serving` | REST/gRPC 추론 엔드포인트 운영 |
+| 고성능 추론 서버 | NVIDIA Triton (NGC) | `docker run --gpus=all ... nvcr.io/nvidia/tritonserver:<tag>` | 다중 프레임워크 추론 통합, GPU 최적화 |
+| 실험 추적/모델 레지스트리 | `ghcr.io/mlflow/mlflow` | `docker pull ghcr.io/mlflow/mlflow` | 실험/아티팩트/모델 버전 관리 |
+| 워크플로우 오케스트레이션 | `apache/airflow` | `docker compose up` (공식 quick-start) | 학습/배치 파이프라인 자동화 |
+
+- 원칙: 태그는 `latest` 고정보다 안정 버전 태그를 명시해 재현성 유지
+- 권장: 학습 단계(로컬 Docker Compose) → 운영 단계(Kubernetes/EKS)로 승격
+- 공식 참고 링크:
+  - PyTorch Docker Hub: https://hub.docker.com/r/pytorch/pytorch
+  - TensorFlow Serving Docker 가이드: https://www.tensorflow.org/tfx/serving/docker
+  - NVIDIA Triton 컨테이너(공식): https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/customization_guide/deploy.html
+  - MLflow Docker 이미지(GHCR): https://github.com/mlflow/mlflow/pkgs/container/mlflow
+  - Apache Airflow Docker Compose Quick Start: https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html
+  - KServe(쿠버네티스 모델서빙): https://kserve.github.io/website/latest/
+  - Prometheus Docker 설치: https://prometheus.io/docs/prometheus/latest/installation/
+  - Grafana Docker 설치: https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/
+
+## 3-5) MLOps + AIOps 운영 학습 축
+1. MLOps: 데이터/코드/모델 버전관리, 학습-검증-배포 자동화, 모델 레지스트리 운영
+2. Model Serving: FastAPI + TF Serving/Triton/KServe 중 용도별 선택
+3. Observability(AIOps): Prometheus 메트릭, Grafana 대시보드, 로그/알람 기반 이상탐지
+4. Reliability: 롤백 가능한 배포 전략(Blue-Green/Canary), SLO·에러버짓 기반 운영
+5. Runbook: 장애 재현 절차, 복구 체크리스트, 운영 인수 문서화
+
 ## 4) 사전 준비 (필수 설치)
+
+### 4.0 필수 플랫폼 가입 목록 (수업 시작 전)
+| 구분 | 플랫폼 | 가입/준비 목적 | 필수 여부 |
+| --- | --- | --- | --- |
+| 코드/형상관리 | GitHub (`github.com`) | 저장소 접근, 과제 제출, 협업 PR | 필수 |
+| AI 어시스턴트 | ChatGPT (`chatgpt.com`) | 코드 리뷰, 문서 정리, 실습 보조 | 필수 |
+| 클라우드 | AWS (`aws.amazon.com`) | S3/ECR/EKS 등 클라우드 실습 | 필수 |
+| 공공데이터 | 공공데이터포털 (`data.go.kr`) | OpenAPI 키 발급, 실데이터 수집 실습 | 권장(강력) |
+| AI 데이터 | AI Hub (`aihub.or.kr`) | 한국어/음성 데이터셋 실습 | 권장(강력) |
+| 컨테이너 레지스트리 | Docker Hub (`hub.docker.com`) | ML/DL 컨테이너 이미지 pull/push | 권장 |
+| MLOps 보조 | Weights & Biases (`wandb.ai`) 또는 MLflow | 실험 추적/모델 관리 | 권장 |
+
+### 4.0-1 필수 소프트웨어 설치 목록 (수업 시작 전)
+| 구분 | 소프트웨어 | 권장 버전 | 용도 |
+| --- | --- | --- | --- |
+| 런타임 | Python | 3.11.x | 실습 코드 실행 |
+| 편집기 | VS Code | 최신 안정화 | 코드 작성/디버깅 |
+| 버전관리 | Git | 최신 안정화 | 커밋/브랜치/협업 |
+| 패키지관리 | pip + venv | Python 포함 | 의존성/가상환경 분리 |
+| 컨테이너 | Docker Desktop 또는 Docker Engine | 최신 안정화 | 이미지 빌드/서빙 실습 |
+| API 테스트 | Postman 또는 Insomnia | 최신 안정화 | API 호출/검증 |
+| 클러스터 도구 | kubectl, helm | EKS 호환 버전 | 쿠버네티스 배포 |
+| AWS CLI | awscli v2 | 최신 안정화 | AWS 리소스 제어 |
+
+### 4.0-2 기술스택 상세 (개발자 실무 기준)
+| 영역 | 기술스택 | 수업 내 사용 맥락 |
+| --- | --- | --- |
+| Backend/API | FastAPI, Uvicorn, Pydantic | Agent API 서버/명세(OpenAPI) |
+| Data/ML | NumPy, Pandas, scikit-learn, PyTorch, TensorFlow | 전처리/학습/추론 |
+| LLM/RAG | LangChain, Vector DB(Chroma 등), Prompt Engineering | Agent 질의응답 파이프라인 |
+| Frontend | HTML, Tailwind CSS, Vanilla JS | API 검증용 FE 모듈 |
+| MLOps | MLflow, Airflow, Docker, Kubernetes, EKS | 실험/배포/운영 자동화 |
+| AIOps/Observability | Prometheus, Grafana, CloudWatch, 로그/알람 | 이상탐지/운영 모니터링 |
+| Infra as Code(선택) | Terraform | 반복 가능한 인프라 구성 |
 
 ### 4.1 VS Code 설치
 1. https://code.visualstudio.com 접속
@@ -179,6 +257,35 @@ docker --version
 docker compose version
 docker run hello-world
 ```
+
+### 4.11 AWS 가입 및 기본 설정 (필수)
+1. https://aws.amazon.com/ko/ 에서 계정 생성
+2. IAM 사용자/그룹 생성, MFA 설정, 액세스 키 발급(루트 계정 키 사용 금지)
+3. `aws configure`로 로컬 개발 환경 연결
+```bash
+aws configure
+aws sts get-caller-identity
+```
+
+### 4.12 AWS ML 리소스 사용 및 서빙 학습
+1. 데이터 저장: `Amazon S3`
+2. 모델 학습/실험: `SageMaker` 또는 EC2 기반 학습 노드
+3. 추론 API: `ECS/Fargate`, `EKS`, `Lambda + API Gateway` 패턴 비교
+4. 운영 모니터링: `CloudWatch` 로그/메트릭/알람
+
+### 4.13 Python 외부 라이브러리 기반 서비스 배포
+- 예시 라이브러리: `fastapi`, `uvicorn`, `pydantic`, `boto3`, `langchain`
+- 공통 패턴
+1. `requirements.txt` 고정
+2. Docker 이미지 빌드
+3. OnPrem 또는 AWS(ECS/EKS) 배포
+4. 헬스체크/로그/알람 설정
+
+### 4.14 Kubernetes/EKS 운영 필수 항목
+1. K8s 기본 리소스: `Deployment`, `Service`, `ConfigMap`, `Secret`, `HPA`
+2. EKS 실습: 클러스터 생성, 노드그룹 구성, Ingress/NLB 연결
+3. 배포 전략: Rolling Update, Blue-Green, Canary
+4. 장애 대응: Pod 재시작 정책, 리소스 제한, 오토스케일링
 
 ## 5) VS Code 권장 확장팩
 - `Python` (`ms-python.python`)
