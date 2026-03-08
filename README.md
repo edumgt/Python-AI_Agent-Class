@@ -99,6 +99,10 @@
 4. Reliability: 롤백 가능한 배포 전략(Blue-Green/Canary), SLO·에러버짓 기반 운영
 5. Runbook: 장애 재현 절차, 복구 체크리스트, 운영 인수 문서화
 
+## 3-6) Docker 이미지 목록 및 캡처 표준
+- 수업에서 사용하는 Docker 이미지 목록: [도커목록.md](/home/Python-AI_Agent-Class/도커목록.md)
+- 화면 캡처 표준: `mcr.microsoft.com` 계열 Docker 이미지를 사용해 캡처 수행
+
 ## 4) 사전 준비 (필수 설치)
 
 ### 4.0 필수 플랫폼 가입 목록 (수업 시작 전)
