@@ -1,5 +1,5 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
-name: Autograde Sample
+name: RAG Agent Docker Pipeline
 
 on:
   push:
@@ -9,11 +9,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate-and-grade:
+  rag-validation:
     runs-on: ubuntu-latest
+    env:
+      REPO_ROOT: ${{ github.workspace }}
+      VECTOR_DB_PATH: ${{ runner.temp }}/vector_db_rag
+      VECTOR_COLLECTION: curriculum_repo
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -21,36 +25,170 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Agent dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r Agent/requirements.txt
 
-      - name: Verify repository structure
+      - name: Run RAG ingestion
         run: |
-          test -f README.md
-          test -f LICENSE
-          test -f grade_class.py
-          test -f grader_core.py
-          test -d class001
-          test -f class001/class001_assignment_basic.py
+          PYTHONPATH=Agent python -m app.ingest \
+            --repo-root "${REPO_ROOT}" \
+            --db-path "${VECTOR_DB_PATH}" \
+            --collection "${VECTOR_COLLECTION}" \
+            --force
 
-      - name: Syntax check core files
+      - name: Verify indexed documents exist
         run: |
-          python -m py_compile grade_class.py grade_all.py grader_core.py class001/class001_assignment_basic.py class001/class001_solution.py
+          PYTHONPATH=Agent python - <<'PY'
+          from pathlib import Path
+          from app.rag_engine import RepoRAG
+          rag = RepoRAG(
+              db_path=Path("${{ runner.temp }}/vector_db_rag"),
+              collection_name="curriculum_repo",
+              embed_dim=1024,
+          )
+          count = rag.count()
+          print(f"indexed_documents={count}")
+          if count <= 0:
+              raise SystemExit("RAG indexing produced zero documents")
+          PY
 
-      - name: Run sample autograde
+  agent-check:
+    runs-on: ubuntu-latest
+    needs: rag-validation
+    env:
+      REPO_ROOT: ${{ github.workspace }}
+      VECTOR_DB_PATH: ${{ runner.temp }}/vector_db_agent
+      VECTOR_COLLECTION: curriculum_repo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Agent dependencies
         run: |
-          python grade_class.py class001 --tier basic
-          python grade_class.py class050 --tier advanced || true
-          python grade_class.py class100 --tier challenge || true
+          python -m pip install --upgrade pip
+          pip install -r Agent/requirements.txt
 
-      - name: Upload grading artifacts
+      - name: Start Agent and verify API
+        run: |
+          python -m uvicorn app.main:app --app-dir Agent --host 127.0.0.1 --port 8000 >/tmp/agent.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health >/tmp/agent_health.json; then
+              break
+            fi
+            sleep 2
+          done
+          cat /tmp/agent_health.json
+          curl -fsS -X POST "http://127.0.0.1:8000/v1/reindex?force=true" >/tmp/agent_reindex.json
+          cat /tmp/agent_reindex.json
+          curl -fsS -X POST "http://127.0.0.1:8000/v1/ask" \
+            -H "Content-Type: application/json" \
+            -d '{"question":"class001에서 가상환경을 왜 쓰나요?","top_k":6,"use_llm":false}' >/tmp/agent_ask.json
+          cat /tmp/agent_ask.json
+          grep -q '"answer"' /tmp/agent_ask.json
+
+      - name: Upload Agent logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: grading-artifacts
+          name: agent-check-artifacts
           path: |
-            reports/
-            results/
+            /tmp/agent.log
+            /tmp/agent_health.json
+            /tmp/agent_reindex.json
+            /tmp/agent_ask.json
           if-no-files-found: ignore
+
+  local-docker:
+    runs-on: ubuntu-latest
+    needs: agent-check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build local Docker image
+        run: docker build -f Agent/Dockerfile -t local/curriculum-rag-agent:${{ github.sha }} .
+
+      - name: Run container and verify API
+        run: |
+          mkdir -p /tmp/vector_db_ci
+          docker run -d --name curriculum-rag-agent-ci \
+            -p 8000:8000 \
+            -e REPO_ROOT=/srv/repo \
+            -e VECTOR_DB_PATH=/srv/vector_db \
+            -e VECTOR_COLLECTION=curriculum_repo \
+            -v "${{ github.workspace }}:/srv/repo:ro" \
+            -v /tmp/vector_db_ci:/srv/vector_db \
+            local/curriculum-rag-agent:${{ github.sha }}
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8000/health >/tmp/docker_health.json; then
+              break
+            fi
+            sleep 2
+          done
+          cat /tmp/docker_health.json
+          curl -fsS -X POST "http://127.0.0.1:8000/v1/ask" \
+            -H "Content-Type: application/json" \
+            -d '{"question":"RAG가 무엇인가요?","top_k":6,"use_llm":false}' >/tmp/docker_ask.json
+          cat /tmp/docker_ask.json
+          grep -q '"answer"' /tmp/docker_ask.json
+
+      - name: Upload Docker verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-docker-artifacts
+          path: |
+            /tmp/docker_health.json
+            /tmp/docker_ask.json
+          if-no-files-found: ignore
+
+      - name: Print container logs on failure
+        if: failure()
+        run: docker logs curriculum-rag-agent-ci || true
+
+      - name: Cleanup container
+        if: always()
+        run: docker rm -f curriculum-rag-agent-ci || true
+
+  docker-hub:
+    runs-on: ubuntu-latest
+    needs: local-docker
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != ''
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Agent/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_IMAGE || 'edumgt/ai-class' }}:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_IMAGE || 'edumgt/ai-class' }}:latest
+
+      - name: Push summary
+        run: |
+          echo "Pushed image tags:"
+          echo "- ${{ secrets.DOCKERHUB_IMAGE || 'edumgt/ai-class' }}:${{ github.sha }}"
+          echo "- ${{ secrets.DOCKERHUB_IMAGE || 'edumgt/ai-class' }}:latest"

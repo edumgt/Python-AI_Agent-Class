@@ -34,8 +34,11 @@ htmlcov/
 .idea/
 *.iml
 .vscode/*
+# Share workspace settings via Git
 !.vscode/extensions.json
 !.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 
 # OS files
 .DS_Store

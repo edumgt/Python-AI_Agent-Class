@@ -27,6 +27,7 @@
   - Windows: .venv\Scripts\activate
   - Linux/macOS: source .venv/bin/activate
   - pip install -r requirements.txt
+  - 설명 포인트: `.venv`는 프로젝트 전용 Python 폴더(인터프리터+패키지)이며, 전역 환경과 분리해 버전 충돌을 줄이고 실습 재현성을 높임
 
 - 개별 차시:
   - python pyBasics/class001/class001.py
