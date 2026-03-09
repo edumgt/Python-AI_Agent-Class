@@ -1,85 +1,54 @@
-# 라인 1: 기존 설명 주석으로, 아래 코드의 의도나 맥락을 안내합니다.
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-# 라인 2: 가독성을 위해 구분한 빈 줄입니다.
+"""class026 example3: 파일 입출력 · 단계 2/4 기초 구현 [class026]"""
 
-# 라인 3: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-"""class026 example3: 파일 입출력"""
-
-# 라인 4: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 5: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-TOPIC = "파일 입출력"
-# 라인 6: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
+TOPIC = "파일 입출력 · 단계 2/4 기초 구현 [class026]"
 EXAMPLE_TEMPLATE = "file_io"
 
-# 라인 7: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 8: 필요한 모듈을 불러와 이후 코드에서 사용할 준비를 합니다.
+import json
 from pathlib import Path
 
-# 라인 9: 가독성을 위해 구분한 빈 줄입니다.
+def write_rows(rows):
+    out = Path(__file__).with_name("class026_logs.jsonl")
+    payload = "\n".join(json.dumps(row, ensure_ascii=False) for row in rows)
+    out.write_text(payload + "\n", encoding="utf-8")
+    return out
 
-# 라인 10: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
-def save_and_read(text):
-    # 라인 11: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-    out = Path(__file__).with_name("class026_note.txt")
-    # 라인 12: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-    out.write_text(text, encoding="utf-8")
-    # 라인 13: 함수 실행 결과를 호출한 위치로 반환하고 함수 실행을 종료합니다.
-    return out.read_text(encoding="utf-8")
+def read_rows(path):
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rows.append(json.loads(line))
+    return rows
 
-# 라인 14: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 15: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
 def main():
-    # 라인 16: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
     print("오늘 주제:", TOPIC)
-    # 라인 17: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-    msg = "파일에 저장하고 다시 읽기 성공"
-    # 라인 18: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-    loaded = save_and_read(msg)
-    # 라인 19: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
-    print("읽은 내용:", loaded)
+    source = [
+        {"step": "extract", "ok": True},
+        {"step": "transform", "ok": True},
+        {"step": "load", "ok": False},
+    ]
+    path = write_rows(source)
+    loaded = read_rows(path)
+    print("저장 파일:", path.name)
+    print("복원 행 수:", len(loaded))
+    return {"file": path.name, "loaded": len(loaded)}
 
-# 라인 20: 가독성을 위해 구분한 빈 줄입니다.
-
-
-# 라인 21: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 22: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
 def self_check():
-    # 라인 23: 함수 실행 결과를 호출한 위치로 반환하고 함수 실행을 종료합니다.
     return [
-        # 라인 24: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "입력/출력 형식을 다시 설명할 수 있는가?",
-        # 라인 25: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "오류 상황 1가지를 직접 만들어 테스트했는가?",
-        # 라인 26: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "핵심 로직을 함수 단위로 분리했는가?",
-    # 라인 27: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
+        "입력/출력 스키마를 문장으로 설명할 수 있는가?",
+        "예외 입력을 최소 1개 이상 테스트했는가?",
+        "결과를 재현 가능한 형태로 로그에 남겼는가?",
     ]
 
-# 라인 28: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 29: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
 def challenge_case():
-    # 라인 30: 함수 실행 결과를 호출한 위치로 반환하고 함수 실행을 종료합니다.
     return {
-        # 라인 31: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "task": "같은 로직을 새로운 입력 데이터로 재실행",
-        # 라인 32: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "goal": "결과 차이를 한 문장으로 요약",
-    # 라인 33: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
+        "task": "핵심 함수를 재사용 가능한 모듈로 분리하세요.",
+        "goal": "핵심 변화 포인트를 3줄 요약",
     }
 
-# 라인 34: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 35: 파일을 직접 실행했을 때만 아래 실행 블록이 동작하도록 분기합니다.
 if __name__ == "__main__":
-    # 라인 36: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-    main()
-    # 라인 37: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
+    summary = main()
+    print("요약:", summary)
     print("자가 점검:", self_check())
-    # 라인 38: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
     print("챌린지:", challenge_case())

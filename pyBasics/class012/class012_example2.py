@@ -1,24 +1,34 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
-"""class012 example2: 주문 상태 결정"""
 
-TOPIC = "연산자와 조건문"
+"""class012 example2: 연산자와 조건문 · 단계 4/4 운영 최적화 [class012]"""
 
+TOPIC = "연산자와 조건문 · 단계 4/4 운영 최적화 [class012]"
+EXAMPLE_TEMPLATE = "condition"
 
-def order_status(is_paid, in_stock, same_day):
-    if not is_paid:
-        return "결제 대기"
-    if is_paid and not in_stock:
-        return "재고 대기"
-    if same_day:
-        return "당일 출고"
-    return "일반 출고"
-
+def route_incident(score):
+    if score >= 90:
+        return "critical"
+    if score >= 70:
+        return "warning"
+    if score >= 50:
+        return "observe"
+    return "ok"
 
 def main():
     print("오늘 주제:", TOPIC)
-    print("주문1:", order_status(True, True, True))
-    print("주문2:", order_status(True, False, False))
+    sample_scores = [35, 58, 77, 94]
+    routed = {score: route_incident(score) for score in sample_scores}
+    print("라우팅:", routed)
+    return {"max_level": route_incident(max(sample_scores)), "count": len(sample_scores)}
 
+def extension_mission():
+    return {
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
+    }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
+    print("확장 미션:", extension_mission())

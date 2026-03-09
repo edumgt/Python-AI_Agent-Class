@@ -1,0 +1,46 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
+
+"""class042 example5: 데이터 분석 환경 구성 · 단계 2/4 기초 구현 [class042]"""
+
+TOPIC = "데이터 분석 환경 구성 · 단계 2/4 기초 구현 [class042]"
+EXAMPLE_TEMPLATE = "dev_setup"
+
+from pathlib import Path
+import platform
+
+def build_setup_plan():
+    return [
+        ("venv", "python -m venv .venv"),
+        ("activate", "source .venv/bin/activate"),
+        ("deps", "pip install -r requirements.txt"),
+        ("run", "python class042_example.py"),
+    ]
+
+def scan_workspace():
+    root = Path(__file__).resolve().parents[2]
+    return {
+        "platform": platform.system(),
+        "requirements_exists": (root / "requirements.txt").exists(),
+        "readme_exists": (root / "README.md").exists(),
+    }
+
+def main():
+    print("오늘 주제:", TOPIC)
+    plan = build_setup_plan()
+    for idx, (name, cmd) in enumerate(plan, start=1):
+        print(f"{idx}. {name} -> {cmd}")
+    status = scan_workspace()
+    print("환경 점검:", status)
+    return {"step_count": len(plan), **status}
+
+def ops_readiness_check():
+    return {
+        "risk": "운영 체크리스트(모니터링/알림/복구)를 정의하세요.",
+        "monitoring": "핵심 지표를 1분 주기로 기록",
+        "rollback": "문제 발생 시 이전 안정 버전으로 즉시 복귀",
+    }
+
+if __name__ == "__main__":
+    summary = main()
+    print("요약:", summary)
+    print("운영 준비 점검:", ops_readiness_check())

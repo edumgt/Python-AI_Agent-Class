@@ -1,37 +1,45 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class115 example3: 신경망 기초"""
+"""class115 example3: 신경망 기초 · 단계 1/5 입문 이해 [class115]"""
 
-TOPIC = "신경망 기초"
+TOPIC = "신경망 기초 · 단계 1/5 입문 이해 [class115]"
 EXAMPLE_TEMPLATE = "deep_learning"
 
 def relu(x):
-    return x if x > 0 else 0
+    return x if x > 0 else 0.0
 
-def dense_step(inputs, weights, bias):
-    total = sum(i * w for i, w in zip(inputs, weights)) + bias
-    return relu(total)
+def dense_forward(inputs, weights, bias):
+    z = sum(i * w for i, w in zip(inputs, weights)) + bias
+    return relu(z)
+
+def predict_batch(batch, weights, bias):
+    return [round(dense_forward(x, weights, bias), 4) for x in batch]
 
 def main():
     print("오늘 주제:", TOPIC)
-    out = dense_step([0.8, -0.2, 0.5], [0.4, 0.6, 0.3], 0.1)
-    print("뉴런 출력:", round(out, 3))
-
+    batch = [[0.2, 0.5, 0.1], [0.4, 0.4, 0.2], [0.9, 0.1, 0.3]]
+    weights = [0.6, 0.3, 0.8]
+    bias = -0.2
+    preds = predict_batch(batch, weights, bias)
+    report = {"predictions": preds, "max_pred": max(preds)}
+    print("추론 결과:", report)
+    return report
 
 def self_check():
     return [
-        "입력/출력 형식을 다시 설명할 수 있는가?",
-        "오류 상황 1가지를 직접 만들어 테스트했는가?",
-        "핵심 로직을 함수 단위로 분리했는가?",
+        "입력/출력 스키마를 문장으로 설명할 수 있는가?",
+        "예외 입력을 최소 1개 이상 테스트했는가?",
+        "결과를 재현 가능한 형태로 로그에 남겼는가?",
     ]
 
 def challenge_case():
     return {
-        "task": "같은 로직을 새로운 입력 데이터로 재실행",
-        "goal": "결과 차이를 한 문장으로 요약",
+        "task": "입력 스케일 변화가 출력 안정성에 미치는 영향을 측정하세요.",
+        "goal": "핵심 변화 포인트를 3줄 요약",
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("자가 점검:", self_check())
     print("챌린지:", challenge_case())

@@ -1,29 +1,46 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class041 example2: 데이터 분석 환경 구성"""
+"""class041 example2: 데이터 분석 환경 구성 · 단계 1/4 입문 이해 [class041]"""
 
-TOPIC = "데이터 분석 환경 구성"
+TOPIC = "데이터 분석 환경 구성 · 단계 1/4 입문 이해 [class041]"
 EXAMPLE_TEMPLATE = "dev_setup"
 
-def checklist():
+from pathlib import Path
+import platform
+
+def build_setup_plan():
     return [
-        "python -m venv .venv",
-        "가상환경 활성화",
-        "pip install -r requirements.txt",
+        ("venv", "python -m venv .venv"),
+        ("activate", "source .venv/bin/activate"),
+        ("deps", "pip install -r requirements.txt"),
+        ("run", "python class041_example.py"),
     ]
+
+def scan_workspace():
+    root = Path(__file__).resolve().parents[2]
+    return {
+        "platform": platform.system(),
+        "requirements_exists": (root / "requirements.txt").exists(),
+        "readme_exists": (root / "README.md").exists(),
+    }
 
 def main():
     print("오늘 주제:", TOPIC)
-    for idx, step in enumerate(checklist(), start=1):
-        print(f"{idx}. {step}")
-
+    plan = build_setup_plan()
+    for idx, (name, cmd) in enumerate(plan, start=1):
+        print(f"{idx}. {name} -> {cmd}")
+    status = scan_workspace()
+    print("환경 점검:", status)
+    return {"step_count": len(plan), **status}
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

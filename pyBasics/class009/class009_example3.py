@@ -1,24 +1,41 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
-"""class009 example3: 조건문으로 할인율 결정"""
 
-TOPIC = "연산자와 조건문"
+"""class009 example3: 연산자와 조건문 · 단계 1/4 입문 이해 [class009]"""
 
+TOPIC = "연산자와 조건문 · 단계 1/4 입문 이해 [class009]"
+EXAMPLE_TEMPLATE = "condition"
 
-def discount_rate(total_price):
-    if total_price >= 100000:
-        return 0.2
-    if total_price >= 50000:
-        return 0.1
-    return 0.0
-
+def route_incident(score):
+    if score >= 90:
+        return "critical"
+    if score >= 70:
+        return "warning"
+    if score >= 50:
+        return "observe"
+    return "ok"
 
 def main():
-    total_price = 67000
-    rate = discount_rate(total_price)
-    final_price = int(total_price * (1 - rate))
     print("오늘 주제:", TOPIC)
-    print(f"원가={total_price}원, 할인율={int(rate * 100)}%, 결제금액={final_price}원")
+    sample_scores = [35, 58, 77, 94]
+    routed = {score: route_incident(score) for score in sample_scores}
+    print("라우팅:", routed)
+    return {"max_level": route_incident(max(sample_scores)), "count": len(sample_scores)}
 
+def self_check():
+    return [
+        "입력/출력 스키마를 문장으로 설명할 수 있는가?",
+        "예외 입력을 최소 1개 이상 테스트했는가?",
+        "결과를 재현 가능한 형태로 로그에 남겼는가?",
+    ]
+
+def challenge_case():
+    return {
+        "task": "핵심 함수를 재사용 가능한 모듈로 분리하세요.",
+        "goal": "핵심 변화 포인트를 3줄 요약",
+    }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
+    print("자가 점검:", self_check())
+    print("챌린지:", challenge_case())

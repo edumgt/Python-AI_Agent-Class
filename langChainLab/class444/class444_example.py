@@ -1,25 +1,31 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class444 example1: 실전 체인 애플리케이션"""
+"""class444 example1: 실전 체인 애플리케이션 · 단계 1/5 입문 이해 [class444]"""
 
-TOPIC = "실전 체인 애플리케이션"
+TOPIC = "실전 체인 애플리케이션 · 단계 1/5 입문 이해 [class444]"
 EXAMPLE_TEMPLATE = "langchain"
 
 def step_collect(question):
-    return {"question": question}
+    return {"question": question, "context": []}
 
-def step_plan(state):
-    return {"question": state["question"], "plan": "핵심 개념 3개로 설명"}
+def step_retrieve(state):
+    state["context"] = [
+        "체인은 여러 단계를 연결한다",
+        "도구 호출 전 입력 검증이 중요하다",
+    ]
+    return state
 
 def step_answer(state):
-    return f"[응답] {state['question']} -> {state['plan']}"
+    context = " / ".join(state["context"])
+    return {"answer": f"질문: {state['question']} | 근거: {context}", "steps": 3}
 
 def main():
     print("오늘 주제:", TOPIC)
-    s1 = step_collect("RAG가 뭐야?")
-    s2 = step_plan(s1)
-    print(step_answer(s2))
-
+    s1 = step_collect("체인 설계의 핵심이 뭐야?")
+    s2 = step_retrieve(s1)
+    report = step_answer(s2)
+    print("체인 실행 결과:", report)
+    return report
 
 if __name__ == "__main__":
     main()

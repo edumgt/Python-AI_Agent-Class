@@ -1,21 +1,28 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class350 example1: 생성형 서비스 미니 구현"""
+"""class350 example1: Agent 시스템 통합 구현 · 단계 4/6 응용 확장 [class350]"""
 
-TOPIC = "생성형 서비스 미니 구현"
-EXAMPLE_TEMPLATE = "llm_gen"
+TOPIC = "Agent 시스템 통합 구현 · 단계 4/6 응용 확장 [class350]"
+EXAMPLE_TEMPLATE = "nlp"
 
-def build_generation_config():
-    return {"temperature": 0.7, "max_tokens": 200, "top_p": 0.9}
+def tokenize(text):
+    cleaned = text.replace(",", " ").replace(".", " ").replace("/", " ")
+    return [tok.lower() for tok in cleaned.split() if tok]
 
-def simulate_response(prompt, cfg):
-    return f"[생성 결과]\n프롬프트: {prompt}\n설정: {cfg}"
+def top_k(tokens, k=5):
+    freq = {}
+    for tok in tokens:
+        freq[tok] = freq.get(tok, 0) + 1
+    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]
 
 def main():
-    cfg = build_generation_config()
     print("오늘 주제:", TOPIC)
-    print(simulate_response("한 줄 자기소개를 써줘", cfg))
-
+    text = "LLM 응답 품질은 프롬프트 구조와 검증 절차에 따라 달라진다. 응답 품질을 점검하자."
+    tokens = tokenize(text)
+    ranking = top_k(tokens)
+    report = {"token_count": len(tokens), "top_terms": ranking}
+    print("분석 리포트:", report)
+    return report
 
 if __name__ == "__main__":
     main()

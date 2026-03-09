@@ -1,33 +1,37 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class221 example2: 실전 데이터셋 설계"""
+"""class221 example2: 실전 데이터셋 설계 · 단계 5/8 응용 확장 [class221]"""
 
-TOPIC = "실전 데이터셋 설계"
+TOPIC = "실전 데이터셋 설계 · 단계 5/8 응용 확장 [class221]"
 EXAMPLE_TEMPLATE = "nlp"
 
 def tokenize(text):
-    cleaned = text.replace(",", " ").replace(".", " ")
+    cleaned = text.replace(",", " ").replace(".", " ").replace("/", " ")
     return [tok.lower() for tok in cleaned.split() if tok]
 
-def top_words(tokens):
+def top_k(tokens, k=5):
     freq = {}
     for tok in tokens:
         freq[tok] = freq.get(tok, 0) + 1
-    return sorted(freq.items(), key=lambda x: x[1], reverse=True)
+    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]
 
 def main():
     print("오늘 주제:", TOPIC)
-    tokens = tokenize("AI 수업은 재미있고, AI 실습은 유익하다.")
-    print("토큰:", tokens)
-    print("빈도:", top_words(tokens))
-
+    text = "LLM 응답 품질은 프롬프트 구조와 검증 절차에 따라 달라진다. 응답 품질을 점검하자."
+    tokens = tokenize(text)
+    ranking = top_k(tokens)
+    report = {"token_count": len(tokens), "top_terms": ranking}
+    print("분석 리포트:", report)
+    return report
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

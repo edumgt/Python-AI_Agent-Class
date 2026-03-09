@@ -1,24 +1,29 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class187 example1: 특징 추출(MFCC 등)"""
+"""class187 example1: 특징 추출(MFCC 등) · 단계 3/8 기초 구현 [class187]"""
 
-TOPIC = "특징 추출(MFCC 등)"
+TOPIC = "특징 추출(MFCC 등) · 단계 3/8 기초 구현 [class187]"
 EXAMPLE_TEMPLATE = "speech"
 
-def summarize_clips(clips):
-    avg = sum(c["seconds"] for c in clips) / len(clips)
-    short = [c["id"] for c in clips if c["seconds"] <= 2.0]
-    return {"avg_seconds": round(avg, 2), "short_ids": short}
+def summarize_utterances(rows):
+    avg_seconds = sum(r["seconds"] for r in rows) / len(rows)
+    noise_flags = [r["id"] for r in rows if r["snr_db"] < 12]
+    return {
+        "count": len(rows),
+        "avg_seconds": round(avg_seconds, 2),
+        "noisy_ids": noise_flags,
+    }
 
 def main():
-    clips = [
-        {"id": "utt1", "seconds": 1.3, "text": "안녕하세요"},
-        {"id": "utt2", "seconds": 2.4, "text": "오늘은 음성 실습"},
-        {"id": "utt3", "seconds": 1.8, "text": "반가워요"},
-    ]
     print("오늘 주제:", TOPIC)
-    print(summarize_clips(clips))
-
+    rows = [
+        {"id": "utt1", "seconds": 1.8, "snr_db": 15.2},
+        {"id": "utt2", "seconds": 2.9, "snr_db": 10.5},
+        {"id": "utt3", "seconds": 1.1, "snr_db": 18.7},
+    ]
+    report = summarize_utterances(rows)
+    print("음성 품질 요약:", report)
+    return report
 
 if __name__ == "__main__":
     main()

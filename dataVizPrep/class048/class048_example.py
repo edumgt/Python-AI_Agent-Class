@@ -1,21 +1,32 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class048 example1: NumPy 기초"""
+"""class048 example1: NumPy 기초 · 단계 4/4 운영 최적화 [class048]"""
 
-TOPIC = "NumPy 기초"
+TOPIC = "NumPy 기초 · 단계 4/4 운영 최적화 [class048]"
 EXAMPLE_TEMPLATE = "numpy"
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
-def stats(values):
+def compute_stats(values):
+    if np is None:
+        avg = sum(values) / len(values)
+        var = sum((v - avg) ** 2 for v in values) / len(values)
+        return {"mean": round(avg, 4), "std": round(var ** 0.5, 4), "backend": "python"}
     arr = np.array(values, dtype=float)
-    return float(arr.mean()), float(arr.std())
+    return {
+        "mean": round(float(arr.mean()), 4),
+        "std": round(float(arr.std()), 4),
+        "backend": "numpy",
+    }
 
 def main():
     print("오늘 주제:", TOPIC)
-    mean, std = stats([10, 20, 30, 40])
-    print("평균:", round(mean, 2), "표준편차:", round(std, 2))
-
+    result = compute_stats([0.3, 0.4, 0.45, 0.5, 0.65])
+    print("통계:", result)
+    return result
 
 if __name__ == "__main__":
     main()

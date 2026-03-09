@@ -3,31 +3,30 @@
 """class504 example2: DevOps 프로젝트 착수와 요구사항 정의 · 단계 4/5 실전 검증 [class504]"""
 
 TOPIC = "DevOps 프로젝트 착수와 요구사항 정의 · 단계 4/5 실전 검증 [class504]"
-EXAMPLE_TEMPLATE = "ml"
+EXAMPLE_TEMPLATE = "generic"
 
-def make_data():
-    return [(1, 52), (2, 61), (3, 70), (4, 82)]
-
-def mean_predict(train):
-    return sum(y for _, y in train) / len(train)
-
-def mae(train, pred):
-    return sum(abs(y - pred) for _, y in train) / len(train)
+def solve_in_steps(task):
+    return [
+        f"1단계: {task} 요구사항 정리",
+        "2단계: 작은 함수로 분리",
+        "3단계: 테스트 입력 2개 이상 실행",
+    ]
 
 def main():
-    data = make_data()
-    pred = mean_predict(data)
     print("오늘 주제:", TOPIC)
-    print("기본 예측값:", round(pred, 2))
-    print("MAE:", round(mae(data, pred), 2))
-
+    steps = solve_in_steps(TOPIC)
+    for line in steps:
+        print(line)
+    return {"step_count": len(steps)}
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

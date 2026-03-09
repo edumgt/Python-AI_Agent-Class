@@ -1,27 +1,25 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
-"""class010 example1: BMI 조건 분기"""
 
-TOPIC = "연산자와 조건문"
+"""class010 example1: 연산자와 조건문 · 단계 2/4 기초 구현 [class010]"""
 
+TOPIC = "연산자와 조건문 · 단계 2/4 기초 구현 [class010]"
+EXAMPLE_TEMPLATE = "condition"
 
-def bmi_status(weight, height_m):
-    bmi = weight / (height_m ** 2)
-    if bmi < 18.5:
-        label = "저체중"
-    elif bmi < 23:
-        label = "정상"
-    elif bmi < 25:
-        label = "과체중"
-    else:
-        label = "비만"
-    return bmi, label
-
+def route_incident(score):
+    if score >= 90:
+        return "critical"
+    if score >= 70:
+        return "warning"
+    if score >= 50:
+        return "observe"
+    return "ok"
 
 def main():
-    bmi, label = bmi_status(68, 1.72)
     print("오늘 주제:", TOPIC)
-    print(f"BMI={bmi:.1f} -> {label}")
-
+    sample_scores = [35, 58, 77, 94]
+    routed = {score: route_incident(score) for score in sample_scores}
+    print("라우팅:", routed)
+    return {"max_level": route_incident(max(sample_scores)), "count": len(sample_scores)}
 
 if __name__ == "__main__":
     main()

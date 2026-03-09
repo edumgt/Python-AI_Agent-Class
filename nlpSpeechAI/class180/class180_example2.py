@@ -1,31 +1,38 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class180 example2: 오디오 전처리"""
+"""class180 example2: 오디오 전처리 · 단계 4/8 응용 확장 [class180]"""
 
-TOPIC = "오디오 전처리"
+TOPIC = "오디오 전처리 · 단계 4/8 응용 확장 [class180]"
 EXAMPLE_TEMPLATE = "speech"
 
-def summarize_clips(clips):
-    avg = sum(c["seconds"] for c in clips) / len(clips)
-    short = [c["id"] for c in clips if c["seconds"] <= 2.0]
-    return {"avg_seconds": round(avg, 2), "short_ids": short}
+def summarize_utterances(rows):
+    avg_seconds = sum(r["seconds"] for r in rows) / len(rows)
+    noise_flags = [r["id"] for r in rows if r["snr_db"] < 12]
+    return {
+        "count": len(rows),
+        "avg_seconds": round(avg_seconds, 2),
+        "noisy_ids": noise_flags,
+    }
 
 def main():
-    clips = [
-        {"id": "utt1", "seconds": 1.3, "text": "안녕하세요"},
-        {"id": "utt2", "seconds": 2.4, "text": "오늘은 음성 실습"},
-        {"id": "utt3", "seconds": 1.8, "text": "반가워요"},
-    ]
     print("오늘 주제:", TOPIC)
-    print(summarize_clips(clips))
-
+    rows = [
+        {"id": "utt1", "seconds": 1.8, "snr_db": 15.2},
+        {"id": "utt2", "seconds": 2.9, "snr_db": 10.5},
+        {"id": "utt3", "seconds": 1.1, "snr_db": 18.7},
+    ]
+    report = summarize_utterances(rows)
+    print("음성 품질 요약:", report)
+    return report
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "snr 임계값을 조정해 noisy 판정 변화를 비교하세요.",
+        "check": "짧은 발화/긴 발화를 분리해 전처리 전략을 달리 적용하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

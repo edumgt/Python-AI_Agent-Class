@@ -1,21 +1,30 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class392 example1: 실전 프롬프트 튜닝"""
+"""class392 example1: 실전 프롬프트 튜닝 · 단계 4/4 운영 최적화 [class392]"""
 
-TOPIC = "실전 프롬프트 튜닝"
+TOPIC = "실전 프롬프트 튜닝 · 단계 4/4 운영 최적화 [class392]"
 EXAMPLE_TEMPLATE = "prompt"
 
-def build_prompt(role, question):
+def build_prompt(role, task, output_format):
     return (
-        f"너는 {role}이야.\n"
-        f"질문: {question}\n"
-        "답변은 3줄 이내로 핵심만 설명해."
+        f"[ROLE] {role}\n"
+        f"[TASK] {task}\n"
+        f"[FORMAT] {output_format}\n"
+        "[RULE] 근거 없는 내용은 '확인 필요'라고 표시"
     )
+
+def lint_prompt(prompt):
+    required = ["[ROLE]", "[TASK]", "[FORMAT]", "[RULE]"]
+    missing = [tag for tag in required if tag not in prompt]
+    return {"missing": missing, "is_valid": len(missing) == 0}
 
 def main():
     print("오늘 주제:", TOPIC)
-    print(build_prompt("친절한 과학 선생님", "중력이 뭐야?"))
-
+    prompt = build_prompt("IT 튜터", "RAG를 3줄로 설명", "번호 목록")
+    lint = lint_prompt(prompt)
+    print(prompt)
+    print("프롬프트 검사:", lint)
+    return lint
 
 if __name__ == "__main__":
     main()

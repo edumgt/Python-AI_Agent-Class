@@ -1,32 +1,40 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class447 example2: 실전 체인 애플리케이션"""
+"""class447 example2: 실전 체인 애플리케이션 · 단계 4/5 실전 검증 [class447]"""
 
-TOPIC = "실전 체인 애플리케이션"
+TOPIC = "실전 체인 애플리케이션 · 단계 4/5 실전 검증 [class447]"
 EXAMPLE_TEMPLATE = "langchain"
 
 def step_collect(question):
-    return {"question": question}
+    return {"question": question, "context": []}
 
-def step_plan(state):
-    return {"question": state["question"], "plan": "핵심 개념 3개로 설명"}
+def step_retrieve(state):
+    state["context"] = [
+        "체인은 여러 단계를 연결한다",
+        "도구 호출 전 입력 검증이 중요하다",
+    ]
+    return state
 
 def step_answer(state):
-    return f"[응답] {state['question']} -> {state['plan']}"
+    context = " / ".join(state["context"])
+    return {"answer": f"질문: {state['question']} | 근거: {context}", "steps": 3}
 
 def main():
     print("오늘 주제:", TOPIC)
-    s1 = step_collect("RAG가 뭐야?")
-    s2 = step_plan(s1)
-    print(step_answer(s2))
-
+    s1 = step_collect("체인 설계의 핵심이 뭐야?")
+    s2 = step_retrieve(s1)
+    report = step_answer(s2)
+    print("체인 실행 결과:", report)
+    return report
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "체인 단계 하나를 추가해 입력 검증을 자동화하세요.",
+        "check": "각 단계 입력/출력을 로그로 남기고 병목을 찾으세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

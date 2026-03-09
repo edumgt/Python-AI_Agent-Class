@@ -1,39 +1,45 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class129 example3: NLP/STT/TTS 개요"""
+"""class129 example3: NLP/STT/TTS 개요 · 단계 1/8 입문 이해 [class129]"""
 
-TOPIC = "NLP/STT/TTS 개요"
+TOPIC = "NLP/STT/TTS 개요 · 단계 1/8 입문 이해 [class129]"
 EXAMPLE_TEMPLATE = "speech"
 
-def summarize_clips(clips):
-    avg = sum(c["seconds"] for c in clips) / len(clips)
-    short = [c["id"] for c in clips if c["seconds"] <= 2.0]
-    return {"avg_seconds": round(avg, 2), "short_ids": short}
+def summarize_utterances(rows):
+    avg_seconds = sum(r["seconds"] for r in rows) / len(rows)
+    noise_flags = [r["id"] for r in rows if r["snr_db"] < 12]
+    return {
+        "count": len(rows),
+        "avg_seconds": round(avg_seconds, 2),
+        "noisy_ids": noise_flags,
+    }
 
 def main():
-    clips = [
-        {"id": "utt1", "seconds": 1.3, "text": "안녕하세요"},
-        {"id": "utt2", "seconds": 2.4, "text": "오늘은 음성 실습"},
-        {"id": "utt3", "seconds": 1.8, "text": "반가워요"},
-    ]
     print("오늘 주제:", TOPIC)
-    print(summarize_clips(clips))
-
+    rows = [
+        {"id": "utt1", "seconds": 1.8, "snr_db": 15.2},
+        {"id": "utt2", "seconds": 2.9, "snr_db": 10.5},
+        {"id": "utt3", "seconds": 1.1, "snr_db": 18.7},
+    ]
+    report = summarize_utterances(rows)
+    print("음성 품질 요약:", report)
+    return report
 
 def self_check():
     return [
-        "입력/출력 형식을 다시 설명할 수 있는가?",
-        "오류 상황 1가지를 직접 만들어 테스트했는가?",
-        "핵심 로직을 함수 단위로 분리했는가?",
+        "입력/출력 스키마를 문장으로 설명할 수 있는가?",
+        "예외 입력을 최소 1개 이상 테스트했는가?",
+        "결과를 재현 가능한 형태로 로그에 남겼는가?",
     ]
 
 def challenge_case():
     return {
-        "task": "같은 로직을 새로운 입력 데이터로 재실행",
-        "goal": "결과 차이를 한 문장으로 요약",
+        "task": "STT 오류가 많은 구간을 규칙 기반으로 탐지하세요.",
+        "goal": "핵심 변화 포인트를 3줄 요약",
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("자가 점검:", self_check())
     print("챌린지:", challenge_case())

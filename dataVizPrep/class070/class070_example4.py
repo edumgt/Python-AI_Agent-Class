@@ -1,0 +1,54 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
+
+"""class070 example4: Matplotlib 시각화 기초 · 단계 2/4 기초 구현 [class070]"""
+
+TOPIC = "Matplotlib 시각화 기초 · 단계 2/4 기초 구현 [class070]"
+EXAMPLE_TEMPLATE = "visualization"
+
+from pathlib import Path
+
+def save_chart(points):
+    out = Path(__file__).with_name("class070_plot.png")
+    try:
+        import matplotlib.pyplot as plt
+
+        x = [idx + 1 for idx, _ in enumerate(points)]
+        y = [v for _, v in points]
+        plt.figure(figsize=(5, 3))
+        plt.plot(x, y, marker="o")
+        plt.title(TOPIC)
+        plt.xlabel("step")
+        plt.ylabel("value")
+        plt.tight_layout()
+        plt.savefig(out)
+        plt.close()
+        mode = "matplotlib"
+    except ImportError:
+        text_out = out.with_suffix(".txt")
+        text_out.write_text("\n".join(f"{k}: {v}" for k, v in points), encoding="utf-8")
+        out = text_out
+        mode = "text-fallback"
+    return out, mode
+
+def main():
+    print("오늘 주제:", TOPIC)
+    points = [("week1", 61), ("week2", 67), ("week3", 73), ("week4", 78)]
+    out, mode = save_chart(points)
+    print("출력 파일:", out.name)
+    return {"output": out.name, "mode": mode}
+
+def mini_project_plan():
+    return {
+        "scenario": "미니 프로젝트 형태로 실행 로그를 구조화하세요.",
+        "steps": [
+            "1) baseline 실행",
+            "2) 개선안 적용",
+            "3) 지표/로그 비교",
+        ],
+        "done_when": "기준 대비 개선 근거가 숫자로 제시됨",
+    }
+
+if __name__ == "__main__":
+    summary = main()
+    print("요약:", summary)
+    print("미니 프로젝트:", mini_project_plan())

@@ -1,28 +1,41 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class045 example2: NumPy 기초"""
+"""class045 example2: NumPy 기초 · 단계 1/4 입문 이해 [class045]"""
 
-TOPIC = "NumPy 기초"
+TOPIC = "NumPy 기초 · 단계 1/4 입문 이해 [class045]"
 EXAMPLE_TEMPLATE = "numpy"
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
-def stats(values):
+def compute_stats(values):
+    if np is None:
+        avg = sum(values) / len(values)
+        var = sum((v - avg) ** 2 for v in values) / len(values)
+        return {"mean": round(avg, 4), "std": round(var ** 0.5, 4), "backend": "python"}
     arr = np.array(values, dtype=float)
-    return float(arr.mean()), float(arr.std())
+    return {
+        "mean": round(float(arr.mean()), 4),
+        "std": round(float(arr.std()), 4),
+        "backend": "numpy",
+    }
 
 def main():
     print("오늘 주제:", TOPIC)
-    mean, std = stats([10, 20, 30, 40])
-    print("평균:", round(mean, 2), "표준편차:", round(std, 2))
-
+    result = compute_stats([0.3, 0.4, 0.45, 0.5, 0.65])
+    print("통계:", result)
+    return result
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

@@ -1,35 +1,32 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-"""class077 example2: 전처리+시각화 미니 프로젝트"""
+"""class077 example2: Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077]"""
 
-TOPIC = "전처리+시각화 미니 프로젝트"
-EXAMPLE_TEMPLATE = "data_preprocess"
+TOPIC = "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077]"
+EXAMPLE_TEMPLATE = "generic"
 
-from datetime import datetime
-
-def clean_rows(rows):
-    cleaned = []
-    for row in rows:
-        text = row["text"].strip().lower()
-        date_obj = datetime.strptime(row["date"], "%Y-%m-%d")
-        cleaned.append({"text": text, "month": date_obj.month})
-    return cleaned
+def solve_in_steps(task):
+    return [
+        f"1단계: {task} 요구사항 정리",
+        "2단계: 작은 함수로 분리",
+        "3단계: 테스트 입력 2개 이상 실행",
+    ]
 
 def main():
-    rows = [
-        {"text": "  Hello AI  ", "date": "2026-03-01"},
-        {"text": "Data  Prep ", "date": "2026-04-02"},
-    ]
     print("오늘 주제:", TOPIC)
-    print(clean_rows(rows))
-
+    steps = solve_in_steps(TOPIC)
+    for line in steps:
+        print(line)
+    return {"step_count": len(steps)}
 
 def extension_mission():
     return {
-        "mission": "입력값을 바꿔 2가지 이상 결과를 비교하기",
-        "check": "결과 차이를 한 줄로 설명하기",
+        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
+        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "topic": TOPIC,
     }
 
 if __name__ == "__main__":
-    main()
+    summary = main()
+    print("요약:", summary)
     print("확장 미션:", extension_mission())

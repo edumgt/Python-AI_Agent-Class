@@ -3,24 +3,21 @@
 """class501 example1: DevOps 프로젝트 착수와 요구사항 정의 · 단계 1/5 입문 이해 [class501]"""
 
 TOPIC = "DevOps 프로젝트 착수와 요구사항 정의 · 단계 1/5 입문 이해 [class501]"
-EXAMPLE_TEMPLATE = "ml"
+EXAMPLE_TEMPLATE = "generic"
 
-def make_data():
-    return [(1, 52), (2, 61), (3, 70), (4, 82)]
-
-def mean_predict(train):
-    return sum(y for _, y in train) / len(train)
-
-def mae(train, pred):
-    return sum(abs(y - pred) for _, y in train) / len(train)
+def solve_in_steps(task):
+    return [
+        f"1단계: {task} 요구사항 정리",
+        "2단계: 작은 함수로 분리",
+        "3단계: 테스트 입력 2개 이상 실행",
+    ]
 
 def main():
-    data = make_data()
-    pred = mean_predict(data)
     print("오늘 주제:", TOPIC)
-    print("기본 예측값:", round(pred, 2))
-    print("MAE:", round(mae(data, pred), 2))
-
+    steps = solve_in_steps(TOPIC)
+    for line in steps:
+        print(line)
+    return {"step_count": len(steps)}
 
 if __name__ == "__main__":
     main()

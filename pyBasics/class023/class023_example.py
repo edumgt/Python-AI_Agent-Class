@@ -1,52 +1,29 @@
-# 라인 1: 기존 설명 주석으로, 아래 코드의 의도나 맥락을 안내합니다.
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 
-# 라인 2: 가독성을 위해 구분한 빈 줄입니다.
+"""class023 example1: 컬렉션 자료구조 · 단계 3/4 실전 검증 [class023]"""
 
-# 라인 3: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-"""class023 example1: 컬렉션 자료구조"""
-
-# 라인 4: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 5: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-TOPIC = "컬렉션 자료구조"
-# 라인 6: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
+TOPIC = "컬렉션 자료구조 · 단계 3/4 실전 검증 [class023]"
 EXAMPLE_TEMPLATE = "collection"
 
-# 라인 7: 가독성을 위해 구분한 빈 줄입니다.
+def summarize_orders(orders):
+    by_team = {}
+    for row in orders:
+        by_team[row["team"]] = by_team.get(row["team"], 0) + row["amount"]
+    ranking = sorted(by_team.items(), key=lambda x: x[1], reverse=True)
+    return by_team, ranking
 
-# 라인 8: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
-def summarize_scores(scores):
-    # 라인 9: 함수 실행 결과를 호출한 위치로 반환하고 함수 실행을 종료합니다.
-    return {
-        # 라인 10: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "count": len(scores),
-        # 라인 11: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "max": max(scores),
-        # 라인 12: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "min": min(scores),
-        # 라인 13: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-        "avg": round(sum(scores) / len(scores), 2),
-    # 라인 14: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
-    }
-
-# 라인 15: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 16: 재사용 가능한 함수 동작을 정의하는 함수 선언입니다.
 def main():
-    # 라인 17: 값을 변수에 저장하거나 갱신해 이후 로직에서 재사용합니다.
-    scores = [75, 88, 92, 81]
-    # 라인 18: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
     print("오늘 주제:", TOPIC)
-    # 라인 19: 계산 결과나 안내 메시지를 콘솔에 출력합니다.
-    print("요약:", summarize_scores(scores))
+    orders = [
+        {"team": "A", "amount": 120},
+        {"team": "B", "amount": 90},
+        {"team": "A", "amount": 60},
+        {"team": "C", "amount": 200},
+    ]
+    by_team, ranking = summarize_orders(orders)
+    print("팀별 합계:", by_team)
+    print("랭킹:", ranking)
+    return {"winner": ranking[0][0], "team_count": len(by_team)}
 
-# 라인 20: 가독성을 위해 구분한 빈 줄입니다.
-
-
-# 라인 21: 가독성을 위해 구분한 빈 줄입니다.
-
-# 라인 22: 파일을 직접 실행했을 때만 아래 실행 블록이 동작하도록 분기합니다.
 if __name__ == "__main__":
-    # 라인 23: 아래 코드 한 줄을 단계적으로 실행해 현재 학습 개념을 보여줍니다.
     main()
