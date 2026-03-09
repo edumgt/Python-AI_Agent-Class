@@ -178,14 +178,23 @@ class ExampleSnippet(TypedDict):
     code: str
 
 
+class ExampleFileInsights(TypedDict):
+    template: str
+    imports: list[str]
+    functions: list[str]
+    entrypoint: str
+
+
 class ExampleInsights(TypedDict):
     primary_file: str
     files: list[str]
     highest_variant: int
     template: str
+    templates: list[str]
     imports: list[str]
     functions: list[str]
     entrypoint: str
+    by_file: dict[str, ExampleFileInsights]
     snippets: list[ExampleSnippet]
 
 
@@ -238,26 +247,14 @@ def build_code_preview(text: str, max_lines: int = 18, max_chars: int = 1200) ->
     return preview
 
 
-@lru_cache(maxsize=None)
-def load_example_insights(class_dir_str: str, class_id: str) -> ExampleInsights:
-    class_dir = Path(class_dir_str)
-    variant_paths = list_example_files(class_dir, class_id)
-    files = [path.name for _, path in variant_paths]
-    highest_variant = max((variant for variant, _ in variant_paths), default=1)
+def parse_template_from_code(code: str) -> str:
+    match = re.search(r'^EXAMPLE_TEMPLATE\s*=\s*"([^"]+)"', code, re.MULTILINE)
+    return match.group(1).strip() if match else "generic"
 
-    primary_text = ""
-    if variant_paths:
-        _, primary_path = variant_paths[0]
-        try:
-            primary_text = primary_path.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
-            primary_text = ""
 
-    template_match = re.search(r'^EXAMPLE_TEMPLATE\s*=\s*"([^"]+)"', primary_text, re.MULTILINE)
-    template = template_match.group(1).strip() if template_match else "generic"
-
+def parse_imports_from_code(code: str) -> list[str]:
     import_candidates: list[str] = []
-    for raw in primary_text.splitlines():
+    for raw in code.splitlines():
         line = raw.strip()
         if line.startswith("import "):
             modules = line[len("import ") :].split(",")
@@ -271,41 +268,94 @@ def load_example_insights(class_dir_str: str, class_id: str) -> ExampleInsights:
             token = token.split(".", maxsplit=1)[0].strip()
             if token and token not in import_candidates:
                 import_candidates.append(token)
+    return import_candidates
 
+
+def parse_functions_from_code(code: str) -> list[str]:
     functions = [
         fn
-        for fn in re.findall(r"^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", primary_text, flags=re.MULTILINE)
+        for fn in re.findall(r"^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", code, flags=re.MULTILINE)
         if fn not in {"__init__"}
     ]
-    functions = list(dict.fromkeys(functions))
+    return list(dict.fromkeys(functions))
 
+
+def detect_entrypoint(functions: list[str]) -> str:
     if "main" in functions:
-        entrypoint = "main()"
-    elif functions:
-        entrypoint = f"{functions[0]}()"
-    else:
-        entrypoint = 'if __name__ == "__main__":'
+        return "main()"
+    if functions:
+        return f"{functions[0]}()"
+    return 'if __name__ == "__main__":'
+
+
+@lru_cache(maxsize=None)
+def load_example_insights(class_dir_str: str, class_id: str) -> ExampleInsights:
+    class_dir = Path(class_dir_str)
+    variant_paths = list_example_files(class_dir, class_id)
+    files = [path.name for _, path in variant_paths]
+    highest_variant = max((variant for variant, _ in variant_paths), default=1)
+
+    import_candidates: list[str] = []
+    all_functions: list[str] = []
+    all_templates: list[str] = []
+    by_file: dict[str, ExampleFileInsights] = {}
 
     snippets: list[ExampleSnippet] = []
-    for _, path in variant_paths[:5]:
+    for _, path in variant_paths:
         try:
             code = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        snippets.append({"file": path.name, "code": build_code_preview(code)})
+
+        template = parse_template_from_code(code)
+        imports = parse_imports_from_code(code)
+        functions = parse_functions_from_code(code)
+        entrypoint = detect_entrypoint(functions)
+
+        by_file[path.name] = {
+            "template": template,
+            "imports": imports,
+            "functions": functions,
+            "entrypoint": entrypoint,
+        }
+
+        if template not in all_templates:
+            all_templates.append(template)
+        for token in imports:
+            if token not in import_candidates:
+                import_candidates.append(token)
+        for fn in functions:
+            if fn not in all_functions:
+                all_functions.append(fn)
+        if len(snippets) < 5:
+            snippets.append({"file": path.name, "code": build_code_preview(code)})
 
     if not files:
         files = [f"{class_id}_example1.py"]
 
     primary_file = files[0]
+    primary_meta = by_file.get(
+        primary_file,
+        {
+            "template": "generic",
+            "imports": [],
+            "functions": [],
+            "entrypoint": 'if __name__ == "__main__":',
+        },
+    )
+    if primary_meta["template"] not in all_templates:
+        all_templates.insert(0, primary_meta["template"])
+
     return {
         "primary_file": primary_file,
         "files": files,
         "highest_variant": max(1, highest_variant),
-        "template": template,
+        "template": primary_meta["template"],
+        "templates": all_templates,
         "imports": import_candidates,
-        "functions": functions,
-        "entrypoint": entrypoint,
+        "functions": all_functions,
+        "entrypoint": primary_meta["entrypoint"],
+        "by_file": by_file,
         "snippets": snippets,
     }
 
@@ -554,8 +604,9 @@ def build_quiz_context(rows: list[dict[str, str]]) -> QuizContext:
 
         if insights["primary_file"] not in all_primary_files:
             all_primary_files.append(insights["primary_file"])
-        if insights["template"] not in all_templates:
-            all_templates.append(insights["template"])
+        for template in insights["templates"]:
+            if template not in all_templates:
+                all_templates.append(template)
 
         for token in insights["imports"]:
             if token not in all_imports:
@@ -563,6 +614,10 @@ def build_quiz_context(rows: list[dict[str, str]]) -> QuizContext:
         for fn in insights["functions"]:
             if fn not in all_functions:
                 all_functions.append(fn)
+        for meta in insights["by_file"].values():
+            entrypoint = meta["entrypoint"]
+            if entrypoint not in all_entrypoints:
+                all_entrypoints.append(entrypoint)
         if insights["entrypoint"] not in all_entrypoints:
             all_entrypoints.append(insights["entrypoint"])
 
@@ -663,32 +718,63 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]], context:
         ["pathlib", "json", "math", "datetime", "re", "(import 없음)"],
         minimum=6,
     )
+    entrypoint_candidates = ensure_min_candidates(
+        context["all_entrypoints"],
+        ["main()", "run()", "invoke()", 'if __name__ == "__main__":', "process()"],
+        minimum=6,
+    )
 
-    if not example["imports"]:
-        correct_import = "(import 없음)"
-    else:
-        correct_import = example["imports"][0]
+    files_for_reference = example["files"] if example["files"] else [example["primary_file"]]
+    by_file = example["by_file"]
 
-    if not example["functions"]:
+    def pick_ref_file(index: int) -> str:
+        if not files_for_reference:
+            return example["primary_file"]
+        if index < len(files_for_reference):
+            return files_for_reference[index]
+        return files_for_reference[-1]
+
+    def file_meta(file_name: str) -> ExampleFileInsights:
+        meta = by_file.get(file_name)
+        if meta:
+            return meta
+        return {
+            "template": example["template"],
+            "imports": example["imports"],
+            "functions": example["functions"],
+            "entrypoint": example["entrypoint"],
+        }
+
+    template_file = pick_ref_file(1 if len(files_for_reference) > 1 else 0)
+    function_file = pick_ref_file(2 if len(files_for_reference) > 2 else len(files_for_reference) - 1)
+    import_file = pick_ref_file(3 if len(files_for_reference) > 3 else len(files_for_reference) - 1)
+    entrypoint_file = pick_ref_file(4 if len(files_for_reference) > 4 else len(files_for_reference) - 1)
+
+    template_meta = file_meta(template_file)
+    function_meta = file_meta(function_file)
+    import_meta = file_meta(import_file)
+    entrypoint_meta = file_meta(entrypoint_file)
+
+    correct_template = template_meta["template"]
+
+    if not function_meta["functions"]:
         correct_function = "main"
     else:
-        non_main = [fn for fn in example["functions"] if fn != "main"]
-        correct_function = non_main[0] if non_main else example["functions"][0]
+        non_main = [fn for fn in function_meta["functions"] if fn != "main"]
+        correct_function = non_main[0] if non_main else function_meta["functions"][0]
+
+    if not import_meta["imports"]:
+        correct_import = "(import 없음)"
+    else:
+        correct_import = import_meta["imports"][0]
+
+    correct_entrypoint = entrypoint_meta["entrypoint"]
 
     highest_variant = max(1, min(5, int(example["highest_variant"])))
     if highest_variant == 1:
         variant_label = "example1만 제공 (총 1개)"
     else:
         variant_label = f"example1~example{highest_variant} (총 {highest_variant}개)"
-    variant_candidates = [
-        "example1만 제공 (총 1개)",
-        "example1~example2 (총 2개)",
-        "example1~example3 (총 3개)",
-        "example1~example4 (총 4개)",
-        "example1~example5 (총 5개)",
-    ]
-    if variant_label not in variant_candidates:
-        variant_candidates.append(variant_label)
 
     questions = [
         build_question(
@@ -734,32 +820,32 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]], context:
             explanation=f"기본 예제 파일은 {example['primary_file']} 입니다.",
         ),
         build_question(
-            question=f"'{example['primary_file']}'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
-            correct=example["template"],
+            question=f"'{template_file}'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
+            correct=correct_template,
             candidates=template_candidates,
             seed=f"{class_id}-q7-template",
-            explanation=f"코드 상수 EXAMPLE_TEMPLATE 값은 '{example['template']}' 입니다.",
+            explanation=f"{template_file}의 EXAMPLE_TEMPLATE 값은 '{correct_template}' 입니다.",
         ),
         build_question(
-            question=f"'{example['primary_file']}' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
+            question=f"'{function_file}' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
             correct=correct_function,
             candidates=function_candidates,
             seed=f"{class_id}-q8-function",
-            explanation=f"예제 코드 함수 목록: {', '.join(example['functions'][:8]) if example['functions'] else '확인 필요'}",
+            explanation=f"{function_file} 함수 목록: {', '.join(function_meta['functions'][:8]) if function_meta['functions'] else '확인 필요'}",
         ),
         build_question(
-            question=f"'{example['primary_file']}'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+            question=f"'{import_file}'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
             correct=correct_import,
             candidates=import_candidates,
             seed=f"{class_id}-q9-import",
-            explanation=f"예제 코드 import 목록: {', '.join(example['imports']) if example['imports'] else '(import 없음)'}",
+            explanation=f"{import_file} import 목록: {', '.join(import_meta['imports']) if import_meta['imports'] else '(import 없음)'}",
         ),
         build_question(
-            question=f"'{class_id}' 차시의 example 파일 구성 범위로 맞는 것은 무엇인가요?",
-            correct=variant_label,
-            candidates=variant_candidates,
-            seed=f"{class_id}-q10-variants",
-            explanation=f"현재 포함된 예제 파일: {', '.join(example['files'])}",
+            question=f"'{entrypoint_file}' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+            correct=correct_entrypoint,
+            candidates=entrypoint_candidates,
+            seed=f"{class_id}-q10-entrypoint",
+            explanation=f"{entrypoint_file} 엔트리는 '{correct_entrypoint}' 입니다. 현재 example 구성: {variant_label} ({', '.join(example['files'])})",
         ),
     ]
 
@@ -777,9 +863,11 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]], context:
         "example_reference": {
             "files": example["files"],
             "template": example["template"],
+            "templates": example["templates"],
             "imports": example["imports"],
             "functions": example["functions"],
             "entrypoint": example["entrypoint"],
+            "by_file": example["by_file"],
         },
         "example_snippets": example["snippets"],
     }
@@ -1165,7 +1253,7 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]], context: Qu
       <h1>__MODULE__</h1>
       <p class="meta">교과목: __SUBJECT_NAME__ · 세부 시퀀스: __SESSION__ · 난이도: __LEVEL__ · Day __DAY__ / __SLOT__교시</p>
       <div class="notice">
-        <article class="notice-card">학습 내용 + example1.py 코드 내용을 함께 반영한 __QUESTION_COUNT__문항 퀴즈입니다.</article>
+        <article class="notice-card">학습 내용 + example1~example5 코드 내용을 함께 반영한 __QUESTION_COUNT__문항 퀴즈입니다.</article>
         <article class="notice-card">채점 결과는 모달 팝업으로 제공되며, example 코드 스니펫도 모달에서 바로 확인할 수 있습니다.</article>
       </div>
       <div class="btn-row">
@@ -1276,16 +1364,29 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]], context: Qu
     function renderCodeModal() {
       const ref = QUIZ_DATA.example_reference || {};
       const files = Array.isArray(ref.files) ? ref.files : [];
+      const templates = Array.isArray(ref.templates) ? ref.templates : [];
       const imports = Array.isArray(ref.imports) ? ref.imports : [];
       const functions = Array.isArray(ref.functions) ? ref.functions : [];
+      const byFile = ref.by_file && typeof ref.by_file === "object" ? ref.by_file : {};
       const snippets = Array.isArray(QUIZ_DATA.example_snippets) ? QUIZ_DATA.example_snippets : [];
+
+      const fileMeta = files.map((file) => {
+        const meta = byFile[file] || {};
+        const template = meta.template || ref.template || "generic";
+        const imp = Array.isArray(meta.imports) ? meta.imports.join(", ") : "(import 없음)";
+        const fn = Array.isArray(meta.functions) ? meta.functions.join(", ") : "정보 없음";
+        const ep = meta.entrypoint || ref.entrypoint || "main()";
+        return `<div><b>${escapeHtml(file)}</b> · template=${escapeHtml(template)} · entry=${escapeHtml(ep)} · imports=${escapeHtml(imp || "(import 없음)")} · functions=${escapeHtml(fn || "정보 없음")}</div>`;
+      }).join("");
 
       const meta = `
         <div><b>파일:</b> ${escapeHtml(files.join(", ") || "정보 없음")}</div>
-        <div><b>템플릿:</b> ${escapeHtml(ref.template || "generic")}</div>
+        <div><b>템플릿(전체):</b> ${escapeHtml(templates.join(", ") || ref.template || "generic")}</div>
         <div><b>엔트리:</b> ${escapeHtml(ref.entrypoint || "main()")}</div>
         <div><b>imports:</b> ${escapeHtml(imports.join(", ") || "(import 없음)")}</div>
         <div><b>functions:</b> ${escapeHtml(functions.join(", ") || "정보 없음")}</div>
+        <div><b>파일별 메타:</b></div>
+        <div>${fileMeta || "정보 없음"}</div>
       `;
       document.getElementById("code-meta").innerHTML = meta;
 

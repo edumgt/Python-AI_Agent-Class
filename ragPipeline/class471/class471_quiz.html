@@ -366,7 +366,7 @@
       <h1>벡터DB 기초 · 단계 2/5 기초 구현 [class471]</h1>
       <p class="meta">교과목: RAG(Retrieval-Augmented Generation) · 세부 시퀀스: 23/52 · 난이도: 기초응용 · Day 59 / 7교시</p>
       <div class="notice">
-        <article class="notice-card">학습 내용 + example1.py 코드 내용을 함께 반영한 10문항 퀴즈입니다.</article>
+        <article class="notice-card">학습 내용 + example1~example5 코드 내용을 함께 반영한 10문항 퀴즈입니다.</article>
         <article class="notice-card">채점 결과는 모달 팝업으로 제공되며, example 코드 스니펫도 모달에서 바로 확인할 수 있습니다.</article>
       </div>
       <div class="btn-row">
@@ -478,7 +478,7 @@
       "explanation": "기본 예제 파일은 class471_example1.py 입니다."
     },
     {
-      "question": "'class471_example1.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
+      "question": "'class471_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "variables",
         "dev_setup",
@@ -486,21 +486,21 @@
         "llm_gen"
       ],
       "answer_index": 2,
-      "explanation": "코드 상수 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
+      "explanation": "class471_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
     },
     {
-      "question": "'class471_example1.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
+      "question": "'class471_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "tokenize",
-        "summarize_scores",
-        "build_generation_config",
-        "predict_batch"
+        "build_setup_plan",
+        "relu",
+        "make_dataset"
       ],
       "answer_index": 0,
-      "explanation": "예제 코드 함수 목록: tokenize, retrieve, answer, main"
+      "explanation": "class471_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
     },
     {
-      "question": "'class471_example1.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class471_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "json",
         "pandas",
@@ -508,18 +508,18 @@
         "(import 없음)"
       ],
       "answer_index": 3,
-      "explanation": "예제 코드 import 목록: (import 없음)"
+      "explanation": "class471_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class471' 차시의 example 파일 구성 범위로 맞는 것은 무엇인가요?",
+      "question": "'class471_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
-        "example1만 제공 (총 1개)",
-        "example1~example5 (총 5개)",
-        "example1~example2 (총 2개)",
-        "example1~example4 (총 4개)"
+        "if __name__ == \"__main__\":",
+        "run()",
+        "invoke()",
+        "main()"
       ],
-      "answer_index": 1,
-      "explanation": "현재 포함된 예제 파일: class471_example1.py, class471_example2.py, class471_example3.py, class471_example4.py, class471_example5.py"
+      "answer_index": 3,
+      "explanation": "class471_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class471_example1.py, class471_example2.py, class471_example3.py, class471_example4.py, class471_example5.py)"
     }
   ],
   "question_count": 10,
@@ -534,14 +534,84 @@
       "class471_example5.py"
     ],
     "template": "rag",
+    "templates": [
+      "rag"
+    ],
     "imports": [],
     "functions": [
       "tokenize",
       "retrieve",
       "answer",
-      "main"
+      "main",
+      "extension_mission",
+      "self_check",
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
-    "entrypoint": "main()"
+    "entrypoint": "main()",
+    "by_file": {
+      "class471_example1.py": {
+        "template": "rag",
+        "imports": [],
+        "functions": [
+          "tokenize",
+          "retrieve",
+          "answer",
+          "main"
+        ],
+        "entrypoint": "main()"
+      },
+      "class471_example2.py": {
+        "template": "rag",
+        "imports": [],
+        "functions": [
+          "tokenize",
+          "retrieve",
+          "answer",
+          "main",
+          "extension_mission"
+        ],
+        "entrypoint": "main()"
+      },
+      "class471_example3.py": {
+        "template": "rag",
+        "imports": [],
+        "functions": [
+          "tokenize",
+          "retrieve",
+          "answer",
+          "main",
+          "self_check",
+          "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class471_example4.py": {
+        "template": "rag",
+        "imports": [],
+        "functions": [
+          "tokenize",
+          "retrieve",
+          "answer",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class471_example5.py": {
+        "template": "rag",
+        "imports": [],
+        "functions": [
+          "tokenize",
+          "retrieve",
+          "answer",
+          "main",
+          "ops_readiness_check"
+        ],
+        "entrypoint": "main()"
+      }
+    }
   },
   "example_snippets": [
     {
@@ -639,16 +709,29 @@
     function renderCodeModal() {
       const ref = QUIZ_DATA.example_reference || {};
       const files = Array.isArray(ref.files) ? ref.files : [];
+      const templates = Array.isArray(ref.templates) ? ref.templates : [];
       const imports = Array.isArray(ref.imports) ? ref.imports : [];
       const functions = Array.isArray(ref.functions) ? ref.functions : [];
+      const byFile = ref.by_file && typeof ref.by_file === "object" ? ref.by_file : {};
       const snippets = Array.isArray(QUIZ_DATA.example_snippets) ? QUIZ_DATA.example_snippets : [];
+
+      const fileMeta = files.map((file) => {
+        const meta = byFile[file] || {};
+        const template = meta.template || ref.template || "generic";
+        const imp = Array.isArray(meta.imports) ? meta.imports.join(", ") : "(import 없음)";
+        const fn = Array.isArray(meta.functions) ? meta.functions.join(", ") : "정보 없음";
+        const ep = meta.entrypoint || ref.entrypoint || "main()";
+        return `<div><b>${escapeHtml(file)}</b> · template=${escapeHtml(template)} · entry=${escapeHtml(ep)} · imports=${escapeHtml(imp || "(import 없음)")} · functions=${escapeHtml(fn || "정보 없음")}</div>`;
+      }).join("");
 
       const meta = `
         <div><b>파일:</b> ${escapeHtml(files.join(", ") || "정보 없음")}</div>
-        <div><b>템플릿:</b> ${escapeHtml(ref.template || "generic")}</div>
+        <div><b>템플릿(전체):</b> ${escapeHtml(templates.join(", ") || ref.template || "generic")}</div>
         <div><b>엔트리:</b> ${escapeHtml(ref.entrypoint || "main()")}</div>
         <div><b>imports:</b> ${escapeHtml(imports.join(", ") || "(import 없음)")}</div>
         <div><b>functions:</b> ${escapeHtml(functions.join(", ") || "정보 없음")}</div>
+        <div><b>파일별 메타:</b></div>
+        <div>${fileMeta || "정보 없음"}</div>
       `;
       document.getElementById("code-meta").innerHTML = meta;
 

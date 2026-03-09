@@ -1,0 +1,42 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
+name: Quiz HTML Quality Check
+
+on:
+  push:
+    branches: ["main", "develop"]
+    paths:
+      - "**/*_quiz.html"
+      - "**/*_example.py"
+      - "**/*_example*.py"
+      - "curriculum_index.csv"
+      - "tools/rebuild_launchers_and_quizzes.py"
+      - "tools/validate_quiz_html_quality.py"
+      - ".github/workflows/quiz-quality.yml"
+  pull_request:
+    branches: ["main", "develop"]
+    paths:
+      - "**/*_quiz.html"
+      - "**/*_example.py"
+      - "**/*_example*.py"
+      - "curriculum_index.csv"
+      - "tools/rebuild_launchers_and_quizzes.py"
+      - "tools/validate_quiz_html_quality.py"
+      - ".github/workflows/quiz-quality.yml"
+  workflow_dispatch:
+
+jobs:
+  quiz-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate quiz html quality
+        run: |
+          python tools/validate_quiz_html_quality.py

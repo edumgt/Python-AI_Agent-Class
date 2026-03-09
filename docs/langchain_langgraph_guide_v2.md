@@ -202,48 +202,76 @@ START -> classify -> (weather/general) -> END
 ### CrewAI를 선택하면 좋은 경우
 - 멀티 Agent 역할 협업이 핵심일 때
 
+### 6-1. 이 저장소에서 바로 볼 수 있는 관련 클래스(차시)
+
+- LangChain 차시: `class393 ~ class448` (`langChainLab/`)
+- LangGraph 차시: 현재 별도 디렉터리형 차시는 없고, 이 문서 8~9절과 `tools/test_langchain_langgraph_practice.py`로 실습 가능
+
+| 범위 | 주제 |
+|---|---|
+| class393~398 | LangChain 개요 |
+| class399~404 | PromptTemplate |
+| class405~409 | Model/LLM 연결 |
+| class410~415 | OutputParser |
+| class416~420 | Chain 구성 |
+| class421~426 | Memory 활용 |
+| class427~432 | Tool/Agent 기초 |
+| class433~437 | 문서 로딩과 분할 |
+| class438~443 | VectorStore 연동 |
+| class444~448 | 실전 체인 애플리케이션 |
+
+빠른 확인 명령:
+
+```bash
+source .venv/bin/activate
+python langChainLab/class393/class393_example1.py
+python langChainLab/class418/class418_example1.py
+python langChainLab/class448/class448_example1.py
+python tools/test_langchain_langgraph_practice.py
+```
+
 ---
 
 ## 7. Python 최소 예제 - LangChain
 
-아래는 Tool 하나를 붙인 아주 단순한 LangChain Agent 예제입니다.
+아래는 외부 API 키 없이 로컬에서 바로 실행 가능한 최소 체인 예제입니다.
 
 ```python
-from langchain.agents import create_agent
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda
 
-def get_weather(city: str) -> str:
-    return f"{city}의 날씨는 맑음입니다."
-
-agent = create_agent(
-    model="openai:gpt-4o-mini",
-    tools=[get_weather],
-    system_prompt="너는 도움이 되는 AI 비서야."
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", "너는 개념을 짧게 설명하는 튜터야."),
+        ("human", "질문: {question}"),
+    ]
 )
 
-result = agent.invoke(
-    {
-        "messages": [
-            {"role": "user", "content": "서울 날씨 알려줘"}
-        ]
-    }
-)
+def local_model(prompt_value):
+    question_line = prompt_value.messages[-1].content
+    return f"[LOCAL-DEMO] {question_line} -> 체인은 입력/처리/출력 단계를 연결합니다."
+
+chain = prompt | RunnableLambda(local_model)
+result = chain.invoke({"question": "LangChain 체인이 뭐야?"})
 
 print(result)
 ```
 
 ### 이 예제의 의미
 
-- `create_agent`: 에이전트 생성
-- `tools=[get_weather]`: 도구 등록
-- `invoke(...)`: 사용자 입력 실행
+- `ChatPromptTemplate`: 프롬프트 템플릿 구성
+- `RunnableLambda`: 실행 단위(노드) 연결
+- `invoke(...)`: 입력 실행
 
 ### 해석
 
 LangChain은 아래 같은 감각입니다.
 
 ```text
-질문 -> Agent -> 필요 시 Tool 호출 -> 응답
+질문 -> Prompt -> Runnable -> 응답
 ```
+
+실제 OpenAI 모델까지 붙이는 확장 실습을 하려면 `langchain-openai`와 API 키가 추가로 필요합니다.
 
 ---
 
@@ -355,6 +383,21 @@ print(result)
 - 마지막에 answer 생성
 
 이것이 LangGraph의 핵심 감각입니다.
+
+---
+
+## 9-1. 실습 점검 스크립트
+
+저장소에는 LangChain/LangGraph 실습을 한 번에 확인하는 smoke test 스크립트가 있습니다.
+
+```bash
+source .venv/bin/activate
+python tools/test_langchain_langgraph_practice.py
+```
+
+- 검사 1: `langChainLab/class393~448`의 `example1` 실행
+- 검사 2: LangChain 로컬 체인 예제 실행
+- 검사 3: LangGraph 기본/분기 예제 실행
 
 ---
 
