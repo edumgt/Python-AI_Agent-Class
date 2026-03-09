@@ -7,6 +7,7 @@
 - 임베딩: `HashingVectorizer` 기반 로컬 임베딩(모델 다운로드 없이 동작)
 - API: `FastAPI`
 - FE: Tailwind 기반 오프캔버스 + 콘텐츠 레이아웃 (`/` 경로)
+- RAG 검증 대기열: 응답 카드의 `RAG 검증` 버튼으로 이상 응답을 누적하고 다음 재인덱싱 시 재조회 리포트 생성
 - LLM 응답(선택): `OPENAI_API_KEY` 설정 시 OpenAI 모델 사용
 - LLM 키가 없을 때: 검색 근거 기반 요약 답변으로 자동 fallback
 - 질의 라우팅: 구조화 질의(`몇번부터 몇번`)는 `curriculum_index.csv` 규칙 기반 정확 응답, 일반 질의는 하이브리드 RAG
@@ -65,6 +66,7 @@ curl http://localhost:8000/health
 ![alt text](image.png)
 
 - 좌측 오프캔버스에서 Top-K, LLM 사용, 재인덱스 제어
+- 좌측 오프캔버스에서 `검증 대기` 건수 확인 가능
 - 우측 콘텐츠에서 질문/응답과 source 근거 확인
 
 ### 3.4 질문 API 사용
@@ -88,6 +90,28 @@ curl -X POST http://localhost:8000/v1/ask \
 저장소 내용이 크게 변경되면 재인덱싱:
 ```bash
 curl -X POST "http://localhost:8000/v1/reindex?force=true"
+```
+
+`RAG 검증` 버튼으로 쌓인 대기열이 있으면, 재인덱싱 시점에 해당 질문들을 기준으로 재조회 리포트를 생성한 뒤 대기열을 비웁니다.
+리포트 저장 경로: `$VECTOR_DB_PATH/rag_validation/runs/*.json`
+
+### 3.5-1 RAG 검증 대기열 API
+검증 대기 등록:
+```bash
+curl -X POST http://localhost:8000/v1/rag-validation/queue \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "class001에서 가상환경을 왜 쓰나요?",
+    "answer": "기존 답변",
+    "sources": [],
+    "mode": "rag",
+    "top_k": 6
+  }'
+```
+
+대기 건수 조회:
+```bash
+curl http://localhost:8000/v1/rag-validation/pending
 ```
 
 ### 3.6 Docker Hub Public 배포(강사용)
@@ -228,3 +252,9 @@ docker compose up -d --build
 - `DevOps`: 소프트웨어 전달 프로세스 자동화
 - `MLOps`: 모델 생명주기(학습-배포-운영) 자동화
 - `AIOps`: 운영 자체를 AI로 지능화해 장애 대응 자동화
+
+
+---
+
+### 추가 설명
+

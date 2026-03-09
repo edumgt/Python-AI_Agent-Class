@@ -11,7 +11,16 @@ from app.curriculum_service import CurriculumIndex
 from app.ingest import run_ingestion
 from app.query_router import QueryRouter
 from app.rag_engine import RepoRAG
-from app.schemas import AskRequest, AskResponse, ReindexResponse, SourceItem
+from app.rag_validation import RagValidationQueue
+from app.schemas import (
+    AskRequest,
+    AskResponse,
+    RagValidationPendingResponse,
+    RagValidationQueueRequest,
+    RagValidationQueueResponse,
+    ReindexResponse,
+    SourceItem,
+)
 
 app = FastAPI(title="Curriculum RAG Agent", version="1.0.0")
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -28,6 +37,7 @@ rag = _new_rag()
 agent = QnaAgent()
 curriculum = CurriculumIndex(repo_root=settings.repo_root)
 router = QueryRouter(curriculum_index=curriculum)
+validation_queue = RagValidationQueue(db_path=settings.vector_db_path)
 
 
 @app.get("/")
@@ -42,6 +52,7 @@ def health() -> dict:
         "collection": rag.collection_name,
         "documents": rag.count(),
         "curriculum_index": curriculum.index_path,
+        "pending_validations": validation_queue.pending_count(),
     }
 
 
@@ -60,11 +71,25 @@ def reindex(force: bool = True) -> ReindexResponse:
     )
     rag = _new_rag()
     curriculum.reload()
+    validation_queue.process_on_reindex(rag)
     return ReindexResponse(
         indexed_files=indexed_files,
         indexed_chunks=indexed_chunks,
         collection=collection,
     )
+
+
+@app.get("/v1/rag-validation/pending", response_model=RagValidationPendingResponse)
+def rag_validation_pending() -> RagValidationPendingResponse:
+    return RagValidationPendingResponse(pending_count=validation_queue.pending_count())
+
+
+@app.post("/v1/rag-validation/queue", response_model=RagValidationQueueResponse)
+def rag_validation_queue(payload: RagValidationQueueRequest) -> RagValidationQueueResponse:
+    if not payload.question.strip():
+        raise HTTPException(status_code=400, detail="question is required")
+    review_id, pending_count = validation_queue.enqueue(payload.model_dump())
+    return RagValidationQueueResponse(review_id=review_id, pending_count=pending_count)
 
 
 @app.post("/v1/ask", response_model=AskResponse)

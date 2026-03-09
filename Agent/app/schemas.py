@@ -29,3 +29,24 @@ class ReindexResponse(BaseModel):
     indexed_files: int
     indexed_chunks: int
     collection: str
+
+
+class RagValidationQueueRequest(BaseModel):
+    question: str = Field(..., min_length=2, description="검증이 필요한 질문")
+    answer: str = Field("", description="사용자에게 제공된 기존 답변")
+    sources: List[SourceItem] = Field(default_factory=list)
+    mode: str = Field("rag")
+    matched_subject: str | None = None
+    matched_class_id: str | None = None
+    note: str = Field("", max_length=500)
+    top_k: int = Field(6, ge=1, le=20)
+    use_llm: bool | None = None
+
+
+class RagValidationQueueResponse(BaseModel):
+    review_id: str
+    pending_count: int
+
+
+class RagValidationPendingResponse(BaseModel):
+    pending_count: int
