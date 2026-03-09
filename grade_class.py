@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent
 
 def main() -> int:
     ap = argparse.ArgumentParser(description='함수 단위 + 결과 파일 검증 기반 단일 차시 채점기')
-    ap.add_argument('class_id', help='예: class001')
+    ap.add_argument('class_id', help='예: class001 또는 project001')
     ap.add_argument('--tier', default='basic', choices=['basic', 'advanced', 'challenge'])
     args = ap.parse_args()
 

@@ -1,7 +1,7 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 """
 class156 launcher
-- 기본 실행: class156_example.py
+- 기본 실행: class156_example1.py
 - 과제 실행: class156_assignment.py
 - 정답 실행: class156_solution.py
 """
@@ -17,7 +17,7 @@ CLASS_ID = Path(__file__).resolve().stem
 if __name__ == "__main__":
     target = (os.getenv("CLASS_RUN_TARGET") or "example").strip().lower()
     mapping = {
-        "example": f"{CLASS_ID}_example.py",
+        "example": f"{CLASS_ID}_example1.py",
         "assignment": f"{CLASS_ID}_assignment.py",
         "solution": f"{CLASS_ID}_solution.py",
     }

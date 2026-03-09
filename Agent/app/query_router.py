@@ -50,13 +50,18 @@ class QueryRouter:
 
     @staticmethod
     def _extract_class_id(question: str) -> str | None:
-        m = re.search(r"class\s*([0-9]{3})", question, flags=re.IGNORECASE)
+        m = re.search(r"\b(class|project)\s*([0-9]{3})\b", question, flags=re.IGNORECASE)
         if m:
-            return f"class{m.group(1)}"
-        # "290번", "290 번" 같은 질의도 classID로 해석
+            prefix = m.group(1).lower()
+            return f"{prefix}{m.group(2)}"
+        # "290번", "290 번" 같은 질의도 classID/projectID로 해석
         m2 = re.search(r"\b([0-9]{3})\s*번\b", question)
         if m2:
-            return f"class{m2.group(1)}"
+            has_project_hint = bool(re.search(r"project|프로젝트", question, flags=re.IGNORECASE))
+            number = m2.group(1)
+            if has_project_hint:
+                return f"project{number}"
+            return f"class{number}"
         return None
 
     @staticmethod
@@ -122,7 +127,7 @@ class QueryRouter:
         if concept in {"devops", "mlops", "aiops", "llmops"}:
             expansions.extend(
                 [
-                    "프로젝트 class501 class520 devops mlops aiops llmops",
+                    "프로젝트 project001 project020 devops mlops aiops llmops",
                     "devops_mlops_aiops_llmops_report 개요 비교",
                     "프로젝트 과목 학습 내용 운영 자동화 관측성",
                 ]

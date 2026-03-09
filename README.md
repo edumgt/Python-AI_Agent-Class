@@ -1,10 +1,10 @@
 <!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
-# Python · AI Agent Curriculum (class001 ~ class520)
+# Python · AI Agent Curriculum (class001 ~ project020)
 
 최종 목표: `Agent/` 폴더의 실제 시스템 구축을 단계별로 연습하는 개발자 중심 커리큘럼 (520개 고유 학습주제)
 
 첨부 커리큘럼의 **정규교과 520시간** 기준으로 세분화한 교육 저장소이며, 520개 클래스의 학습주제를 모두 고유하게 구성했습니다.  
-`class001`부터 `class500`은 정규교과, `class501`부터 `class520`은 프로젝트 과목으로 운영합니다.
+`class001`부터 `class500`은 정규교과, `project001`부터 `project020`은 프로젝트 과목으로 운영합니다.
 
 ## 1) 현재까지 반영된 핵심 작업
 - 520개 차시 `classXXX.md` 자동 정비
@@ -29,7 +29,7 @@
   - `classXXX.md`: 자기주도 학습 가이드(개념, 실습, 퀴즈 안내)
   - `classXXX_flow.png`: 해당 차시 흐름도 PNG
   - `classXXX.py`: 실행 런처
-  - `classXXX_example.py`: 예제 코드
+  - `classXXX_example1.py`: 예제 코드
   - `classXXX_example2.py`: 확장 예제 코드
   - `classXXX_example3.py`: 자가점검/챌린지 예제 코드
   - `classXXX_solution.py`: 정답 코드
@@ -41,6 +41,8 @@
   - `instructor_notes.md`: 강사용 해설서
 - `tools/`: 콘텐츠 재생성/검증 스크립트
 - `curriculum_index.csv`: 전체 차시 인덱스
+- `project/`: 커리큘럼 프로젝트 원본 학습자료(`Prj_영문명/projectXXX`)
+- `projectApps/`: 실행/테스트용 독립 앱 묶음(`Python core + FastAPI + FE + Docker`)
 - `INSTRUCTOR_GUIDE.md`: 강의 운영 가이드
 - `AUTOGRADING.md`, `SUBMISSION_GRADING_GUIDE.md`: 채점/제출 가이드
 
@@ -56,7 +58,7 @@
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
-| 프로젝트 | `mlOpsAutomation`, `aiOpsIntelligence` | class501~class520 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `devops_mlops_aiops_llmops_report.md` 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
+| 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `devops_mlops_aiops_llmops_report.md` 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
 
 ## 3-2) 실무 배포 트랙 (OnPrem + AWS + K8s/EKS)
 | 트랙 | class 범위 | 핵심 학습 항목 | 운영/배포 결과물 |
@@ -64,14 +66,14 @@
 | 로컬/OnPrem 개발 표준화 | class001~class128 | 가상환경, 의존성 잠금, Docker 이미지 빌드, API 기본 서빙 | OnPrem 서버에서 재현 가능한 Python 서비스 |
 | ML 학습·추론 분리 | class081~class224 | 모델 학습 파이프라인, 추론 API, 배치/실시간 추론 전략 | 학습 잡 + 추론 서버 분리 배포 |
 | LLM/Prompt 서비스화 | class289~class448 | 외부 라이브러리(LangChain 등) 통합, 안전한 응답 정책, 관측성 | LLM 기반 백엔드 API 운영 |
-| 프로젝트 통합 운영 | class501~class520 | DevOps 배포 자동화 + MLOps 모델 운영 + AIOps 관측/자동복구 + LLMOps 품질관리 | 보고서 기반(DevOps/MLOps/AIOps/LLMOps) 통합 운영 체계 구현 |
+| 프로젝트 통합 운영 | project001~project020 | DevOps 배포 자동화 + MLOps 모델 운영 + AIOps 관측/자동복구 + LLMOps 품질관리 | 보고서 기반(DevOps/MLOps/AIOps/LLMOps) 통합 운영 체계 구현 |
 
 ## 3-2-1) 프로젝트 과목과 보고서 접목
 - 기준 문서: [devops_mlops_aiops_llmops_report.md](/home/Python-AI_Agent-Class/devops_mlops_aiops_llmops_report.md)
-- class501~505: DevOps 프로젝트 착수/요구사항 정의(보고서 2장 DevOps 비교표, 4장 배포 영역)
-- class506~510: MLOps 파이프라인·모델 레지스트리(보고서 2장 MLOps 비교표, 3장 도구 매핑)
-- class511~515: LLMOps/RAG 서비스 품질관리(보고서 2장 LLMOps 비교표, 4장 Agent/RAG 영역)
-- class516~520: AIOps 관측성·이상탐지·자동복구(보고서 2장 AIOps 비교표, 4장 운영 이상탐지)
+- project001~project005: DevOps 프로젝트 착수/요구사항 정의(보고서 2장 DevOps 비교표, 4장 배포 영역)
+- project006~project010: MLOps 파이프라인·모델 레지스트리(보고서 2장 MLOps 비교표, 3장 도구 매핑)
+- project011~project015: LLMOps/RAG 서비스 품질관리(보고서 2장 LLMOps 비교표, 4장 Agent/RAG 영역)
+- project016~project020: AIOps 관측성·이상탐지·자동복구(보고서 2장 AIOps 비교표, 4장 운영 이상탐지)
 
 ## 3-3) 공공 데이터·API Hub 연계 학습
 - 공공데이터포털(`data.go.kr`) OpenAPI: 교통/환경/인구 등 API 수집, 전처리, 시각화, 예측 실습

@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class416_example.py`
+- 예제 파일: `class416_example1.py`
 - 실행 명령:
 ```bash
-python langChainLab/class416/class416_example.py
+python langChainLab/class416/class416_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python langChainLab/class416/class416_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\langChainLab\class416\class416.py
-python .\langChainLab\class416\class416_example.py
+python .\langChainLab\class416\class416_example1.py
 python .\langChainLab\class416\class416_assignment.py
 start .\langChainLab\class416\class416_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\langChainLab\class416\class416_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 langChainLab/class416/class416.py
-python3 langChainLab/class416/class416_example.py
+python3 langChainLab/class416/class416_example1.py
 python3 langChainLab/class416/class416_assignment.py
 explorer.exe "$(wslpath -w 'langChainLab/class416/class416_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'langChainLab/class416/class416_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python langChainLab/class416/class416_example.py`)
+- 실행: `CLI` (`python langChainLab/class416/class416_example1.py`)
 - 주요 문법: `단계 함수`, `체인 구성`, `중간 상태 점검`, `출력(print)`
 - 학습 포커스: `Chain 구성 · 단계 1/5 입문 이해 [class416]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class416 (24/56, 기초응용)"]
@@ -114,7 +114,7 @@ N3["1단계: 체인 단계(입력/처리/출력)를 설계한다"]
 N4["2단계: 모델·도구·메모리를 연결한다"]
 N5["3단계: 중간 상태 로그를 확인한다"]
 N6["4단계: 워크플로우 전체 결과를 검증한다"]
-N7["예제 실행: python langChainLab/class416/class416_example.py"]
+N7["예제 실행: python langChainLab/class416/class416_example1.py"]
 N8["다음 준비: Chain 구성 · 단계 1/5 입문 이해 [class416] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

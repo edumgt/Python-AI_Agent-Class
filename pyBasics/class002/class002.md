@@ -65,10 +65,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class002_example.py`
+- 예제 파일: `class002_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class002/class002_example.py
+python pyBasics/class002/class002_example1.py
 ```
 
 
@@ -78,7 +78,7 @@ python pyBasics/class002/class002_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class002\class002.py
-python .\pyBasics\class002\class002_example.py
+python .\pyBasics\class002\class002_example1.py
 python .\pyBasics\class002\class002_assignment.py
 start .\pyBasics\class002\class002_quiz.html
 ```
@@ -87,7 +87,7 @@ start .\pyBasics\class002\class002_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class002/class002.py
-python3 pyBasics/class002/class002_example.py
+python3 pyBasics/class002/class002_example1.py
 python3 pyBasics/class002/class002_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class002/class002_quiz.html')"
 ```
@@ -102,11 +102,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class002/class002_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class002/class002_example.py`)
+- 실행: `CLI` (`python pyBasics/class002/class002_example1.py`)
 - 주요 문법: `모듈 import`, `변수 할당`, `실행 진입점(__name__)`, `출력(print)`
 - 학습 포커스: `수업 준비 2: 필수 소프트웨어 설치 (class002) · 단계 1/1 입문 이해 [class002]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class002 (2/40, 입문)"]
@@ -115,7 +115,7 @@ N3["1단계: Python 인터프리터 버전과 실행 경로를 확인한다"]
 N4["2단계: 가상환경을 만들고 의존성 패키지를 설치한다"]
 N5["3단계: 샘플 스크립트를 실행해 런타임 동작을 검증한다"]
 N6["4단계: 실행 오류 메시지를 읽고 환경 설정을 수정한다"]
-N7["예제 실행: python pyBasics/class002/class002_example.py"]
+N7["예제 실행: python pyBasics/class002/class002_example1.py"]
 N8["다음 준비: 수업 준비 2: 필수 소프트웨어 설치 (class002) · 단계 1/1 입문 이해 [class002] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

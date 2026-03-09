@@ -63,10 +63,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class029_example.py`
+- 예제 파일: `class029_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class029/class029_example.py
+python pyBasics/class029/class029_example1.py
 ```
 
 
@@ -76,7 +76,7 @@ python pyBasics/class029/class029_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class029\class029.py
-python .\pyBasics\class029\class029_example.py
+python .\pyBasics\class029\class029_example1.py
 python .\pyBasics\class029\class029_assignment.py
 start .\pyBasics\class029\class029_quiz.html
 ```
@@ -85,7 +85,7 @@ start .\pyBasics\class029\class029_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class029/class029.py
-python3 pyBasics/class029/class029_example.py
+python3 pyBasics/class029/class029_example1.py
 python3 pyBasics/class029/class029_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class029/class029_quiz.html')"
 ```
@@ -104,7 +104,7 @@ explorer.exe "$(wslpath -w 'pyBasics/class029/class029_quiz.html')"
 - 주요 문법: `semantic tag`, `querySelector`, `eventListener`, `DOM update`
 - 학습 포커스: `웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class029 (29/40, 실전심화)"]
@@ -113,7 +113,7 @@ N3["1단계: 오류 상황을 재현해 입력·상태를 기록한다"]
 N4["2단계: traceback으로 실패 지점을 식별한다"]
 N5["3단계: try/except와 raise로 예외 경로를 명시한다"]
 N6["4단계: 회귀 테스트로 수정 효과를 검증한다"]
-N7["예제 실행: python pyBasics/class029/class029_example.py"]
+N7["예제 실행: python pyBasics/class029/class029_example1.py"]
 N8["다음 준비: 웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

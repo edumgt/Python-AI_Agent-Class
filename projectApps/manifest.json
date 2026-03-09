@@ -1,0 +1,162 @@
+[
+  {
+    "project_id": "project001",
+    "track": "프로젝트-1",
+    "topic": "DevOps 프로젝트 착수와 요구사항 정의 · 단계 1/5 입문 이해",
+    "group": "Prj_DevOpsKickoff",
+    "docker_port": 9101,
+    "app_path": "projectApps/Prj_DevOpsKickoff/project001"
+  },
+  {
+    "project_id": "project002",
+    "track": "프로젝트-1",
+    "topic": "DevOps 프로젝트 착수와 요구사항 정의 · 단계 2/5 기초 구현",
+    "group": "Prj_DevOpsKickoff",
+    "docker_port": 9102,
+    "app_path": "projectApps/Prj_DevOpsKickoff/project002"
+  },
+  {
+    "project_id": "project003",
+    "track": "프로젝트-1",
+    "topic": "DevOps 프로젝트 착수와 요구사항 정의 · 단계 3/5 응용 확장",
+    "group": "Prj_DevOpsKickoff",
+    "docker_port": 9103,
+    "app_path": "projectApps/Prj_DevOpsKickoff/project003"
+  },
+  {
+    "project_id": "project004",
+    "track": "프로젝트-1",
+    "topic": "DevOps 프로젝트 착수와 요구사항 정의 · 단계 4/5 실전 검증",
+    "group": "Prj_DevOpsKickoff",
+    "docker_port": 9104,
+    "app_path": "projectApps/Prj_DevOpsKickoff/project004"
+  },
+  {
+    "project_id": "project005",
+    "track": "프로젝트-1",
+    "topic": "DevOps 프로젝트 착수와 요구사항 정의 · 단계 5/5 운영 최적화",
+    "group": "Prj_DevOpsKickoff",
+    "docker_port": 9105,
+    "app_path": "projectApps/Prj_DevOpsKickoff/project005"
+  },
+  {
+    "project_id": "project006",
+    "track": "프로젝트-2",
+    "topic": "MLOps 파이프라인과 모델 레지스트리 · 단계 1/5 입문 이해",
+    "group": "Prj_MLOpsPipeline",
+    "docker_port": 9106,
+    "app_path": "projectApps/Prj_MLOpsPipeline/project006"
+  },
+  {
+    "project_id": "project007",
+    "track": "프로젝트-2",
+    "topic": "MLOps 파이프라인과 모델 레지스트리 · 단계 2/5 기초 구현",
+    "group": "Prj_MLOpsPipeline",
+    "docker_port": 9107,
+    "app_path": "projectApps/Prj_MLOpsPipeline/project007"
+  },
+  {
+    "project_id": "project008",
+    "track": "프로젝트-2",
+    "topic": "MLOps 파이프라인과 모델 레지스트리 · 단계 3/5 응용 확장",
+    "group": "Prj_MLOpsPipeline",
+    "docker_port": 9108,
+    "app_path": "projectApps/Prj_MLOpsPipeline/project008"
+  },
+  {
+    "project_id": "project009",
+    "track": "프로젝트-2",
+    "topic": "MLOps 파이프라인과 모델 레지스트리 · 단계 4/5 실전 검증",
+    "group": "Prj_MLOpsPipeline",
+    "docker_port": 9109,
+    "app_path": "projectApps/Prj_MLOpsPipeline/project009"
+  },
+  {
+    "project_id": "project010",
+    "track": "프로젝트-2",
+    "topic": "MLOps 파이프라인과 모델 레지스트리 · 단계 5/5 운영 최적화",
+    "group": "Prj_MLOpsPipeline",
+    "docker_port": 9110,
+    "app_path": "projectApps/Prj_MLOpsPipeline/project010"
+  },
+  {
+    "project_id": "project011",
+    "track": "프로젝트-3",
+    "topic": "LLMOps/RAG 서비스 품질관리 · 단계 1/5 입문 이해",
+    "group": "Prj_LLMOpsRAGQuality",
+    "docker_port": 9111,
+    "app_path": "projectApps/Prj_LLMOpsRAGQuality/project011"
+  },
+  {
+    "project_id": "project012",
+    "track": "프로젝트-3",
+    "topic": "LLMOps/RAG 서비스 품질관리 · 단계 2/5 기초 구현",
+    "group": "Prj_LLMOpsRAGQuality",
+    "docker_port": 9112,
+    "app_path": "projectApps/Prj_LLMOpsRAGQuality/project012"
+  },
+  {
+    "project_id": "project013",
+    "track": "프로젝트-3",
+    "topic": "LLMOps/RAG 서비스 품질관리 · 단계 3/5 응용 확장",
+    "group": "Prj_LLMOpsRAGQuality",
+    "docker_port": 9113,
+    "app_path": "projectApps/Prj_LLMOpsRAGQuality/project013"
+  },
+  {
+    "project_id": "project014",
+    "track": "프로젝트-3",
+    "topic": "LLMOps/RAG 서비스 품질관리 · 단계 4/5 실전 검증",
+    "group": "Prj_LLMOpsRAGQuality",
+    "docker_port": 9114,
+    "app_path": "projectApps/Prj_LLMOpsRAGQuality/project014"
+  },
+  {
+    "project_id": "project015",
+    "track": "프로젝트-3",
+    "topic": "LLMOps/RAG 서비스 품질관리 · 단계 5/5 운영 최적화",
+    "group": "Prj_LLMOpsRAGQuality",
+    "docker_port": 9115,
+    "app_path": "projectApps/Prj_LLMOpsRAGQuality/project015"
+  },
+  {
+    "project_id": "project016",
+    "track": "프로젝트-4",
+    "topic": "AIOps 관측성·이상탐지·자동복구 · 단계 1/5 입문 이해",
+    "group": "Prj_AIOpsObservability",
+    "docker_port": 9116,
+    "app_path": "projectApps/Prj_AIOpsObservability/project016"
+  },
+  {
+    "project_id": "project017",
+    "track": "프로젝트-4",
+    "topic": "AIOps 관측성·이상탐지·자동복구 · 단계 2/5 기초 구현",
+    "group": "Prj_AIOpsObservability",
+    "docker_port": 9117,
+    "app_path": "projectApps/Prj_AIOpsObservability/project017"
+  },
+  {
+    "project_id": "project018",
+    "track": "프로젝트-4",
+    "topic": "AIOps 관측성·이상탐지·자동복구 · 단계 3/5 응용 확장",
+    "group": "Prj_AIOpsObservability",
+    "docker_port": 9118,
+    "app_path": "projectApps/Prj_AIOpsObservability/project018"
+  },
+  {
+    "project_id": "project019",
+    "track": "프로젝트-4",
+    "topic": "AIOps 관측성·이상탐지·자동복구 · 단계 4/5 실전 검증",
+    "group": "Prj_AIOpsObservability",
+    "docker_port": 9119,
+    "app_path": "projectApps/Prj_AIOpsObservability/project019"
+  },
+  {
+    "project_id": "project020",
+    "track": "프로젝트-4",
+    "topic": "AIOps 관측성·이상탐지·자동복구 · 단계 5/5 운영 최적화",
+    "group": "Prj_AIOpsObservability",
+    "docker_port": 9120,
+    "app_path": "projectApps/Prj_AIOpsObservability/project020"
+  }
+]

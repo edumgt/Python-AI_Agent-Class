@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class021_example.py`
+- 예제 파일: `class021_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class021/class021_example.py
+python pyBasics/class021/class021_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python pyBasics/class021/class021_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class021\class021.py
-python .\pyBasics\class021\class021_example.py
+python .\pyBasics\class021\class021_example1.py
 python .\pyBasics\class021\class021_assignment.py
 start .\pyBasics\class021\class021_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\pyBasics\class021\class021_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class021/class021.py
-python3 pyBasics/class021/class021_example.py
+python3 pyBasics/class021/class021_example1.py
 python3 pyBasics/class021/class021_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class021/class021_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class021/class021_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class021/class021_example.py`)
+- 실행: `CLI` (`python pyBasics/class021/class021_example1.py`)
 - 주요 문법: `list/tuple`, `dict/set`, `슬라이싱/언패킹`, `컴프리헨션`
 - 학습 포커스: `컬렉션 자료구조 · 단계 1/4 입문 이해 [class021]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class021 (21/40, 기초응용)"]
@@ -114,7 +114,7 @@ N3["1단계: 문제 요구에 맞는 컬렉션 타입을 선택한다"]
 N4["2단계: 컬렉션 생성/갱신/조회 규칙을 구현한다"]
 N5["3단계: 슬라이싱·컴프리헨션으로 변환 로직을 단순화한다"]
 N6["4단계: 샘플 데이터로 구조 선택이 타당한지 검증한다"]
-N7["예제 실행: python pyBasics/class021/class021_example.py"]
+N7["예제 실행: python pyBasics/class021/class021_example1.py"]
 N8["다음 준비: 컬렉션 자료구조 · 단계 1/4 입문 이해 [class021] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

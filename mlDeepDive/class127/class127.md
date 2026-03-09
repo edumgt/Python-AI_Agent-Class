@@ -66,10 +66,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class127_example.py`
+- 예제 파일: `class127_example1.py`
 - 실행 명령:
 ```bash
-python mlDeepDive/class127/class127_example.py
+python mlDeepDive/class127/class127_example1.py
 ```
 
 
@@ -79,7 +79,7 @@ python mlDeepDive/class127/class127_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\mlDeepDive\class127\class127.py
-python .\mlDeepDive\class127\class127_example.py
+python .\mlDeepDive\class127\class127_example1.py
 python .\mlDeepDive\class127\class127_assignment.py
 start .\mlDeepDive\class127\class127_quiz.html
 ```
@@ -88,7 +88,7 @@ start .\mlDeepDive\class127\class127_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 mlDeepDive/class127/class127.py
-python3 mlDeepDive/class127/class127_example.py
+python3 mlDeepDive/class127/class127_example1.py
 python3 mlDeepDive/class127/class127_assignment.py
 explorer.exe "$(wslpath -w 'mlDeepDive/class127/class127_quiz.html')"
 ```
@@ -103,11 +103,11 @@ explorer.exe "$(wslpath -w 'mlDeepDive/class127/class127_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python mlDeepDive/class127/class127_example.py`)
+- 실행: `CLI` (`python mlDeepDive/class127/class127_example1.py`)
 - 주요 문법: `함수`, `리스트 컴프리헨션`, `오차 계산`, `출력(print)`
 - 학습 포커스: `Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class127 (47/48, 실전심화)"]
@@ -116,7 +116,7 @@ N3["1단계: 학습 데이터(X,y)를 준비한다"]
 N4["2단계: 예측 규칙(모델)을 학습/계산한다"]
 N5["3단계: 오차 지표를 계산해 성능을 확인한다"]
 N6["4단계: 오차 원인을 분석해 개선 포인트를 정리한다"]
-N7["예제 실행: python mlDeepDive/class127/class127_example.py"]
+N7["예제 실행: python mlDeepDive/class127/class127_example1.py"]
 N8["다음 준비: Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

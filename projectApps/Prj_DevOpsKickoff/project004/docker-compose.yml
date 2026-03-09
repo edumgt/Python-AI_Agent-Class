@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PROJECT_ID: ${PROJECT_ID:-project004}
+      PROJECT_NAME: ${PROJECT_NAME:-Prj_DevOpsKickoff}
+      PROJECT_TRACK: ${PROJECT_TRACK:-프로젝트-1}
+      PROJECT_TOPIC: ${PROJECT_TOPIC:-DevOps 프로젝트 착수와 요구사항 정의 · 단계 4/5 실전 검증}
+    ports:
+      - "${APP_HOST_PORT:-9104}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped

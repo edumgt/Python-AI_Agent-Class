@@ -173,6 +173,143 @@ class LearningPoints(TypedDict):
     checklist: list[str]
 
 
+class ExampleSnippet(TypedDict):
+    file: str
+    code: str
+
+
+class ExampleInsights(TypedDict):
+    primary_file: str
+    files: list[str]
+    highest_variant: int
+    template: str
+    imports: list[str]
+    functions: list[str]
+    entrypoint: str
+    snippets: list[ExampleSnippet]
+
+
+class QuizContext(TypedDict):
+    banks_by_class: dict[str, dict[str, str]]
+    all_concepts: list[str]
+    all_actions: list[str]
+    all_pitfalls: list[str]
+    all_checks: list[str]
+    example_by_class: dict[str, ExampleInsights]
+    all_primary_files: list[str]
+    all_templates: list[str]
+    all_imports: list[str]
+    all_functions: list[str]
+    all_entrypoints: list[str]
+
+
+def parse_example_variant(class_id: str, file_name: str) -> int | None:
+    pattern = re.compile(rf"^{re.escape(class_id)}_example(\d+)\.py$", re.IGNORECASE)
+    match = pattern.match(file_name)
+    if not match:
+        return None
+    return int(match.group(1))
+
+
+def list_example_files(class_dir: Path, class_id: str) -> list[tuple[int, Path]]:
+    variants: dict[int, Path] = {}
+    for path in class_dir.glob(f"{class_id}_example*.py"):
+        variant = parse_example_variant(class_id, path.name)
+        if variant is None:
+            continue
+        variants[variant] = path
+
+    legacy = class_dir / f"{class_id}_example.py"
+    if legacy.exists() and 1 not in variants:
+        variants[1] = legacy
+
+    return sorted(variants.items(), key=lambda item: item[0])
+
+
+def build_code_preview(text: str, max_lines: int = 18, max_chars: int = 1200) -> str:
+    lines = [line.rstrip() for line in text.splitlines()]
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    preview = "\n".join(lines[:max_lines]).strip()
+    if len(preview) > max_chars:
+        preview = preview[:max_chars].rstrip() + "\n..."
+    if not preview:
+        return "# 코드가 비어 있습니다."
+    return preview
+
+
+@lru_cache(maxsize=None)
+def load_example_insights(class_dir_str: str, class_id: str) -> ExampleInsights:
+    class_dir = Path(class_dir_str)
+    variant_paths = list_example_files(class_dir, class_id)
+    files = [path.name for _, path in variant_paths]
+    highest_variant = max((variant for variant, _ in variant_paths), default=1)
+
+    primary_text = ""
+    if variant_paths:
+        _, primary_path = variant_paths[0]
+        try:
+            primary_text = primary_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            primary_text = ""
+
+    template_match = re.search(r'^EXAMPLE_TEMPLATE\s*=\s*"([^"]+)"', primary_text, re.MULTILINE)
+    template = template_match.group(1).strip() if template_match else "generic"
+
+    import_candidates: list[str] = []
+    for raw in primary_text.splitlines():
+        line = raw.strip()
+        if line.startswith("import "):
+            modules = line[len("import ") :].split(",")
+            for module in modules:
+                token = module.strip().split(" as ", maxsplit=1)[0].strip()
+                token = token.split(".", maxsplit=1)[0].strip()
+                if token and token not in import_candidates:
+                    import_candidates.append(token)
+        elif line.startswith("from "):
+            token = line[len("from ") :].split(" import ", maxsplit=1)[0].strip()
+            token = token.split(".", maxsplit=1)[0].strip()
+            if token and token not in import_candidates:
+                import_candidates.append(token)
+
+    functions = [
+        fn
+        for fn in re.findall(r"^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", primary_text, flags=re.MULTILINE)
+        if fn not in {"__init__"}
+    ]
+    functions = list(dict.fromkeys(functions))
+
+    if "main" in functions:
+        entrypoint = "main()"
+    elif functions:
+        entrypoint = f"{functions[0]}()"
+    else:
+        entrypoint = 'if __name__ == "__main__":'
+
+    snippets: list[ExampleSnippet] = []
+    for _, path in variant_paths[:5]:
+        try:
+            code = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        snippets.append({"file": path.name, "code": build_code_preview(code)})
+
+    if not files:
+        files = [f"{class_id}_example1.py"]
+
+    primary_file = files[0]
+    return {
+        "primary_file": primary_file,
+        "files": files,
+        "highest_variant": max(1, highest_variant),
+        "template": template,
+        "imports": import_candidates,
+        "functions": functions,
+        "entrypoint": entrypoint,
+        "snippets": snippets,
+    }
+
+
 def read_rows() -> list[dict[str, str]]:
     with INDEX_FILE.open(encoding="utf-8-sig", newline="") as fp:
         lines = [line for line in fp if line.strip() and not line.lstrip().startswith("#")]
@@ -382,6 +519,68 @@ def stable_sample(pool: list[str], k: int, seed: str) -> list[str]:
     return rng.sample(unique, k)
 
 
+def build_quiz_context(rows: list[dict[str, str]]) -> QuizContext:
+    banks_by_class: dict[str, dict[str, str]] = {}
+    all_concepts: list[str] = []
+    all_actions: list[str] = []
+    all_pitfalls: list[str] = []
+    all_checks: list[str] = []
+
+    example_by_class: dict[str, ExampleInsights] = {}
+    all_primary_files: list[str] = []
+    all_templates: list[str] = []
+    all_imports: list[str] = []
+    all_functions: list[str] = []
+    all_entrypoints: list[str] = []
+
+    for row in rows:
+        class_id = row["class"]
+        track = choose_track(row["subject_name"], row["module"])
+        bank = resolve_quiz_bank(subject_name=row["subject_name"], module=row["module"], track=track)
+        banks_by_class[class_id] = bank
+
+        for value, pool in (
+            (bank["concept"], all_concepts),
+            (bank["action"], all_actions),
+            (bank["pitfall"], all_pitfalls),
+            (bank["check"], all_checks),
+        ):
+            if value not in pool:
+                pool.append(value)
+
+        class_dir = class_dir_from_row(row)
+        insights = load_example_insights(str(class_dir), class_id)
+        example_by_class[class_id] = insights
+
+        if insights["primary_file"] not in all_primary_files:
+            all_primary_files.append(insights["primary_file"])
+        if insights["template"] not in all_templates:
+            all_templates.append(insights["template"])
+
+        for token in insights["imports"]:
+            if token not in all_imports:
+                all_imports.append(token)
+        for fn in insights["functions"]:
+            if fn not in all_functions:
+                all_functions.append(fn)
+        if insights["entrypoint"] not in all_entrypoints:
+            all_entrypoints.append(insights["entrypoint"])
+
+    return {
+        "banks_by_class": banks_by_class,
+        "all_concepts": all_concepts,
+        "all_actions": all_actions,
+        "all_pitfalls": all_pitfalls,
+        "all_checks": all_checks,
+        "example_by_class": example_by_class,
+        "all_primary_files": all_primary_files,
+        "all_templates": all_templates,
+        "all_imports": all_imports,
+        "all_functions": all_functions,
+        "all_entrypoints": all_entrypoints,
+    }
+
+
 def build_question(
     question: str,
     correct: str,
@@ -401,7 +600,7 @@ def build_question(
     }
 
 
-def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
+def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]], context: QuizContext) -> dict:
     class_id = row["class"]
     subject_name = row["subject_name"]
     module = row["module"]
@@ -410,24 +609,21 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
     slot = int(row["slot"])
     session = row["subject_session"]
     track = choose_track(subject_name, module)
-    bank = resolve_quiz_bank(subject_name=subject_name, module=module, track=track)
+    bank = context["banks_by_class"].get(class_id) or resolve_quiz_bank(
+        subject_name=subject_name,
+        module=module,
+        track=track,
+    )
+    example = context["example_by_class"].get(class_id) or load_example_insights(str(class_dir_from_row(row)), class_id)
 
     same_subject_rows = [r for r in rows if r["subject_name"] == subject_name]
     same_subject_modules = [r["module"] for r in same_subject_rows]
     prev_module, next_module = find_prev_next_modules(row, same_subject_rows)
 
-    all_banks = [
-        resolve_quiz_bank(
-            subject_name=candidate["subject_name"],
-            module=candidate["module"],
-            track=choose_track(candidate["subject_name"], candidate["module"]),
-        )
-        for candidate in rows
-    ]
-    all_concepts = [candidate_bank["concept"] for candidate_bank in all_banks]
-    all_actions = [candidate_bank["action"] for candidate_bank in all_banks]
-    all_pitfalls = [candidate_bank["pitfall"] for candidate_bank in all_banks]
-    all_checks = [candidate_bank["check"] for candidate_bank in all_banks]
+    all_concepts = context["all_concepts"]
+    all_actions = context["all_actions"]
+    all_pitfalls = context["all_pitfalls"]
+    all_checks = context["all_checks"]
 
     subject_focus_points = [class_focus_point(r) for r in same_subject_rows]
     all_focus_points = [class_focus_point(r) for r in rows]
@@ -447,6 +643,52 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
         minimum=6,
     )
     module_candidates = ensure_min_candidates(same_subject_modules, [r["module"] for r in rows], minimum=6)
+    file_candidates = ensure_min_candidates(
+        context["all_primary_files"],
+        [f"{r['class']}_example1.py" for r in rows],
+        minimum=6,
+    )
+    template_candidates = ensure_min_candidates(
+        context["all_templates"],
+        ["python", "data", "ml", "nlp", "speech", "prompt", "langchain", "rag", "generic"],
+        minimum=6,
+    )
+    function_candidates = ensure_min_candidates(
+        context["all_functions"],
+        ["main", "build_prompt", "retrieve", "solve_in_steps", "predict_batch", "summarize_utterances"],
+        minimum=6,
+    )
+    import_candidates = ensure_min_candidates(
+        context["all_imports"],
+        ["pathlib", "json", "math", "datetime", "re", "(import 없음)"],
+        minimum=6,
+    )
+
+    if not example["imports"]:
+        correct_import = "(import 없음)"
+    else:
+        correct_import = example["imports"][0]
+
+    if not example["functions"]:
+        correct_function = "main"
+    else:
+        non_main = [fn for fn in example["functions"] if fn != "main"]
+        correct_function = non_main[0] if non_main else example["functions"][0]
+
+    highest_variant = max(1, min(5, int(example["highest_variant"])))
+    if highest_variant == 1:
+        variant_label = "example1만 제공 (총 1개)"
+    else:
+        variant_label = f"example1~example{highest_variant} (총 {highest_variant}개)"
+    variant_candidates = [
+        "example1만 제공 (총 1개)",
+        "example1~example2 (총 2개)",
+        "example1~example3 (총 3개)",
+        "example1~example4 (총 4개)",
+        "example1~example5 (총 5개)",
+    ]
+    if variant_label not in variant_candidates:
+        variant_candidates.append(variant_label)
 
     questions = [
         build_question(
@@ -484,6 +726,41 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
             seed=f"{class_id}-q5-check",
             explanation=f"이 차시는 '{bank['check']}' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다.",
         ),
+        build_question(
+            question=f"'{module}' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
+            correct=example["primary_file"],
+            candidates=file_candidates,
+            seed=f"{class_id}-q6-file",
+            explanation=f"기본 예제 파일은 {example['primary_file']} 입니다.",
+        ),
+        build_question(
+            question=f"'{example['primary_file']}'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
+            correct=example["template"],
+            candidates=template_candidates,
+            seed=f"{class_id}-q7-template",
+            explanation=f"코드 상수 EXAMPLE_TEMPLATE 값은 '{example['template']}' 입니다.",
+        ),
+        build_question(
+            question=f"'{example['primary_file']}' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
+            correct=correct_function,
+            candidates=function_candidates,
+            seed=f"{class_id}-q8-function",
+            explanation=f"예제 코드 함수 목록: {', '.join(example['functions'][:8]) if example['functions'] else '확인 필요'}",
+        ),
+        build_question(
+            question=f"'{example['primary_file']}'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+            correct=correct_import,
+            candidates=import_candidates,
+            seed=f"{class_id}-q9-import",
+            explanation=f"예제 코드 import 목록: {', '.join(example['imports']) if example['imports'] else '(import 없음)'}",
+        ),
+        build_question(
+            question=f"'{class_id}' 차시의 example 파일 구성 범위로 맞는 것은 무엇인가요?",
+            correct=variant_label,
+            candidates=variant_candidates,
+            seed=f"{class_id}-q10-variants",
+            explanation=f"현재 포함된 예제 파일: {', '.join(example['files'])}",
+        ),
     ]
 
     return {
@@ -497,11 +774,19 @@ def build_quiz_payload(row: dict[str, str], rows: list[dict[str, str]]) -> dict:
         "question_count": len(questions),
         "day": day,
         "slot": slot,
+        "example_reference": {
+            "files": example["files"],
+            "template": example["template"],
+            "imports": example["imports"],
+            "functions": example["functions"],
+            "entrypoint": example["entrypoint"],
+        },
+        "example_snippets": example["snippets"],
     }
 
 
-def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
-    payload = build_quiz_payload(row, rows)
+def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]], context: QuizContext) -> str:
+    payload = build_quiz_payload(row, rows, context)
     quiz_json = json.dumps(payload, ensure_ascii=False, indent=2)
     class_id = payload["class_id"]
     module = payload["module"]
@@ -510,148 +795,608 @@ def build_quiz_html(row: dict[str, str], rows: list[dict[str, str]]) -> str:
     level = payload["level"]
     day = payload["day"]
     slot = payload["slot"]
+    question_count = payload["question_count"]
 
-    html = f"""<!doctype html>
-<!-- {COPYRIGHT_TEXT} -->
+    html = """<!doctype html>
+<!-- __COPYRIGHT__ -->
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{class_id} 5문항 퀴즈</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>__CLASS_ID__ __QUESTION_COUNT__문항 퀴즈</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --sub: #475569;
+      --primary: #0b5fff;
+      --primary-strong: #0038c7;
+      --accent: #04b7a1;
+      --line: #d9e3f3;
+      --danger: #e44863;
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% -10%, rgba(11, 95, 255, 0.18), transparent 36%),
+        radial-gradient(circle at 90% 0%, rgba(4, 183, 161, 0.15), transparent 35%),
+        var(--bg);
+    }
+
+    body.scroll-lock {
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(1100px, 100% - 32px);
+      margin: 28px auto 56px;
+    }
+
+    .hero {
+      background: linear-gradient(140deg, #ffffff, #f8fbff);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(11, 95, 255, 0.1);
+      color: var(--primary-strong);
+    }
+
+    .hero h1 {
+      margin: 14px 0 8px;
+      font-size: clamp(24px, 3.4vw, 34px);
+      line-height: 1.22;
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .notice {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .notice-card {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--sub);
+    }
+
+    .btn-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: linear-gradient(120deg, var(--primary), var(--primary-strong));
+      color: #fff;
+    }
+
+    .btn.secondary {
+      background: #e6edf9;
+      color: #0b326c;
+    }
+
+    .btn.ghost {
+      background: #eff9f7;
+      color: #06645c;
+      border: 1px solid #bee9e3;
+    }
+
+    .quiz-grid {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .question {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+      padding: 16px;
+    }
+
+    .question-title {
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.52;
+      font-size: 15px;
+    }
+
+    .options {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid #d7e0ef;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .option:hover {
+      background: #f5f8fd;
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--primary);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+      padding: 16px;
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.52);
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-dialog {
+      position: relative;
+      z-index: 1;
+      width: min(920px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 50px rgba(15, 23, 42, 0.24);
+      padding: 18px;
+      transform: translateY(10px) scale(0.98);
+      transition: transform 0.18s ease;
+    }
+
+    .modal.show .modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 7px 12px;
+      background: #eaf0fb;
+      font-weight: 700;
+      color: #29476f;
+      cursor: pointer;
+    }
+
+    .result-summary {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #f8fbff;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .progress {
+      margin-top: 10px;
+      height: 10px;
+      background: #dbe6f7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > div {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+    }
+
+    .result-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .ok {
+      color: #0a7f51;
+      font-weight: 700;
+    }
+
+    .bad {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .code-meta {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    .code-grid {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .code-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .code-card header {
+      padding: 10px 12px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      background: #f7faff;
+      font-size: 13px;
+    }
+
+    .code-card pre {
+      margin: 0;
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.5;
+      background: #0f172a;
+      color: #d7e7ff;
+    }
+
+    @media (max-width: 740px) {
+      .container {
+        width: min(1100px, 100% - 20px);
+        margin-top: 16px;
+      }
+      .hero {
+        padding: 18px;
+      }
+      .btn {
+        width: 100%;
+      }
+      .btn-row {
+        display: grid;
+      }
+      .modal-dialog {
+        padding: 14px;
+      }
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-900">
-  <main class="mx-auto max-w-3xl px-4 py-10">
-    <section class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-      <p class="text-sm font-semibold text-sky-700">{class_id} SELF QUIZ</p>
-      <h1 class="mt-2 text-2xl font-bold">{module}</h1>
-      <p class="mt-2 text-sm text-slate-600">
-        교과목: {subject_name} · 세부 시퀀스: {session} · 난이도: {level} · Day {day:02d} / {slot}교시
-      </p>
-      <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
-      </p>
+<body>
+  <main class="container">
+    <section class="hero">
+      <span class="badge">__CLASS_ID__ SELF QUIZ</span>
+      <h1>__MODULE__</h1>
+      <p class="meta">교과목: __SUBJECT_NAME__ · 세부 시퀀스: __SESSION__ · 난이도: __LEVEL__ · Day __DAY__ / __SLOT__교시</p>
+      <div class="notice">
+        <article class="notice-card">학습 내용 + example1.py 코드 내용을 함께 반영한 __QUESTION_COUNT__문항 퀴즈입니다.</article>
+        <article class="notice-card">채점 결과는 모달 팝업으로 제공되며, example 코드 스니펫도 모달에서 바로 확인할 수 있습니다.</article>
+      </div>
+      <div class="btn-row">
+        <button id="grade-btn" class="btn primary" type="button">채점하기</button>
+        <button id="reset-btn" class="btn secondary" type="button">다시 풀기</button>
+        <button id="open-code-btn" class="btn ghost" type="button">example 코드 보기</button>
+      </div>
     </section>
 
-    <section id="quiz-root" class="mt-6 space-y-4"></section>
-
-    <div class="mt-6 flex items-center gap-3">
-      <button id="grade-btn" class="rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white hover:bg-sky-700">
-        채점하기
-      </button>
-      <button id="reset-btn" class="rounded-lg bg-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300">
-        다시풀기
-      </button>
-    </div>
-
-    <section id="result-root" class="mt-6 hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200"></section>
+    <section id="quiz-root" class="quiz-grid"></section>
   </main>
 
-  <script>
-    const QUIZ_DATA = {quiz_json};
+  <div id="result-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="result-modal"></div>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <header class="modal-header">
+        <h2 id="result-title">채점 결과</h2>
+        <button class="close-btn" type="button" data-close-modal="result-modal">닫기</button>
+      </header>
+      <section id="result-root"></section>
+    </section>
+  </div>
 
-    function renderQuiz() {{
+  <div id="code-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="code-modal"></div>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="code-title">
+      <header class="modal-header">
+        <h2 id="code-title">example 코드 참고</h2>
+        <button class="close-btn" type="button" data-close-modal="code-modal">닫기</button>
+      </header>
+      <section id="code-meta" class="code-meta"></section>
+      <section id="code-snippet-list" class="code-grid"></section>
+    </section>
+  </div>
+
+  <script>
+    const QUIZ_DATA = __QUIZ_JSON__;
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => modal.classList.add("show"));
+      document.body.classList.add("scroll-lock");
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      window.setTimeout(() => {
+        modal.classList.add("hidden");
+        if (!document.querySelector(".modal.show")) {
+          document.body.classList.remove("scroll-lock");
+        }
+      }, 180);
+    }
+
+    function renderQuiz() {
       const root = document.getElementById("quiz-root");
       root.innerHTML = "";
 
-      QUIZ_DATA.questions.forEach((q, qIndex) => {{
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
         const wrap = document.createElement("article");
-        wrap.className = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200";
+        wrap.className = "question";
 
         const title = document.createElement("h2");
-        title.className = "text-base font-semibold";
-        title.textContent = `${{qIndex + 1}}번. ${{q.question}}`;
+        title.className = "question-title";
+        title.textContent = `${qIndex + 1}번. ${q.question}`;
         wrap.appendChild(title);
 
         const list = document.createElement("div");
-        list.className = "mt-3 space-y-2";
+        list.className = "options";
 
-        q.options.forEach((opt, optIndex) => {{
+        q.options.forEach((opt, optIndex) => {
           const label = document.createElement("label");
-          label.className = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 p-3 hover:bg-slate-50";
+          label.className = "option";
 
           const radio = document.createElement("input");
           radio.type = "radio";
-          radio.name = `q-${{qIndex}}`;
+          radio.name = `q-${qIndex}`;
           radio.value = String(optIndex);
-          radio.className = "mt-1";
 
           const text = document.createElement("span");
-          text.className = "text-sm";
-          text.textContent = opt;
+          text.textContent = `${optIndex + 1}) ${opt}`;
 
           label.appendChild(radio);
           label.appendChild(text);
           list.appendChild(label);
-        }});
+        });
 
         wrap.appendChild(list);
         root.appendChild(wrap);
-      }});
-    }}
+      });
+    }
 
-    function gradeQuiz() {{
+    function renderCodeModal() {
+      const ref = QUIZ_DATA.example_reference || {};
+      const files = Array.isArray(ref.files) ? ref.files : [];
+      const imports = Array.isArray(ref.imports) ? ref.imports : [];
+      const functions = Array.isArray(ref.functions) ? ref.functions : [];
+      const snippets = Array.isArray(QUIZ_DATA.example_snippets) ? QUIZ_DATA.example_snippets : [];
+
+      const meta = `
+        <div><b>파일:</b> ${escapeHtml(files.join(", ") || "정보 없음")}</div>
+        <div><b>템플릿:</b> ${escapeHtml(ref.template || "generic")}</div>
+        <div><b>엔트리:</b> ${escapeHtml(ref.entrypoint || "main()")}</div>
+        <div><b>imports:</b> ${escapeHtml(imports.join(", ") || "(import 없음)")}</div>
+        <div><b>functions:</b> ${escapeHtml(functions.join(", ") || "정보 없음")}</div>
+      `;
+      document.getElementById("code-meta").innerHTML = meta;
+
+      const list = document.getElementById("code-snippet-list");
+      if (!snippets.length) {
+        list.innerHTML = `
+          <article class="code-card">
+            <header>example 코드 미리보기</header>
+            <pre>표시할 코드 스니펫이 없습니다.</pre>
+          </article>
+        `;
+        return;
+      }
+
+      list.innerHTML = snippets.map((item) => `
+        <article class="code-card">
+          <header>${escapeHtml(item.file || "example1.py")}</header>
+          <pre>${escapeHtml(item.code || "")}</pre>
+        </article>
+      `).join("");
+    }
+
+    function gradeQuiz() {
       let score = 0;
       const details = [];
       const total = QUIZ_DATA.questions.length;
 
-      QUIZ_DATA.questions.forEach((q, qIndex) => {{
-        const selected = document.querySelector(`input[name="q-${{qIndex}}"]:checked`);
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
+        const selected = document.querySelector(`input[name="q-${qIndex}"]:checked`);
         const selectedIndex = selected ? Number(selected.value) : -1;
         const isCorrect = selectedIndex === q.answer_index;
         if (isCorrect) score += 1;
 
-        details.push({{
+        details.push({
           number: qIndex + 1,
           isCorrect,
           correct: q.options[q.answer_index],
           chosen: selectedIndex >= 0 ? q.options[selectedIndex] : "미선택",
           explanation: q.explanation
-        }});
-      }});
+        });
+      });
 
       const resultRoot = document.getElementById("result-root");
-      resultRoot.classList.remove("hidden");
-
-      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
+      const ratio = Math.round((score / total) * 100);
+      const statusClass = score === total ? "ok" : "bad";
       const summary = `
-        <h3 class="text-lg font-bold ${{headerClass}}">점수: ${{score}} / ${{total}}</h3>
-        <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
-        <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${{QUIZ_DATA.track_outcome}}</p>
+        <article class="result-summary">
+          <h3 class="result-title ${statusClass}">점수: ${score} / ${total} (${ratio}%)</h3>
+          <p>학습 성과 힌트: ${escapeHtml(QUIZ_DATA.track_outcome || "")}</p>
+          <div class="progress"><div style="width:${ratio}%"></div></div>
+        </article>
       `;
 
       const rows = details.map((d) => `
-        <li class="rounded-lg border border-slate-200 p-3">
-          <p class="text-sm font-semibold">${{d.number}}번 - ${{d.isCorrect ? "정답" : "오답"}}</p>
-          <p class="mt-1 text-sm">내 답: ${{d.chosen}}</p>
-          <p class="text-sm">정답: ${{d.correct}}</p>
-          <p class="mt-1 text-xs text-slate-500">${{d.explanation}}</p>
+        <li class="result-item">
+          <div><b>${d.number}번</b> · <span class="${d.isCorrect ? "ok" : "bad"}">${d.isCorrect ? "정답" : "오답"}</span></div>
+          <div>내 답: ${escapeHtml(d.chosen)}</div>
+          <div>정답: ${escapeHtml(d.correct)}</div>
+          <div>해설: ${escapeHtml(d.explanation)}</div>
         </li>
       `).join("");
 
       resultRoot.innerHTML = `
-        ${{summary}}
-        <ul class="mt-4 space-y-2">${{rows}}</ul>
+        ${summary}
+        <ul class="result-list">${rows}</ul>
       `;
-    }}
+      openModal("result-modal");
+    }
 
-    function resetQuiz() {{
-      document.querySelectorAll('input[type="radio"]').forEach((el) => {{
+    function resetQuiz() {
+      document.querySelectorAll('input[type="radio"]').forEach((el) => {
         el.checked = false;
-      }});
-      const resultRoot = document.getElementById("result-root");
-      resultRoot.classList.add("hidden");
-      resultRoot.innerHTML = "";
-    }}
+      });
+      document.getElementById("result-root").innerHTML = "";
+      closeModal("result-modal");
+    }
 
-    document.getElementById("grade-btn").addEventListener("click", gradeQuiz);
-    document.getElementById("reset-btn").addEventListener("click", resetQuiz);
+    function bindModalCloseButtons() {
+      document.querySelectorAll("[data-close-modal]").forEach((el) => {
+        el.addEventListener("click", () => closeModal(el.dataset.closeModal));
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeModal("result-modal");
+        closeModal("code-modal");
+      });
+    }
+
+    document.getElementById("grade-btn").addEventListener("click", () => gradeQuiz());
+    document.getElementById("reset-btn").addEventListener("click", () => resetQuiz());
+    document.getElementById("open-code-btn").addEventListener("click", () => openModal("code-modal"));
+    bindModalCloseButtons();
     renderQuiz();
+    renderCodeModal();
   </script>
 </body>
 </html>
 """
-    return dedent(html)
+    return (
+        dedent(html)
+        .replace("__COPYRIGHT__", COPYRIGHT_TEXT)
+        .replace("__CLASS_ID__", class_id)
+        .replace("__MODULE__", module)
+        .replace("__SUBJECT_NAME__", subject_name)
+        .replace("__SESSION__", session)
+        .replace("__LEVEL__", level)
+        .replace("__DAY__", f"{day:02d}")
+        .replace("__SLOT__", str(slot))
+        .replace("__QUESTION_COUNT__", str(question_count))
+        .replace("__QUIZ_JSON__", quiz_json)
+    )
 
 
 def build_launcher_py(class_id: str) -> str:
@@ -660,7 +1405,7 @@ def build_launcher_py(class_id: str) -> str:
         # {COPYRIGHT_TEXT}
         """
         {class_id} launcher
-        - 기본 실행: {class_id}_example.py
+        - 기본 실행: {class_id}_example1.py
         - 과제 실행: {class_id}_assignment.py
         - 정답 실행: {class_id}_solution.py
         """
@@ -676,7 +1421,7 @@ def build_launcher_py(class_id: str) -> str:
         if __name__ == "__main__":
             target = (os.getenv("CLASS_RUN_TARGET") or "example").strip().lower()
             mapping = {{
-                "example": f"{{CLASS_ID}}_example.py",
+                "example": f"{{CLASS_ID}}_example1.py",
                 "assignment": f"{{CLASS_ID}}_assignment.py",
                 "solution": f"{{CLASS_ID}}_solution.py",
             }}
@@ -699,6 +1444,7 @@ def build_launcher_py(class_id: str) -> str:
 
 def rebuild_launchers_and_quizzes() -> None:
     rows = read_rows()
+    context = build_quiz_context(rows)
     launcher_count = 0
     quiz_count = 0
 
@@ -712,7 +1458,7 @@ def rebuild_launchers_and_quizzes() -> None:
         launcher_count += 1
 
         quiz_path = class_dir / f"{class_id}_quiz.html"
-        quiz_path.write_text(build_quiz_html(row, rows), encoding="utf-8", newline="\n")
+        quiz_path.write_text(build_quiz_html(row, rows, context), encoding="utf-8", newline="\n")
         quiz_count += 1
 
     print(f"Updated launchers: {launcher_count}")

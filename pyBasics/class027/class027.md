@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class027_example.py`
+- 예제 파일: `class027_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class027/class027_example.py
+python pyBasics/class027/class027_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python pyBasics/class027/class027_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class027\class027.py
-python .\pyBasics\class027\class027_example.py
+python .\pyBasics\class027\class027_example1.py
 python .\pyBasics\class027\class027_assignment.py
 start .\pyBasics\class027\class027_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\pyBasics\class027\class027_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class027/class027.py
-python3 pyBasics/class027/class027_example.py
+python3 pyBasics/class027/class027_example1.py
 python3 pyBasics/class027/class027_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class027/class027_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class027/class027_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class027/class027_example.py`)
+- 실행: `CLI` (`python pyBasics/class027/class027_example1.py`)
 - 주요 문법: `with open()`, `read/write`, `인코딩(utf-8)`, `json/csv`
 - 학습 포커스: `파일 입출력 · 단계 3/4 실전 검증 [class027]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class027 (27/40, 기초응용)"]
@@ -114,7 +114,7 @@ N3["1단계: 입출력 파일 경로와 모드를 정의한다"]
 N4["2단계: 파일을 읽어 데이터 구조로 파싱한다"]
 N5["3단계: 처리 결과를 파일로 직렬화해 저장한다"]
 N6["4단계: 저장/재로딩 검증으로 데이터 무결성을 확인한다"]
-N7["예제 실행: python pyBasics/class027/class027_example.py"]
+N7["예제 실행: python pyBasics/class027/class027_example1.py"]
 N8["다음 준비: 파일 입출력 · 단계 3/4 실전 검증 [class027] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

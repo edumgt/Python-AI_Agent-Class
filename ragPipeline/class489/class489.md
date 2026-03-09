@@ -66,10 +66,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class489_example.py`
+- 예제 파일: `class489_example1.py`
 - 실행 명령:
 ```bash
-python ragPipeline/class489/class489_example.py
+python ragPipeline/class489/class489_example1.py
 ```
 
 
@@ -79,7 +79,7 @@ python ragPipeline/class489/class489_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\ragPipeline\class489\class489.py
-python .\ragPipeline\class489\class489_example.py
+python .\ragPipeline\class489\class489_example1.py
 python .\ragPipeline\class489\class489_assignment.py
 start .\ragPipeline\class489\class489_quiz.html
 ```
@@ -88,7 +88,7 @@ start .\ragPipeline\class489\class489_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 ragPipeline/class489/class489.py
-python3 ragPipeline/class489/class489_example.py
+python3 ragPipeline/class489/class489_example1.py
 python3 ragPipeline/class489/class489_assignment.py
 explorer.exe "$(wslpath -w 'ragPipeline/class489/class489_quiz.html')"
 ```
@@ -103,11 +103,11 @@ explorer.exe "$(wslpath -w 'ragPipeline/class489/class489_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python ragPipeline/class489/class489_example.py`)
+- 실행: `CLI` (`python ragPipeline/class489/class489_example1.py`)
 - 주요 문법: `검색 함수`, `유사도 계산`, `근거 결합`, `출력(print)`
 - 학습 포커스: `응답 검증/출처화 · 단계 4/5 실전 검증 [class489]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class489 (41/52, 실전심화)"]
@@ -116,7 +116,7 @@ N3["1단계: 문서를 로딩하고 청크를 구성한다"]
 N4["2단계: 임베딩/벡터 검색으로 관련 문서를 찾는다"]
 N5["3단계: 검색 근거를 컨텍스트로 결합한다"]
 N6["4단계: 출처 포함 답변을 생성하고 검증한다"]
-N7["예제 실행: python ragPipeline/class489/class489_example.py"]
+N7["예제 실행: python ragPipeline/class489/class489_example1.py"]
 N8["다음 준비: 응답 검증/출처화 · 단계 4/5 실전 검증 [class489] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

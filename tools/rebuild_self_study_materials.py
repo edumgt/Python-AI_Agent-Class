@@ -1572,7 +1572,7 @@ def render_auto_tech_stack_block(
     - 주요 문법: {syntax_text}
     - 학습 포커스: `{module}`
 
-    ### 실습 example.py 동작 원리 (Mermaid Flowchart)
+    ### 실습 example1.py 동작 원리 (Mermaid Flowchart)
     ```mermaid
     {mermaid_flow}
     ```
@@ -2184,7 +2184,14 @@ def build_self_study_materials() -> None:
         rows.append(cleaned)
 
     def class_number(class_id: str) -> int:
-        return int(class_id.replace("class", ""))
+        match = re.search(r"(\d+)$", class_id)
+        if not match:
+            return 10**9
+        number = int(match.group(1))
+        if class_id.startswith("project"):
+            # Place project001~project020 after class500.
+            return 500 + number
+        return number
 
     ordered_rows = sorted(rows, key=lambda r: class_number(r["class"]))
     neighbors: dict[str, tuple[dict[str, str] | None, dict[str, str] | None]] = {}
@@ -2204,7 +2211,7 @@ def build_self_study_materials() -> None:
         class_rel_dir = class_rel_dir_from_row(row)
         class_dir.mkdir(parents=True, exist_ok=True)
         md_path = class_dir / f"{class_id}.md"
-        example_path = class_dir / f"{class_id}_example.py"
+        example_path = class_dir / f"{class_id}_example1.py"
         quiz_path = class_dir / f"{class_id}_quiz.html"
 
         flow_steps = build_flow_steps(

@@ -9,7 +9,6 @@ ALLOWED_CLASS_SEARCH_EXTS = {".md", ".py", ".html", ".txt", ".csv"}
 CLASS_SEARCH_EXCLUDE_PATTERNS = (
     re.compile(r".*_assignment(_.*)?\.py$", re.IGNORECASE),
     re.compile(r".*instructor_notes\.md$", re.IGNORECASE),
-    re.compile(r".*_quiz\.html$", re.IGNORECASE),
 )
 
 
@@ -97,7 +96,7 @@ class CurriculumIndex:
             r"어디부터어디",
             r"범위",
             r"시작.*끝",
-            r"class\d+.*class\d+",
+            r"(class|project)\d+.*(class|project)\d+",
         ]
         return any(re.search(p, q, flags=re.IGNORECASE) for p in patterns)
 
@@ -153,7 +152,7 @@ class CurriculumIndex:
                 "title": "DevOps",
                 "desc": "DevOps는 개발과 운영을 통합해 소프트웨어를 빠르고 안정적으로 배포/운영하는 방법론입니다.",
                 "subject": "프로젝트",
-                "hint": "대표 솔루션은 CI/CD(GitHub Actions/Jenkins), 컨테이너(Docker), 오케스트레이션(Kubernetes)입니다. 프로젝트 과목(class501~520)에서 배포 자동화와 운영 절차로 연결해 학습합니다.",
+                "hint": "대표 솔루션은 CI/CD(GitHub Actions/Jenkins), 컨테이너(Docker), 오케스트레이션(Kubernetes)입니다. 프로젝트 과목(project001~project020)에서 배포 자동화와 운영 절차로 연결해 학습합니다.",
             },
             "mlops": {
                 "title": "MLOps",
@@ -165,13 +164,13 @@ class CurriculumIndex:
                 "title": "AIOps",
                 "desc": "AIOps는 운영 로그·메트릭·트레이스를 AI/ML로 분석해 이상 탐지, 원인 분석, 자동 복구를 수행하는 방식입니다.",
                 "subject": "프로젝트",
-                "hint": "대표 솔루션은 Datadog, Dynatrace, New Relic, Splunk, Prometheus+Grafana 조합입니다. 프로젝트 과목 후반(class516~520)에서 관측성/이상탐지/Runbook을 다룹니다.",
+                "hint": "대표 솔루션은 Datadog, Dynatrace, New Relic, Splunk, Prometheus+Grafana 조합입니다. 프로젝트 과목 후반(project016~project020)에서 관측성/이상탐지/Runbook을 다룹니다.",
             },
             "llmops": {
                 "title": "LLMOps",
                 "desc": "LLMOps는 LLM 기반 서비스의 프롬프트, RAG, 평가, 가드레일, 배포/운영 품질을 관리하는 체계입니다.",
                 "subject": "프로젝트",
-                "hint": "대표 솔루션은 OpenAI API/플랫폼, Azure OpenAI, Vertex AI, Bedrock, LangChain 계열 도구입니다. 프로젝트 과목(class511~515)에서 RAG/품질관리 시나리오로 학습합니다.",
+                "hint": "대표 솔루션은 OpenAI API/플랫폼, Azure OpenAI, Vertex AI, Bedrock, LangChain 계열 도구입니다. 프로젝트 과목(project011~project015)에서 RAG/품질관리 시나리오로 학습합니다.",
             },
             "aws_stt": {
                 "title": "AWS STT 연동 리소스",
@@ -286,7 +285,7 @@ class CurriculumIndex:
         if not sources:
             return (
                 f"{class_id}({subject})의 질문에 대한 근거를 충분히 찾지 못했습니다. "
-                f"{class_id}.md / {class_id}_example.py 중심으로 다시 질문해 주세요."
+                f"{class_id}.md / {class_id}_example1.py 중심으로 다시 질문해 주세요."
             )
 
         lead = (

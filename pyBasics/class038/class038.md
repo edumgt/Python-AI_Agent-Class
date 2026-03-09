@@ -63,10 +63,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class038_example.py`
+- 예제 파일: `class038_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class038/class038_example.py
+python pyBasics/class038/class038_example1.py
 ```
 
 
@@ -76,7 +76,7 @@ python pyBasics/class038/class038_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class038\class038.py
-python .\pyBasics\class038\class038_example.py
+python .\pyBasics\class038\class038_example1.py
 python .\pyBasics\class038\class038_assignment.py
 start .\pyBasics\class038\class038_quiz.html
 ```
@@ -85,7 +85,7 @@ start .\pyBasics\class038\class038_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class038/class038.py
-python3 pyBasics/class038/class038_example.py
+python3 pyBasics/class038/class038_example1.py
 python3 pyBasics/class038/class038_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class038/class038_quiz.html')"
 ```
@@ -104,7 +104,7 @@ explorer.exe "$(wslpath -w 'pyBasics/class038/class038_quiz.html')"
 - 주요 문법: `Router 분리`, `Depends`, `HTTPException`, `Validation`
 - 학습 포커스: `FastAPI와 Uvicorn · 단계 2/2 운영 최적화 [class038]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class038 (38/40, 실전심화)"]
@@ -113,7 +113,7 @@ N3["1단계: 요구사항과 데이터 모델을 정의한다"]
 N4["2단계: 핵심 기능의 최소 동작 버전을 구현한다"]
 N5["3단계: 함수·클래스·모듈 구조로 리팩터링한다"]
 N6["4단계: 테스트와 예외 시나리오로 완성도를 검증한다"]
-N7["예제 실행: python pyBasics/class038/class038_example.py"]
+N7["예제 실행: python pyBasics/class038/class038_example1.py"]
 N8["다음 준비: FastAPI와 Uvicorn · 단계 2/2 운영 최적화 [class038] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

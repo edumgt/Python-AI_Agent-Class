@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class014_example.py`
+- 예제 파일: `class014_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class014/class014_example.py
+python pyBasics/class014/class014_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python pyBasics/class014/class014_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class014\class014.py
-python .\pyBasics\class014\class014_example.py
+python .\pyBasics\class014\class014_example1.py
 python .\pyBasics\class014\class014_assignment.py
 start .\pyBasics\class014\class014_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\pyBasics\class014\class014_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class014/class014.py
-python3 pyBasics/class014/class014_example.py
+python3 pyBasics/class014/class014_example1.py
 python3 pyBasics/class014/class014_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class014/class014_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class014/class014_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class014/class014_example.py`)
+- 실행: `CLI` (`python pyBasics/class014/class014_example1.py`)
 - 주요 문법: `for/while`, `range/enumerate`, `break/continue`, `누적 변수 패턴`
 - 학습 포커스: `반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class014 (14/40, 기초응용)"]
@@ -114,7 +114,7 @@ N3["1단계: 반복 대상 데이터와 종료 조건을 정의한다"]
 N4["2단계: for/while 중 적합한 반복 구조를 선택한다"]
 N5["3단계: break/continue로 예외 흐름을 제어한다"]
 N6["4단계: 누적 결과를 검증해 반복 로직 정확성을 확인한다"]
-N7["예제 실행: python pyBasics/class014/class014_example.py"]
+N7["예제 실행: python pyBasics/class014/class014_example1.py"]
 N8["다음 준비: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class358_example.py`
+- 예제 파일: `class358_example1.py`
 - 실행 명령:
 ```bash
-python promptEng/class358/class358_example.py
+python promptEng/class358/class358_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python promptEng/class358/class358_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\promptEng\class358\class358.py
-python .\promptEng\class358\class358_example.py
+python .\promptEng\class358\class358_example1.py
 python .\promptEng\class358\class358_assignment.py
 start .\promptEng\class358\class358_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\promptEng\class358\class358_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 promptEng/class358/class358.py
-python3 promptEng/class358/class358_example.py
+python3 promptEng/class358/class358_example1.py
 python3 promptEng/class358/class358_assignment.py
 explorer.exe "$(wslpath -w 'promptEng/class358/class358_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'promptEng/class358/class358_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python promptEng/class358/class358_example.py`)
+- 실행: `CLI` (`python promptEng/class358/class358_example1.py`)
 - 주요 문법: `문자열 템플릿`, `함수`, `변수 치환`, `출력(print)`
 - 학습 포커스: `질문 구조화 · 단계 2/4 기초 구현 [class358]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class358 (6/40, 입문)"]
@@ -114,7 +114,7 @@ N3["1단계: 역할/목표/형식을 명확히 정의한다"]
 N4["2단계: 프롬프트 템플릿을 작성한다"]
 N5["3단계: 예시를 바꿔 응답 품질을 비교한다"]
 N6["4단계: 평가 기준에 맞게 프롬프트를 튜닝한다"]
-N7["예제 실행: python promptEng/class358/class358_example.py"]
+N7["예제 실행: python promptEng/class358/class358_example1.py"]
 N8["다음 준비: 질문 구조화 · 단계 2/4 기초 구현 [class358] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

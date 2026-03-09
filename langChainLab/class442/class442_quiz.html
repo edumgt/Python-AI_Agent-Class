@@ -4,114 +4,599 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>class442 5문항 퀴즈</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>class442 10문항 퀴즈</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --sub: #475569;
+      --primary: #0b5fff;
+      --primary-strong: #0038c7;
+      --accent: #04b7a1;
+      --line: #d9e3f3;
+      --danger: #e44863;
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% -10%, rgba(11, 95, 255, 0.18), transparent 36%),
+        radial-gradient(circle at 90% 0%, rgba(4, 183, 161, 0.15), transparent 35%),
+        var(--bg);
+    }
+
+    body.scroll-lock {
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(1100px, 100% - 32px);
+      margin: 28px auto 56px;
+    }
+
+    .hero {
+      background: linear-gradient(140deg, #ffffff, #f8fbff);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(11, 95, 255, 0.1);
+      color: var(--primary-strong);
+    }
+
+    .hero h1 {
+      margin: 14px 0 8px;
+      font-size: clamp(24px, 3.4vw, 34px);
+      line-height: 1.22;
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .notice {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .notice-card {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--sub);
+    }
+
+    .btn-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: linear-gradient(120deg, var(--primary), var(--primary-strong));
+      color: #fff;
+    }
+
+    .btn.secondary {
+      background: #e6edf9;
+      color: #0b326c;
+    }
+
+    .btn.ghost {
+      background: #eff9f7;
+      color: #06645c;
+      border: 1px solid #bee9e3;
+    }
+
+    .quiz-grid {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .question {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+      padding: 16px;
+    }
+
+    .question-title {
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.52;
+      font-size: 15px;
+    }
+
+    .options {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid #d7e0ef;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .option:hover {
+      background: #f5f8fd;
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--primary);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+      padding: 16px;
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.52);
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-dialog {
+      position: relative;
+      z-index: 1;
+      width: min(920px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 50px rgba(15, 23, 42, 0.24);
+      padding: 18px;
+      transform: translateY(10px) scale(0.98);
+      transition: transform 0.18s ease;
+    }
+
+    .modal.show .modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 7px 12px;
+      background: #eaf0fb;
+      font-weight: 700;
+      color: #29476f;
+      cursor: pointer;
+    }
+
+    .result-summary {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #f8fbff;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .progress {
+      margin-top: 10px;
+      height: 10px;
+      background: #dbe6f7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > div {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+    }
+
+    .result-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .ok {
+      color: #0a7f51;
+      font-weight: 700;
+    }
+
+    .bad {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .code-meta {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    .code-grid {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .code-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .code-card header {
+      padding: 10px 12px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      background: #f7faff;
+      font-size: 13px;
+    }
+
+    .code-card pre {
+      margin: 0;
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.5;
+      background: #0f172a;
+      color: #d7e7ff;
+    }
+
+    @media (max-width: 740px) {
+      .container {
+        width: min(1100px, 100% - 20px);
+        margin-top: 16px;
+      }
+      .hero {
+        padding: 18px;
+      }
+      .btn {
+        width: 100%;
+      }
+      .btn-row {
+        display: grid;
+      }
+      .modal-dialog {
+        padding: 14px;
+      }
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-900">
-  <main class="mx-auto max-w-3xl px-4 py-10">
-    <section class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-      <p class="text-sm font-semibold text-sky-700">class442 SELF QUIZ</p>
-      <h1 class="mt-2 text-2xl font-bold">VectorStore 연동</h1>
-      <p class="mt-2 text-sm text-slate-600">
-        교과목: Langchain 활용하기 · 세부 시퀀스: 50/56 · 난이도: 실전심화 · Day 56 / 2교시
-      </p>
-      <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
-      </p>
+<body>
+  <main class="container">
+    <section class="hero">
+      <span class="badge">class442 SELF QUIZ</span>
+      <h1>VectorStore 연동 · 단계 5/6 실전 검증 [class442]</h1>
+      <p class="meta">교과목: Langchain 활용하기 · 세부 시퀀스: 50/56 · 난이도: 실전심화 · Day 56 / 2교시</p>
+      <div class="notice">
+        <article class="notice-card">학습 내용 + example1.py 코드 내용을 함께 반영한 10문항 퀴즈입니다.</article>
+        <article class="notice-card">채점 결과는 모달 팝업으로 제공되며, example 코드 스니펫도 모달에서 바로 확인할 수 있습니다.</article>
+      </div>
+      <div class="btn-row">
+        <button id="grade-btn" class="btn primary" type="button">채점하기</button>
+        <button id="reset-btn" class="btn secondary" type="button">다시 풀기</button>
+        <button id="open-code-btn" class="btn ghost" type="button">example 코드 보기</button>
+      </div>
     </section>
 
-    <section id="quiz-root" class="mt-6 space-y-4"></section>
-
-    <div class="mt-6 flex items-center gap-3">
-      <button id="grade-btn" class="rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white hover:bg-sky-700">
-        채점하기
-      </button>
-      <button id="reset-btn" class="rounded-lg bg-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300">
-        다시풀기
-      </button>
-    </div>
-
-    <div id="result-modal" class="fixed inset-0 z-50 hidden items-end justify-center p-3 sm:items-center sm:p-4" aria-hidden="true">
-  <div id="result-backdrop" class="absolute inset-0 bg-slate-900/55 opacity-0 transition-opacity duration-200"></div>
-  <section id="result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-modal-title" class="relative z-10 w-full max-w-3xl translate-y-2 scale-[0.98] rounded-2xl bg-white p-5 opacity-0 shadow-xl ring-1 ring-slate-200 transition-all duration-200 sm:p-6">
-    <div class="flex items-center justify-between gap-3">
-      <h2 id="result-modal-title" class="text-lg font-bold text-slate-900">채점 결과</h2>
-      <button id="result-close-btn" type="button" class="rounded-lg bg-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-300">닫기</button>
-    </div>
-    <section id="result-root" class="mt-4 max-h-[70vh] overflow-y-auto pr-1"></section>
-  </section>
-</div>
+    <section id="quiz-root" class="quiz-grid"></section>
   </main>
+
+  <div id="result-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="result-modal"></div>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <header class="modal-header">
+        <h2 id="result-title">채점 결과</h2>
+        <button class="close-btn" type="button" data-close-modal="result-modal">닫기</button>
+      </header>
+      <section id="result-root"></section>
+    </section>
+  </div>
+
+  <div id="code-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="code-modal"></div>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="code-title">
+      <header class="modal-header">
+        <h2 id="code-title">example 코드 참고</h2>
+        <button class="close-btn" type="button" data-close-modal="code-modal">닫기</button>
+      </header>
+      <section id="code-meta" class="code-meta"></section>
+      <section id="code-snippet-list" class="code-grid"></section>
+    </section>
+  </div>
 
   <script>
     const QUIZ_DATA = {
   "class_id": "class442",
   "subject_name": "Langchain 활용하기",
-  "module": "VectorStore 연동",
+  "module": "VectorStore 연동 · 단계 5/6 실전 검증 [class442]",
   "level": "실전심화",
   "session": "50/56",
   "track_outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
   "questions": [
     {
-      "question": "`VectorStore 연동` 학습에서 실습 품질을 높이기 위한 첫 실천으로 가장 적절한 것은 무엇인가요?",
+      "question": "class442 (Langchain 활용하기 50/56) 차시의 실제 학습 주제는 무엇인가요?",
       "options": [
-        "입력·출력 기준과 검증 조건을 먼저 정의한다.",
-        "문제를 분석하지 않고 코드를 길게 작성한다.",
-        "오류 메시지를 무시하고 결과 화면만 확인한다.",
-        "테스트 없이 바로 배포해 운영에서 확인한다."
+        "VectorStore 연동 · 단계 5/6 실전 검증 [class442]",
+        "OutputParser · 단계 5/6 실전 검증 [class414]",
+        "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]",
+        "VectorStore 연동 · 단계 2/6 기초 구현 [class439]"
       ],
       "answer_index": 0,
-      "explanation": "학습 품질은 구현 전에 기준(입력/출력/검증)을 명확히 할 때 가장 안정적으로 올라갑니다."
+      "explanation": "정답은 'VectorStore 연동 · 단계 5/6 실전 검증 [class442]' 입니다. 이전 모듈은 'VectorStore 연동 · 단계 4/6 응용 확장 [class441]', 다음 모듈은 'VectorStore 연동 · 단계 6/6 운영 최적화 [class443]' 입니다."
     },
     {
-      "question": "'VectorStore 연동' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
+      "question": "'VectorStore 연동 · 단계 5/6 실전 검증 [class442]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "VectorStore 연동 실습: 예제의 단계 함수를 하나씩 실행해 중간 결과를 확인해요.",
-        "LangChain 개요 실습: 예제의 단계 함수를 하나씩 실행해 중간 결과를 확인해요.",
-        "실전 체인 애플리케이션 실습: 예제의 단계 함수를 하나씩 실행해 중간 결과를 확인해요.",
-        "Memory 활용 실습: 예제의 단계 함수를 하나씩 실행해 중간 결과를 확인해요."
+        "VectorStore 연동 · 단계 5/6 실전 검증 [class442] 실습: `VectorStore 연동` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
+        "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 실습: `Tool/Agent 기초` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
+        "Tool/Agent 기초 · 단계 2/6 기초 구현 [class428] 실습: `Tool/Agent 기초` 단계 2/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
+        "문서 로딩과 분할 · 단계 1/5 입문 이해 [class433] 실습: `문서 로딩과 분할` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
       ],
       "answer_index": 0,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
     },
     {
-      "question": "'VectorStore 연동' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
+      "question": "'VectorStore 연동 · 단계 5/6 실전 검증 [class442]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다.",
-        "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
-        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
+        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
+        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
         "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
     },
     {
-      "question": "'VectorStore 연동' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
+      "question": "'VectorStore 연동 · 단계 5/6 실전 검증 [class442]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "설계 없이 구현부터 시작해 모듈 경계와 테스트 전략이 무너진다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
+        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
+        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
         "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다."
+        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
     },
     {
-      "question": "'VectorStore 연동'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
+      "question": "'VectorStore 연동 · 단계 5/6 실전 검증 [class442]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "문서 로딩과 분할 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Tool/Agent 기초 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "VectorStore 연동 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Model/LLM 연결 점검: 단계별 입력/출력을 설명할 수 있다."
+        "Memory 활용 · 단계 4/6 응용 확장 [class424] 점검: 단계별 입력/출력을 설명할 수 있다.",
+        "실전 체인 애플리케이션 · 단계 4/5 실전 검증 [class447] 점검: 단계별 입력/출력을 설명할 수 있다.",
+        "VectorStore 연동 · 단계 5/6 실전 검증 [class442] 점검: 단계별 입력/출력을 설명할 수 있다.",
+        "PromptTemplate · 단계 5/6 실전 검증 [class403] 점검: 단계별 입력/출력을 설명할 수 있다."
       ],
       "answer_index": 2,
       "explanation": "이 차시는 '각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+    },
+    {
+      "question": "'VectorStore 연동 · 단계 5/6 실전 검증 [class442]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
+      "options": [
+        "class262_example1.py",
+        "class005_example1.py",
+        "class295_example1.py",
+        "class442_example1.py"
+      ],
+      "answer_index": 3,
+      "explanation": "기본 예제 파일은 class442_example1.py 입니다."
+    },
+    {
+      "question": "'class442_example1.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
+      "options": [
+        "deep_learning",
+        "data_preprocess",
+        "rag",
+        "numpy"
+      ],
+      "answer_index": 2,
+      "explanation": "코드 상수 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
+    },
+    {
+      "question": "'class442_example1.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
+      "options": [
+        "main",
+        "step_collect",
+        "infer_schema",
+        "tokenize"
+      ],
+      "answer_index": 3,
+      "explanation": "예제 코드 함수 목록: tokenize, retrieve, answer, main"
+    },
+    {
+      "question": "'class442_example1.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "options": [
+        "numpy",
+        "platform",
+        "math",
+        "(import 없음)"
+      ],
+      "answer_index": 3,
+      "explanation": "예제 코드 import 목록: (import 없음)"
+    },
+    {
+      "question": "'class442' 차시의 example 파일 구성 범위로 맞는 것은 무엇인가요?",
+      "options": [
+        "example1~example5 (총 5개)",
+        "example1~example4 (총 4개)",
+        "example1만 제공 (총 1개)",
+        "example1~example3 (총 3개)"
+      ],
+      "answer_index": 0,
+      "explanation": "현재 포함된 예제 파일: class442_example1.py, class442_example2.py, class442_example3.py, class442_example4.py, class442_example5.py"
     }
   ],
-  "question_count": 5,
+  "question_count": 10,
   "day": 56,
-  "slot": 2
+  "slot": 2,
+  "example_reference": {
+    "files": [
+      "class442_example1.py",
+      "class442_example2.py",
+      "class442_example3.py",
+      "class442_example4.py",
+      "class442_example5.py"
+    ],
+    "template": "rag",
+    "imports": [],
+    "functions": [
+      "tokenize",
+      "retrieve",
+      "answer",
+      "main"
+    ],
+    "entrypoint": "main()"
+  },
+  "example_snippets": [
+    {
+      "file": "class442_example1.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class442 example1: VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+    },
+    {
+      "file": "class442_example2.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class442 example2: VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+    },
+    {
+      "file": "class442_example3.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class442 example3: VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+    },
+    {
+      "file": "class442_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class442 example4: VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+    },
+    {
+      "file": "class442_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class442 example5: VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 5/6 실전 검증 [class442]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+    }
+  ]
 };
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => modal.classList.add("show"));
+      document.body.classList.add("scroll-lock");
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      window.setTimeout(() => {
+        modal.classList.add("hidden");
+        if (!document.querySelector(".modal.show")) {
+          document.body.classList.remove("scroll-lock");
+        }
+      }, 180);
+    }
 
     function renderQuiz() {
       const root = document.getElementById("quiz-root");
@@ -119,29 +604,27 @@
 
       QUIZ_DATA.questions.forEach((q, qIndex) => {
         const wrap = document.createElement("article");
-        wrap.className = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200";
+        wrap.className = "question";
 
         const title = document.createElement("h2");
-        title.className = "text-base font-semibold";
+        title.className = "question-title";
         title.textContent = `${qIndex + 1}번. ${q.question}`;
         wrap.appendChild(title);
 
         const list = document.createElement("div");
-        list.className = "mt-3 space-y-2";
+        list.className = "options";
 
         q.options.forEach((opt, optIndex) => {
           const label = document.createElement("label");
-          label.className = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 p-3 hover:bg-slate-50";
+          label.className = "option";
 
           const radio = document.createElement("input");
           radio.type = "radio";
           radio.name = `q-${qIndex}`;
           radio.value = String(optIndex);
-          radio.className = "mt-1";
 
           const text = document.createElement("span");
-          text.className = "text-sm";
-          text.textContent = opt;
+          text.textContent = `${optIndex + 1}) ${opt}`;
 
           label.appendChild(radio);
           label.appendChild(text);
@@ -151,6 +634,41 @@
         wrap.appendChild(list);
         root.appendChild(wrap);
       });
+    }
+
+    function renderCodeModal() {
+      const ref = QUIZ_DATA.example_reference || {};
+      const files = Array.isArray(ref.files) ? ref.files : [];
+      const imports = Array.isArray(ref.imports) ? ref.imports : [];
+      const functions = Array.isArray(ref.functions) ? ref.functions : [];
+      const snippets = Array.isArray(QUIZ_DATA.example_snippets) ? QUIZ_DATA.example_snippets : [];
+
+      const meta = `
+        <div><b>파일:</b> ${escapeHtml(files.join(", ") || "정보 없음")}</div>
+        <div><b>템플릿:</b> ${escapeHtml(ref.template || "generic")}</div>
+        <div><b>엔트리:</b> ${escapeHtml(ref.entrypoint || "main()")}</div>
+        <div><b>imports:</b> ${escapeHtml(imports.join(", ") || "(import 없음)")}</div>
+        <div><b>functions:</b> ${escapeHtml(functions.join(", ") || "정보 없음")}</div>
+      `;
+      document.getElementById("code-meta").innerHTML = meta;
+
+      const list = document.getElementById("code-snippet-list");
+      if (!snippets.length) {
+        list.innerHTML = `
+          <article class="code-card">
+            <header>example 코드 미리보기</header>
+            <pre>표시할 코드 스니펫이 없습니다.</pre>
+          </article>
+        `;
+        return;
+      }
+
+      list.innerHTML = snippets.map((item) => `
+        <article class="code-card">
+          <header>${escapeHtml(item.file || "example1.py")}</header>
+          <pre>${escapeHtml(item.code || "")}</pre>
+        </article>
+      `).join("");
     }
 
     function gradeQuiz() {
@@ -174,86 +692,57 @@
       });
 
       const resultRoot = document.getElementById("result-root");
-      const resultModal = document.getElementById("result-modal");
-
-      const percentage = Math.round((score / total) * 100);
-      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
-      const badgeClass = score === total
-        ? "bg-emerald-100 text-emerald-700"
-        : "bg-amber-100 text-amber-700";
-      const barClass = score === total ? "bg-emerald-500" : "bg-amber-500";
+      const ratio = Math.round((score / total) * 100);
+      const statusClass = score === total ? "ok" : "bad";
       const summary = `
-        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <div class="flex items-center justify-between gap-3">
-            <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
-            <span class="rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}">정답률 ${percentage}%</span>
-          </div>
-          <div class="mt-3 h-2.5 w-full rounded-full bg-slate-200">
-            <div class="h-full rounded-full ${barClass}" style="width: ${percentage}%;"></div>
-          </div>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
-        <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
+        <article class="result-summary">
+          <h3 class="result-title ${statusClass}">점수: ${score} / ${total} (${ratio}%)</h3>
+          <p>학습 성과 힌트: ${escapeHtml(QUIZ_DATA.track_outcome || "")}</p>
+          <div class="progress"><div style="width:${ratio}%"></div></div>
+        </article>
       `;
 
       const rows = details.map((d) => `
-        <li class="rounded-lg border border-slate-200 p-3">
-          <p class="text-sm font-semibold">${d.number}번 - ${d.isCorrect ? "정답" : "오답"}</p>
-          <p class="mt-1 text-sm">내 답: ${d.chosen}</p>
-          <p class="text-sm">정답: ${d.correct}</p>
-          <p class="mt-1 text-xs text-slate-500">${d.explanation}</p>
+        <li class="result-item">
+          <div><b>${d.number}번</b> · <span class="${d.isCorrect ? "ok" : "bad"}">${d.isCorrect ? "정답" : "오답"}</span></div>
+          <div>내 답: ${escapeHtml(d.chosen)}</div>
+          <div>정답: ${escapeHtml(d.correct)}</div>
+          <div>해설: ${escapeHtml(d.explanation)}</div>
         </li>
       `).join("");
 
       resultRoot.innerHTML = `
         ${summary}
-        <ul class="mt-4 space-y-2">${rows}</ul>
+        <ul class="result-list">${rows}</ul>
       `;
-      const resultBackdrop = document.getElementById("result-backdrop");
-      const resultDialog = document.getElementById("result-dialog");
-
-      resultModal.classList.remove("hidden");
-      resultModal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("overflow-hidden");
-
-      requestAnimationFrame(() => {
-        resultBackdrop.classList.remove("opacity-0");
-        resultDialog.classList.remove("opacity-0", "translate-y-2", "scale-[0.98]");
-      });
-    }
-
-    function closeResultModal() {
-      const resultModal = document.getElementById("result-modal");
-      const resultBackdrop = document.getElementById("result-backdrop");
-      const resultDialog = document.getElementById("result-dialog");
-      const resultRoot = document.getElementById("result-root");
-
-      resultBackdrop.classList.add("opacity-0");
-      resultDialog.classList.add("opacity-0", "translate-y-2", "scale-[0.98]");
-      resultModal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("overflow-hidden");
-
-      window.setTimeout(() => {
-        resultModal.classList.add("hidden");
-        resultRoot.innerHTML = "";
-      }, 200);
+      openModal("result-modal");
     }
 
     function resetQuiz() {
       document.querySelectorAll('input[type="radio"]').forEach((el) => {
         el.checked = false;
       });
-      closeResultModal();
+      document.getElementById("result-root").innerHTML = "";
+      closeModal("result-modal");
     }
 
-    document.getElementById("grade-btn").addEventListener("click", gradeQuiz);
-    document.getElementById("reset-btn").addEventListener("click", resetQuiz);
-    document.getElementById("result-close-btn").addEventListener("click", closeResultModal);
-    document.getElementById("result-backdrop").addEventListener("click", closeResultModal);
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeResultModal();
-    });
+    function bindModalCloseButtons() {
+      document.querySelectorAll("[data-close-modal]").forEach((el) => {
+        el.addEventListener("click", () => closeModal(el.dataset.closeModal));
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeModal("result-modal");
+        closeModal("code-modal");
+      });
+    }
+
+    document.getElementById("grade-btn").addEventListener("click", () => gradeQuiz());
+    document.getElementById("reset-btn").addEventListener("click", () => resetQuiz());
+    document.getElementById("open-code-btn").addEventListener("click", () => openModal("code-modal"));
+    bindModalCloseButtons();
     renderQuiz();
+    renderCodeModal();
   </script>
 </body>
 </html>

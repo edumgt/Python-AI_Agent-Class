@@ -68,10 +68,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class156_example.py`
+- 예제 파일: `class156_example1.py`
 - 실행 명령:
 ```bash
-python nlpSpeechAI/class156/class156_example.py
+python nlpSpeechAI/class156/class156_example1.py
 ```
 
 
@@ -81,7 +81,7 @@ python nlpSpeechAI/class156/class156_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\nlpSpeechAI\class156\class156.py
-python .\nlpSpeechAI\class156\class156_example.py
+python .\nlpSpeechAI\class156\class156_example1.py
 python .\nlpSpeechAI\class156\class156_assignment.py
 start .\nlpSpeechAI\class156\class156_quiz.html
 ```
@@ -90,7 +90,7 @@ start .\nlpSpeechAI\class156\class156_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 nlpSpeechAI/class156/class156.py
-python3 nlpSpeechAI/class156/class156_example.py
+python3 nlpSpeechAI/class156/class156_example1.py
 python3 nlpSpeechAI/class156/class156_assignment.py
 explorer.exe "$(wslpath -w 'nlpSpeechAI/class156/class156_quiz.html')"
 ```
@@ -105,11 +105,11 @@ explorer.exe "$(wslpath -w 'nlpSpeechAI/class156/class156_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python nlpSpeechAI/class156/class156_example.py`)
+- 실행: `CLI` (`python nlpSpeechAI/class156/class156_example1.py`)
 - 주요 문법: `문자열 처리`, `토큰화`, `딕셔너리 집계`, `출력(print)`
 - 학습 포커스: `임베딩 기초 · 단계 4/8 응용 확장 [class156]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class156 (28/96, 기초응용)"]
@@ -118,7 +118,7 @@ N3["1단계: 텍스트를 정제하고 토큰 단위로 분해한다"]
 N4["2단계: 핵심 특징(빈도/패턴)을 계산한다"]
 N5["3단계: 주요 태스크를 실행해 결과를 생성한다"]
 N6["4단계: 오탐/누락 사례를 점검해 규칙을 보완한다"]
-N7["예제 실행: python nlpSpeechAI/class156/class156_example.py"]
+N7["예제 실행: python nlpSpeechAI/class156/class156_example1.py"]
 N8["다음 준비: 임베딩 기초 · 단계 4/8 응용 확장 [class156] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

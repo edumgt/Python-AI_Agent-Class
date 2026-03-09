@@ -3,7 +3,7 @@
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ $# -eq 0 ]; then
-  echo "Usage: ./run_class.sh class001"
+  echo "Usage: ./run_class.sh class001 (or project001)"
   exit 1
 fi
 CLASS_ID="$1"

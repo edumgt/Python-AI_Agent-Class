@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class011_example.py`
+- 예제 파일: `class011_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class011/class011_example.py
+python pyBasics/class011/class011_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python pyBasics/class011/class011_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class011\class011.py
-python .\pyBasics\class011\class011_example.py
+python .\pyBasics\class011\class011_example1.py
 python .\pyBasics\class011\class011_assignment.py
 start .\pyBasics\class011\class011_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\pyBasics\class011\class011_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class011/class011.py
-python3 pyBasics/class011/class011_example.py
+python3 pyBasics/class011/class011_example1.py
 python3 pyBasics/class011/class011_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class011/class011_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class011/class011_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class011/class011_example.py`)
+- 실행: `CLI` (`python pyBasics/class011/class011_example1.py`)
 - 주요 문법: `산술/비교/논리 연산자`, `if / elif / else`, `단락 평가(and, or)`, `멤버십(in, not in)`
 - 학습 포커스: `연산자와 조건문 · 단계 3/4 실전 검증 [class011]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class011 (11/40, 기초응용)"]
@@ -114,7 +114,7 @@ N3["1단계: 요구사항을 불리언 조건식으로 변환한다"]
 N4["2단계: 연산자 우선순위를 정리해 조건식을 확정한다"]
 N5["3단계: if/elif/else로 분기 경로를 구현한다"]
 N6["4단계: 경계값 테스트로 분기 누락 여부를 검증한다"]
-N7["예제 실행: python pyBasics/class011/class011_example.py"]
+N7["예제 실행: python pyBasics/class011/class011_example1.py"]
 N8["다음 준비: 연산자와 조건문 · 단계 3/4 실전 검증 [class011] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

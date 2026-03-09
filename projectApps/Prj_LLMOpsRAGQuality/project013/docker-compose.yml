@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PROJECT_ID: ${PROJECT_ID:-project013}
+      PROJECT_NAME: ${PROJECT_NAME:-Prj_LLMOpsRAGQuality}
+      PROJECT_TRACK: ${PROJECT_TRACK:-프로젝트-3}
+      PROJECT_TOPIC: ${PROJECT_TOPIC:-LLMOps/RAG 서비스 품질관리 · 단계 3/5 응용 확장}
+    ports:
+      - "${APP_HOST_PORT:-9113}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped

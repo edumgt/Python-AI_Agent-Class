@@ -40,7 +40,6 @@ EXCLUDED_DIRS = {
 }
 
 EXCLUDED_FILE_PATTERNS = (
-    re.compile(r".*_quiz\.html$", re.IGNORECASE),
     re.compile(r".*_assignment_.*\.py$", re.IGNORECASE),
     re.compile(r".*instructor_notes\.md$", re.IGNORECASE),
 )

@@ -64,10 +64,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class005_example.py`
+- 예제 파일: `class005_example1.py`
 - 실행 명령:
 ```bash
-python pyBasics/class005/class005_example.py
+python pyBasics/class005/class005_example1.py
 ```
 
 
@@ -77,7 +77,7 @@ python pyBasics/class005/class005_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\pyBasics\class005\class005.py
-python .\pyBasics\class005\class005_example.py
+python .\pyBasics\class005\class005_example1.py
 python .\pyBasics\class005\class005_assignment.py
 start .\pyBasics\class005\class005_quiz.html
 ```
@@ -86,7 +86,7 @@ start .\pyBasics\class005\class005_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 pyBasics/class005/class005.py
-python3 pyBasics/class005/class005_example.py
+python3 pyBasics/class005/class005_example1.py
 python3 pyBasics/class005/class005_assignment.py
 explorer.exe "$(wslpath -w 'pyBasics/class005/class005_quiz.html')"
 ```
@@ -101,11 +101,11 @@ explorer.exe "$(wslpath -w 'pyBasics/class005/class005_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python pyBasics/class005/class005_example.py`)
+- 실행: `CLI` (`python pyBasics/class005/class005_example1.py`)
 - 주요 문법: `변수 할당(=)`, `상수 관례(UPPER_CASE)`, `타입 확인(type, isinstance)`, `배열/리스트(list)`
 - 학습 포커스: `변수와 자료형 · 단계 1/4 입문 이해 [class005]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class005 (5/40, 입문)"]
@@ -114,7 +114,7 @@ N3["1단계: 문제에서 필요한 값을 변수와 상수로 분리한다"]
 N4["2단계: 각 값의 타입을 확인하고 필요한 타입 변환을 정의한다"]
 N5["3단계: 배열(list) 인덱싱/슬라이싱으로 데이터 접근 규칙을 만든다"]
 N6["4단계: 경계값 입력으로 타입 가정이 맞는지 테스트한다"]
-N7["예제 실행: python pyBasics/class005/class005_example.py"]
+N7["예제 실행: python pyBasics/class005/class005_example1.py"]
 N8["다음 준비: 변수와 자료형 · 단계 1/4 입문 이해 [class005] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

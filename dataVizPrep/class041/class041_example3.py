@@ -13,7 +13,7 @@ def build_setup_plan():
         ("venv", "python -m venv .venv"),
         ("activate", "source .venv/bin/activate"),
         ("deps", "pip install -r requirements.txt"),
-        ("run", "python class041_example.py"),
+        ("run", "python class041_example1.py"),
     ]
 
 def scan_workspace():

@@ -68,10 +68,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class237_example.py`
+- 예제 파일: `class237_example1.py`
 - 실행 명령:
 ```bash
-python speechTtsStt/class237/class237_example.py
+python speechTtsStt/class237/class237_example1.py
 ```
 
 
@@ -81,7 +81,7 @@ python speechTtsStt/class237/class237_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\speechTtsStt\class237\class237.py
-python .\speechTtsStt\class237\class237_example.py
+python .\speechTtsStt\class237\class237_example1.py
 python .\speechTtsStt\class237\class237_assignment.py
 start .\speechTtsStt\class237\class237_quiz.html
 ```
@@ -90,7 +90,7 @@ start .\speechTtsStt\class237\class237_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 speechTtsStt/class237/class237.py
-python3 speechTtsStt/class237/class237_example.py
+python3 speechTtsStt/class237/class237_example1.py
 python3 speechTtsStt/class237/class237_assignment.py
 explorer.exe "$(wslpath -w 'speechTtsStt/class237/class237_quiz.html')"
 ```
@@ -105,11 +105,11 @@ explorer.exe "$(wslpath -w 'speechTtsStt/class237/class237_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python speechTtsStt/class237/class237_example.py`)
+- 실행: `CLI` (`python speechTtsStt/class237/class237_example1.py`)
 - 주요 문법: `리스트/딕셔너리`, `조건 필터링`, `통계 계산`, `출력(print)`
 - 학습 포커스: `STT 파이프라인 · 단계 6/6 운영 최적화 [class237]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class237 (13/64, 기초응용)"]
@@ -118,7 +118,7 @@ N3["1단계: 음성 데이터와 라벨 품질을 점검한다"]
 N4["2단계: 특징(MFCC 등)을 추출하고 전처리한다"]
 N5["3단계: STT/TTS 추론 또는 학습 단계를 실행한다"]
 N6["4단계: 품질 지표를 계산해 결과를 검증한다"]
-N7["예제 실행: python speechTtsStt/class237/class237_example.py"]
+N7["예제 실행: python speechTtsStt/class237/class237_example1.py"]
 N8["다음 준비: STT 파이프라인 · 단계 6/6 운영 최적화 [class237] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3

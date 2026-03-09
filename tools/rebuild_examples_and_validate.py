@@ -54,7 +54,7 @@ def variants_for_row(row: dict[str, str], class_dir: Path | None = None) -> list
 
 
 def example_path(class_dir: Path, class_id: str, variant: int) -> Path:
-    suffix = "example" if variant == 1 else f"example{variant}"
+    suffix = f"example{variant}"
     return class_dir / f"{class_id}_{suffix}.py"
 
 
@@ -154,7 +154,7 @@ def build_body(template: str, class_id: str) -> str:
                 ("venv", "python -m venv .venv"),
                 ("activate", "source .venv/bin/activate"),
                 ("deps", "pip install -r requirements.txt"),
-                ("run", "python {class_id}_example.py"),
+                ("run", "python {class_id}_example1.py"),
             ]
 
         def scan_workspace():
@@ -860,6 +860,11 @@ def rebuild_examples(rows: list[dict[str, str]]) -> int:
                 newline="\n",
             )
             written += 1
+
+        # 레거시 기본 예제 파일명(classXXX_example.py) 정리
+        legacy_example = class_dir / f"{class_id}_example.py"
+        if legacy_example.exists():
+            legacy_example.unlink()
 
         # pyBasics는 기존 정책대로 example1~3만 유지
         if is_python_basics(row, class_dir=class_dir):

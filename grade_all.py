@@ -31,14 +31,20 @@ def load_class_ids_from_index(root: Path) -> list[str]:
 def main() -> int:
     ap = argparse.ArgumentParser(description='전체 차시 일괄 채점기')
     ap.add_argument('--tier', default='basic', choices=['basic', 'advanced', 'challenge'])
-    ap.add_argument('--start', default='class001', help='시작 class id (예: class001)')
-    ap.add_argument('--end', default='class500', help='끝 class id (예: class500)')
+    ap.add_argument('--start', default='class001', help='시작 id (예: class001)')
+    ap.add_argument('--end', default='project020', help='끝 id (예: class500 또는 project020)')
     ap.add_argument('--fail-fast', action='store_true', help='실패 시 즉시 중단')
     args = ap.parse_args()
 
     class_ids = load_class_ids_from_index(ROOT)
     if not class_ids:
-        class_ids = sorted([p.name for p in ROOT.glob('class*') if p.is_dir() and p.name.startswith('class')])
+        class_ids = sorted(
+            [
+                p.name
+                for p in ROOT.iterdir()
+                if p.is_dir() and (p.name.startswith('class') or p.name.startswith('project'))
+            ]
+        )
     target = [cid for cid in class_ids if args.start <= cid <= args.end]
 
     total = len(target)

@@ -66,10 +66,10 @@ pip install -r requirements.txt
 ```
 
 ## 5) 오늘의 예제 코드
-- 예제 파일: `class054_example.py`
+- 예제 파일: `class054_example1.py`
 - 실행 명령:
 ```bash
-python dataVizPrep/class054/class054_example.py
+python dataVizPrep/class054/class054_example1.py
 ```
 
 
@@ -79,7 +79,7 @@ python dataVizPrep/class054/class054_example.py
 ```powershell
 cd C:\DevOps\Python-AI_Agent-Class
 python .\dataVizPrep\class054\class054.py
-python .\dataVizPrep\class054\class054_example.py
+python .\dataVizPrep\class054\class054_example1.py
 python .\dataVizPrep\class054\class054_assignment.py
 start .\dataVizPrep\class054\class054_quiz.html
 ```
@@ -88,7 +88,7 @@ start .\dataVizPrep\class054\class054_quiz.html
 ```bash
 cd /mnt/c/DevOps/Python-AI_Agent-Class
 python3 dataVizPrep/class054/class054.py
-python3 dataVizPrep/class054/class054_example.py
+python3 dataVizPrep/class054/class054_example1.py
 python3 dataVizPrep/class054/class054_assignment.py
 explorer.exe "$(wslpath -w 'dataVizPrep/class054/class054_quiz.html')"
 ```
@@ -103,11 +103,11 @@ explorer.exe "$(wslpath -w 'dataVizPrep/class054/class054_quiz.html')"
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
-- 실행: `CLI` (`python dataVizPrep/class054/class054_example.py`)
+- 실행: `CLI` (`python dataVizPrep/class054/class054_example1.py`)
 - 주요 문법: `함수`, `리스트/딕셔너리`, `집계 로직`, `출력(print)`
 - 학습 포커스: `결측치/이상치 처리 · 단계 2/4 기초 구현 [class054]`
 
-### 실습 example.py 동작 원리 (Mermaid Flowchart)
+### 실습 example1.py 동작 원리 (Mermaid Flowchart)
 ```mermaid
 flowchart TD
 N1["시작: class054 (14/40, 기초응용)"]
@@ -116,7 +116,7 @@ N3["1단계: 원본 데이터를 로딩하고 구조를 확인한다"]
 N4["2단계: 결측치/이상치를 전처리한다"]
 N5["3단계: 집계·변환으로 분석용 데이터를 만든다"]
 N6["4단계: 요약 결과를 표/리포트로 검증한다"]
-N7["예제 실행: python dataVizPrep/class054/class054_example.py"]
+N7["예제 실행: python dataVizPrep/class054/class054_example1.py"]
 N8["다음 준비: 결측치/이상치 처리 · 단계 2/4 기초 구현 [class054] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3
