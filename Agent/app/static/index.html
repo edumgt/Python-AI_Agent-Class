@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Class Agent</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
   <style>
     :root {
       --bg0: #f2f5ff;
@@ -18,147 +16,241 @@
       --muted: #5f6e8c;
       --brand: #0f62fe;
       --brand2: #13b0a5;
-      --warn: #f97316;
+      --bubble: #ffffff;
+      --input: #ffffff;
     }
+
+    [data-theme="dark"] {
+      --bg0: #0f172a;
+      --bg1: #111827;
+      --card: #111827d9;
+      --line: #273449;
+      --ink: #e5edf9;
+      --muted: #9db0cc;
+      --brand: #3b82f6;
+      --brand2: #14b8a6;
+      --bubble: #0b1220;
+      --input: #0b1220;
+    }
+
     * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
     body {
-      font-family: "Space Grotesk", "IBM Plex Sans KR", sans-serif;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 13px;
       color: var(--ink);
       background:
-        radial-gradient(1200px 500px at 90% -20%, #c5f6f0 0%, transparent 60%),
-        radial-gradient(800px 480px at 10% 0%, #d1d9ff 0%, transparent 60%),
+        radial-gradient(1200px 540px at 92% -16%, rgba(19, 176, 165, 0.22) 0%, transparent 60%),
+        radial-gradient(860px 540px at 10% 0%, rgba(59, 130, 246, 0.16) 0%, transparent 60%),
         linear-gradient(160deg, var(--bg0), var(--bg1));
-      min-height: 100vh;
     }
+
     .glass {
       background: var(--card);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
       border: 1px solid var(--line);
-      box-shadow: 0 8px 28px rgba(40, 74, 140, 0.12);
+      box-shadow: 0 8px 24px rgba(20, 36, 66, 0.14);
     }
-    .rise { animation: rise 0.45s ease both; }
+
+    .rise { animation: rise 0.34s ease both; }
+
     @keyframes rise {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .gradient-chip {
       background: linear-gradient(120deg, var(--brand), var(--brand2));
       color: #fff;
     }
-    .fancy-scroll::-webkit-scrollbar { width: 10px; }
-    .fancy-scroll::-webkit-scrollbar-thumb { background: #c3cfe9; border-radius: 999px; }
+
+    .fancy-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+    .fancy-scroll::-webkit-scrollbar-thumb { background: #7f93b61f; border-radius: 999px; }
+
+    .panel-slide-left { transform: translateX(-100%); }
+    .panel-slide-right { transform: translateX(100%); }
   </style>
 </head>
-<body>
-  <div class="relative flex min-h-screen">
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-[21rem] -translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:pl-4 md:py-4">
-      <div class="glass h-full rounded-3xl p-5">
-        <div class="mb-6 flex items-center justify-between">
+<body data-theme="light">
+  <div class="relative h-screen w-screen overflow-hidden">
+    <aside id="leftPanel" class="panel-slide-left fixed inset-y-0 left-0 z-40 w-[18rem] p-3 transition-transform duration-300">
+      <div class="glass h-full rounded-2xl p-4">
+        <div class="mb-4 flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold tracking-[0.24em] text-blue-700">AI CLASS AGENT</p>
-            <h1 class="mt-1 text-xl font-bold">RAG Control Deck</h1>
+            <p class="text-[10px] font-bold tracking-[0.22em] text-blue-500">AI CLASS AGENT</p>
+            <h1 class="mt-1 text-lg font-bold">RAG Control Deck</h1>
           </div>
-          <button id="closeSidebar" class="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-sm md:hidden">닫기</button>
+          <button id="closeLeftPanel" class="rounded-lg border border-slate-300/70 bg-white/70 px-2 py-1 text-xs text-slate-700">닫기</button>
         </div>
 
-        <section class="mb-5 rounded-2xl border border-blue-200 bg-blue-50/70 p-4 rise">
-          <h2 class="mb-2 text-sm font-bold text-blue-700">시스템 상태</h2>
-          <p class="text-sm"><span class="font-semibold">상태</span>: <span id="healthStatus">확인 중...</span></p>
-          <p class="mt-1 text-sm"><span class="font-semibold">컬렉션</span>: <span id="healthCollection">-</span></p>
-          <p class="mt-1 text-sm"><span class="font-semibold">문서 수</span>: <span id="healthDocs">-</span></p>
+        <section class="mb-3 rounded-xl border border-blue-200/80 bg-blue-50/70 p-3 rise">
+          <h2 class="mb-2 text-xs font-bold text-blue-700">시스템 상태</h2>
+          <p class="text-xs"><span class="font-semibold">상태</span>: <span id="healthStatus">확인 중...</span></p>
+          <p class="mt-1 text-xs"><span class="font-semibold">컬렉션</span>: <span id="healthCollection">-</span></p>
+          <p class="mt-1 text-xs"><span class="font-semibold">문서 수</span>: <span id="healthDocs">-</span></p>
         </section>
 
-        <section class="rounded-2xl border border-slate-200 bg-white/70 p-4 rise">
-          <h2 class="mb-3 text-sm font-bold text-slate-700">질의 설정</h2>
-          <label class="mb-3 block text-sm">
-            <span class="mb-1 block text-slate-600">Top-K</span>
-            <input id="topK" type="number" min="1" max="20" value="6" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2" />
+        <section class="rounded-xl border border-slate-200/80 bg-white/70 p-3 rise">
+          <h2 class="mb-2 text-xs font-bold text-slate-700">질의 설정</h2>
+          <label class="mb-2 block text-xs">
+            <span class="mb-1 block" style="color: var(--muted);">Top-K</span>
+            <input id="topK" type="number" min="1" max="20" value="6" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-800" />
           </label>
-          <label class="mb-4 flex items-center gap-2 text-sm text-slate-700">
-            <input id="useLlm" type="checkbox" checked class="h-4 w-4 rounded border-slate-300" />
+          <label class="mb-3 flex items-center gap-2 text-xs" style="color: var(--ink);">
+            <input id="useLlm" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-300" />
             LLM 답변 사용
           </label>
-          <button id="reindexBtn" class="w-full rounded-xl gradient-chip px-3 py-2 text-sm font-semibold transition hover:brightness-110">
-            인덱스 재생성
+          <button id="reindexBtn" class="w-full rounded-lg gradient-chip px-2 py-1.5 text-xs font-semibold transition hover:brightness-110">
+            RAG 재반영
           </button>
         </section>
       </div>
     </aside>
 
-    <div id="sidebarBackdrop" class="fixed inset-0 z-30 hidden bg-slate-900/45 md:hidden"></div>
+    <aside id="rightPanel" class="panel-slide-right fixed inset-y-0 right-0 z-40 w-[26rem] p-3 transition-transform duration-300">
+      <div class="glass flex h-full min-h-0 flex-col rounded-2xl p-4">
+        <div class="mb-2 flex items-center justify-between">
+          <h3 class="text-sm font-bold">검색 근거</h3>
+          <button id="closeRightPanel" class="rounded-lg border border-slate-300/70 bg-white/70 px-2 py-1 text-xs text-slate-700">닫기</button>
+        </div>
+        <p id="sourceMeta" class="mb-2 text-[11px]" style="color: var(--muted);">아직 검색 결과가 없습니다.</p>
+        <div id="sources" class="fancy-scroll min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl border border-slate-200/80 p-2 text-xs" style="background: var(--bubble); color: var(--ink);">
+          아직 검색 결과가 없습니다.
+        </div>
+      </div>
+    </aside>
 
-    <main class="flex min-w-0 flex-1 flex-col md:pr-4 md:py-4">
-      <header class="glass sticky top-0 z-20 mx-4 mt-4 rounded-2xl px-4 py-3 md:mx-0 md:mt-0">
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <button id="openSidebar" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm md:hidden">메뉴</button>
+    <div id="panelBackdrop" class="fixed inset-0 z-30 hidden bg-slate-900/45"></div>
+
+    <main class="relative z-10 flex h-full min-w-0 flex-col gap-2 p-3">
+      <header class="glass rounded-xl px-3 py-2">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <button id="openLeftPanel" class="rounded-lg border border-slate-300/80 bg-white/70 px-2 py-1 text-xs text-slate-700">메뉴</button>
             <div>
-              <p class="text-xs text-slate-500">Python / LLM / AI Agent Q&A Workspace</p>
-              <h2 class="text-lg font-bold">Ask, Trace, Ship</h2>
+              <p class="text-[11px]" style="color: var(--muted);">Python / LLM / AI Agent Q&A Workspace</p>
+              <h2 class="text-xl font-bold leading-tight">Ask, Trace, Ship</h2>
             </div>
           </div>
-          <span class="gradient-chip rounded-full px-3 py-1 text-xs font-semibold">FastAPI + Chroma</span>
+          <div class="flex items-center gap-2">
+            <button id="themeToggle" class="rounded-lg border border-slate-300/80 bg-white/70 px-2 py-1 text-[11px] text-slate-700">Dark</button>
+            <button id="openRightPanel" class="rounded-lg border border-slate-300/80 bg-white/70 px-2 py-1 text-[11px] text-slate-700">근거 보기</button>
+            <span class="gradient-chip rounded-full px-2.5 py-1 text-[11px] font-semibold">FastAPI + Chroma</span>
+          </div>
         </div>
       </header>
 
-      <section class="flex-1 p-4 md:p-0 md:pt-4">
-        <div class="grid h-full gap-4 lg:grid-cols-[1.45fr_1fr]">
-          <article class="glass flex min-h-[60vh] flex-col rounded-3xl p-5">
-            <div class="mb-3 flex items-center justify-between">
-              <h3 class="text-base font-bold">질문 / 답변</h3>
-              <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Live</span>
-            </div>
+      <section class="min-h-0 flex-1">
+        <article class="glass flex h-full min-h-0 flex-col rounded-2xl p-3">
+          <div class="mb-2 flex items-center justify-between">
+            <h3 class="text-sm font-bold">질문 / 답변</h3>
+            <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Live</span>
+          </div>
 
-            <div id="chatLog" class="fancy-scroll flex-1 space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white/70 p-3">
-              <div class="rounded-2xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900 rise">
-                질문을 입력하면 저장소 근거를 찾고 답변과 출처를 함께 제공합니다.
-              </div>
+          <div id="chatLog" class="fancy-scroll min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl border border-slate-200/80 p-2" style="background: var(--bubble);">
+            <div class="rounded-xl border border-blue-200 bg-blue-50 p-2 text-xs text-blue-900 rise">
+              RAG 모드: 질문 입력 → 관련 문서 검색 → 근거 기반 답변 생성. 오른쪽 <b>근거 보기</b> 오프캔버스에서 출처를 확인하세요.
             </div>
-            <p id="answerMeta" class="mt-2 text-xs text-slate-500"></p>
+          </div>
 
-            <form id="askForm" class="mt-4 space-y-2">
-              <textarea id="question" rows="3" class="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-blue-500 focus:ring" placeholder="예: class001 준비 단계에서 반드시 확인할 설정은?" ></textarea>
-              <div class="flex items-center justify-end">
-                <button type="submit" id="askBtn" class="rounded-2xl gradient-chip px-4 py-2 text-sm font-semibold transition hover:brightness-110">
-                  질문하기
-                </button>
-              </div>
-            </form>
-          </article>
+          <p id="answerMeta" class="mt-1 text-[11px]" style="color: var(--muted);"></p>
 
-          <article class="glass flex min-h-[60vh] flex-col rounded-3xl p-5">
-            <div class="mb-3 flex items-center justify-between">
-              <h3 class="text-base font-bold">검색 근거</h3>
-              <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">Source</span>
+          <form id="askForm" class="mt-2 space-y-1.5">
+            <textarea id="question" rows="2" class="w-full rounded-xl border border-slate-300 px-2 py-1.5 text-xs outline-none ring-blue-500 focus:ring" style="background: var(--input); color: var(--ink);" placeholder="예: class001 준비 단계에서 반드시 확인할 설정은?"></textarea>
+            <div class="flex items-center justify-between">
+              <p class="text-[11px]" style="color: var(--muted);">Enter: 질문 전송 / Shift+Enter: 줄바꿈</p>
+              <button type="submit" id="askBtn" class="rounded-xl gradient-chip px-3 py-1.5 text-xs font-semibold transition hover:brightness-110">
+                질문하기
+              </button>
             </div>
-            <div id="sources" class="fancy-scroll flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-white/70 p-3 text-sm text-slate-700">
-              아직 검색 결과가 없습니다.
-            </div>
-          </article>
-        </div>
+          </form>
+        </article>
       </section>
+
+      <footer class="glass rounded-xl px-3 py-1.5 text-center text-[11px]" style="color: var(--muted);">
+        © www.edumgt.co.kr All rights reserved.
+      </footer>
     </main>
   </div>
 
   <script>
-    const sidebar = document.getElementById("sidebar");
-    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
-    const openSidebar = document.getElementById("openSidebar");
-    const closeSidebar = document.getElementById("closeSidebar");
+    const body = document.body;
 
-    function showSidebar() {
-      sidebar.classList.remove("-translate-x-full");
-      sidebarBackdrop.classList.remove("hidden");
+    const leftPanel = document.getElementById("leftPanel");
+    const rightPanel = document.getElementById("rightPanel");
+    const backdrop = document.getElementById("panelBackdrop");
+
+    const openLeftPanel = document.getElementById("openLeftPanel");
+    const closeLeftPanel = document.getElementById("closeLeftPanel");
+    const openRightPanel = document.getElementById("openRightPanel");
+    const closeRightPanel = document.getElementById("closeRightPanel");
+
+    function refreshBackdrop() {
+      const leftOpened = !leftPanel.classList.contains("panel-slide-left");
+      const rightOpened = !rightPanel.classList.contains("panel-slide-right");
+      if (leftOpened || rightOpened) backdrop.classList.remove("hidden");
+      else backdrop.classList.add("hidden");
     }
 
-    function hideSidebar() {
-      sidebar.classList.add("-translate-x-full");
-      sidebarBackdrop.classList.add("hidden");
+    function showLeftPanel() {
+      leftPanel.classList.remove("panel-slide-left");
+      refreshBackdrop();
     }
 
-    openSidebar?.addEventListener("click", showSidebar);
-    closeSidebar?.addEventListener("click", hideSidebar);
-    sidebarBackdrop?.addEventListener("click", hideSidebar);
+    function hideLeftPanel() {
+      leftPanel.classList.add("panel-slide-left");
+      refreshBackdrop();
+    }
+
+    function showRightPanel() {
+      rightPanel.classList.remove("panel-slide-right");
+      refreshBackdrop();
+    }
+
+    function hideRightPanel() {
+      rightPanel.classList.add("panel-slide-right");
+      refreshBackdrop();
+    }
+
+    openLeftPanel?.addEventListener("click", showLeftPanel);
+    closeLeftPanel?.addEventListener("click", hideLeftPanel);
+    openRightPanel?.addEventListener("click", showRightPanel);
+    closeRightPanel?.addEventListener("click", hideRightPanel);
+
+    backdrop?.addEventListener("click", () => {
+      hideLeftPanel();
+      hideRightPanel();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        hideLeftPanel();
+        hideRightPanel();
+      }
+    });
+
+    const themeToggle = document.getElementById("themeToggle");
+    const savedTheme = localStorage.getItem("agent-theme") || "light";
+
+    function applyTheme(theme) {
+      body.setAttribute("data-theme", theme);
+      themeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+      localStorage.setItem("agent-theme", theme);
+    }
+
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const now = body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(now);
+    });
 
     async function refreshHealth() {
       try {
@@ -167,7 +259,7 @@
         document.getElementById("healthStatus").textContent = data.status;
         document.getElementById("healthCollection").textContent = data.collection;
         document.getElementById("healthDocs").textContent = String(data.documents);
-      } catch (err) {
+      } catch {
         document.getElementById("healthStatus").textContent = "error";
       }
     }
@@ -175,22 +267,29 @@
     document.getElementById("reindexBtn").addEventListener("click", async () => {
       const btn = document.getElementById("reindexBtn");
       btn.disabled = true;
-      btn.textContent = "재색인 중...";
+      btn.textContent = "재반영 중...";
       try {
         const res = await fetch("/v1/reindex?force=true", { method: "POST" });
         if (!res.ok) throw new Error("reindex failed");
         await refreshHealth();
+        appendBubble("assistant", "RAG 재반영이 완료되었습니다.");
+      } catch {
+        appendBubble("assistant", "RAG 재반영 중 오류가 발생했습니다.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "인덱스 재생성";
+        btn.textContent = "RAG 재반영";
       }
     });
 
     function appendBubble(role, text) {
       const box = document.createElement("div");
       box.className = role === "user"
-        ? "ml-auto max-w-[92%] rounded-2xl bg-slate-900 px-3 py-2 text-sm text-white rise"
-        : "max-w-[92%] rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm rise";
+        ? "ml-auto max-w-[94%] rounded-xl bg-slate-900 px-2 py-1.5 text-xs text-white rise"
+        : "max-w-[94%] rounded-xl border border-slate-200 px-2 py-1.5 text-xs rise";
+      if (role !== "user") {
+        box.style.background = "var(--bubble)";
+        box.style.color = "var(--ink)";
+      }
       box.textContent = text;
       const chatLog = document.getElementById("chatLog");
       chatLog.appendChild(box);
@@ -199,26 +298,37 @@
 
     function renderSources(sources) {
       const root = document.getElementById("sources");
+      const meta = document.getElementById("sourceMeta");
       if (!sources || sources.length === 0) {
         root.textContent = "검색된 근거가 없습니다.";
+        meta.textContent = "근거 0건";
         return;
       }
+      meta.textContent = `근거 ${sources.length}건`;
       root.innerHTML = sources.map((s, i) => `
-        <div class="rounded-2xl border border-slate-200 bg-white p-3 rise">
-          <p class="text-xs font-semibold text-blue-700">#${i + 1} · score ${Number(s.score).toFixed(3)}</p>
-          <p class="mt-1 break-all text-xs text-slate-500">${s.path}</p>
-          <p class="mt-2 text-sm text-slate-700">${s.chunk.slice(0, 260)}${s.chunk.length > 260 ? "..." : ""}</p>
+        <div class="rounded-xl border border-slate-200 bg-white/85 p-2 rise">
+          <p class="text-[11px] font-semibold text-blue-700">#${i + 1} · score ${Number(s.score).toFixed(3)}</p>
+          <p class="mt-0.5 break-all text-[11px] text-slate-500">${s.path}</p>
+          <p class="mt-1 text-xs text-slate-700">${s.chunk.slice(0, 260)}${s.chunk.length > 260 ? "..." : ""}</p>
         </div>
       `).join("");
     }
 
+    const questionEl = document.getElementById("question");
+    questionEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById("askForm").requestSubmit();
+      }
+    });
+
     document.getElementById("askForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const q = document.getElementById("question").value.trim();
+      const q = questionEl.value.trim();
       if (!q) return;
 
       appendBubble("user", q);
-      document.getElementById("question").value = "";
+      questionEl.value = "";
 
       const askBtn = document.getElementById("askBtn");
       askBtn.disabled = true;
@@ -239,12 +349,15 @@
         const data = await res.json();
         appendBubble("assistant", data.answer || "응답이 비어 있습니다.");
         renderSources(data.sources || []);
+
         const meta = [];
         if (data.mode) meta.push(`mode=${data.mode}`);
         if (data.matched_subject) meta.push(`subject=${data.matched_subject}`);
         if (data.matched_class_id) meta.push(`class=${data.matched_class_id}`);
         document.getElementById("answerMeta").textContent = meta.join(" · ");
-      } catch (err) {
+
+        showRightPanel();
+      } catch {
         appendBubble("assistant", "요청 처리 중 오류가 발생했습니다. 서버 로그를 확인해 주세요.");
       } finally {
         askBtn.disabled = false;

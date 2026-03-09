@@ -195,6 +195,20 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
   - 키 없이도 `use_llm=false` 또는 fallback으로 동작
 - 포트 충돌 시:
   - `docker-compose.yml`의 `8000:8000` 앞 포트 변경
+- 컨테이너 이름 충돌 오류가 나면:
+  - 오류 예시:
+```text
+Error response from daemon: Conflict. The container name "/curriculum-rag-agent" is already in use ...
+```
+  - 원인: 과거 수동 실행(`docker run --name curriculum-rag-agent`) 컨테이너가 남아 있거나, 이전 설정의 고정 이름 컨테이너가 남아 있음
+  - 해결:
+```bash
+cd Agent
+docker compose down --remove-orphans
+docker rm -f curriculum-rag-agent
+docker compose up -d --build
+```
+  - 참고: 현재 `docker-compose.yml`은 고정 `container_name`을 사용하지 않아 신규 실행 시에는 자동 이름이 부여됨
 
 ## 7) 확장 아이디어
 - 메타데이터에 `class_id`, `subject`를 추가해 필터 검색

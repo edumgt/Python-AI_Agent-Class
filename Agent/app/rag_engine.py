@@ -172,6 +172,7 @@ class RepoRAG:
             root_dir = path.split("/", 1)[0].lower() if path else ""
             if preferred_dir_set and root_dir in preferred_dir_set:
                 score = min(1.0, score + 0.28)
+            score = min(1.0, max(0.0, score + self._path_intent_bonus(question=question, path=path)))
             if self._is_noise_file(path):
                 score = max(0.0, score - 0.35)
             output.append(
@@ -184,6 +185,11 @@ class RepoRAG:
                 }
             )
         output.sort(key=lambda x: x["score"], reverse=True)
+        if output:
+            best = output[0]["score"]
+            threshold = max(0.08, best * 0.45)
+            filtered = [item for item in output if item["score"] >= threshold]
+            output = filtered if filtered else output[:1]
         deduped: list[dict] = []
         seen_pairs: set[tuple[str, str]] = set()
         for item in output:
@@ -291,3 +297,40 @@ class RepoRAG:
     @staticmethod
     def _tokenize(text: str) -> list[str]:
         return [t for t in re.findall(r"[0-9a-zA-Z가-힣_]+", (text or "").lower()) if len(t) >= 2]
+
+    @staticmethod
+    def _path_intent_bonus(question: str, path: str) -> float:
+        q = (question or "").lower()
+        q_norm = re.sub(r"[^0-9a-zA-Z가-힣]", "", q)
+        p = (path or "").lower()
+        root = p.split("/", 1)[0] if p else ""
+
+        llm_roots = {"llmtextgen", "prompteng", "langchainlab", "ragpipeline"}
+        rag_roots = {"ragpipeline", "langchainlab"}
+        project_roots = {"mlopsautomation", "aiopsintelligence"}
+
+        bonus = 0.0
+
+        if any(k in q_norm for k in ["llm", "거대언어모델", "언어모델", "생성형ai"]):
+            if root in llm_roots:
+                bonus += 0.12
+            elif root in {"nlpspeechai", "speechttsstt"}:
+                bonus -= 0.08
+
+        if "rag" in q_norm or "벡터db" in q_norm or "임베딩" in q_norm:
+            if root in rag_roots:
+                bonus += 0.10
+            elif root in {"speechttsstt"}:
+                bonus -= 0.06
+
+        if any(k in q_norm for k in ["devops", "mlops", "aiops", "llmops", "프로젝트"]):
+            if root in project_roots:
+                bonus += 0.16
+            elif root in {"nlpspeechai", "speechttsstt"}:
+                bonus -= 0.10
+
+        if "학습내용" in q_norm or "무엇" in q_norm:
+            if p.endswith(".md"):
+                bonus += 0.05
+
+        return bonus

@@ -3,7 +3,6 @@ services:
     build:
       context: ..
       dockerfile: Agent/Dockerfile
-    container_name: curriculum-rag-agent
     env_file:
       - .env
     environment:

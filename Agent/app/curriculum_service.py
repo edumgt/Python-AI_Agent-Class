@@ -6,6 +6,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ALLOWED_CLASS_SEARCH_EXTS = {".md", ".py", ".html", ".txt", ".csv"}
+CLASS_SEARCH_EXCLUDE_PATTERNS = (
+    re.compile(r".*_assignment(_.*)?\.py$", re.IGNORECASE),
+    re.compile(r".*instructor_notes\.md$", re.IGNORECASE),
+    re.compile(r".*_quiz\.html$", re.IGNORECASE),
+)
 
 
 @dataclass
@@ -69,8 +74,12 @@ class CurriculumIndex:
             return self.resolve_subject("프롬프트 엔지니어링")
         if "rag" in q:
             return self.resolve_subject("RAG(Retrieval-Augmented Generation)")
+        if any(k in q for k in ["llm", "언어모델", "거대언어모델", "생성형ai"]):
+            return self.resolve_subject("거대 언어 모델을 활용한 자연어 생성")
         if any(k in q for k in ["langchain", "랭체인"]):
             return self.resolve_subject("Langchain 활용하기")
+        if any(k in q for k in ["devops", "mlops", "aiops", "llmops", "프로젝트"]):
+            return self.resolve_subject("프로젝트")
         if any(k in q for k in ["stt", "tts", "음성", "transcribe", "speech"]):
             return self.resolve_subject("자연어 및 음성 데이터 활용 및 모델 개발")
         return None
@@ -139,6 +148,30 @@ class CurriculumIndex:
                 "desc": "벡터 DB는 임베딩 벡터를 저장하고 유사도 기반 검색을 빠르게 수행하는 데이터베이스입니다.",
                 "subject": "RAG(Retrieval-Augmented Generation)",
                 "hint": "RAG 검색 계층의 핵심 구성요소입니다.",
+            },
+            "devops": {
+                "title": "DevOps",
+                "desc": "DevOps는 개발과 운영을 통합해 소프트웨어를 빠르고 안정적으로 배포/운영하는 방법론입니다.",
+                "subject": "프로젝트",
+                "hint": "대표 솔루션은 CI/CD(GitHub Actions/Jenkins), 컨테이너(Docker), 오케스트레이션(Kubernetes)입니다. 프로젝트 과목(class501~520)에서 배포 자동화와 운영 절차로 연결해 학습합니다.",
+            },
+            "mlops": {
+                "title": "MLOps",
+                "desc": "MLOps는 데이터 준비, 모델 학습, 배포, 모니터링, 재학습까지 모델 생명주기를 운영 자동화하는 체계입니다.",
+                "subject": "프로젝트",
+                "hint": "대표 솔루션은 MLflow, Kubeflow, Airflow, DVC, SageMaker입니다. 프로젝트 과목에서 파이프라인/모델 레지스트리 주제로 연결됩니다.",
+            },
+            "aiops": {
+                "title": "AIOps",
+                "desc": "AIOps는 운영 로그·메트릭·트레이스를 AI/ML로 분석해 이상 탐지, 원인 분석, 자동 복구를 수행하는 방식입니다.",
+                "subject": "프로젝트",
+                "hint": "대표 솔루션은 Datadog, Dynatrace, New Relic, Splunk, Prometheus+Grafana 조합입니다. 프로젝트 과목 후반(class516~520)에서 관측성/이상탐지/Runbook을 다룹니다.",
+            },
+            "llmops": {
+                "title": "LLMOps",
+                "desc": "LLMOps는 LLM 기반 서비스의 프롬프트, RAG, 평가, 가드레일, 배포/운영 품질을 관리하는 체계입니다.",
+                "subject": "프로젝트",
+                "hint": "대표 솔루션은 OpenAI API/플랫폼, Azure OpenAI, Vertex AI, Bedrock, LangChain 계열 도구입니다. 프로젝트 과목(class511~515)에서 RAG/품질관리 시나리오로 학습합니다.",
             },
             "aws_stt": {
                 "title": "AWS STT 연동 리소스",
@@ -211,6 +244,9 @@ class CurriculumIndex:
             if not lines:
                 continue
             rel = path.relative_to(self._repo_root).as_posix()
+            rel_lower = rel.lower()
+            if any(pat.match(rel_lower) for pat in CLASS_SEARCH_EXCLUDE_PATTERNS):
+                continue
             best_score = 0.0
             best_line = ""
             for line in lines:
@@ -220,6 +256,11 @@ class CurriculumIndex:
                     best_line = line.strip()
             if best_score <= 0.0:
                 continue
+            # 학습가이드(.md)와 예제/정답 파일을 우선 노출
+            if rel_lower.endswith(".md"):
+                best_score = min(1.0, best_score + 0.14)
+            elif "_example" in rel_lower or "_solution.py" in rel_lower:
+                best_score = min(1.0, best_score + 0.10)
             snippet = best_line if len(best_line) <= 300 else best_line[:300] + "..."
             results.append({"path": rel, "score": round(best_score, 6), "chunk": snippet})
 
@@ -317,6 +358,7 @@ class CurriculumIndex:
             "프롬프트엔지니어링": "프롬프트 엔지니어링",
             "langchain": "Langchain 활용하기",
             "rag": "RAG(Retrieval-Augmented Generation)",
+            "프로젝트": "프로젝트",
         }
         for alias, subj in explicit.items():
             if subj in subject_ranges:

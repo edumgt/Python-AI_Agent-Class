@@ -26,7 +26,11 @@ class QueryRouter:
         class_id = self._extract_class_id(question)
         concept = self._extract_concept(question)
         expansions = self._build_query_expansions(question, concept)
-        if concept and (concept.startswith("aws_") or self._is_definition_question(question)):
+        if concept and (
+            concept.startswith("aws_")
+            or concept in {"devops", "mlops", "aiops", "llmops"}
+            or self._is_definition_question(question)
+        ):
             return RoutedQuery(
                 mode="concept_definition",
                 subject_name=subject,
@@ -47,25 +51,38 @@ class QueryRouter:
     @staticmethod
     def _extract_class_id(question: str) -> str | None:
         m = re.search(r"class\s*([0-9]{3})", question, flags=re.IGNORECASE)
-        if not m:
-            return None
-        return f"class{m.group(1)}"
+        if m:
+            return f"class{m.group(1)}"
+        # "290번", "290 번" 같은 질의도 classID로 해석
+        m2 = re.search(r"\b([0-9]{3})\s*번\b", question)
+        if m2:
+            return f"class{m2.group(1)}"
+        return None
 
     @staticmethod
     def _extract_concept(question: str) -> str | None:
         q = question.lower()
-        if "llm" in q or "거대 언어 모델" in question:
+        q_norm = re.sub(r"[^0-9a-zA-Z가-힣]", "", q)
+        if "llm" in q_norm or any(k in q_norm for k in ["거대언어모델", "언어모델", "대형언어모델", "largelanguagemodel"]):
             return "llm"
-        if "rag" in q:
+        if "rag" in q_norm:
             return "rag"
-        if "langchain" in q or "랭체인" in question:
+        if "langchain" in q_norm or "랭체인" in question:
             return "langchain"
         if "프롬프트" in question:
             return "prompt"
         if "임베딩" in question:
             return "embedding"
-        if "벡터" in question and "db" in q:
+        if "벡터" in question and "db" in q_norm:
             return "vector_db"
+        if "devops" in q_norm or "데브옵스" in question:
+            return "devops"
+        if "mlops" in q_norm:
+            return "mlops"
+        if "aiops" in q_norm:
+            return "aiops"
+        if "llmops" in q_norm:
+            return "llmops"
         if ("aws" in q or "아마존" in question) and any(k in q for k in ["stt", "transcribe", "speech", "음성"]):
             return "aws_stt"
         if ("aws" in q or "아마존" in question) and any(k in q for k in ["tts", "polly", "음성합성"]):
@@ -84,6 +101,32 @@ class QueryRouter:
     def _build_query_expansions(question: str, concept: str | None) -> list[str]:
         q = question.lower()
         expansions: list[str] = []
+        q_norm = re.sub(r"[^0-9a-zA-Z가-힣]", "", q)
+
+        if concept == "llm" or any(k in q_norm for k in ["거대언어모델", "언어모델", "llm"]):
+            expansions.extend(
+                [
+                    "거대 언어 모델 LLM 개요 생성 파라미터 안전성 환각",
+                    "llmTextGen class289 class352 학습 내용",
+                    "생성형 ai 언어모델 개념",
+                ]
+            )
+        if concept == "rag" or "rag" in q_norm:
+            expansions.extend(
+                [
+                    "RAG retrieval augmented generation 문서 검색 근거 답변",
+                    "ragPipeline class449 class500 학습 내용",
+                    "벡터 검색 임베딩 청크 출처 기반 응답",
+                ]
+            )
+        if concept in {"devops", "mlops", "aiops", "llmops"}:
+            expansions.extend(
+                [
+                    "프로젝트 class501 class520 devops mlops aiops llmops",
+                    "devops_mlops_aiops_llmops_report 개요 비교",
+                    "프로젝트 과목 학습 내용 운영 자동화 관측성",
+                ]
+            )
         if concept == "aws_stt" or (
             ("aws" in q or "아마존" in question) and any(k in q for k in ["stt", "transcribe", "speech", "음성"])
         ):
@@ -141,12 +184,16 @@ class QueryRouter:
     def _is_definition_question(question: str) -> bool:
         q = question.replace(" ", "").lower()
         patterns = [
+            r"이란",
+            r"란$",
             r"뭔가요",
+            r"뭐야",
             r"무엇인가요",
             r"무엇인가",
             r"어떤리소스",
             r"무슨리소스",
             r"연동가능",
+            r"솔루션",
             r"설명",
             r"뜻",
             r"개념",
