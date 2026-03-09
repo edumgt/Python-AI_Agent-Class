@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO_ROOT: ${{ github.workspace }}
-      VECTOR_DB_PATH: ${{ runner.temp }}/vector_db_rag
+      VECTOR_DB_PATH: /tmp/vector_db_rag
       VECTOR_COLLECTION: curriculum_repo
 
     steps:
@@ -41,10 +41,11 @@ jobs:
       - name: Verify indexed documents exist
         run: |
           PYTHONPATH=Agent python - <<'PY'
+          import os
           from pathlib import Path
           from app.rag_engine import RepoRAG
           rag = RepoRAG(
-              db_path=Path("${{ runner.temp }}/vector_db_rag"),
+              db_path=Path(os.environ["VECTOR_DB_PATH"]),
               collection_name="curriculum_repo",
               embed_dim=1024,
           )
@@ -59,7 +60,7 @@ jobs:
     needs: rag-validation
     env:
       REPO_ROOT: ${{ github.workspace }}
-      VECTOR_DB_PATH: ${{ runner.temp }}/vector_db_agent
+      VECTOR_DB_PATH: /tmp/vector_db_agent
       VECTOR_COLLECTION: curriculum_repo
 
     steps:
