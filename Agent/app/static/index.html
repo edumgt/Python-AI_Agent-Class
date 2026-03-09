@@ -76,6 +76,63 @@
 
     .panel-slide-left { transform: translateX(-100%); }
     .panel-slide-right { transform: translateX(100%); }
+
+    .theme-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bubble);
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .theme-switch input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .theme-track {
+      position: relative;
+      width: 34px;
+      height: 20px;
+      border-radius: 999px;
+      background: #cbd5e1;
+      transition: background 0.2s ease;
+    }
+
+    .theme-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+      transition: transform 0.2s ease;
+    }
+
+    .theme-switch input:checked + .theme-track {
+      background: var(--brand);
+    }
+
+    .theme-switch input:checked + .theme-track .theme-knob {
+      transform: translateX(14px);
+    }
+
+    .theme-label {
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 600;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -140,7 +197,11 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button id="themeToggle" class="rounded-lg border border-slate-300/80 bg-white/70 px-2 py-1 text-[11px] text-slate-700">Dark</button>
+            <label class="theme-switch" for="themeToggle">
+              <input id="themeToggle" type="checkbox" role="switch" aria-label="다크 모드 토글" />
+              <span class="theme-track"><span class="theme-knob"></span></span>
+              <span class="theme-label">다크모드</span>
+            </label>
             <button id="openRightPanel" class="rounded-lg border border-slate-300/80 bg-white/70 px-2 py-1 text-[11px] text-slate-700">근거 보기</button>
             <span class="gradient-chip rounded-full px-2.5 py-1 text-[11px] font-semibold">FastAPI + Chroma</span>
           </div>
@@ -237,19 +298,26 @@
     });
 
     const themeToggle = document.getElementById("themeToggle");
-    const savedTheme = localStorage.getItem("agent-theme") || "light";
+    const savedTheme = localStorage.getItem("agent-theme");
+    const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme = savedTheme === "dark" || savedTheme === "light"
+      ? savedTheme
+      : (systemPrefersDark ? "dark" : "light");
 
     function applyTheme(theme) {
       body.setAttribute("data-theme", theme);
-      themeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+      if (themeToggle) {
+        const isDark = theme === "dark";
+        themeToggle.checked = isDark;
+        themeToggle.setAttribute("aria-checked", String(isDark));
+      }
       localStorage.setItem("agent-theme", theme);
     }
 
-    applyTheme(savedTheme);
+    applyTheme(initialTheme);
 
-    themeToggle.addEventListener("click", () => {
-      const now = body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      applyTheme(now);
+    themeToggle?.addEventListener("change", () => {
+      applyTheme(themeToggle.checked ? "dark" : "light");
     });
 
     async function refreshHealth() {
