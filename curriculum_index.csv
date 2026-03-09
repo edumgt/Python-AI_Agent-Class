@@ -500,3 +500,23 @@ class497,63,1,정규교과-9,RAG(Retrieval-Augmented Generation),49/52,Agent 시
 class498,63,2,정규교과-9,RAG(Retrieval-Augmented Generation),50/52,Agent 시스템 통합 구현 · 단계 3/5 응용 확장 [class498],실전심화,ragPipeline/class498/class498.md
 class499,63,3,정규교과-9,RAG(Retrieval-Augmented Generation),51/52,Agent 시스템 통합 구현 · 단계 4/5 실전 검증 [class499],실전심화,ragPipeline/class499/class499.md
 class500,63,4,정규교과-9,RAG(Retrieval-Augmented Generation),52/52,Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500],실전심화,ragPipeline/class500/class500.md
+class501,63,5,프로젝트-1,프로젝트,1/20,DevOps 프로젝트 착수와 요구사항 정의 · 단계 1/5 입문 이해 [class501],기초응용,mlOpsAutomation/class501/class501.md
+class502,63,6,프로젝트-1,프로젝트,2/20,DevOps 프로젝트 착수와 요구사항 정의 · 단계 2/5 기초 구현 [class502],기초응용,mlOpsAutomation/class502/class502.md
+class503,63,7,프로젝트-1,프로젝트,3/20,DevOps 프로젝트 착수와 요구사항 정의 · 단계 3/5 응용 확장 [class503],기초응용,mlOpsAutomation/class503/class503.md
+class504,63,8,프로젝트-1,프로젝트,4/20,DevOps 프로젝트 착수와 요구사항 정의 · 단계 4/5 실전 검증 [class504],실전심화,mlOpsAutomation/class504/class504.md
+class505,64,1,프로젝트-1,프로젝트,5/20,DevOps 프로젝트 착수와 요구사항 정의 · 단계 5/5 운영 최적화 [class505],실전심화,mlOpsAutomation/class505/class505.md
+class506,64,2,프로젝트-1,프로젝트,6/20,MLOps 파이프라인과 모델 레지스트리 · 단계 1/5 입문 이해 [class506],기초응용,mlOpsAutomation/class506/class506.md
+class507,64,3,프로젝트-1,프로젝트,7/20,MLOps 파이프라인과 모델 레지스트리 · 단계 2/5 기초 구현 [class507],기초응용,mlOpsAutomation/class507/class507.md
+class508,64,4,프로젝트-1,프로젝트,8/20,MLOps 파이프라인과 모델 레지스트리 · 단계 3/5 응용 확장 [class508],실전심화,mlOpsAutomation/class508/class508.md
+class509,64,5,프로젝트-1,프로젝트,9/20,MLOps 파이프라인과 모델 레지스트리 · 단계 4/5 실전 검증 [class509],실전심화,mlOpsAutomation/class509/class509.md
+class510,64,6,프로젝트-1,프로젝트,10/20,MLOps 파이프라인과 모델 레지스트리 · 단계 5/5 운영 최적화 [class510],실전심화,mlOpsAutomation/class510/class510.md
+class511,64,7,프로젝트-1,프로젝트,11/20,LLMOps/RAG 서비스 품질관리 · 단계 1/5 입문 이해 [class511],기초응용,aiOpsIntelligence/class511/class511.md
+class512,64,8,프로젝트-1,프로젝트,12/20,LLMOps/RAG 서비스 품질관리 · 단계 2/5 기초 구현 [class512],기초응용,aiOpsIntelligence/class512/class512.md
+class513,65,1,프로젝트-1,프로젝트,13/20,LLMOps/RAG 서비스 품질관리 · 단계 3/5 응용 확장 [class513],기초응용,aiOpsIntelligence/class513/class513.md
+class514,65,2,프로젝트-1,프로젝트,14/20,LLMOps/RAG 서비스 품질관리 · 단계 4/5 실전 검증 [class514],실전심화,aiOpsIntelligence/class514/class514.md
+class515,65,3,프로젝트-1,프로젝트,15/20,LLMOps/RAG 서비스 품질관리 · 단계 5/5 운영 최적화 [class515],실전심화,aiOpsIntelligence/class515/class515.md
+class516,65,4,프로젝트-1,프로젝트,16/20,AIOps 관측성·이상탐지·자동복구 · 단계 1/5 입문 이해 [class516],기초응용,aiOpsIntelligence/class516/class516.md
+class517,65,5,프로젝트-1,프로젝트,17/20,AIOps 관측성·이상탐지·자동복구 · 단계 2/5 기초 구현 [class517],기초응용,aiOpsIntelligence/class517/class517.md
+class518,65,6,프로젝트-1,프로젝트,18/20,AIOps 관측성·이상탐지·자동복구 · 단계 3/5 응용 확장 [class518],실전심화,aiOpsIntelligence/class518/class518.md
+class519,65,7,프로젝트-1,프로젝트,19/20,AIOps 관측성·이상탐지·자동복구 · 단계 4/5 실전 검증 [class519],실전심화,aiOpsIntelligence/class519/class519.md
+class520,65,8,프로젝트-1,프로젝트,20/20,AIOps 관측성·이상탐지·자동복구 · 단계 5/5 운영 최적화 [class520],실전심화,aiOpsIntelligence/class520/class520.md

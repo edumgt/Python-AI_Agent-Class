@@ -37,6 +37,11 @@ def pick_template(module: str, subject: str) -> str:
     subject_text = subject.lower()
     text = f"{subject_text} {module_text}"
 
+    if "mlops" in text or "모델 레지스트리" in module or "배포 자동화" in module:
+        return "ml"
+    if "aiops" in text or "관측 데이터" in module or "이상탐지" in module or "runbook" in text:
+        return "data_preprocess"
+
     # 1) module(차시 주제) 우선 매핑
     if any(k in module_text for k in ["rag", "retrieval-augmented generation", "벡터db", "vectorstore", "문서 로딩", "문서 분할", "문서 청크", "검색 품질", "출처화"]):
         return "rag"

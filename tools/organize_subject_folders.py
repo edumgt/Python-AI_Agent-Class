@@ -19,6 +19,8 @@ SUBJECT_FOLDER_MAP = {
     "프롬프트 엔지니어링": "promptEng",
     "Langchain 활용하기": "langChainLab",
     "RAG(Retrieval-Augmented Generation)": "ragPipeline",
+    "MLOps 운영 자동화": "mlOpsAutomation",
+    "AIOps 운영 지능화": "aiOpsIntelligence",
 }
 
 
@@ -80,7 +82,13 @@ def organize_subject_folders() -> None:
 
     comments, fieldnames, rows = read_index()
 
-    unknown_subjects = sorted({row["subject_name"] for row in rows if row["subject_name"] not in SUBJECT_FOLDER_MAP})
+    unknown_subjects = sorted(
+        {
+            row["subject_name"]
+            for row in rows
+            if row["subject_name"] not in SUBJECT_FOLDER_MAP and row["subject_name"] != "프로젝트"
+        }
+    )
     if unknown_subjects:
         raise ValueError(f"Unknown subjects in index: {unknown_subjects}")
 
@@ -96,8 +104,13 @@ def organize_subject_folders() -> None:
         seen_class_ids.add(class_id)
 
         subject_name = row["subject_name"]
-        folder_name = SUBJECT_FOLDER_MAP[subject_name]
-        target_dir = ROOT / folder_name / class_id
+        if subject_name == "프로젝트":
+            # 프로젝트 과목은 기존 md_file 경로(세부 트랙 폴더)를 유지한다.
+            target_dir = class_dir_from_md_file = (ROOT / row["md_file"]).parent
+            folder_name = class_dir_from_md_file.parts[-2] if len(class_dir_from_md_file.parts) >= 2 else "projectTrack"
+        else:
+            folder_name = SUBJECT_FOLDER_MAP[subject_name]
+            target_dir = ROOT / folder_name / class_id
         target_dir.parent.mkdir(parents=True, exist_ok=True)
 
         if target_dir.exists():
@@ -114,7 +127,11 @@ def organize_subject_folders() -> None:
 
     for row in rows:
         class_id = row["class"].strip()
-        folder_name = SUBJECT_FOLDER_MAP[row["subject_name"]]
+        subject_name = row["subject_name"]
+        if subject_name == "프로젝트":
+            # md_file을 그대로 유지 (예: mlOpsAutomation/class501/class501.md)
+            continue
+        folder_name = SUBJECT_FOLDER_MAP[subject_name]
         row["md_file"] = f"{folder_name}/{class_id}/{class_id}.md"
 
     write_index(comments, fieldnames, rows)

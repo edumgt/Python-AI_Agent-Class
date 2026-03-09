@@ -1,0 +1,206 @@
+<!doctype html>
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>class516 5문항 퀴즈</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <section class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+      <p class="text-sm font-semibold text-sky-700">class516 SELF QUIZ</p>
+      <h1 class="mt-2 text-2xl font-bold">AIOps 관측성·이상탐지·자동복구 · 단계 1/5 입문 이해 [class516]</h1>
+      <p class="mt-2 text-sm text-slate-600">
+        교과목: AIOps 운영 지능화 · 세부 시퀀스: 6/10 · 난이도: 기초응용 · Day 65 / 4교시
+      </p>
+      <p class="mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
+        학습 내용 기반 심화 5문항 퀴즈입니다. 정답을 고른 뒤 채점 버튼을 누르세요.
+      </p>
+    </section>
+
+    <section id="quiz-root" class="mt-6 space-y-4"></section>
+
+    <div class="mt-6 flex items-center gap-3">
+      <button id="grade-btn" class="rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white hover:bg-sky-700">
+        채점하기
+      </button>
+      <button id="reset-btn" class="rounded-lg bg-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-300">
+        다시풀기
+      </button>
+    </div>
+
+    <section id="result-root" class="mt-6 hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200"></section>
+  </main>
+
+  <script>
+    const QUIZ_DATA = {
+  "class_id": "class516",
+  "subject_name": "AIOps 운영 지능화",
+  "module": "이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]",
+  "level": "기초응용",
+  "session": "6/10",
+  "track_outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
+  "questions": [
+    {
+      "question": "class516 (AIOps 운영 지능화 6/10) 차시의 실제 학습 주제는 무엇인가요?",
+      "options": [
+        "운영 관측 데이터 수집/표준화 · 단계 3/5 응용 확장 [class513]",
+        "이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]",
+        "운영 관측 데이터 수집/표준화 · 단계 2/5 기초 구현 [class512]",
+        "운영 관측 데이터 수집/표준화 · 단계 4/5 실전 검증 [class514]"
+      ],
+      "answer_index": 1,
+      "explanation": "정답은 '이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]' 입니다. 이전 모듈은 '운영 관측 데이터 수집/표준화 · 단계 5/5 운영 최적화 [class515]', 다음 모듈은 '이상탐지와 자동복구 Runbook · 단계 2/5 기초 구현 [class517]' 입니다."
+    },
+    {
+      "question": "'이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
+      "options": [
+        "이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516] 학습 절차를 순서대로 설명할 수 있다.",
+        "운영 관측 데이터 수집/표준화 · 단계 4/5 실전 검증 [class514] 학습 절차를 순서대로 설명할 수 있다.",
+        "이상탐지와 자동복구 Runbook · 단계 2/5 기초 구현 [class517] 학습 절차를 순서대로 설명할 수 있다.",
+        "운영 관측 데이터 수집/표준화 · 단계 3/5 응용 확장 [class513] 학습 절차를 순서대로 설명할 수 있다."
+      ],
+      "answer_index": 0,
+      "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
+    },
+    {
+      "question": "'이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
+      "options": [
+        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
+        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
+        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
+        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다."
+      ],
+      "answer_index": 1,
+      "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
+    },
+    {
+      "question": "'이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
+      "options": [
+        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
+        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
+        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
+        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+      ],
+      "answer_index": 2,
+      "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
+    },
+    {
+      "question": "'이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
+      "options": [
+        "이상탐지와 자동복구 Runbook · 단계 1/5 입문 이해 [class516] 점검: 전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.",
+        "이상탐지와 자동복구 Runbook · 단계 5/5 운영 최적화 [class520] 점검: 전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.",
+        "이상탐지와 자동복구 Runbook · 단계 3/5 응용 확장 [class518] 점검: 전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.",
+        "운영 관측 데이터 수집/표준화 · 단계 4/5 실전 검증 [class514] 점검: 전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다."
+      ],
+      "answer_index": 0,
+      "explanation": "이 차시는 '전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+    }
+  ],
+  "question_count": 5,
+  "day": 65,
+  "slot": 4
+};
+
+    function renderQuiz() {
+      const root = document.getElementById("quiz-root");
+      root.innerHTML = "";
+
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
+        const wrap = document.createElement("article");
+        wrap.className = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200";
+
+        const title = document.createElement("h2");
+        title.className = "text-base font-semibold";
+        title.textContent = `${qIndex + 1}번. ${q.question}`;
+        wrap.appendChild(title);
+
+        const list = document.createElement("div");
+        list.className = "mt-3 space-y-2";
+
+        q.options.forEach((opt, optIndex) => {
+          const label = document.createElement("label");
+          label.className = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 p-3 hover:bg-slate-50";
+
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = `q-${qIndex}`;
+          radio.value = String(optIndex);
+          radio.className = "mt-1";
+
+          const text = document.createElement("span");
+          text.className = "text-sm";
+          text.textContent = opt;
+
+          label.appendChild(radio);
+          label.appendChild(text);
+          list.appendChild(label);
+        });
+
+        wrap.appendChild(list);
+        root.appendChild(wrap);
+      });
+    }
+
+    function gradeQuiz() {
+      let score = 0;
+      const details = [];
+      const total = QUIZ_DATA.questions.length;
+
+      QUIZ_DATA.questions.forEach((q, qIndex) => {
+        const selected = document.querySelector(`input[name="q-${qIndex}"]:checked`);
+        const selectedIndex = selected ? Number(selected.value) : -1;
+        const isCorrect = selectedIndex === q.answer_index;
+        if (isCorrect) score += 1;
+
+        details.push({
+          number: qIndex + 1,
+          isCorrect,
+          correct: q.options[q.answer_index],
+          chosen: selectedIndex >= 0 ? q.options[selectedIndex] : "미선택",
+          explanation: q.explanation
+        });
+      });
+
+      const resultRoot = document.getElementById("result-root");
+      resultRoot.classList.remove("hidden");
+
+      const headerClass = score === total ? "text-emerald-700" : "text-amber-700";
+      const summary = `
+        <h3 class="text-lg font-bold ${headerClass}">점수: ${score} / ${total}</h3>
+        <p class="mt-1 text-sm text-slate-600">틀린 문제는 해설을 확인하고 다시 풀어보세요.</p>
+        <p class="mt-1 text-sm text-slate-600">학습 성과 힌트: ${QUIZ_DATA.track_outcome}</p>
+      `;
+
+      const rows = details.map((d) => `
+        <li class="rounded-lg border border-slate-200 p-3">
+          <p class="text-sm font-semibold">${d.number}번 - ${d.isCorrect ? "정답" : "오답"}</p>
+          <p class="mt-1 text-sm">내 답: ${d.chosen}</p>
+          <p class="text-sm">정답: ${d.correct}</p>
+          <p class="mt-1 text-xs text-slate-500">${d.explanation}</p>
+        </li>
+      `).join("");
+
+      resultRoot.innerHTML = `
+        ${summary}
+        <ul class="mt-4 space-y-2">${rows}</ul>
+      `;
+    }
+
+    function resetQuiz() {
+      document.querySelectorAll('input[type="radio"]').forEach((el) => {
+        el.checked = false;
+      });
+      const resultRoot = document.getElementById("result-root");
+      resultRoot.classList.add("hidden");
+      resultRoot.innerHTML = "";
+    }
+
+    document.getElementById("grade-btn").addEventListener("click", gradeQuiz);
+    document.getElementById("reset-btn").addEventListener("click", resetQuiz);
+    renderQuiz();
+  </script>
+</body>
+</html>

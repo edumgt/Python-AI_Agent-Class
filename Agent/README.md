@@ -200,3 +200,17 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 - 메타데이터에 `class_id`, `subject`를 추가해 필터 검색
 - `/v1/ask`에 `subject`/`class_range` 필터 도입
 - 프론트엔드 채팅 UI(예: Streamlit/Next.js) 연동
+
+## 8) DevOps / MLOps / AIOps 구분
+
+| 구분 | DevOps | MLOps | AIOps |
+|---|---|---|---|
+| 목적 | 개발(Dev)과 운영(Ops)을 통합해 배포 속도와 안정성 향상 | 모델의 학습-배포-운영 전 과정을 자동화하고 품질 유지 | AI/ML로 운영 데이터를 분석해 장애 예측/탐지/자동 대응 |
+| 대상 | 애플리케이션 코드, 인프라, CI/CD 파이프라인 | 데이터셋, 피처, 학습 코드, 모델 아티팩트, 추론 서비스 | 로그, 메트릭, 트레이스, 알림 이벤트 등 운영 관측 데이터 |
+| 핵심 활동 | 자동 빌드/테스트/배포, IaC, 모니터링, 장애 대응 | 데이터/모델 버전관리, 실험 추적, 모델 배포, 드리프트 모니터링 | 이상 탐지, 이벤트 상관분석, 원인 분석(RCA), 자동 복구 |
+| 대표 도구 | GitHub Actions, Jenkins, Docker, Kubernetes, Terraform | MLflow, Kubeflow, Airflow, DVC, SageMaker | Datadog, Dynatrace, New Relic, Splunk |
+
+### 한 줄 요약
+- `DevOps`: 소프트웨어 전달 프로세스 자동화
+- `MLOps`: 모델 생명주기(학습-배포-운영) 자동화
+- `AIOps`: 운영 자체를 AI로 지능화해 장애 대응 자동화

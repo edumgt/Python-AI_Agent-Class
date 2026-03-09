@@ -196,6 +196,10 @@ def class_dir_from_row(row: dict[str, str]) -> Path:
 def choose_track(subject_name: str, module: str) -> str:
     text = f"{subject_name} {module}"
     lowered = text.lower()
+    if "mlops" in lowered or "모델 레지스트리" in text or "배포 자동화" in text:
+        return "ml"
+    if "aiops" in lowered or "관측 데이터" in text or "이상탐지" in text or "runbook" in lowered:
+        return "data"
     if "rag" in lowered or "retrieval-augmented generation" in lowered:
         return "rag"
     if "langchain" in lowered:
