@@ -12,6 +12,9 @@ def run_ingestion(
     db_path: str,
     collection: str,
     embed_dim: int,
+    embedding_provider: str,
+    openai_api_key: str,
+    openai_embedding_model: str,
     chunk_size: int,
     chunk_overlap: int,
     force: bool = False,
@@ -21,6 +24,9 @@ def run_ingestion(
         db_path=Path(db_path),
         collection_name=collection,
         embed_dim=embed_dim,
+        embedding_provider=embedding_provider,
+        openai_api_key=openai_api_key,
+        openai_embedding_model=openai_embedding_model,
     )
 
     if force:
@@ -45,6 +51,8 @@ def main() -> int:
     parser.add_argument("--db-path", default=str(settings.vector_db_path))
     parser.add_argument("--collection", default=settings.vector_collection)
     parser.add_argument("--embedding-dim", type=int, default=settings.embedding_dim)
+    parser.add_argument("--embedding-provider", default=settings.embedding_provider)
+    parser.add_argument("--openai-embedding-model", default=settings.openai_embedding_model)
     parser.add_argument("--chunk-size", type=int, default=settings.chunk_size)
     parser.add_argument("--chunk-overlap", type=int, default=settings.chunk_overlap)
     parser.add_argument("--force", action="store_true", help="Drop/recreate collection before ingest")
@@ -60,6 +68,9 @@ def main() -> int:
         db_path=args.db_path,
         collection=args.collection,
         embed_dim=args.embedding_dim,
+        embedding_provider=args.embedding_provider,
+        openai_api_key=settings.openai_api_key,
+        openai_embedding_model=args.openai_embedding_model,
         chunk_size=args.chunk_size,
         chunk_overlap=args.chunk_overlap,
         force=args.force,

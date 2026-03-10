@@ -165,6 +165,22 @@
             <input id="useLlm" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-300" />
             LLM 답변 사용
           </label>
+          <label class="mb-2 block text-xs">
+            <span class="mb-1 block" style="color: var(--muted);">Orchestrator</span>
+            <select id="orchestrator" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-800">
+              <option value="native">native</option>
+              <option value="langchain">langchain</option>
+              <option value="langgraph">langgraph</option>
+            </select>
+          </label>
+          <label class="mb-2 flex items-center gap-2 text-xs" style="color: var(--ink);">
+            <input id="useWebSearch" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300" />
+            Tavily 웹 검색 병합
+          </label>
+          <label class="mb-2 flex items-center gap-2 text-xs" style="color: var(--ink);">
+            <input id="useRerank" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-300" />
+            리랭킹 사용(Cohere/Lexical)
+          </label>
           <button id="reindexBtn" class="w-full rounded-lg gradient-chip px-2 py-1.5 text-xs font-semibold transition hover:brightness-110">
             RAG 재반영
           </button>
@@ -430,7 +446,7 @@
       meta.textContent = `근거 ${sources.length}건`;
       root.innerHTML = sources.map((s, i) => `
         <div class="rounded-xl border border-slate-200 bg-white/85 p-2 rise">
-          <p class="text-[11px] font-semibold text-blue-700">#${i + 1} · score ${Number(s.score).toFixed(3)}</p>
+          <p class="text-[11px] font-semibold text-blue-700">#${i + 1} · score ${Number(s.score).toFixed(3)} · ${s.source_type || "repo"}${s.provider ? " · " + s.provider : ""}</p>
           <p class="mt-0.5 break-all text-[11px] text-slate-500">${s.path}</p>
           <p class="mt-1 text-xs text-slate-700">${s.chunk.slice(0, 260)}${s.chunk.length > 260 ? "..." : ""}</p>
         </div>
@@ -462,6 +478,11 @@
           question: q,
           top_k: Number(document.getElementById("topK").value || 6),
           use_llm: document.getElementById("useLlm").checked,
+          orchestrator: document.getElementById("orchestrator").value || "native",
+          use_web_search: document.getElementById("useWebSearch").checked,
+          web_search_top_k: 3,
+          use_rerank: document.getElementById("useRerank").checked,
+          rerank_provider: "auto",
         };
         const res = await fetch("/v1/ask", {
           method: "POST",
@@ -487,8 +508,10 @@
 
         const meta = [];
         if (data.mode) meta.push(`mode=${data.mode}`);
+        if (data.selected_orchestrator) meta.push(`orchestrator=${data.selected_orchestrator}`);
         if (data.matched_subject) meta.push(`subject=${data.matched_subject}`);
         if (data.matched_class_id) meta.push(`class=${data.matched_class_id}`);
+        if (data.retrieval_diagnostics?.used_web_search) meta.push("web=on");
         document.getElementById("answerMeta").textContent = meta.join(" · ");
 
         showRightPanel();

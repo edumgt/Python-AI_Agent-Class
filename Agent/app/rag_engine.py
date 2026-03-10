@@ -10,6 +10,11 @@ import chromadb
 from chromadb.errors import NotFoundError
 from sklearn.feature_extraction.text import HashingVectorizer
 
+try:
+    from openai import OpenAI
+except Exception:  # pragma: no cover
+    OpenAI = None
+
 
 ALLOWED_EXTENSIONS = {
     ".md",
@@ -69,18 +74,74 @@ class LocalEmbedding:
         return matrix.toarray().tolist()
 
 
+class OpenAIEmbedding:
+    def __init__(self, api_key: str, model: str, dim: int | None = None) -> None:
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY is required for openai embedding provider")
+        if OpenAI is None:
+            raise ValueError("openai package is unavailable")
+        self._client = OpenAI(api_key=api_key)
+        self._model = model
+        self._dim = dim if isinstance(dim, int) and dim > 0 else None
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        if not texts:
+            return []
+        vectors: list[list[float]] = []
+        batch_size = 64
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i : i + batch_size]
+            try:
+                kwargs = {"model": self._model, "input": batch}
+                if self._dim is not None:
+                    kwargs["dimensions"] = self._dim
+                resp = self._client.embeddings.create(**kwargs)
+            except TypeError:
+                # Older SDK/model combinations may not support dimensions.
+                resp = self._client.embeddings.create(model=self._model, input=batch)
+            vectors.extend([list(item.embedding) for item in resp.data])
+        return vectors
+
+
 class RepoRAG:
-    def __init__(self, db_path: Path, collection_name: str, embed_dim: int = 1024) -> None:
+    def __init__(
+        self,
+        db_path: Path,
+        collection_name: str,
+        embed_dim: int = 1024,
+        embedding_provider: str = "local",
+        openai_api_key: str = "",
+        openai_embedding_model: str = "text-embedding-3-large",
+    ) -> None:
         self._db_path = db_path
         self._db_path.mkdir(parents=True, exist_ok=True)
         self._client = chromadb.PersistentClient(path=str(self._db_path))
         self._collection_name = collection_name
         self._collection = self._client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
-        self._embedder = LocalEmbedding(embed_dim)
+        provider = (embedding_provider or "local").strip().lower()
+        self._embedding_provider = "local"
+        if provider == "openai":
+            try:
+                self._embedder = OpenAIEmbedding(
+                    api_key=openai_api_key,
+                    model=openai_embedding_model,
+                    dim=embed_dim,
+                )
+                self._embedding_provider = "openai"
+            except Exception:
+                self._embedder = LocalEmbedding(embed_dim)
+                self._embedding_provider = "local"
+        else:
+            self._embedder = LocalEmbedding(embed_dim)
+            self._embedding_provider = "local"
 
     @property
     def collection_name(self) -> str:
         return str(self._collection_name)
+
+    @property
+    def embedding_provider(self) -> str:
+        return self._embedding_provider
 
     def count(self) -> int:
         self._ensure_collection()
@@ -181,6 +242,8 @@ class RepoRAG:
                     "vector_score": vector_score,
                     "lexical_score": lexical,
                     "chunk": doc,
+                    "source_type": "repo",
+                    "provider": f"chromadb:{self._embedding_provider}",
                 }
             )
         output.sort(key=lambda x: x["score"], reverse=True)

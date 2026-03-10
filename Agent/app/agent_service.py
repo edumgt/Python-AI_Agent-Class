@@ -22,18 +22,19 @@ class QnaAgent:
         sources: Sequence[dict],
         use_llm: bool = True,
         mode: str = "rag",
+        persona_instruction: str = "",
     ) -> str:
         if mode == "subject_range":
             # Structured mode is answered by deterministic rule at API layer.
             return self._answer_without_llm(question, sources)
         if use_llm and self._client is not None:
             try:
-                return self._answer_with_llm(question, sources)
+                return self._answer_with_llm(question, sources, persona_instruction=persona_instruction)
             except Exception:
                 return self._answer_without_llm(question, sources)
         return self._answer_without_llm(question, sources)
 
-    def _answer_with_llm(self, question: str, sources: Sequence[dict]) -> str:
+    def _answer_with_llm(self, question: str, sources: Sequence[dict], persona_instruction: str = "") -> str:
         context_lines = []
         for idx, item in enumerate(sources, start=1):
             context_lines.append(
@@ -41,11 +42,13 @@ class QnaAgent:
             )
 
         context_block = "\n\n".join(context_lines)
+        persona_line = persona_instruction.strip() or "기본 학습 도우미 톤으로 간결하게 설명하세요."
         prompt = (
             "당신은 이 저장소 학습 도우미입니다. "
             "반드시 제공된 source 범위에서만 답하세요. "
             "근거가 부족하면 추측하지 말고 불확실하다고 말하세요. "
             "답변 형식: 1) 핵심 답변 2) 근거 요약 3) 참고 파일.\n\n"
+            f"[페르소나 지시]\n{persona_line}\n\n"
             f"[질문]\n{question}\n\n"
             f"[검색 컨텍스트]\n{context_block}"
         )

@@ -1,19 +1,76 @@
 services:
+  mariadb:
+    image: mariadb:11.7
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-rootpass}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-agentdb}
+      MARIADB_USER: ${MARIADB_USER:-agent}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-agentpass}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - agent_mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
   agent-api:
     build:
       context: ..
       dockerfile: Agent/Dockerfile
+    depends_on:
+      mariadb:
+        condition: service_healthy
     env_file:
       - .env
     environment:
       REPO_ROOT: /srv/repo
       VECTOR_DB_PATH: /srv/vector_db
       VECTOR_COLLECTION: ${VECTOR_COLLECTION:-curriculum_repo}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-local}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-large}
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
       EMBEDDING_DIM: ${EMBEDDING_DIM:-1024}
       CHUNK_SIZE: ${CHUNK_SIZE:-900}
       CHUNK_OVERLAP: ${CHUNK_OVERLAP:-150}
       DEFAULT_TOP_K: ${DEFAULT_TOP_K:-6}
+      DEFAULT_ORCHESTRATOR: ${DEFAULT_ORCHESTRATOR:-native}
+      USER_STORE_MODE: ${USER_STORE_MODE:-auto}
+      USER_VECTOR_COLLECTION: ${USER_VECTOR_COLLECTION:-agent_users}
+      AUTH_SECRET: ${AUTH_SECRET:-change-me-in-production}
+      AUTH_TOKEN_TTL_SECONDS: ${AUTH_TOKEN_TTL_SECONDS:-86400}
+      MARIADB_HOST: mariadb
+      MARIADB_PORT: 3306
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-agentdb}
+      MARIADB_USER: ${MARIADB_USER:-agent}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-agentpass}
+      LANGSMITH_TRACING: ${LANGSMITH_TRACING:-false}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY:-}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT:-curriculum-agent}
+      OPENAI_STT_MODEL: ${OPENAI_STT_MODEL:-gpt-4o-mini-transcribe}
+      OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
+      OPENAI_TTS_VOICE: ${OPENAI_TTS_VOICE:-alloy}
+      OPENAI_VISION_MODEL: ${OPENAI_VISION_MODEL:-gpt-4o-mini}
+      MULTIMODAL_MOCK_FALLBACK: ${MULTIMODAL_MOCK_FALLBACK:-true}
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY:-}
+      DEEPGRAM_MODEL: ${DEEPGRAM_MODEL:-nova-2}
+      ASSEMBLYAI_API_KEY: ${ASSEMBLYAI_API_KEY:-}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      ELEVENLABS_MODEL_ID: ${ELEVENLABS_MODEL_ID:-eleven_multilingual_v2}
+      OCR_SPACE_API_KEY: ${OCR_SPACE_API_KEY:-}
+      TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+      TAVILY_SEARCH_DEPTH: ${TAVILY_SEARCH_DEPTH:-advanced}
+      TAVILY_TOPIC: ${TAVILY_TOPIC:-general}
+      COHERE_API_KEY: ${COHERE_API_KEY:-}
+      COHERE_RERANK_MODEL: ${COHERE_RERANK_MODEL:-rerank-v3.5}
+      WEB_SEARCH_FALLBACK_THRESHOLD: ${WEB_SEARCH_FALLBACK_THRESHOLD:-0.34}
     ports:
       - "8000:8000"
     volumes:
@@ -23,3 +80,4 @@ services:
 
 volumes:
   agent_vector_db:
+  agent_mariadb_data:

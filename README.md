@@ -1,5 +1,5 @@
 <!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
-# Python · AI Agent Curriculum (class001 ~ project020)
+# Python · AI Agent Curriculum 
 
 ### 본 과정의 과목
 
@@ -16,10 +16,11 @@
 ### 본 과정의 목표
 
 1. 이론을 너무 깊게 들어가기보다 “어떻게 쓰는지” 중심, 실습 위주, API 활용 중심
-2. 상기 1 ~ 3 의 과목은 기본 PL 연습과 단어 이해 중심(취업 인터뷰 시 대응 목적)
-3. Python 코드 백엔드 + 바닐라 html FE 의 멀티모달 Serving
-4. 모델 호출/파이프라인 설계, 클라우드 기반, On Prem 환경 기반 ( Docker, k8s 응용 )
-5. LangChain/RAG 아키텍처 이해
+2. 이 과정은 AI 가 Teacher 이고, 강사는 말그대로 실무 중심의 Tutor 임. 
+3. 상기 1 ~ 3 의 과목은 기본 PL 연습과 단어 이해 중심(취업 인터뷰 시 대응 목적)
+4. Python 코드 백엔드 + 바닐라 html FE 의 멀티모달 Serving
+5. 모델 호출/파이프라인 설계, 클라우드 기반, On Prem 환경 기반 ( Docker, k8s 응용 )
+6. LangChain/RAG 아키텍처 이해
 
 ### 학습 방법
 

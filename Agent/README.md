@@ -1,195 +1,160 @@
-# Agent (RAG + FastAPI + Docker)
+# Agent (RAG + Auth + Multimodal + 3rd-party Integrations)
 
-이 폴더는 현재 저장소 전체를 RAG로 인덱싱하고, 학습 중 궁금한 내용을 질의응답할 수 있는 FastAPI 기반 AI Agent 서버입니다.
+교육 커리큘럼 저장소용 FastAPI Agent입니다. 실무형 적용을 위해 주요 외부 API를 바로 붙일 수 있게 확장되어 있습니다.
 
-## 1) 아키텍처
-- Vector DB: `ChromaDB` (로컬 영속 저장)
-- 임베딩: `HashingVectorizer` 기반 로컬 임베딩(모델 다운로드 없이 동작)
-- API: `FastAPI`
-- FE: Tailwind 기반 오프캔버스 + 콘텐츠 레이아웃 (`/` 경로)
-- RAG 검증 대기열: 응답 카드의 `RAG 검증` 버튼으로 이상 응답을 누적하고 다음 재인덱싱 시 재조회 리포트 생성
-- LLM 응답(선택): `OPENAI_API_KEY` 설정 시 OpenAI 모델 사용
-- LLM 키가 없을 때: 검색 근거 기반 요약 답변으로 자동 fallback
-- 질의 라우팅: 구조화 질의(`몇번부터 몇번`)는 `curriculum_index.csv` 규칙 기반 정확 응답, 일반 질의는 하이브리드 RAG
-- 클래스 힌트 부스팅: 질문에 `class001` 같은 패턴이 있으면 해당 클래스 경로 문서를 우선 검색
+## 핵심 기능
+- RAG 질의응답
+  - 로컬 문서 인덱싱(Chroma)
+  - 쿼리 확장 + 하이브리드 검색
+  - Cohere 리랭킹(선택)
+  - Tavily 웹 검색 병합(선택/저신뢰 자동 보강)
+- 멀티모달
+  - STT: OpenAI, Deepgram, AssemblyAI, Mock
+  - TTS: OpenAI, ElevenLabs, Mock
+  - OCR: OpenAI Vision, OCR.Space, Mock
+  - 통합 질의: `/v1/multimodal/ask`
+- 오케스트레이션 선택
+  - `native`, `langchain`, `langgraph`
+- 사용자 관리
+  - 회원가입/로그인/프로필/개인설정
+  - 페르소나, 기본 검색옵션, 기본 오케스트레이터
+- 추적
+  - JSON 로그
+  - LangSmith 연동(선택)
+- 사용자 저장소 fallback
+  - Vector(Chroma) → MariaDB → Memory
 
-흐름:
-1. 저장소 파일(`.md`, `.py`, `.html`, `.csv` 등)을 청크 분할
-2. ChromaDB에 벡터 저장
-3. 질문 입력 시 의도 라우팅(구조화 범위 질의 vs 일반 질의)
-4. 일반 질의는 벡터+키워드 하이브리드 재정렬 검색
-5. 검색 근거 기반 답변 생성(LLM 또는 fallback)
+## Docker 실행
 
-## 2) 폴더 구성
-- `app/main.py`: FastAPI 엔트리포인트 (`/health`, `/v1/ask`, `/v1/reindex`)
-- `app/ingest.py`: 저장소 인덱싱 CLI
-- `app/rag_engine.py`: 파일 수집/청크/벡터 저장/검색
-- `app/agent_service.py`: 답변 생성 로직(LLM + fallback)
-- `docker-compose.yml`: Docker 실행 구성
-- `Dockerfile`: API 이미지 빌드
-- `scripts/start.sh`: 컨테이너 시작 시 인덱싱 + 서버 실행
-
-## 3) Docker로 서빙(권장)
-
-### 3.1 사전 준비
-1. `Agent/.env.example` 복사
+### 1) 환경 파일 준비
 ```bash
 cd Agent
 cp .env.example .env
 ```
-2. OpenAI 생성형 답변 사용 시 `.env`에 `OPENAI_API_KEY` 입력
 
-### 3.2 빌드 및 실행
+### 2) 실행
 ```bash
-cd Agent
 docker compose up -d --build
 ```
 
-### 3.3 상태 확인
+### 3) 확인
 ```bash
-docker compose ps
 curl http://localhost:8000/health
+curl http://localhost:8000/v1/bootstrap
 ```
 
-정상 응답 예시:
-```json
-{
-  "status": "ok",
-  "collection": "curriculum_repo",
-  "documents": 12345
-}
+## 주요 API
+- 인증
+  - `POST /v1/auth/register`
+  - `POST /v1/auth/login`
+  - `GET /v1/auth/me`
+  - `PUT /v1/auth/settings`
+- 질의
+  - `POST /v1/ask`
+  - `POST /v1/multimodal/ask`
+- 멀티모달
+  - `POST /v1/stt`
+  - `POST /v1/tts`
+  - `POST /v1/ocr`
+- 관리
+  - `POST /v1/reindex`
+  - `GET /v1/orchestrators`
+  - `GET /health`
+  - `GET /v1/bootstrap`
+
+## RAG 보강 포인트
+- `AskRequest` 확장 필드
+  - `use_web_search`: Tavily 검색 병합
+  - `web_search_top_k`: 웹 검색 결과 개수
+  - `use_rerank`: 리랭킹 활성화
+  - `rerank_provider`: `auto | cohere | lexical | none`
+- 응답의 `retrieval_diagnostics`
+  - 웹검색 사용 여부, 리랭킹 제공자, 최종 소스 개수 등
+
+## 3rd-party API 환경변수
+
+### RAG/검색
+- `TAVILY_API_KEY`
+- `COHERE_API_KEY`
+- `COHERE_RERANK_MODEL`
+- `WEB_SEARCH_FALLBACK_THRESHOLD`
+
+### STT
+- `DEEPGRAM_API_KEY`, `DEEPGRAM_MODEL`
+- `ASSEMBLYAI_API_KEY`
+
+### TTS
+- `ELEVENLABS_API_KEY`
+- `ELEVENLABS_VOICE_ID`
+- `ELEVENLABS_MODEL_ID`
+
+### OCR
+- `OCR_SPACE_API_KEY`
+
+### OpenAI
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `OPENAI_EMBEDDING_MODEL`
+- `OPENAI_STT_MODEL`
+- `OPENAI_TTS_MODEL`
+- `OPENAI_TTS_VOICE`
+- `OPENAI_VISION_MODEL`
+
+## 임베딩/인덱싱
+- `EMBEDDING_PROVIDER=local|openai`
+- `EMBEDDING_DIM` (OpenAI 임베딩 dimensions와 연동 가능)
+
+## 샘플 요청
+
+### 회원가입
+```bash
+curl -X POST http://localhost:8000/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"student01","password":"Pass1234","full_name":"학생1"}'
 ```
 
-브라우저 UI:
-- `http://localhost:8000/` 접속
-
-![alt text](image.png)
-
-- 좌측 오프캔버스에서 Top-K, LLM 사용, 재인덱스 제어
-- 좌측 오프캔버스에서 `검증 대기` 건수 확인 가능
-- 우측 콘텐츠에서 질문/응답과 source 근거 확인
-
-### 3.4 질문 API 사용
+### 실무형 RAG 질의 (웹검색+리랭크)
 ```bash
 curl -X POST http://localhost:8000/v1/ask \
+  -H "Authorization: Bearer <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-    "question": "class001에서 가상환경을 왜 쓰나요?",
-    "top_k": 6,
-    "use_llm": true
+    "question":"RAG 최신 운영 패턴을 우리 커리큘럼과 연결해 설명해줘",
+    "top_k": 8,
+    "use_llm": true,
+    "orchestrator": "langgraph",
+    "use_web_search": true,
+    "web_search_top_k": 4,
+    "use_rerank": true,
+    "rerank_provider": "auto"
   }'
 ```
 
-응답 필드:
-- `answer`: 최종 답변
-- `sources[]`: 근거 문서 경로/점수/청크
-- `mode`: `subject_range` 또는 `rag`
-- `matched_subject`: 라우팅 시 매칭된 교과목명(있으면)
-
-### 3.5 인덱스 재생성
-저장소 내용이 크게 변경되면 재인덱싱:
+### STT (Deepgram/OpenAI/AssemblyAI 자동 선택)
 ```bash
-curl -X POST "http://localhost:8000/v1/reindex?force=true"
-```
-
-`RAG 검증` 버튼으로 쌓인 대기열이 있으면, 재인덱싱 시점에 해당 질문들을 기준으로 재조회 리포트를 생성한 뒤 대기열을 비웁니다.
-리포트 저장 경로: `$VECTOR_DB_PATH/rag_validation/runs/*.json`
-
-### 3.5-1 RAG 검증 대기열 API
-검증 대기 등록:
-```bash
-curl -X POST http://localhost:8000/v1/rag-validation/queue \
+curl -X POST http://localhost:8000/v1/stt \
+  -H "Authorization: Bearer <TOKEN>" \
   -H "Content-Type: application/json" \
-  -d '{
-    "question": "class001에서 가상환경을 왜 쓰나요?",
-    "answer": "기존 답변",
-    "sources": [],
-    "mode": "rag",
-    "top_k": 6
-  }'
+  -d '{"audio_base64":"<BASE64_AUDIO>","mime_type":"audio/wav","provider":"auto"}'
 ```
 
-대기 건수 조회:
+### TTS (OpenAI/ElevenLabs 자동 선택)
 ```bash
-curl http://localhost:8000/v1/rag-validation/pending
+curl -X POST http://localhost:8000/v1/tts \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"안녕하세요, 실무형 에이전트 테스트입니다.","provider":"auto","audio_format":"mp3"}'
 ```
 
-### 3.6 Docker Hub Public 배포(강사용)
-아래 예시는 Docker Hub 저장소가 `edumgt/ai-class` 인 경우입니다.
-
-1. Docker Hub 로그인
+### OCR (OpenAI Vision/OCR.Space 자동 선택)
 ```bash
-docker login
-```
-2. 이미지 빌드(레포 루트에서 실행)
-```bash
-cd /path/to/Python-AI_Agent-Class
-docker build -f Agent/Dockerfile -t edumgt/ai-class:tagname .
-```
-3. 태그 추가(권장: 날짜/버전 태그 병행)
-```bash
-docker tag edumgt/ai-class:tagname edumgt/ai-class:latest
-```
-4. Public 푸시
-```bash
-docker push edumgt/ai-class:tagname
-docker push edumgt/ai-class:latest
+curl -X POST http://localhost:8000/v1/ocr \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"image_base64":"<BASE64_IMAGE>","provider":"auto"}'
 ```
 
-권장(로컬 빌드 + Hub 동시 반영 자동화):
-```bash
-./Agent/scripts/push_dockerhub.sh tagname
-```
-- 위 스크립트는 항상 `edumgt/ai-class:tagname`과 `edumgt/ai-class:latest`를 함께 push합니다.
-
-푸시 전 필수 설정:
-1. Docker Hub에서 `edumgt/ai-class` 저장소를 생성(공개 Public)
-2. 로컬 Docker 로그인 계정이 `edumgt` 네임스페이스 push 권한을 가져야 함
-3. 로그인 확인
-```bash
-docker login
-docker info | grep Username
-```
-4. 권한 오류(`denied: requested access to the resource is denied`)가 나면
-- 로그인 계정 재확인 (`docker logout && docker login`)
-- 저장소명 오타 확인 (`edumgt/ai-class`)
-- 조직/팀 권한에서 Write 권한 확인
-
-### 3.7 Docker Hub 이미지 pull 후 실행(수강생용)
-수강생은 이 레포를 먼저 클론한 뒤, 아래처럼 이미지 pull 후 실행하면 됩니다.
-
-1. 이미지 pull
-```bash
-docker pull edumgt/ai-class:tagname
-```
-2. 컨테이너 실행(레포 경로 마운트 + 벡터DB 볼륨 생성)
-```bash
-cd /path/to/Python-AI_Agent-Class
-docker volume create agent_vector_db
-docker run -d \
-  --name curriculum-rag-agent \
-  -p 8000:8000 \
-  -e REPO_ROOT=/srv/repo \
-  -e VECTOR_DB_PATH=/srv/vector_db \
-  -e VECTOR_COLLECTION=curriculum_repo \
-  -e OPENAI_API_KEY=YOUR_KEY_OPTIONAL \
-  -v "$(pwd)":/srv/repo:ro \
-  -v agent_vector_db:/srv/vector_db \
-  edumgt/ai-class:tagname
-```
-3. 동작 확인
-```bash
-curl http://localhost:8000/health
-```
-4. 중지/재시작
-```bash
-docker stop curriculum-rag-agent
-docker start curriculum-rag-agent
-```
-
-> Windows PowerShell의 경우 마운트 경로는 `-v "${PWD}:/srv/repo:ro"` 형태를 사용하세요.
-
-## 4) 로컬(비 Docker) 실행
+## 로컬 실행
 ```bash
 cd Agent
 python3 -m venv .venv
@@ -198,63 +163,3 @@ pip install -r requirements.txt
 python -m app.ingest --repo-root .. --db-path ./data/chroma --collection curriculum_repo
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
-
-> 로컬 실행 시 `REPO_ROOT`를 `..`(저장소 루트)로 맞추거나 CLI 인자를 사용하세요.
-
-## 5) 운영 팁
-- 첫 실행은 인덱싱 시간이 걸릴 수 있음(파일 수 많음)
-- 벡터DB는 Docker 볼륨 `agent_vector_db`에 저장되어 재시작 후 재사용
-- LLM 호출 실패 시 자동으로 검색 기반 fallback 답변 제공
-- 질의 품질 향상 팁:
-  - 클래스 ID 포함: `class001`, `class320` 등
-  - 파일명 포함: `class001.md`, `class001_quiz.html`
-  - 주제 키워드 포함: `가상환경`, `RAG`, `PromptTemplate`
-
-## 6) 문제 해결
-- `documents`가 0이면:
-  - `docker compose logs -f agent-api`로 인덱싱 로그 확인
-  - `/v1/reindex?force=true` 재실행
-- `OpenAI` 오류가 나면:
-  - `.env`의 `OPENAI_API_KEY` 값 확인
-  - 키 없이도 `use_llm=false` 또는 fallback으로 동작
-- 포트 충돌 시:
-  - `docker-compose.yml`의 `8000:8000` 앞 포트 변경
-- 컨테이너 이름 충돌 오류가 나면:
-  - 오류 예시:
-```text
-Error response from daemon: Conflict. The container name "/curriculum-rag-agent" is already in use ...
-```
-  - 원인: 과거 수동 실행(`docker run --name curriculum-rag-agent`) 컨테이너가 남아 있거나, 이전 설정의 고정 이름 컨테이너가 남아 있음
-  - 해결:
-```bash
-cd Agent
-docker compose down --remove-orphans
-docker rm -f curriculum-rag-agent
-docker compose up -d --build
-```
-  - 참고: 현재 `docker-compose.yml`은 고정 `container_name`을 사용하지 않아 신규 실행 시에는 자동 이름이 부여됨
-
-## 7) 확장 아이디어
-- 메타데이터에 `class_id`, `subject`를 추가해 필터 검색
-- `/v1/ask`에 `subject`/`class_range` 필터 도입
-- 프론트엔드 채팅 UI(예: Streamlit/Next.js) 연동
-
-## 8) DevOps / MLOps / AIOps 구분
-
-| 구분 | DevOps | MLOps | AIOps |
-|---|---|---|---|
-| 목적 | 개발(Dev)과 운영(Ops)을 통합해 배포 속도와 안정성 향상 | 모델의 학습-배포-운영 전 과정을 자동화하고 품질 유지 | AI/ML로 운영 데이터를 분석해 장애 예측/탐지/자동 대응 |
-| 대상 | 애플리케이션 코드, 인프라, CI/CD 파이프라인 | 데이터셋, 피처, 학습 코드, 모델 아티팩트, 추론 서비스 | 로그, 메트릭, 트레이스, 알림 이벤트 등 운영 관측 데이터 |
-| 핵심 활동 | 자동 빌드/테스트/배포, IaC, 모니터링, 장애 대응 | 데이터/모델 버전관리, 실험 추적, 모델 배포, 드리프트 모니터링 | 이상 탐지, 이벤트 상관분석, 원인 분석(RCA), 자동 복구 |
-| 대표 도구 | GitHub Actions, Jenkins, Docker, Kubernetes, Terraform | MLflow, Kubeflow, Airflow, DVC, SageMaker | Datadog, Dynatrace, New Relic, Splunk |
-
-### 한 줄 요약
-- `DevOps`: 소프트웨어 전달 프로세스 자동화
-- `MLOps`: 모델 생명주기(학습-배포-운영) 자동화
-- `AIOps`: 운영 자체를 AI로 지능화해 장애 대응 자동화
-
-
----
-
-### 추가 설명
-
