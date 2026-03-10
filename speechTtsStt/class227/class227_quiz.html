@@ -409,7 +409,7 @@
   "module": "음성 AI 개요 · 단계 3/7 기초 구현 [class227]",
   "level": "입문",
   "session": "3/64",
-  "track_outcome": "음성 데이터 품질 지표를 계산하고 해석할 수 있다.",
+  "track_outcome": "STT/TTS 차이와 음성 AI 서비스 구조를 설명할 수 있다.",
   "questions": [
     {
       "question": "class227 (음성 데이터 활용한 TTS와 STT 모델 개발 3/64) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'음성 AI 개요 · 단계 3/7 기초 구현 [class227]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "모델 추론 및 튜닝 · 단계 4/6 응용 확장 [class280] 실습: `모델 추론 및 튜닝` 단계 4/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "음성 AI 개요 · 단계 3/7 기초 구현 [class227] 실습: `음성 AI 개요` 단계 3/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "STT 전처리/학습 · 단계 2/6 기초 구현 [class246] 실습: `STT 전처리/학습` 단계 2/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "음성 AI 개요 · 단계 2/7 기초 구현 [class226] 실습: `음성 AI 개요` 단계 2/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "모델 추론 및 튜닝 · 단계 4/6 응용 확장 [class280] 실습: CTC 디코딩 설정과 Whisper 추론 옵션을 바꿔 STT 텍스트 품질 변화를 비교하세요.",
+        "음성 AI 개요 · 단계 3/7 기초 구현 [class227] 실습: STT와 TTS 입력/출력 구조를 표로 비교하세요.",
+        "STT 전처리/학습 · 단계 2/6 기초 구현 [class246] 실습: 동일 발화에서 STFT/Mel/MFCC 특징을 계산해 비교하세요.",
+        "음성 AI 개요 · 단계 2/7 기초 구현 [class226] 실습: STT와 TTS 입력/출력 구조를 표로 비교하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'음성 AI 개요 · 단계 3/7 기초 구현 [class227]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다."
+        "화자별 메타데이터와 품질 지표를 비교해 편향을 점검한다.",
+        "음성비서·콜센터·자막·낭독 서비스 시나리오를 STT/TTS 기능에 매핑한다.",
+        "동일 발화에서 STFT/Mel/MFCC를 계산해 특징 차이를 비교한다.",
+        "STT 텍스트 추출·자막 생성과 TTS 낭독을 하나의 흐름으로 구현한다."
       ],
       "answer_index": 1,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'음성 AI 개요 · 단계 3/7 기초 구현 [class227]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+        "개별 실습만 수행하고 서비스형 통합 검증을 생략한다.",
+        "STT/TTS를 같은 파이프라인으로만 보고 과업별 지표와 요구사항을 분리하지 않는다.",
+        "한국어 발음 규칙을 반영하지 않아 발음 오류와 부자연스러운 합성이 발생한다.",
+        "라벨 검수 루프 없이 모델만 튜닝해도 오류 원인이 사라지지 않는다."
       ],
       "answer_index": 1,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'음성 AI 개요 · 단계 3/7 기초 구현 [class227]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "발화/화자 특성 이해 · 단계 1/7 입문 이해 [class257] 점검: 음성 샘플 하나를 데이터 항목으로 설명할 수 있다.",
-        "음성 품질 평가 · 단계 2/7 기초 구현 [class271] 점검: 음성 샘플 하나를 데이터 항목으로 설명할 수 있다.",
-        "음성 AI 개요 · 단계 3/7 기초 구현 [class227] 점검: 음성 샘플 하나를 데이터 항목으로 설명할 수 있다.",
-        "모델 추론 및 튜닝 · 단계 5/6 실전 검증 [class281] 점검: 음성 샘플 하나를 데이터 항목으로 설명할 수 있다."
+        "발화/화자 특성 이해 · 단계 1/7 입문 이해 [class257] 점검: 화자/발화 특성 차이를 데이터로 설명할 수 있다.",
+        "음성 품질 평가 · 단계 2/7 기초 구현 [class271] 점검: STT/TTS 품질 지표를 각각 설명할 수 있다.",
+        "음성 AI 개요 · 단계 3/7 기초 구현 [class227] 점검: STT와 TTS의 차이와 연결 지점을 설명할 수 있다.",
+        "모델 추론 및 튜닝 · 단계 5/6 실전 검증 [class281] 점검: 추론-평가-튜닝 반복 루프를 설명할 수 있다."
       ],
       "answer_index": 2,
-      "explanation": "이 차시는 '샘플 청취와 라벨 점검 후 길이/잡음 기준 필터링 로그를 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'STT와 TTS의 입력·출력·핵심 지표를 각각 정의해 비교한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'음성 AI 개요 · 단계 3/7 기초 구현 [class227]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class075_example1.py",
+        "class283_example1.py",
         "class227_example1.py",
-        "class010_example1.py",
-        "class135_example1.py"
+        "class284_example1.py",
+        "class234_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class227_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class227_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "rag",
+        "prompt",
         "speech",
-        "ml",
-        "data_preprocess"
+        "nlp",
+        "ml"
       ],
       "answer_index": 1,
       "explanation": "class227_example2.py의 EXAMPLE_TEMPLATE 값은 'speech' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class227_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_generation_config",
-        "summarize_utterances",
-        "read_rows",
-        "predict_batch"
+        "mini_project_plan",
+        "resolve_mode",
+        "tts_model_cards",
+        "mel_scale"
       ],
       "answer_index": 1,
-      "explanation": "class227_example3.py 함수 목록: summarize_utterances, main, self_check, challenge_case"
+      "explanation": "class227_example3.py 함수 목록: resolve_mode, build_test_cases, generate_wave, segment_signal, moving_average_denoise, resample_linear, spectrum_energy, mel_scale"
     },
     {
       "question": "'class227_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "platform",
-        "datetime",
-        "(import 없음)",
-        "json"
+        "pathlib",
+        "json",
+        "math",
+        "(import 없음)"
       ],
       "answer_index": 2,
-      "explanation": "class227_example4.py import 목록: (import 없음)"
+      "explanation": "class227_example4.py import 목록: math"
     },
     {
       "question": "'class227_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,9 +537,30 @@
     "templates": [
       "speech"
     ],
-    "imports": [],
+    "imports": [
+      "math"
+    ],
     "functions": [
-      "summarize_utterances",
+      "resolve_mode",
+      "build_test_cases",
+      "generate_wave",
+      "segment_signal",
+      "moving_average_denoise",
+      "resample_linear",
+      "spectrum_energy",
+      "mel_scale",
+      "mel_bins",
+      "mfcc_like",
+      "classify_speech_quality",
+      "asr_stub",
+      "tts_stub",
+      "ctc_align_stub",
+      "whisper_stub",
+      "g2p_stub",
+      "tts_model_cards",
+      "service_blueprint",
+      "analyze_rows",
+      "build_mode_summary",
       "main",
       "extension_mission",
       "self_check",
@@ -551,18 +572,60 @@
     "by_file": {
       "class227_example1.py": {
         "template": "speech",
-        "imports": [],
+        "imports": [
+          "math"
+        ],
         "functions": [
-          "summarize_utterances",
+          "resolve_mode",
+          "build_test_cases",
+          "generate_wave",
+          "segment_signal",
+          "moving_average_denoise",
+          "resample_linear",
+          "spectrum_energy",
+          "mel_scale",
+          "mel_bins",
+          "mfcc_like",
+          "classify_speech_quality",
+          "asr_stub",
+          "tts_stub",
+          "ctc_align_stub",
+          "whisper_stub",
+          "g2p_stub",
+          "tts_model_cards",
+          "service_blueprint",
+          "analyze_rows",
+          "build_mode_summary",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class227_example2.py": {
         "template": "speech",
-        "imports": [],
+        "imports": [
+          "math"
+        ],
         "functions": [
-          "summarize_utterances",
+          "resolve_mode",
+          "build_test_cases",
+          "generate_wave",
+          "segment_signal",
+          "moving_average_denoise",
+          "resample_linear",
+          "spectrum_energy",
+          "mel_scale",
+          "mel_bins",
+          "mfcc_like",
+          "classify_speech_quality",
+          "asr_stub",
+          "tts_stub",
+          "ctc_align_stub",
+          "whisper_stub",
+          "g2p_stub",
+          "tts_model_cards",
+          "service_blueprint",
+          "analyze_rows",
+          "build_mode_summary",
           "main",
           "extension_mission"
         ],
@@ -570,9 +633,30 @@
       },
       "class227_example3.py": {
         "template": "speech",
-        "imports": [],
+        "imports": [
+          "math"
+        ],
         "functions": [
-          "summarize_utterances",
+          "resolve_mode",
+          "build_test_cases",
+          "generate_wave",
+          "segment_signal",
+          "moving_average_denoise",
+          "resample_linear",
+          "spectrum_energy",
+          "mel_scale",
+          "mel_bins",
+          "mfcc_like",
+          "classify_speech_quality",
+          "asr_stub",
+          "tts_stub",
+          "ctc_align_stub",
+          "whisper_stub",
+          "g2p_stub",
+          "tts_model_cards",
+          "service_blueprint",
+          "analyze_rows",
+          "build_mode_summary",
           "main",
           "self_check",
           "challenge_case"
@@ -581,9 +665,30 @@
       },
       "class227_example4.py": {
         "template": "speech",
-        "imports": [],
+        "imports": [
+          "math"
+        ],
         "functions": [
-          "summarize_utterances",
+          "resolve_mode",
+          "build_test_cases",
+          "generate_wave",
+          "segment_signal",
+          "moving_average_denoise",
+          "resample_linear",
+          "spectrum_energy",
+          "mel_scale",
+          "mel_bins",
+          "mfcc_like",
+          "classify_speech_quality",
+          "asr_stub",
+          "tts_stub",
+          "ctc_align_stub",
+          "whisper_stub",
+          "g2p_stub",
+          "tts_model_cards",
+          "service_blueprint",
+          "analyze_rows",
+          "build_mode_summary",
           "main",
           "mini_project_plan"
         ],
@@ -591,9 +696,30 @@
       },
       "class227_example5.py": {
         "template": "speech",
-        "imports": [],
+        "imports": [
+          "math"
+        ],
         "functions": [
-          "summarize_utterances",
+          "resolve_mode",
+          "build_test_cases",
+          "generate_wave",
+          "segment_signal",
+          "moving_average_denoise",
+          "resample_linear",
+          "spectrum_energy",
+          "mel_scale",
+          "mel_bins",
+          "mfcc_like",
+          "classify_speech_quality",
+          "asr_stub",
+          "tts_stub",
+          "ctc_align_stub",
+          "whisper_stub",
+          "g2p_stub",
+          "tts_model_cards",
+          "service_blueprint",
+          "analyze_rows",
+          "build_mode_summary",
           "main",
           "ops_readiness_check"
         ],
@@ -604,23 +730,23 @@
   "example_snippets": [
     {
       "file": "class227_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example1: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\n\ndef summarize_utterances(rows):\n    avg_seconds = sum(r[\"seconds\"] for r in rows) / len(rows)\n    noise_flags = [r[\"id\"] for r in rows if r[\"snr_db\"] < 12]\n    return {\n        \"count\": len(rows),\n        \"avg_seconds\": round(avg_seconds, 2),\n        \"noisy_ids\": noise_flags,\n    }\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example1: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\nEXAMPLE_VARIANT = 1\n\nimport math\n\ndef resolve_mode():\n    if any(k in TOPIC for k in [\"NLP/STT/TTS 개요\", \"음성 AI 개요\"]):\n        return \"overview\"\n    if any(k in TOPIC for k in [\"STT 파이프라인\", \"STT 데이터 라벨링\", \"발화/화자 특성 이해\", \"음성 데이터 구조 이해\"]):\n        return \"data_prep\"\n    if any(k in TOPIC for k in [\"오디오 전처리\", \"STT 전처리/학습\"]):\n        return \"preprocess\"\n    if any(k in TOPIC for k in [\"특징 추출\", \"음성 품질 평가\"]):"
     },
     {
       "file": "class227_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example2: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\n\ndef summarize_utterances(rows):\n    avg_seconds = sum(r[\"seconds\"] for r in rows) / len(rows)\n    noise_flags = [r[\"id\"] for r in rows if r[\"snr_db\"] < 12]\n    return {\n        \"count\": len(rows),\n        \"avg_seconds\": round(avg_seconds, 2),\n        \"noisy_ids\": noise_flags,\n    }\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example2: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\nEXAMPLE_VARIANT = 2\n\nimport math\n\ndef resolve_mode():\n    if any(k in TOPIC for k in [\"NLP/STT/TTS 개요\", \"음성 AI 개요\"]):\n        return \"overview\"\n    if any(k in TOPIC for k in [\"STT 파이프라인\", \"STT 데이터 라벨링\", \"발화/화자 특성 이해\", \"음성 데이터 구조 이해\"]):\n        return \"data_prep\"\n    if any(k in TOPIC for k in [\"오디오 전처리\", \"STT 전처리/학습\"]):\n        return \"preprocess\"\n    if any(k in TOPIC for k in [\"특징 추출\", \"음성 품질 평가\"]):"
     },
     {
       "file": "class227_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example3: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\n\ndef summarize_utterances(rows):\n    avg_seconds = sum(r[\"seconds\"] for r in rows) / len(rows)\n    noise_flags = [r[\"id\"] for r in rows if r[\"snr_db\"] < 12]\n    return {\n        \"count\": len(rows),\n        \"avg_seconds\": round(avg_seconds, 2),\n        \"noisy_ids\": noise_flags,\n    }\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example3: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\nEXAMPLE_VARIANT = 3\n\nimport math\n\ndef resolve_mode():\n    if any(k in TOPIC for k in [\"NLP/STT/TTS 개요\", \"음성 AI 개요\"]):\n        return \"overview\"\n    if any(k in TOPIC for k in [\"STT 파이프라인\", \"STT 데이터 라벨링\", \"발화/화자 특성 이해\", \"음성 데이터 구조 이해\"]):\n        return \"data_prep\"\n    if any(k in TOPIC for k in [\"오디오 전처리\", \"STT 전처리/학습\"]):\n        return \"preprocess\"\n    if any(k in TOPIC for k in [\"특징 추출\", \"음성 품질 평가\"]):"
     },
     {
       "file": "class227_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example4: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\n\ndef summarize_utterances(rows):\n    avg_seconds = sum(r[\"seconds\"] for r in rows) / len(rows)\n    noise_flags = [r[\"id\"] for r in rows if r[\"snr_db\"] < 12]\n    return {\n        \"count\": len(rows),\n        \"avg_seconds\": round(avg_seconds, 2),\n        \"noisy_ids\": noise_flags,\n    }\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example4: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\nEXAMPLE_VARIANT = 4\n\nimport math\n\ndef resolve_mode():\n    if any(k in TOPIC for k in [\"NLP/STT/TTS 개요\", \"음성 AI 개요\"]):\n        return \"overview\"\n    if any(k in TOPIC for k in [\"STT 파이프라인\", \"STT 데이터 라벨링\", \"발화/화자 특성 이해\", \"음성 데이터 구조 이해\"]):\n        return \"data_prep\"\n    if any(k in TOPIC for k in [\"오디오 전처리\", \"STT 전처리/학습\"]):\n        return \"preprocess\"\n    if any(k in TOPIC for k in [\"특징 추출\", \"음성 품질 평가\"]):"
     },
     {
       "file": "class227_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example5: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\n\ndef summarize_utterances(rows):\n    avg_seconds = sum(r[\"seconds\"] for r in rows) / len(rows)\n    noise_flags = [r[\"id\"] for r in rows if r[\"snr_db\"] < 12]\n    return {\n        \"count\": len(rows),\n        \"avg_seconds\": round(avg_seconds, 2),\n        \"noisy_ids\": noise_flags,\n    }\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class227 example5: 음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\"\"\n\nTOPIC = \"음성 AI 개요 · 단계 3/7 기초 구현 [class227]\"\nEXAMPLE_TEMPLATE = \"speech\"\nEXAMPLE_VARIANT = 5\n\nimport math\n\ndef resolve_mode():\n    if any(k in TOPIC for k in [\"NLP/STT/TTS 개요\", \"음성 AI 개요\"]):\n        return \"overview\"\n    if any(k in TOPIC for k in [\"STT 파이프라인\", \"STT 데이터 라벨링\", \"발화/화자 특성 이해\", \"음성 데이터 구조 이해\"]):\n        return \"data_prep\"\n    if any(k in TOPIC for k in [\"오디오 전처리\", \"STT 전처리/학습\"]):\n        return \"preprocess\"\n    if any(k in TOPIC for k in [\"특징 추출\", \"음성 품질 평가\"]):"
     }
   ]
 };

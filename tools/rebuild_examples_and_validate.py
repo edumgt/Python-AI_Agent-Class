@@ -75,6 +75,9 @@ def pick_template(module: str, subject: str) -> str:
     subject_text = subject.lower()
     text = f"{subject_text} {module_text}"
 
+    if "음성 데이터 활용한 tts와 stt 모델 개발" in subject_text:
+        return "speech"
+
     if "mlops" in text or "모델 레지스트리" in module or "배포 자동화" in module:
         return "ml"
     if "aiops" in text or "관측 데이터" in module or "이상탐지" in module or "runbook" in text:
@@ -1687,47 +1690,603 @@ def build_body(template: str, class_id: str) -> str:
 
     if template == "nlp":
         return """
-        def tokenize(text):
-            cleaned = text.replace(",", " ").replace(".", " ").replace("/", " ")
-            return [tok.lower() for tok in cleaned.split() if tok]
+        import math
+        import re
 
-        def top_k(tokens, k=5):
+        STOPWORDS = {"은", "는", "이", "가", "을", "를", "에", "의", "그리고", "또한", "but", "the", "a"}
+        POS_RULES = [
+            ("하다", "VERB"),
+            ("했다", "VERB"),
+            ("합니다", "VERB"),
+            ("적", "NOUN"),
+            ("성", "NOUN"),
+            ("다", "ENDING"),
+        ]
+        POSITIVE_WORDS = {"좋다", "만족", "추천", "향상", "개선", "정확", "편리", "안정"}
+        NEGATIVE_WORDS = {"나쁘다", "불만", "오류", "지연", "실패", "불안정", "잡음", "누락"}
+
+        def resolve_mode():
+            if "텍스트 정제와 토큰화" in TOPIC:
+                return "preprocess"
+            if any(k in TOPIC for k in ["임베딩", "텍스트 분류", "시퀀스 모델", "언어모델 입력 구조"]):
+                return "model"
+            if any(k in TOPIC for k in ["멀티모달", "실전 데이터셋 설계"]):
+                return "practice"
+            if any(k in TOPIC for k in ["개요", "데이터 수집"]):
+                return "understanding"
+            return "nlp_general"
+
+        def normalize_text(text):
+            text = re.sub(r"\\s+", " ", str(text)).strip().lower()
+            text = re.sub(r"[^0-9a-zA-Z가-힣\\s.!?]", " ", text)
+            text = re.sub(r"\\s+", " ", text).strip()
+            return text
+
+        def split_sentences(text):
+            raw = re.split(r"[.!?]+", text)
+            return [s.strip() for s in raw if s.strip()]
+
+        def tokenize(sentence):
+            return [tok for tok in sentence.split(" ") if tok]
+
+        def remove_stopwords(tokens):
+            return [tok for tok in tokens if tok not in STOPWORDS and len(tok) > 1]
+
+        def infer_pos(token):
+            for suffix, tag in POS_RULES:
+                if token.endswith(suffix):
+                    return tag
+            if token.isdigit():
+                return "NUM"
+            if token and token[0].isupper():
+                return "PROPN"
+            return "NOUN"
+
+        def extract_named_entities(tokens):
+            entities = []
+            for tok in tokens:
+                if tok in {"서울", "부산", "python", "ai", "stt", "tts", "ml"}:
+                    entities.append({"token": tok, "label": "ENTITY"})
+            return entities
+
+        def bow_vector(tokens):
             freq = {}
             for tok in tokens:
                 freq[tok] = freq.get(tok, 0) + 1
-            return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]
+            return freq
+
+        def tfidf_vectors(doc_tokens_list):
+            df = {}
+            for tokens in doc_tokens_list:
+                for tok in set(tokens):
+                    df[tok] = df.get(tok, 0) + 1
+            total_docs = max(1, len(doc_tokens_list))
+            vectors = []
+            for tokens in doc_tokens_list:
+                tf = bow_vector(tokens)
+                vec = {}
+                for tok, cnt in tf.items():
+                    idf = math.log((1 + total_docs) / (1 + df.get(tok, 0))) + 1.0
+                    vec[tok] = round((cnt / max(1, len(tokens))) * idf, 4)
+                vectors.append(vec)
+            return vectors
+
+        def cosine_similarity(vec_a, vec_b):
+            keys = set(vec_a) | set(vec_b)
+            dot = sum(vec_a.get(k, 0.0) * vec_b.get(k, 0.0) for k in keys)
+            norm_a = math.sqrt(sum(v * v for v in vec_a.values()))
+            norm_b = math.sqrt(sum(v * v for v in vec_b.values()))
+            if norm_a == 0 or norm_b == 0:
+                return 0.0
+            return round(dot / (norm_a * norm_b), 4)
+
+        def sentiment_score(tokens):
+            pos = sum(1 for tok in tokens if tok in POSITIVE_WORDS)
+            neg = sum(1 for tok in tokens if tok in NEGATIVE_WORDS)
+            if pos > neg:
+                return "positive"
+            if neg > pos:
+                return "negative"
+            return "neutral"
+
+        def quality_issues(text):
+            issues = []
+            if not text:
+                issues.append("empty")
+            if len(text) < 8:
+                issues.append("too_short")
+            if text.count("  ") > 0:
+                issues.append("duplicate_spaces")
+            return issues
+
+        def build_test_cases():
+            cases = [
+                {
+                    "id": "news-1",
+                    "doc_type": "news",
+                    "text": "서울 AI 센터는 음성 데이터 전처리 성능을 향상했다. 사용자 만족이 개선됐다.",
+                    "label": "tech",
+                },
+                {
+                    "id": "review-1",
+                    "doc_type": "review",
+                    "text": "앱 반응이 빠르고 추천 기능이 편리하다.",
+                    "label": "positive",
+                },
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(
+                    {
+                        "id": "review-2",
+                        "doc_type": "review",
+                        "text": "잡음이 많아 인식 실패가 자주 발생해서 불만이 크다.",
+                        "label": "negative",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(
+                    {
+                        "id": "forum-1",
+                        "doc_type": "forum",
+                        "text": "stt 결과가 가끔 누락됨... why???",
+                        "label": "issue",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    {
+                        "id": "news-2",
+                        "doc_type": "news",
+                        "text": "python 기반 문서분류 모델이 정확도 0.91을 기록했다! 배포 자동화도 완료.",
+                        "label": "tech",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    {
+                        "id": "edge-empty",
+                        "doc_type": "review",
+                        "text": "",
+                        "label": "unknown",
+                    }
+                )
+            return cases
+
+        def build_query():
+            if EXAMPLE_VARIANT >= 4:
+                return "음성 인식 성능과 잡음 문제"
+            if EXAMPLE_VARIANT >= 2:
+                return "리뷰 만족과 오류"
+            return "ai 음성 전처리"
+
+        def analyze_documents():
+            cases = build_test_cases()
+            rows = []
+            all_tokens = []
+            doc_tokens_list = []
+            type_count = {}
+            for case in cases:
+                norm = normalize_text(case["text"])
+                sentences = split_sentences(norm)
+                tokens_raw = []
+                for sent in sentences:
+                    tokens_raw.extend(tokenize(sent))
+                tokens = remove_stopwords(tokens_raw)
+                pos_tags = [infer_pos(tok) for tok in tokens]
+                entities = extract_named_entities(tokens)
+                issues = quality_issues(norm)
+                sentiment = sentiment_score(tokens)
+                row = {
+                    "id": case["id"],
+                    "doc_type": case["doc_type"],
+                    "label": case["label"],
+                    "sentence_count": len(sentences),
+                    "token_count": len(tokens),
+                    "tokens": tokens,
+                    "pos_tags": pos_tags,
+                    "entities": entities,
+                    "issues": issues,
+                    "sentiment": sentiment,
+                }
+                rows.append(row)
+                all_tokens.extend(tokens)
+                doc_tokens_list.append(tokens)
+                type_count[case["doc_type"]] = type_count.get(case["doc_type"], 0) + 1
+
+            bows = [bow_vector(row["tokens"]) for row in rows]
+            tfidf = tfidf_vectors(doc_tokens_list)
+            query_tokens = remove_stopwords(tokenize(normalize_text(build_query())))
+            query_vec = bow_vector(query_tokens)
+            similarities = []
+            for row, vec in zip(rows, tfidf):
+                sim = cosine_similarity(query_vec, vec)
+                similarities.append((row["id"], sim))
+            similarities.sort(key=lambda x: x[1], reverse=True)
+            pos_dist = {}
+            for row in rows:
+                pos_dist[row["sentiment"]] = pos_dist.get(row["sentiment"], 0) + 1
+
+            return {
+                "rows": rows,
+                "type_count": type_count,
+                "token_total": len(all_tokens),
+                "unique_tokens": len(set(all_tokens)),
+                "top_terms": sorted(bow_vector(all_tokens).items(), key=lambda x: (-x[1], x[0]))[:7],
+                "bow_vocab_size": len(set().union(*(set(v.keys()) for v in bows))) if bows else 0,
+                "tfidf_doc_count": len(tfidf),
+                "similarity_top": similarities[:3],
+                "sentiment_distribution": pos_dist,
+                "query_tokens": query_tokens,
+            }
+
+        def build_mode_summary(mode, report):
+            if mode == "understanding":
+                return {
+                    "nlp_concepts": ["문장/문서/토큰", "형태소·품사·개체명", "텍스트 품질 이슈"],
+                    "doc_types": report["type_count"],
+                    "quality_flags": sum(len(row["issues"]) for row in report["rows"]),
+                }
+            if mode == "preprocess":
+                return {
+                    "pipeline": ["정제", "문장분리", "토큰화", "불용어 제거", "벡터화"],
+                    "token_total": report["token_total"],
+                    "vocab": report["bow_vocab_size"],
+                }
+            if mode == "model":
+                return {
+                    "model_keywords": ["BoW", "TF-IDF", "문장 임베딩(유사도)", "텍스트 분류(감성)"],
+                    "similarity_top": report["similarity_top"],
+                    "sentiment_distribution": report["sentiment_distribution"],
+                }
+            if mode == "practice":
+                return {
+                    "practice_examples": ["뉴스/리뷰 전처리", "간단 분류", "멀티모달 확장 준비"],
+                    "query_tokens": report["query_tokens"],
+                    "top_terms": report["top_terms"],
+                }
+            return {"token_total": report["token_total"], "top_terms": report["top_terms"]}
 
         def main():
             print("오늘 주제:", TOPIC)
-            text = "LLM 응답 품질은 프롬프트 구조와 검증 절차에 따라 달라진다. 응답 품질을 점검하자."
-            tokens = tokenize(text)
-            ranking = top_k(tokens)
-            report = {"token_count": len(tokens), "top_terms": ranking}
-            print("분석 리포트:", report)
-            return report
+            mode = resolve_mode()
+            report = analyze_documents()
+            summary = build_mode_summary(mode, report)
+            print("모드:", mode)
+            print("요약:", summary)
+            return {
+                "variant": EXAMPLE_VARIANT,
+                "mode": mode,
+                "doc_count": len(report["rows"]),
+                "summary": summary,
+            }
         """
 
     if template == "speech":
         return """
-        def summarize_utterances(rows):
-            avg_seconds = sum(r["seconds"] for r in rows) / len(rows)
-            noise_flags = [r["id"] for r in rows if r["snr_db"] < 12]
+        import math
+
+        def resolve_mode():
+            if any(k in TOPIC for k in ["NLP/STT/TTS 개요", "음성 AI 개요"]):
+                return "overview"
+            if any(k in TOPIC for k in ["STT 파이프라인", "STT 데이터 라벨링", "발화/화자 특성 이해", "음성 데이터 구조 이해"]):
+                return "data_prep"
+            if any(k in TOPIC for k in ["오디오 전처리", "STT 전처리/학습"]):
+                return "preprocess"
+            if any(k in TOPIC for k in ["특징 추출", "음성 품질 평가"]):
+                return "feature_model"
+            if any(k in TOPIC for k in ["TTS 파이프라인", "TTS 전처리/학습"]):
+                return "tts_model"
+            if "모델 추론 및 튜닝" in TOPIC:
+                return "tuning"
+            if "실전 음성 모델 데모" in TOPIC:
+                return "practice_demo"
+            return "speech_general"
+
+        def build_test_cases():
+            rows = [
+                {
+                    "id": "utt1",
+                    "format": "wav",
+                    "sample_rate": 16000,
+                    "seconds": 1.2,
+                    "freq_hz": 220,
+                    "amplitude": 0.8,
+                    "snr_db": 22.4,
+                    "label": "hello ai",
+                    "speaker": "spk_a",
+                },
+                {
+                    "id": "utt2",
+                    "format": "mp3",
+                    "sample_rate": 22050,
+                    "seconds": 1.8,
+                    "freq_hz": 330,
+                    "amplitude": 0.6,
+                    "snr_db": 14.1,
+                    "label": "speech demo",
+                    "speaker": "spk_b",
+                },
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                rows.append(
+                    {
+                        "id": "utt3",
+                        "format": "wav",
+                        "sample_rate": 8000,
+                        "seconds": 2.2,
+                        "freq_hz": 180,
+                        "amplitude": 0.7,
+                        "snr_db": 10.2,
+                        "label": "noisy sample",
+                        "speaker": "spk_a",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 3:
+                rows.append(
+                    {
+                        "id": "utt4",
+                        "format": "wav",
+                        "sample_rate": 44100,
+                        "seconds": 0.7,
+                        "freq_hz": 410,
+                        "amplitude": 0.9,
+                        "snr_db": 18.0,
+                        "label": "short clip",
+                        "speaker": "spk_c",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 4:
+                rows.append(
+                    {
+                        "id": "utt5",
+                        "format": "flac",
+                        "sample_rate": 16000,
+                        "seconds": 2.6,
+                        "freq_hz": 260,
+                        "amplitude": 0.5,
+                        "snr_db": 12.5,
+                        "label": "tts target",
+                        "speaker": "spk_d",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 5:
+                rows.append(
+                    {
+                        "id": "utt6",
+                        "format": "wav",
+                        "sample_rate": 12000,
+                        "seconds": 3.1,
+                        "freq_hz": 140,
+                        "amplitude": 0.4,
+                        "snr_db": 8.8,
+                        "label": "edge noisy",
+                        "speaker": "spk_e",
+                    }
+                )
+            return rows
+
+        def generate_wave(sample_rate, seconds, freq_hz, amplitude):
+            size = max(16, int(sample_rate * min(seconds, 0.2)))
+            signal = []
+            for i in range(size):
+                t = i / sample_rate
+                v = amplitude * math.sin(2 * math.pi * freq_hz * t)
+                signal.append(v)
+            return signal
+
+        def segment_signal(signal, segment_size):
+            chunks = []
+            i = 0
+            while i < len(signal):
+                chunks.append(signal[i : i + segment_size])
+                i += segment_size
+            return chunks
+
+        def moving_average_denoise(signal, radius=1):
+            out = []
+            for i in range(len(signal)):
+                start = max(0, i - radius)
+                end = min(len(signal), i + radius + 1)
+                win = signal[start:end]
+                out.append(sum(win) / len(win))
+            return out
+
+        def resample_linear(signal, src_rate, dst_rate):
+            if src_rate == dst_rate or not signal:
+                return list(signal)
+            out_len = max(1, int(len(signal) * dst_rate / src_rate))
+            out = []
+            for i in range(out_len):
+                pos = i * (len(signal) - 1) / max(1, out_len - 1)
+                left = int(math.floor(pos))
+                right = min(len(signal) - 1, left + 1)
+                alpha = pos - left
+                out.append(signal[left] * (1 - alpha) + signal[right] * alpha)
+            return out
+
+        def spectrum_energy(signal, bins=16):
+            if not signal:
+                return [0.0] * bins
+            chunk = max(1, len(signal) // bins)
+            out = []
+            for i in range(bins):
+                seg = signal[i * chunk : (i + 1) * chunk]
+                if not seg:
+                    out.append(0.0)
+                else:
+                    out.append(sum(abs(v) for v in seg) / len(seg))
+            return out
+
+        def mel_scale(freq_hz):
+            return 2595.0 * math.log10(1.0 + freq_hz / 700.0)
+
+        def mel_bins(sample_rate, bins=8):
+            nyq = sample_rate / 2.0
+            step = nyq / bins
+            return [round(mel_scale((i + 1) * step), 2) for i in range(bins)]
+
+        def mfcc_like(energies):
+            if not energies:
+                return []
+            return [round(math.log(e + 1e-6), 4) for e in energies[:13]]
+
+        def classify_speech_quality(snr_db):
+            if snr_db >= 20:
+                return "clean"
+            if snr_db >= 12:
+                return "mid"
+            return "noisy"
+
+        def asr_stub(text):
+            return text.upper()
+
+        def tts_stub(text, sample_rate):
+            return {"chars": len(text), "target_sr": sample_rate, "voice": "korean-neutral"}
+
+        def ctc_align_stub(text):
+            # CTC 개념 데모: 반복 문자 병합 + blank 제거를 단순화해 표현
+            collapsed = []
+            prev = None
+            for ch in text:
+                if ch == "_":
+                    prev = ch
+                    continue
+                if ch != prev:
+                    collapsed.append(ch)
+                prev = ch
+            return "".join(collapsed)
+
+        def whisper_stub(text):
+            # Whisper 계열 동작 개념 데모(실제 모델 추론 아님)
+            return {"transcript": text.lower(), "confidence": round(0.78 + EXAMPLE_VARIANT * 0.03, 3)}
+
+        def g2p_stub(text):
+            # 한국어 발음열 변환의 축약 데모
+            normalized = text.replace(" ", "")
+            return [ch for ch in normalized if ch.strip()]
+
+        def tts_model_cards():
+            return [
+                {"name": "Tacotron", "strength": "자연스러운 멜 예측", "weakness": "추론 속도"},
+                {"name": "FastSpeech", "strength": "빠른 추론", "weakness": "프로소디 제어 난이도"},
+                {"name": "VITS", "strength": "고품질 end-to-end", "weakness": "학습 안정성 관리"},
+            ]
+
+        def service_blueprint():
             return {
-                "count": len(rows),
-                "avg_seconds": round(avg_seconds, 2),
-                "noisy_ids": noise_flags,
+                "ingest": "audio upload / stream",
+                "preprocess": "resample + denoise + segment",
+                "features": "spectrogram + mel + mfcc",
+                "model": "ASR or TTS or classification",
+                "serving": "API + monitoring + metadata logging",
             }
+
+        def analyze_rows():
+            rows = build_test_cases()
+            analyzed = []
+            format_count = {}
+            speaker_count = {}
+            for row in rows:
+                signal = generate_wave(row["sample_rate"], row["seconds"], row["freq_hz"], row["amplitude"])
+                seg_size = max(8, len(signal) // 4)
+                segments = segment_signal(signal, seg_size)
+                denoised = moving_average_denoise(signal, radius=1)
+                resampled = resample_linear(denoised, row["sample_rate"], 16000)
+                spec = spectrum_energy(resampled, bins=16)
+                mel = mel_bins(16000, bins=8)
+                mfcc = mfcc_like(spec)
+                quality = classify_speech_quality(row["snr_db"])
+                analyzed_row = {
+                    "id": row["id"],
+                    "format": row["format"],
+                    "sample_rate": row["sample_rate"],
+                    "seconds": row["seconds"],
+                    "label": row["label"],
+                    "speaker": row["speaker"],
+                    "segments": len(segments),
+                    "quality": quality,
+                    "spectrogram_bins": len(spec),
+                    "mel_bins": mel[:4],
+                    "mfcc_head": mfcc[:5],
+                    "asr_text": asr_stub(row["label"]),
+                    "tts_meta": tts_stub(row["label"], 16000),
+                }
+                analyzed.append(analyzed_row)
+                format_count[row["format"]] = format_count.get(row["format"], 0) + 1
+                speaker_count[row["speaker"]] = speaker_count.get(row["speaker"], 0) + 1
+            return {
+                "rows": analyzed,
+                "format_count": format_count,
+                "speaker_count": speaker_count,
+                "avg_seconds": round(sum(r["seconds"] for r in rows) / len(rows), 3),
+                "avg_sample_rate": int(sum(r["sample_rate"] for r in rows) / len(rows)),
+            }
+
+        def build_mode_summary(mode, report):
+            if mode == "overview":
+                return {
+                    "stt_tts_concepts": ["STT(음성→텍스트)", "TTS(텍스트→음성)", "음성비서/콜센터/자막/낭독"],
+                    "service": service_blueprint(),
+                    "sample_count": len(report["rows"]),
+                }
+            if mode == "data_prep":
+                return {
+                    "data_prep": ["음성 수집", "스크립트 정렬", "발화 단위 관리", "화자 정보 관리", "데이터 증강"],
+                    "format_count": report["format_count"],
+                    "speaker_count": report["speaker_count"],
+                }
+            if mode == "preprocess":
+                return {
+                    "pipeline": ["파일 로딩", "구간 분할", "잡음 제거", "샘플레이트 변환", "Spectrogram/Mel"],
+                    "avg_sample_rate": report["avg_sample_rate"],
+                    "avg_seconds": report["avg_seconds"],
+                }
+            if mode == "feature_model":
+                return {
+                    "feature_stack": ["waveform", "STFT", "Mel-Spectrogram", "MFCC", "발음-음향 특징 관계"],
+                    "quality_distribution": {
+                        "clean": sum(1 for r in report["rows"] if r["quality"] == "clean"),
+                        "mid": sum(1 for r in report["rows"] if r["quality"] == "mid"),
+                        "noisy": sum(1 for r in report["rows"] if r["quality"] == "noisy"),
+                    },
+                    "service": service_blueprint(),
+                }
+            if mode == "tts_model":
+                return {
+                    "tts_flow": ["텍스트→발음열", "음향모델", "보코더"],
+                    "g2p_preview": g2p_stub("한국어 tts 실습"),
+                    "models": tts_model_cards(),
+                }
+            if mode == "tuning":
+                ctc_preview = ctc_align_stub("hh__ee_ll_ll_oo")
+                whisper_preview = whisper_stub("안녕하세요 STT 모델 테스트")
+                return {
+                    "stt_model_concepts": ["음성→텍스트 구조", "음향모델/언어모델", "CTC", "Whisper", "한국어 STT 고려사항"],
+                    "ctc_demo": ctc_preview,
+                    "whisper_demo": whisper_preview,
+                    "korean_stt_checks": ["받침/연음", "외래어", "숫자/기호 읽기"],
+                }
+            if mode == "practice_demo":
+                return {
+                    "stt_practice": ["오픈소스 STT 사용", "음성→텍스트 추출", "구간별 자막 생성", "STT 성능 확인"],
+                    "tts_practice": ["텍스트→음성 변환", "톤/속도 조절", "샘플 문장 낭독", "한국어 TTS 실습"],
+                    "service": service_blueprint(),
+                }
+            return {"avg_seconds": report["avg_seconds"], "formats": report["format_count"]}
 
         def main():
             print("오늘 주제:", TOPIC)
-            rows = [
-                {"id": "utt1", "seconds": 1.8, "snr_db": 15.2},
-                {"id": "utt2", "seconds": 2.9, "snr_db": 10.5},
-                {"id": "utt3", "seconds": 1.1, "snr_db": 18.7},
-            ]
-            report = summarize_utterances(rows)
-            print("음성 품질 요약:", report)
-            return report
+            mode = resolve_mode()
+            report = analyze_rows()
+            summary = build_mode_summary(mode, report)
+            print("모드:", mode)
+            print("요약:", summary)
+            return {
+                "variant": EXAMPLE_VARIANT,
+                "mode": mode,
+                "sample_count": len(report["rows"]),
+                "summary": summary,
+            }
         """
 
     if template == "prompt":
@@ -1994,12 +2553,19 @@ def variant_brief(template: str) -> dict[str, str]:
             "mini": "입력 토큰 길이별 비용 추정기를 추가하세요.",
             "ops": "모델 장애 시 대체 모델 라우팅 규칙을 작성하세요.",
         },
+        "nlp": {
+            "mission": "문장 분리-토큰화-불용어 제거-벡터화(BOW/TF-IDF)를 한 파이프라인으로 실행하세요.",
+            "check": "형태소/품사/개체명 결과와 텍스트 품질 이슈(빈 문장/잡음)를 함께 점검하세요.",
+            "challenge": "텍스트 분류(감성/문서분류)와 유사도 계산을 동시에 리포트로 출력하세요.",
+            "mini": "뉴스/리뷰 2종 데이터를 추가해 전처리/분류 성능 변화를 비교하세요.",
+            "ops": "데이터 드리프트(어휘 변화) 감지 기준과 재학습 트리거를 정의하세요.",
+        },
         "speech": {
-            "mission": "snr 임계값을 조정해 noisy 판정 변화를 비교하세요.",
-            "check": "짧은 발화/긴 발화를 분리해 전처리 전략을 달리 적용하세요.",
-            "challenge": "STT 오류가 많은 구간을 규칙 기반으로 탐지하세요.",
-            "mini": "발화 단위 품질 리포트를 CSV로 내보내세요.",
-            "ops": "실시간 처리 지연 임계치와 경보 조건을 정의하세요.",
+            "mission": "파일 로딩-세그먼트 분할-노이즈 제거-샘플레이트 변환을 단계별로 실행하세요.",
+            "check": "Spectrogram/Mel/MFCC 특징과 라벨·메타데이터 정합성을 함께 검증하세요.",
+            "challenge": "ASR/TTS/음성분류 서비스 구조를 그려 입력부터 추론까지 연결하세요.",
+            "mini": "오디오 포맷(wav/mp3/flac)별 품질 리포트를 CSV로 내보내세요.",
+            "ops": "지연/오인식 임계치와 재시도·알림 정책을 운영 기준으로 정의하세요.",
         },
     }
     default = {
