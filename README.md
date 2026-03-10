@@ -51,12 +51,13 @@
 - 교과목/학습주제 용어 해설(문법, 한글·한자, 영어, 기술 설명) 반영
 - 각 차시별 **서로 다른 Mermaid Flowchart** 생성
 - 각 차시별 Flow를 **PNG 캡처 이미지(`classXXX_flow.png`)**로 생성 및 md 참조 연결
-- 예제/퀴즈/런처/과제 파일 체계 정비
+- 예제/퀴즈/런처/웹 서빙 파일 체계 정비
 
 ## 2) 기술 스택
 - Language: `Python 3.10+` (권장 3.11)
 - Data/ML: `numpy`, `pandas`, `matplotlib`, `scikit-learn`
-- AI/LLM: `langchain`, `langchain-community`
+- API/Serving: `fastapi`, `uvicorn`, `pydantic`
+- AI/LLM: `langchain`, `langchain-community`, `langgraph`
 - Speech: `pyttsx3`, `SpeechRecognition`
 - Utility: `requests`, `Pillow`
 - Docs: `Markdown`, `Mermaid`
@@ -64,27 +65,24 @@
 - Optional Infra: `Docker`, `Docker Compose` (RAG/LLM 실습용)
 
 ## 3) 저장소 구조
-- 과목별 상위 폴더(영문 camelCase, 10자 내외) 아래에 `classXXX/` 배치
-- 각 `classXXX/` 공통 파일
-  - `classXXX.md`: 자기주도 학습 가이드(개념, 실습, 퀴즈 안내)
-  - `classXXX_flow.png`: 해당 차시 흐름도 PNG
+- 과목별 상위 폴더(영문 camelCase) 아래에 `classXXX/` 배치
+- `classXXX/` 기본 구성(모든 과목 공통)
+  - `classXXX.md`: 자기주도 학습 가이드
+  - `classXXX_flow.png`: 차시 흐름도 PNG
   - `classXXX.py`: 실행 런처
-  - `classXXX_example1.py`: 예제 코드
-  - `classXXX_example2.py`: 확장 예제 코드
-  - `classXXX_example3.py`: 자가점검/챌린지 예제 코드
-  - `classXXX_solution.py`: 정답 코드
-  - `classXXX_assignment.py`: 과제 디스패처
-  - `classXXX_assignment_basic.py`: 기본 과제
-  - `classXXX_assignment_advanced.py`: 심화 과제
-  - `classXXX_assignment_challenge.py`: 챌린지 과제
-  - `classXXX_quiz.html`: 10문항 퀴즈
-  - `instructor_notes.md`: 강사용 해설서
-- `tools/`: 콘텐츠 재생성/검증 스크립트
-- `curriculum_index.csv`: 전체 차시 인덱스
-- `project/`: 커리큘럼 프로젝트 원본 학습자료(`Prj_영문명/projectXXX`)
-- `projectApps/`: 실행/테스트용 독립 앱 묶음(`Python core + FastAPI + FE + Docker`)
-- `INSTRUCTOR_GUIDE.md`: 강의 운영 가이드
-- `AUTOGRADING.md`, `SUBMISSION_GRADING_GUIDE.md`: 채점/제출 가이드
+  - `classXXX_example1.py` ~ `classXXX_example5.py`: 단계형 실습 예제
+  - `classXXX_solution.py`: 정답/레퍼런스 코드
+  - `classXXX_quiz.html`: 퀴즈
+  - `instructor_notes.md`: 강사용 노트
+- 웹 실습 구성(`pyBasics` 제외 과목 공통)
+  - `server.py`: FastAPI 백엔드(예제 실행/소스 조회 API)
+  - `client.html`: Vanilla JS + Tailwind 기반 실습 UI
+- 보조/운영 파일
+  - `tools/`: 콘텐츠 재생성/검증 스크립트
+  - `docs/`: 운영 가이드/채점 가이드/부가 문서
+  - `curriculum_index.csv`: 전체 차시 인덱스
+  - `project/`: 프로젝트 트랙 원본 자료(`Prj_영문명/projectXXX`)
+  - `projectApps/`: 독립 실행 앱 묶음(`Python + FastAPI + FE + Docker`)
 
 ## 3-1) 과목 폴더 매핑 및 상세 학습 내용
 | 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
@@ -98,7 +96,7 @@
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
-| 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `devops_mlops_aiops_llmops_report.md` 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
+| 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `docs/OPS개념.md` 및 커리큘럼 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
 
 ### 3-1-1) dataVizPrep 7단계 구성(요청 반영)
 | 단계 | 핵심 내용 | class 범위 |
@@ -155,7 +153,7 @@
 | 프로젝트 통합 운영 | project001~project020 | DevOps 배포 자동화 + MLOps 모델 운영 + AIOps 관측/자동복구 + LLMOps 품질관리 | 보고서 기반(DevOps/MLOps/AIOps/LLMOps) 통합 운영 체계 구현 |
 
 ## 3-2-1) 프로젝트 과목과 보고서 접목
-- 기준 문서: [devops_mlops_aiops_llmops_report.md](/home/Python-AI_Agent-Class/devops_mlops_aiops_llmops_report.md)
+- 기준 문서: [OPS개념.md](/home/Python-AI_Agent-Class/docs/OPS개념.md)
 - project001~project005: DevOps 프로젝트 착수/요구사항 정의(보고서 2장 DevOps 비교표, 4장 배포 영역)
 - project006~project010: MLOps 파이프라인·모델 레지스트리(보고서 2장 MLOps 비교표, 3장 도구 매핑)
 - project011~project015: LLMOps/RAG 서비스 품질관리(보고서 2장 LLMOps 비교표, 4장 Agent/RAG 영역)
@@ -209,7 +207,7 @@
   - `AIOps`: 운영 자체를 AI로 지능화해 장애 대응 자동화
 
 ## 3-6) Docker 이미지 목록 및 캡처 표준
-- 수업에서 사용하는 Docker 이미지 목록: [도커목록.md](/home/Python-AI_Agent-Class/도커목록.md)
+- 수업에서 사용하는 Docker 이미지 목록: [도커목록.md](/home/Python-AI_Agent-Class/docs/도커목록.md)
 - 화면 캡처 표준: `mcr.microsoft.com` 계열 Docker 이미지를 사용해 캡처 수행
 
 ## 4) 사전 준비 (필수 설치)
@@ -387,7 +385,7 @@ aws sts get-caller-identity
 4. 운영 모니터링: `CloudWatch` 로그/메트릭/알람
 
 ### 4.13 Python 외부 라이브러리 기반 서비스 배포
-- 예시 라이브러리: `fastapi`, `uvicorn`, `pydantic`, `boto3`, `langchain`
+- 예시 라이브러리: `fastapi`, `uvicorn`, `pydantic`, `langchain`, `langgraph`
 - 공통 패턴
 1. `requirements.txt` 고정
 2. Docker 이미지 빌드
@@ -505,7 +503,7 @@ pip install -r requirements.txt
 - 이 저장소는 `.gitignore`에 위 폴더들을 포함해 Git 추적에서 제외합니다.
 
 ## 8) `requirements.txt` 구성과 의미
-현재 파일은 “실전/심화 과제 수행에 필요한 선택 패키지” 중심입니다.
+현재 파일은 데이터/ML + LLM/RAG + 웹 서빙 실습을 함께 실행하기 위한 패키지 중심입니다.
 
 ```txt
 pandas>=2.0
@@ -513,10 +511,13 @@ numpy>=1.26
 matplotlib>=3.8
 scikit-learn>=1.4
 requests>=2.31
+fastapi>=0.115
+uvicorn>=0.30
 pyttsx3>=2.90
 SpeechRecognition>=3.10
 langchain>=0.3
 langchain-community>=0.3
+langgraph>=1.0
 Pillow>=10.0
 ```
 
@@ -525,8 +526,9 @@ Pillow>=10.0
 - `matplotlib`: 시각화
 - `scikit-learn`: ML 기초 실습
 - `requests`: API 호출
+- `fastapi`, `uvicorn`: 클래스 단위 웹 실습 백엔드 서빙
 - `pyttsx3`, `SpeechRecognition`: TTS/STT 실습
-- `langchain`, `langchain-community`: LLM/체인/RAG 실습
+- `langchain`, `langchain-community`, `langgraph`: LLM/체인/RAG/에이전트 실습
 - `Pillow`: 이미지 생성/처리(Flow PNG 생성 포함)
 
 관리 팁:
@@ -561,30 +563,28 @@ git pull origin main
 ```
 
 ## 10) 학습 시작 명령
-빠른 실행:
+기본 실행:
 ```bash
 python pyBasics/class001/class001.py
+python pyBasics/class001/class001_example1.py
 ```
 
-기본 과제:
+클래스 단위 실행(권장):
 ```bash
-python pyBasics/class001/class001_assignment.py
+./run_class.sh class041
 ```
 
-심화 과제:
+Day 단위 실행(런처/정답):
 ```bash
-CLASS_TIER=advanced python pyBasics/class001/class001_assignment.py
+./run_day.sh 01 launcher
+./run_day.sh 01 solution
 ```
 
-챌린지 과제:
+웹 실습 실행(`pyBasics` 제외 클래스):
 ```bash
-CLASS_TIER=challenge python pyBasics/class001/class001_assignment.py
-```
-
-자동채점:
-```bash
-python grade_class.py class001 --tier basic
-python grade_all.py --tier basic
+cd dataVizPrep/class041
+uvicorn server:app --reload
+# 브라우저: http://127.0.0.1:8000
 ```
 
 ## 11) Mermaid/Flow 재생성 관련
@@ -673,12 +673,12 @@ pip install langchain-ollama qdrant-client sentence-transformers
 
 ## 14) GitHub Actions
 푸시/PR 시 자동 실행:
-- Python 문법 체크
-- 기본 자동채점 샘플 실행
-- 저장소 구조 확인
+- RAG Agent 인덱싱/질의 API 검증 및 Docker 파이프라인
+- 퀴즈 HTML 품질 검증
 
 워크플로우 파일:
 - `.github/workflows/autograde.yml`
+- `.github/workflows/quiz-quality.yml`
 
 ## 15) 권장 브랜치 운영
 - `main`: 배포/기준 브랜치
