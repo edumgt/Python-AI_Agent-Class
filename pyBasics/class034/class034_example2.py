@@ -3,26 +3,68 @@
 """class034 example2: Python 외부 라이브러리 활용 · 단계 2/2 운영 최적화 [class034]"""
 
 TOPIC = "Python 외부 라이브러리 활용 · 단계 2/2 운영 최적화 [class034]"
-EXAMPLE_TEMPLATE = "generic"
+EXAMPLE_TEMPLATE = "module_package"
+EXAMPLE_VARIANT = 2
 
-def solve_in_steps(task):
-    return [
-        f"1단계: {task} 요구사항 정리",
-        "2단계: 작은 함수로 분리",
-        "3단계: 테스트 입력 2개 이상 실행",
-    ]
+import importlib.util
+import math
+import os
+import random
+from datetime import datetime
+from pathlib import Path
+
+def ensure_user_module():
+    module_path = Path(__file__).with_name("class034_user_module.py")
+    if not module_path.exists():
+        module_path.write_text(
+            "def build_message(name):\n"
+            "    return f'hello, {name}'\n",
+            encoding="utf-8",
+        )
+    spec = importlib.util.spec_from_file_location("user_module", module_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module, module_path
+
+def stdlib_snapshot(seed):
+    random.seed(seed)
+    return {
+        "randint": random.randint(1, 100),
+        "sqrt_81": int(math.sqrt(81)),
+        "today": datetime.now().strftime("%Y-%m-%d"),
+        "cwd_name": os.path.basename(os.getcwd()),
+    }
+
+def build_test_cases():
+    cases = [("baseline", 7)]
+    if EXAMPLE_VARIANT >= 2:
+        cases.append(("alt_seed", 21))
+    if EXAMPLE_VARIANT >= 3:
+        cases.append(("seed_42", 42))
+    if EXAMPLE_VARIANT >= 4:
+        cases.append(("seed_99", 99))
+    if EXAMPLE_VARIANT >= 5:
+        cases.append(("seed_123", 123))
+    return cases
 
 def main():
     print("오늘 주제:", TOPIC)
-    steps = solve_in_steps(TOPIC)
-    for line in steps:
-        print(line)
-    return {"step_count": len(steps)}
+    user_module, module_path = ensure_user_module()
+    reports = []
+    for case_name, seed in build_test_cases():
+        snap = stdlib_snapshot(seed)
+        snap["case"] = case_name
+        snap["message"] = user_module.build_message(case_name)
+        snap["module_file"] = module_path.name
+        reports.append(snap)
+        print(f"[{case_name}] 모듈 리포트:", snap)
+    return {"variant": EXAMPLE_VARIANT, "case_count": len(reports), "module": module_path.name}
 
 def extension_mission():
     return {
-        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
-        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "mission": "random/math/datetime/os 호출 결과를 한 리포트로 묶으세요.",
+        "check": "사용자 정의 모듈 import 실패/성공 케이스를 모두 확인하세요.",
         "topic": TOPIC,
     }
 

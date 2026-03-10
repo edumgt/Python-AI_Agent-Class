@@ -409,7 +409,7 @@
   "module": "함수와 모듈 · 단계 2/4 기초 구현 [class018]",
   "level": "기초응용",
   "session": "18/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "책임 분리된 함수·모듈 구조로 코드를 확장할 수 있다.",
   "questions": [
     {
       "question": "class018 (Python 프로그래밍 18/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'함수와 모듈 · 단계 2/4 기초 구현 [class018]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "변수와 자료형 · 단계 4/4 운영 최적화 [class008] 실습: `변수와 자료형` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "함수와 모듈 · 단계 2/4 기초 구현 [class018] 실습: `함수와 모듈` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 2/2 운영 최적화 [class030] 실습: `웹 프론트엔드 기초 (HTML/CSS/JS)` 단계 2/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 실습: `API 명세서와 개발자 문서화` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "변수와 자료형 · 단계 4/4 운영 최적화 [class008] 실습: 숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요.",
+        "함수와 모듈 · 단계 2/4 기초 구현 [class018] 실습: 중복 코드를 함수로 추출하고 매개변수/반환값을 명시하세요.",
+        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 2/2 운영 최적화 [class030] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요.",
+        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'함수와 모듈 · 단계 2/4 기초 구현 [class018]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다."
+        "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
+        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "중복 코드를 함수로 추출하고 입력·출력 계약을 먼저 정의한다.",
+        "표준 라이브러리 호출과 사용자 모듈 import를 같은 실습에서 검증한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'함수와 모듈 · 단계 2/4 기초 구현 [class018]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다."
+        "전역 상태에 의존해 함수 재사용 시 부작용이 발생한다.",
+        "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다.",
+        "문자열 숫자를 정수로 변환하지 않아 연산 결과가 의도와 달라진다.",
+        "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -460,19 +460,19 @@
       "options": [
         "함수와 모듈 · 단계 2/4 기초 구현 [class018] 점검: 함수 이름만 보고 책임을 설명할 수 있다.",
         "수업 준비 2: 필수 소프트웨어 설치 (class002) · 단계 1/1 입문 이해 [class002] 점검: 전역 Python과 프로젝트 `.venv`의 차이를 설명할 수 있다.",
-        "FastAPI와 Uvicorn · 단계 1/2 입문 이해 [class037] 점검: 입력·처리·출력·예외 흐름이 문서와 코드에 일치한다.",
-        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 2/2 운영 최적화 [class030] 점검: 예외 타입별 처리 정책을 구분해 설명할 수 있다."
+        "FastAPI와 Uvicorn · 단계 1/2 입문 이해 [class037] 점검: 코드가 오류 없이 끝까지 실행된다.",
+        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 2/2 운영 최적화 [class030] 점검: 코드가 오류 없이 끝까지 실행된다."
       ],
       "answer_index": 0,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '함수별 정상/경계 테스트를 수행하고 다른 모듈에서 import 실행을 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'함수와 모듈 · 단계 2/4 기초 구현 [class018]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class018_example1.py",
-        "class217_example1.py",
-        "class184_example1.py",
-        "class090_example1.py"
+        "class014_example1.py",
+        "class012_example1.py",
+        "class006_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class018_example1.py 입니다."
@@ -481,9 +481,9 @@
       "question": "'class018_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "function_module",
-        "condition",
-        "dev_setup",
-        "pandas"
+        "variables",
+        "file_io",
+        "collection"
       ],
       "answer_index": 0,
       "explanation": "class018_example2.py의 EXAMPLE_TEMPLATE 값은 'function_module' 입니다."
@@ -491,27 +491,27 @@
     {
       "question": "'class018_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "main",
-        "safety_guard",
-        "area_circle",
-        "route_incident"
+        "mini_project_plan",
+        "build_path_checks",
+        "grade",
+        "main"
       ],
       "answer_index": 2,
-      "explanation": "class018_example3.py 함수 목록: area_circle, perimeter_rectangle, main, self_check, challenge_case"
+      "explanation": "class018_example3.py 함수 목록: grade, summarize_scores, build_profile, apply_pipeline, build_test_cases, main, self_check, challenge_case"
     },
     {
-      "question": "'class018_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class018_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "json",
-        "math",
-        "platform",
-        "numpy"
+        "pathlib",
+        "(import 없음)",
+        "csv",
+        "random"
       ],
       "answer_index": 1,
-      "explanation": "class018_example3.py import 목록: math"
+      "explanation": "class018_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class018_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class018_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "process()",
         "run()",
@@ -519,7 +519,7 @@
         "if __name__ == \"__main__\":"
       ],
       "answer_index": 2,
-      "explanation": "class018_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class018_example1.py, class018_example2.py, class018_example3.py)"
+      "explanation": "class018_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class018_example1.py, class018_example2.py, class018_example3.py, class018_example4.py, class018_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,45 +529,52 @@
     "files": [
       "class018_example1.py",
       "class018_example2.py",
-      "class018_example3.py"
+      "class018_example3.py",
+      "class018_example4.py",
+      "class018_example5.py"
     ],
     "template": "function_module",
     "templates": [
       "function_module"
     ],
-    "imports": [
-      "math"
-    ],
+    "imports": [],
     "functions": [
-      "area_circle",
-      "perimeter_rectangle",
+      "grade",
+      "summarize_scores",
+      "build_profile",
+      "apply_pipeline",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
       "class018_example1.py": {
         "template": "function_module",
-        "imports": [
-          "math"
-        ],
+        "imports": [],
         "functions": [
-          "area_circle",
-          "perimeter_rectangle",
+          "grade",
+          "summarize_scores",
+          "build_profile",
+          "apply_pipeline",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class018_example2.py": {
         "template": "function_module",
-        "imports": [
-          "math"
-        ],
+        "imports": [],
         "functions": [
-          "area_circle",
-          "perimeter_rectangle",
+          "grade",
+          "summarize_scores",
+          "build_profile",
+          "apply_pipeline",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -575,15 +582,44 @@
       },
       "class018_example3.py": {
         "template": "function_module",
-        "imports": [
-          "math"
-        ],
+        "imports": [],
         "functions": [
-          "area_circle",
-          "perimeter_rectangle",
+          "grade",
+          "summarize_scores",
+          "build_profile",
+          "apply_pipeline",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class018_example4.py": {
+        "template": "function_module",
+        "imports": [],
+        "functions": [
+          "grade",
+          "summarize_scores",
+          "build_profile",
+          "apply_pipeline",
+          "build_test_cases",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class018_example5.py": {
+        "template": "function_module",
+        "imports": [],
+        "functions": [
+          "grade",
+          "summarize_scores",
+          "build_profile",
+          "apply_pipeline",
+          "build_test_cases",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -592,15 +628,23 @@
   "example_snippets": [
     {
       "file": "class018_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example1: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\n\nimport math\n\ndef area_circle(radius):\n    return round(math.pi * radius * radius, 3)\n\ndef perimeter_rectangle(width, height):\n    return 2 * (width + height)\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    c_area = area_circle(3)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example1: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\nEXAMPLE_VARIANT = 1\n\ndef grade(score, pass_line=70):\n    return \"PASS\" if score >= pass_line else \"RETRY\"\n\ndef summarize_scores(*scores):\n    if not scores:\n        return {\"avg\": 0.0, \"max\": 0.0, \"min\": 0.0}\n    return {\n        \"avg\": round(sum(scores) / len(scores), 2),\n        \"max\": max(scores),\n        \"min\": min(scores),"
     },
     {
       "file": "class018_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example2: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\n\nimport math\n\ndef area_circle(radius):\n    return round(math.pi * radius * radius, 3)\n\ndef perimeter_rectangle(width, height):\n    return 2 * (width + height)\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    c_area = area_circle(3)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example2: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\nEXAMPLE_VARIANT = 2\n\ndef grade(score, pass_line=70):\n    return \"PASS\" if score >= pass_line else \"RETRY\"\n\ndef summarize_scores(*scores):\n    if not scores:\n        return {\"avg\": 0.0, \"max\": 0.0, \"min\": 0.0}\n    return {\n        \"avg\": round(sum(scores) / len(scores), 2),\n        \"max\": max(scores),\n        \"min\": min(scores),"
     },
     {
       "file": "class018_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example3: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\n\nimport math\n\ndef area_circle(radius):\n    return round(math.pi * radius * radius, 3)\n\ndef perimeter_rectangle(width, height):\n    return 2 * (width + height)\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    c_area = area_circle(3)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example3: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\nEXAMPLE_VARIANT = 3\n\ndef grade(score, pass_line=70):\n    return \"PASS\" if score >= pass_line else \"RETRY\"\n\ndef summarize_scores(*scores):\n    if not scores:\n        return {\"avg\": 0.0, \"max\": 0.0, \"min\": 0.0}\n    return {\n        \"avg\": round(sum(scores) / len(scores), 2),\n        \"max\": max(scores),\n        \"min\": min(scores),"
+    },
+    {
+      "file": "class018_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example4: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\nEXAMPLE_VARIANT = 4\n\ndef grade(score, pass_line=70):\n    return \"PASS\" if score >= pass_line else \"RETRY\"\n\ndef summarize_scores(*scores):\n    if not scores:\n        return {\"avg\": 0.0, \"max\": 0.0, \"min\": 0.0}\n    return {\n        \"avg\": round(sum(scores) / len(scores), 2),\n        \"max\": max(scores),\n        \"min\": min(scores),"
+    },
+    {
+      "file": "class018_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class018 example5: 함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\"\"\n\nTOPIC = \"함수와 모듈 · 단계 2/4 기초 구현 [class018]\"\nEXAMPLE_TEMPLATE = \"function_module\"\nEXAMPLE_VARIANT = 5\n\ndef grade(score, pass_line=70):\n    return \"PASS\" if score >= pass_line else \"RETRY\"\n\ndef summarize_scores(*scores):\n    if not scores:\n        return {\"avg\": 0.0, \"max\": 0.0, \"min\": 0.0}\n    return {\n        \"avg\": round(sum(scores) / len(scores), 2),\n        \"max\": max(scores),\n        \"min\": min(scores),"
     }
   ]
 };

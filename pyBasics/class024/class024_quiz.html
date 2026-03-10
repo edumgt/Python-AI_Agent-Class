@@ -409,7 +409,7 @@
   "module": "컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]",
   "level": "기초응용",
   "session": "24/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "문제 특성에 맞는 자료구조를 선택해 코드 품질을 높일 수 있다.",
   "questions": [
     {
       "question": "class024 (Python 프로그래밍 24/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029] 실습: `웹 프론트엔드 기초 (HTML/CSS/JS)` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024] 실습: `컬렉션 자료구조` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "FastAPI와 Uvicorn · 단계 1/2 입문 이해 [class037] 실습: `FastAPI와 Uvicorn` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Python 외부 라이브러리 활용 · 단계 1/2 입문 이해 [class033] 실습: `Python 외부 라이브러리 활용` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요.",
+        "컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024] 실습: 동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+        "FastAPI와 Uvicorn · 단계 1/2 입문 이해 [class037] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요.",
+        "Python 외부 라이브러리 활용 · 단계 1/2 입문 이해 [class033] 실습: `random`, `math`, `datetime`, `os`를 각각 1회 이상 호출해 결과를 출력하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다."
+        "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
+        "중복 코드를 함수로 추출하고 입력·출력 계약을 먼저 정의한다.",
+        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다."
+        "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다.",
+        "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다.",
+        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
+        "가변 객체 공유(얕은 복사)를 놓쳐 예상치 못한 동시 변경이 발생한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -459,20 +459,20 @@
       "question": "'컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
         "컬렉션 자료구조 · 단계 1/4 입문 이해 [class021] 점검: 각 컬렉션의 사용 목적을 예시와 함께 설명할 수 있다.",
-        "API 기본 개념과 HTTP · 단계 1/2 입문 이해 [class035] 점검: 클래스 책임과 인스턴스 책임을 구분해 설명할 수 있다.",
+        "API 기본 개념과 HTTP · 단계 1/2 입문 이해 [class035] 점검: 코드가 오류 없이 끝까지 실행된다.",
         "컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024] 점검: 각 컬렉션의 사용 목적을 예시와 함께 설명할 수 있다.",
         "함수와 모듈 · 단계 2/4 기초 구현 [class018] 점검: 함수 이름만 보고 책임을 설명할 수 있다."
       ],
       "answer_index": 2,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '컬렉션별 장단점을 근거로 구조 선택 이유를 설명하고 컴프리헨션 결과를 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class500_example1.py",
-        "class490_example1.py",
+        "class033_example1.py",
+        "class032_example1.py",
         "class024_example1.py",
-        "class134_example1.py"
+        "class040_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class024_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class024_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "condition",
-        "langchain",
+        "file_io",
+        "function_module",
         "collection",
-        "deep_learning"
+        "generic"
       ],
       "answer_index": 2,
       "explanation": "class024_example2.py의 EXAMPLE_TEMPLATE 값은 'collection' 입니다."
@@ -492,26 +492,26 @@
       "question": "'class024_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "summarize_orders",
-        "build_prompt",
-        "summarize_scores",
-        "mini_project_plan"
+        "build_path_checks",
+        "multiplication_grid",
+        "discount_policy"
       ],
       "answer_index": 0,
-      "explanation": "class024_example3.py 함수 목록: summarize_orders, main, self_check, challenge_case"
+      "explanation": "class024_example3.py 함수 목록: summarize_orders, choose_structure, build_test_cases, main, self_check, challenge_case"
     },
     {
-      "question": "'class024_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class024_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "math",
-        "platform",
-        "datetime"
+        "pathlib",
+        "importlib",
+        "random"
       ],
       "answer_index": 0,
-      "explanation": "class024_example3.py import 목록: (import 없음)"
+      "explanation": "class024_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class024_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class024_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "invoke()",
         "main()",
@@ -519,7 +519,7 @@
         "run()"
       ],
       "answer_index": 1,
-      "explanation": "class024_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class024_example1.py, class024_example2.py, class024_example3.py)"
+      "explanation": "class024_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class024_example1.py, class024_example2.py, class024_example3.py, class024_example4.py, class024_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,7 +529,9 @@
     "files": [
       "class024_example1.py",
       "class024_example2.py",
-      "class024_example3.py"
+      "class024_example3.py",
+      "class024_example4.py",
+      "class024_example5.py"
     ],
     "template": "collection",
     "templates": [
@@ -538,10 +540,14 @@
     "imports": [],
     "functions": [
       "summarize_orders",
+      "choose_structure",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
@@ -550,6 +556,8 @@
         "imports": [],
         "functions": [
           "summarize_orders",
+          "choose_structure",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -559,6 +567,8 @@
         "imports": [],
         "functions": [
           "summarize_orders",
+          "choose_structure",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -569,9 +579,35 @@
         "imports": [],
         "functions": [
           "summarize_orders",
+          "choose_structure",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class024_example4.py": {
+        "template": "collection",
+        "imports": [],
+        "functions": [
+          "summarize_orders",
+          "choose_structure",
+          "build_test_cases",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class024_example5.py": {
+        "template": "collection",
+        "imports": [],
+        "functions": [
+          "summarize_orders",
+          "choose_structure",
+          "build_test_cases",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -580,15 +616,23 @@
   "example_snippets": [
     {
       "file": "class024_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example1: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\n\ndef summarize_orders(orders):\n    by_team = {}\n    for row in orders:\n        by_team[row[\"team\"]] = by_team.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking = sorted(by_team.items(), key=lambda x: x[1], reverse=True)\n    return by_team, ranking\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    orders = [\n        {\"team\": \"A\", \"amount\": 120},"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example1: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\nEXAMPLE_VARIANT = 1\n\ndef summarize_orders(orders):\n    teams_list = [row[\"team\"] for row in orders]\n    unique_teams_set = set(teams_list)\n    top_slice = teams_list[: min(3, len(teams_list))]\n    by_team_dict = {}\n    for row in orders:\n        by_team_dict[row[\"team\"]] = by_team_dict.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))\n    high_orders = [row for row in orders if row[\"amount\"] >= 100]\n    return {"
     },
     {
       "file": "class024_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example2: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\n\ndef summarize_orders(orders):\n    by_team = {}\n    for row in orders:\n        by_team[row[\"team\"]] = by_team.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking = sorted(by_team.items(), key=lambda x: x[1], reverse=True)\n    return by_team, ranking\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    orders = [\n        {\"team\": \"A\", \"amount\": 120},"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example2: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\nEXAMPLE_VARIANT = 2\n\ndef summarize_orders(orders):\n    teams_list = [row[\"team\"] for row in orders]\n    unique_teams_set = set(teams_list)\n    top_slice = teams_list[: min(3, len(teams_list))]\n    by_team_dict = {}\n    for row in orders:\n        by_team_dict[row[\"team\"]] = by_team_dict.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))\n    high_orders = [row for row in orders if row[\"amount\"] >= 100]\n    return {"
     },
     {
       "file": "class024_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example3: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\n\ndef summarize_orders(orders):\n    by_team = {}\n    for row in orders:\n        by_team[row[\"team\"]] = by_team.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking = sorted(by_team.items(), key=lambda x: x[1], reverse=True)\n    return by_team, ranking\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    orders = [\n        {\"team\": \"A\", \"amount\": 120},"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example3: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\nEXAMPLE_VARIANT = 3\n\ndef summarize_orders(orders):\n    teams_list = [row[\"team\"] for row in orders]\n    unique_teams_set = set(teams_list)\n    top_slice = teams_list[: min(3, len(teams_list))]\n    by_team_dict = {}\n    for row in orders:\n        by_team_dict[row[\"team\"]] = by_team_dict.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))\n    high_orders = [row for row in orders if row[\"amount\"] >= 100]\n    return {"
+    },
+    {
+      "file": "class024_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example4: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\nEXAMPLE_VARIANT = 4\n\ndef summarize_orders(orders):\n    teams_list = [row[\"team\"] for row in orders]\n    unique_teams_set = set(teams_list)\n    top_slice = teams_list[: min(3, len(teams_list))]\n    by_team_dict = {}\n    for row in orders:\n        by_team_dict[row[\"team\"]] = by_team_dict.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))\n    high_orders = [row for row in orders if row[\"amount\"] >= 100]\n    return {"
+    },
+    {
+      "file": "class024_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class024 example5: 컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\"\"\n\nTOPIC = \"컬렉션 자료구조 · 단계 4/4 운영 최적화 [class024]\"\nEXAMPLE_TEMPLATE = \"collection\"\nEXAMPLE_VARIANT = 5\n\ndef summarize_orders(orders):\n    teams_list = [row[\"team\"] for row in orders]\n    unique_teams_set = set(teams_list)\n    top_slice = teams_list[: min(3, len(teams_list))]\n    by_team_dict = {}\n    for row in orders:\n        by_team_dict[row[\"team\"]] = by_team_dict.get(row[\"team\"], 0) + row[\"amount\"]\n    ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))\n    high_orders = [row for row in orders if row[\"amount\"] >= 100]\n    return {"
     }
   ]
 };

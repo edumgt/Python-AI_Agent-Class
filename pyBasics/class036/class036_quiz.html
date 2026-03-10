@@ -425,10 +425,10 @@
     {
       "question": "'API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "파일 입출력 · 단계 4/4 운영 최적화 [class028] 실습: `파일 입출력` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "컬렉션 자료구조 · 단계 2/4 기초 구현 [class022] 실습: `컬렉션 자료구조` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036] 실습: `API 기본 개념과 HTTP` 단계 2/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "연산자와 조건문 · 단계 4/4 운영 최적화 [class012] 실습: `연산자와 조건문` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "파일 입출력 · 단계 4/4 운영 최적화 [class028] 실습: `with open(..., encoding='utf-8')`으로 텍스트 파일 읽기/쓰기를 실습하세요.",
+        "컬렉션 자료구조 · 단계 2/4 기초 구현 [class022] 실습: 동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+        "API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요.",
+        "연산자와 조건문 · 단계 4/4 운영 최적화 [class012] 실습: 같은 입력에 대해 산술/비교/논리 연산 결과를 표로 정리해 보세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,9 +436,9 @@
     {
       "question": "'API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
+        "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다.",
+        "표준 라이브러리 호출과 사용자 모듈 import를 같은 실습에서 검증한다.",
+        "조건식을 괄호로 명확히 하고 경계값 입력으로 각 분기 결과를 확인한다.",
         "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
       ],
       "answer_index": 3,
@@ -447,9 +447,9 @@
     {
       "question": "'API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
+        "연산자 우선순위를 오해해 의도와 다른 조건 분기가 실행된다.",
+        "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다.",
+        "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다.",
         "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다."
       ],
       "answer_index": 3,
@@ -459,7 +459,7 @@
       "question": "'API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
         "연산자와 조건문 · 단계 2/4 기초 구현 [class010] 점검: 조건식이 어떤 불리언 값으로 평가되는지 설명할 수 있다.",
-        "API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036] 점검: 클래스 책임과 인스턴스 책임을 구분해 설명할 수 있다.",
+        "API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036] 점검: 코드가 오류 없이 끝까지 실행된다.",
         "연산자와 조건문 · 단계 1/4 입문 이해 [class009] 점검: 조건식이 어떤 불리언 값으로 평가되는지 설명할 수 있다.",
         "함수와 모듈 · 단계 3/4 실전 검증 [class019] 점검: 함수 이름만 보고 책임을 설명할 수 있다."
       ],
@@ -469,10 +469,10 @@
     {
       "question": "'API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class436_example1.py",
-        "class222_example1.py",
+        "class028_example1.py",
+        "class014_example1.py",
         "class036_example1.py",
-        "class316_example1.py"
+        "class020_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class036_example1.py 입니다."
@@ -480,9 +480,9 @@
     {
       "question": "'class036_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "rag",
-        "langchain",
-        "data_preprocess",
+        "file_io",
+        "condition",
+        "function_module",
         "generic"
       ],
       "answer_index": 3,
@@ -492,26 +492,26 @@
       "question": "'class036_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "solve_in_steps",
-        "summarize",
-        "step_retrieve",
-        "lint_prompt"
+        "stdlib_snapshot",
+        "infer_schema",
+        "summarize_scores"
       ],
       "answer_index": 0,
-      "explanation": "class036_example3.py 함수 목록: solve_in_steps, main, self_check, challenge_case"
+      "explanation": "class036_example3.py 함수 목록: solve_in_steps, build_test_cases, evaluate_case, main, self_check, challenge_case"
     },
     {
-      "question": "'class036_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class036_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
+        "importlib",
+        "math",
         "platform",
-        "numpy",
-        "json",
         "(import 없음)"
       ],
       "answer_index": 3,
-      "explanation": "class036_example3.py import 목록: (import 없음)"
+      "explanation": "class036_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class036_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class036_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "main()",
         "run()",
@@ -519,7 +519,7 @@
         "process()"
       ],
       "answer_index": 0,
-      "explanation": "class036_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class036_example1.py, class036_example2.py, class036_example3.py)"
+      "explanation": "class036_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class036_example1.py, class036_example2.py, class036_example3.py, class036_example4.py, class036_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,7 +529,9 @@
     "files": [
       "class036_example1.py",
       "class036_example2.py",
-      "class036_example3.py"
+      "class036_example3.py",
+      "class036_example4.py",
+      "class036_example5.py"
     ],
     "template": "generic",
     "templates": [
@@ -538,10 +540,14 @@
     "imports": [],
     "functions": [
       "solve_in_steps",
+      "build_test_cases",
+      "evaluate_case",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
@@ -550,6 +556,8 @@
         "imports": [],
         "functions": [
           "solve_in_steps",
+          "build_test_cases",
+          "evaluate_case",
           "main"
         ],
         "entrypoint": "main()"
@@ -559,6 +567,8 @@
         "imports": [],
         "functions": [
           "solve_in_steps",
+          "build_test_cases",
+          "evaluate_case",
           "main",
           "extension_mission"
         ],
@@ -569,9 +579,35 @@
         "imports": [],
         "functions": [
           "solve_in_steps",
+          "build_test_cases",
+          "evaluate_case",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class036_example4.py": {
+        "template": "generic",
+        "imports": [],
+        "functions": [
+          "solve_in_steps",
+          "build_test_cases",
+          "evaluate_case",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class036_example5.py": {
+        "template": "generic",
+        "imports": [],
+        "functions": [
+          "solve_in_steps",
+          "build_test_cases",
+          "evaluate_case",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -580,15 +616,23 @@
   "example_snippets": [
     {
       "file": "class036_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example1: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example1: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\nEXAMPLE_VARIANT = 1\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 입력 검증과 핵심 로직 분리\",\n        \"3단계: 테스트 입력을 단계별로 확장\",\n    ]\n\ndef build_test_cases():\n    cases = [\n        {\"name\": \"baseline\", \"latency_ms\": 380, \"error_rate\": 0.01, \"coverage\": 0.82},"
     },
     {
       "file": "class036_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example2: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example2: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\nEXAMPLE_VARIANT = 2\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 입력 검증과 핵심 로직 분리\",\n        \"3단계: 테스트 입력을 단계별로 확장\",\n    ]\n\ndef build_test_cases():\n    cases = [\n        {\"name\": \"baseline\", \"latency_ms\": 380, \"error_rate\": 0.01, \"coverage\": 0.82},"
     },
     {
       "file": "class036_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example3: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example3: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\nEXAMPLE_VARIANT = 3\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 입력 검증과 핵심 로직 분리\",\n        \"3단계: 테스트 입력을 단계별로 확장\",\n    ]\n\ndef build_test_cases():\n    cases = [\n        {\"name\": \"baseline\", \"latency_ms\": 380, \"error_rate\": 0.01, \"coverage\": 0.82},"
+    },
+    {
+      "file": "class036_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example4: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\nEXAMPLE_VARIANT = 4\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 입력 검증과 핵심 로직 분리\",\n        \"3단계: 테스트 입력을 단계별로 확장\",\n    ]\n\ndef build_test_cases():\n    cases = [\n        {\"name\": \"baseline\", \"latency_ms\": 380, \"error_rate\": 0.01, \"coverage\": 0.82},"
+    },
+    {
+      "file": "class036_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class036 example5: API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\"\"\n\nTOPIC = \"API 기본 개념과 HTTP · 단계 2/2 운영 최적화 [class036]\"\nEXAMPLE_TEMPLATE = \"generic\"\nEXAMPLE_VARIANT = 5\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 입력 검증과 핵심 로직 분리\",\n        \"3단계: 테스트 입력을 단계별로 확장\",\n    ]\n\ndef build_test_cases():\n    cases = [\n        {\"name\": \"baseline\", \"latency_ms\": 380, \"error_rate\": 0.01, \"coverage\": 0.82},"
     }
   ]
 };

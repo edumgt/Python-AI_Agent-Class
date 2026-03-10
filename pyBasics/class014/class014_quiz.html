@@ -409,7 +409,7 @@
   "module": "반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]",
   "level": "기초응용",
   "session": "14/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "반복 처리 로직을 안정적으로 설계하고 디버깅할 수 있다.",
   "questions": [
     {
       "question": "class014 (Python 프로그래밍 14/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "변수와 자료형 · 단계 2/4 기초 구현 [class006] 실습: `변수와 자료형` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "반복문과 흐름제어 · 단계 2/4 기초 구현 [class014] 실습: `반복문과 흐름제어` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "컬렉션 자료구조 · 단계 2/4 기초 구현 [class022] 실습: `컬렉션 자료구조` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "변수와 자료형 · 단계 1/4 입문 이해 [class005] 실습: `변수와 자료형` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "변수와 자료형 · 단계 2/4 기초 구현 [class006] 실습: 숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요.",
+        "반복문과 흐름제어 · 단계 2/4 기초 구현 [class014] 실습: `for`와 `while`로 같은 문제를 풀어 반복 패턴 차이를 비교하세요.",
+        "컬렉션 자료구조 · 단계 2/4 기초 구현 [class022] 실습: 동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+        "변수와 자료형 · 단계 1/4 입문 이해 [class005] 실습: 숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
+        "반복 변수와 누적 변수 변화를 `print()`로 추적하며 루프를 검증한다.",
+        "값을 할당한 뒤 `type()`과 `isinstance()`로 타입 가정을 즉시 검증한다.",
         "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다."
+        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다."
+        "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다.",
+        "문자열 숫자를 정수로 변환하지 않아 연산 결과가 의도와 달라진다.",
+        "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다.",
+        "인코딩이나 파일 모드를 명시하지 않아 데이터가 깨지거나 누락된다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -461,18 +461,18 @@
         "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001] 점검: 전역 Python과 프로젝트 `.venv`의 차이를 설명할 수 있다.",
         "반복문과 흐름제어 · 단계 2/4 기초 구현 [class014] 점검: 반복문 종료 조건을 명확히 설명할 수 있다.",
         "변수와 자료형 · 단계 4/4 운영 최적화 [class008] 점검: 변수와 상수 관례의 차이를 예시 코드로 설명할 수 있다.",
-        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029] 점검: 예외 타입별 처리 정책을 구분해 설명할 수 있다."
+        "웹 프론트엔드 기초 (HTML/CSS/JS) · 단계 1/2 입문 이해 [class029] 점검: 코드가 오류 없이 끝까지 실행된다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '`break/continue` 유무에 따른 결과 차이를 비교하고 종료 조건을 문서화한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class014_example1.py",
-        "class242_example1.py",
-        "class057_example1.py",
-        "class128_example1.py"
+        "class017_example1.py",
+        "class004_example1.py",
+        "class036_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class014_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class014_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "dev_setup",
+        "module_package",
         "loop",
-        "prompt",
-        "nlp"
+        "function_module",
+        "variables"
       ],
       "answer_index": 1,
       "explanation": "class014_example2.py의 EXAMPLE_TEMPLATE 값은 'loop' 입니다."
@@ -491,27 +491,27 @@
     {
       "question": "'class014_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "summarize_scores",
+        "grade",
         "rolling_average",
-        "clean_rows",
-        "dense_forward"
+        "summarize_scores",
+        "read_csv_rows"
       ],
       "answer_index": 1,
-      "explanation": "class014_example3.py 함수 목록: rolling_average, main, self_check, challenge_case"
+      "explanation": "class014_example3.py 함수 목록: rolling_average, bounded_scan, multiplication_grid, build_test_cases, main, self_check, challenge_case"
     },
     {
-      "question": "'class014_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class014_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "matplotlib",
-        "pandas",
-        "json"
+        "datetime",
+        "os",
+        "platform"
       ],
       "answer_index": 0,
-      "explanation": "class014_example3.py import 목록: (import 없음)"
+      "explanation": "class014_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class014_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class014_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "invoke()",
         "main()",
@@ -519,7 +519,7 @@
         "process()"
       ],
       "answer_index": 1,
-      "explanation": "class014_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class014_example1.py, class014_example2.py, class014_example3.py)"
+      "explanation": "class014_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class014_example1.py, class014_example2.py, class014_example3.py, class014_example4.py, class014_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,7 +529,9 @@
     "files": [
       "class014_example1.py",
       "class014_example2.py",
-      "class014_example3.py"
+      "class014_example3.py",
+      "class014_example4.py",
+      "class014_example5.py"
     ],
     "template": "loop",
     "templates": [
@@ -538,10 +540,15 @@
     "imports": [],
     "functions": [
       "rolling_average",
+      "bounded_scan",
+      "multiplication_grid",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
@@ -550,6 +557,9 @@
         "imports": [],
         "functions": [
           "rolling_average",
+          "bounded_scan",
+          "multiplication_grid",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -559,6 +569,9 @@
         "imports": [],
         "functions": [
           "rolling_average",
+          "bounded_scan",
+          "multiplication_grid",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -569,9 +582,38 @@
         "imports": [],
         "functions": [
           "rolling_average",
+          "bounded_scan",
+          "multiplication_grid",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class014_example4.py": {
+        "template": "loop",
+        "imports": [],
+        "functions": [
+          "rolling_average",
+          "bounded_scan",
+          "multiplication_grid",
+          "build_test_cases",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class014_example5.py": {
+        "template": "loop",
+        "imports": [],
+        "functions": [
+          "rolling_average",
+          "bounded_scan",
+          "multiplication_grid",
+          "build_test_cases",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -580,15 +622,23 @@
   "example_snippets": [
     {
       "file": "class014_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example1: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    values = [12, 15, 13, 20, 19, 23]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example1: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\nEXAMPLE_VARIANT = 1\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef bounded_scan(values, stop_at):\n    accepted = []"
     },
     {
       "file": "class014_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example2: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    values = [12, 15, 13, 20, 19, 23]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example2: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\nEXAMPLE_VARIANT = 2\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef bounded_scan(values, stop_at):\n    accepted = []"
     },
     {
       "file": "class014_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example3: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    values = [12, 15, 13, 20, 19, 23]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example3: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\nEXAMPLE_VARIANT = 3\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef bounded_scan(values, stop_at):\n    accepted = []"
+    },
+    {
+      "file": "class014_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example4: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\nEXAMPLE_VARIANT = 4\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef bounded_scan(values, stop_at):\n    accepted = []"
+    },
+    {
+      "file": "class014_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class014 example5: 반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\"\"\n\nTOPIC = \"반복문과 흐름제어 · 단계 2/4 기초 구현 [class014]\"\nEXAMPLE_TEMPLATE = \"loop\"\nEXAMPLE_VARIANT = 5\n\ndef rolling_average(values, window):\n    result = []\n    for idx in range(len(values)):\n        start = max(0, idx - window + 1)\n        chunk = values[start : idx + 1]\n        result.append(round(sum(chunk) / len(chunk), 2))\n    return result\n\ndef bounded_scan(values, stop_at):\n    accepted = []"
     }
   ]
 };

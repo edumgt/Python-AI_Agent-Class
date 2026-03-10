@@ -61,7 +61,7 @@ def is_python_basics(row: dict[str, str], class_dir: Path | None = None) -> bool
 
 def variants_for_row(row: dict[str, str], class_dir: Path | None = None) -> list[int]:
     if is_python_basics(row, class_dir=class_dir):
-        return [1, 2, 3]
+        return [1, 2, 3, 4, 5]
     return [1, 2, 3, 4, 5]
 
 
@@ -104,6 +104,8 @@ def pick_template(module: str, subject: str) -> str:
         return "pandas"
     if "numpy" in module_text:
         return "numpy"
+    if "python 외부 라이브러리 활용" in module_text:
+        return "module_package"
     if "파일 입출력" in module_text:
         return "file_io"
     if "예외처리" in module_text or "디버깅" in module_text:
@@ -120,8 +122,21 @@ def pick_template(module: str, subject: str) -> str:
         return "condition"
     if "변수와 자료형" in module_text:
         return "variables"
-    if any(k in module_text for k in ["오리엔테이션", "개발환경 준비", "환경 구성"]):
+    if any(
+        k in module_text
+        for k in [
+            "오리엔테이션",
+            "개발환경 준비",
+            "환경 구성",
+            "수업 준비",
+            "개발환경 검증",
+            "소프트웨어 설치",
+            "플랫폼 가입",
+        ]
+    ):
         return "dev_setup"
+    if "변수와 출력 첫 실행" in module_text:
+        return "variables"
 
     if "langchain" in subject_text:
         return "langchain"
@@ -216,39 +231,146 @@ def build_body(template: str, class_id: str) -> str:
         def infer_schema(record):
             return {k: type(v).__name__ for k, v in record.items()}
 
+        def parse_bool(value):
+            text = str(value).strip().lower()
+            return text in {"1", "true", "yes", "y"}
+
         def normalize_record(record):
+            name = str(record["name"]).strip()
+            age = int(record["age"])
+            score = float(record["score"])
+            active = parse_bool(record["active"])
+            level = "pass" if score >= 80 else "retry"
             return {
-                "name": str(record["name"]).strip(),
-                "score": float(record["score"]),
-                "active": bool(record["active"]),
+                "name": name,
+                "age": age,
+                "score": score,
+                "active": active,
+                "level": level,
             }
+
+        def format_report(row):
+            return (
+                f"{row['name']}({row['age']}) "
+                f"score={row['score']:.1f} active={row['active']} level={row['level']}"
+            )
+
+        def build_test_cases():
+            cases = [
+                {
+                    "case": "baseline",
+                    "name": "  민수  ",
+                    "age": "19",
+                    "score": "91.5",
+                    "active": "1",
+                }
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(
+                    {
+                        "case": "string_bool",
+                        "name": "지연",
+                        "age": "20",
+                        "score": "79.9",
+                        "active": "yes",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(
+                    {
+                        "case": "boundary",
+                        "name": "하늘",
+                        "age": "18",
+                        "score": "80",
+                        "active": "false",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    {
+                        "case": "high_score",
+                        "name": "도윤",
+                        "age": "22",
+                        "score": "99.4",
+                        "active": "True",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    {
+                        "case": "invalid_age",
+                        "name": "오류케이스",
+                        "age": "N/A",
+                        "score": "60",
+                        "active": "0",
+                    }
+                )
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            raw = {"name": "  민수  ", "score": "91.5", "active": 1}
-            normalized = normalize_record(raw)
-            print("원본 스키마:", infer_schema(raw))
-            print("정규화 스키마:", infer_schema(normalized))
-            return normalized
+            reports = []
+            errors = []
+            for raw in build_test_cases():
+                case_name = raw["case"]
+                try:
+                    normalized = normalize_record(raw)
+                    normalized["case"] = case_name
+                    normalized["schema"] = infer_schema(normalized)
+                    normalized["summary"] = format_report(normalized)
+                    reports.append(normalized)
+                    print(f"[{case_name}] 정규화:", normalized["summary"])
+                except (TypeError, ValueError) as exc:
+                    error = {"case": case_name, "error": str(exc)}
+                    errors.append(error)
+                    print(f"[{case_name}] 오류:", error)
+            return {"variant": EXAMPLE_VARIANT, "success": len(reports), "errors": errors}
         """
 
     if template == "condition":
         return """
-        def route_incident(score):
-            if score >= 90:
-                return "critical"
-            if score >= 70:
-                return "warning"
-            if score >= 50:
-                return "observe"
-            return "ok"
+        def classify_price(amount):
+            if amount >= 100000:
+                return "premium"
+            if amount >= 50000:
+                return "standard"
+            return "starter"
+
+        def discount_policy(order):
+            base = classify_price(order["amount"])
+            if order["member"] and order["coupon"]:
+                rate = 0.18
+            elif order["member"] or order["coupon"]:
+                rate = 0.1
+            else:
+                rate = 0.0
+            if order["amount"] < 0:
+                return {"status": "invalid", "rate": 0.0, "final": 0}
+            final = int(order["amount"] * (1 - rate))
+            return {"status": base, "rate": rate, "final": final}
+
+        def build_test_cases():
+            cases = [{"name": "A", "amount": 120000, "member": True, "coupon": False}]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append({"name": "B", "amount": 85000, "member": False, "coupon": True})
+            if EXAMPLE_VARIANT >= 3:
+                cases.append({"name": "C", "amount": 42000, "member": False, "coupon": False})
+            if EXAMPLE_VARIANT >= 4:
+                cases.append({"name": "D", "amount": 50000, "member": True, "coupon": True})
+            if EXAMPLE_VARIANT >= 5:
+                cases.append({"name": "E", "amount": -1000, "member": True, "coupon": True})
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            sample_scores = [35, 58, 77, 94]
-            routed = {score: route_incident(score) for score in sample_scores}
-            print("라우팅:", routed)
-            return {"max_level": route_incident(max(sample_scores)), "count": len(sample_scores)}
+            outputs = []
+            for case in build_test_cases():
+                result = discount_policy(case)
+                row = {**case, **result}
+                outputs.append(row)
+                print("판정:", row)
+            invalid_count = sum(1 for row in outputs if row["status"] == "invalid")
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(outputs), "invalid_count": invalid_count}
         """
 
     if template == "loop":
@@ -261,111 +383,413 @@ def build_body(template: str, class_id: str) -> str:
                 result.append(round(sum(chunk) / len(chunk), 2))
             return result
 
+        def bounded_scan(values, stop_at):
+            accepted = []
+            idx = 0
+            while idx < len(values):
+                current = values[idx]
+                idx += 1
+                if current < 0:
+                    continue
+                if current >= stop_at:
+                    break
+                accepted.append(current)
+            return accepted
+
+        def multiplication_grid(size):
+            grid = []
+            for i in range(1, size + 1):
+                row = []
+                for j in range(1, size + 1):
+                    row.append(i * j)
+                grid.append(row)
+            return grid
+
+        def build_test_cases():
+            cases = [("baseline", [12, 15, 13, 20, 19, 23])]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(("with_zero", [5, 0, 7, 9, 0, 11]))
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(("with_negative", [8, -1, 6, 4, -3, 9]))
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(("longer_seq", [3, 6, 9, 12, 15, 18, 21, 24]))
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(("high_values", [25, 33, 41, 58, 72, 91]))
+            return cases
+
         def main():
             print("오늘 주제:", TOPIC)
-            values = [12, 15, 13, 20, 19, 23]
-            trend = rolling_average(values, window=3)
-            print("원본:", values)
-            print("이동평균:", trend)
-            return {"last_avg": trend[-1], "points": len(values)}
+            reports = []
+            for case_name, values in build_test_cases():
+                trend = rolling_average(values, window=3)
+                accepted = bounded_scan(values, stop_at=50)
+                grid = multiplication_grid(2 + min(EXAMPLE_VARIANT, 3))
+                report = {
+                    "case": case_name,
+                    "points": len(values),
+                    "last_avg": trend[-1],
+                    "accepted_count": len(accepted),
+                    "grid_last": grid[-1][-1],
+                }
+                reports.append(report)
+                print(f"[{case_name}] 리포트:", report)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(reports), "reports": reports}
         """
 
     if template == "function_module":
         return """
-        import math
+        def grade(score, pass_line=70):
+            return "PASS" if score >= pass_line else "RETRY"
 
-        def area_circle(radius):
-            return round(math.pi * radius * radius, 3)
+        def summarize_scores(*scores):
+            if not scores:
+                return {"avg": 0.0, "max": 0.0, "min": 0.0}
+            return {
+                "avg": round(sum(scores) / len(scores), 2),
+                "max": max(scores),
+                "min": min(scores),
+            }
 
-        def perimeter_rectangle(width, height):
-            return 2 * (width + height)
+        def build_profile(name, **kwargs):
+            profile = {"name": name}
+            profile.update(kwargs)
+            return profile
+
+        def apply_pipeline(values, *funcs):
+            result = list(values)
+            for fn in funcs:
+                result = [fn(v) for v in result]
+            return result
+
+        def build_test_cases():
+            cases = [("baseline", [72, 88, 91])]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(("mixed", [61, 77, 84, 95]))
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(("boundary", [70, 70, 69]))
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(("short", [100]))
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(("wide", [32, 58, 74, 81, 93]))
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            c_area = area_circle(3)
-            r_perimeter = perimeter_rectangle(4, 7)
-            print("원 넓이:", c_area)
-            print("직사각형 둘레:", r_perimeter)
-            return {"circle_area": c_area, "rect_perimeter": r_perimeter}
+            reports = []
+            for case_name, scores in build_test_cases():
+                stats = summarize_scores(*scores)
+                labels = [grade(score, pass_line=75) for score in scores]
+                curved = apply_pipeline(
+                    scores,
+                    lambda v: v + 3,
+                    lambda v: min(v, 100),
+                )
+                profile = build_profile(
+                    case_name,
+                    count=len(scores),
+                    avg=stats["avg"],
+                    pass_count=sum(1 for label in labels if label == "PASS"),
+                )
+                report = {
+                    "case": case_name,
+                    "stats": stats,
+                    "labels": labels,
+                    "curved": curved,
+                    "profile": profile,
+                }
+                reports.append(report)
+                print(f"[{case_name}] 함수 리포트:", report)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(reports)}
+        """
+
+    if template == "module_package":
+        return f"""
+        import importlib.util
+        import math
+        import os
+        import random
+        from datetime import datetime
+        from pathlib import Path
+
+        def ensure_user_module():
+            module_path = Path(__file__).with_name("{class_id}_user_module.py")
+            if not module_path.exists():
+                module_path.write_text(
+                    "def build_message(name):\\n"
+                    "    return f'hello, {{name}}'\\n",
+                    encoding="utf-8",
+                )
+            spec = importlib.util.spec_from_file_location("user_module", module_path)
+            module = importlib.util.module_from_spec(spec)
+            assert spec and spec.loader
+            spec.loader.exec_module(module)
+            return module, module_path
+
+        def stdlib_snapshot(seed):
+            random.seed(seed)
+            return {{
+                "randint": random.randint(1, 100),
+                "sqrt_81": int(math.sqrt(81)),
+                "today": datetime.now().strftime("%Y-%m-%d"),
+                "cwd_name": os.path.basename(os.getcwd()),
+            }}
+
+        def build_test_cases():
+            cases = [("baseline", 7)]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(("alt_seed", 21))
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(("seed_42", 42))
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(("seed_99", 99))
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(("seed_123", 123))
+            return cases
+
+        def main():
+            print("오늘 주제:", TOPIC)
+            user_module, module_path = ensure_user_module()
+            reports = []
+            for case_name, seed in build_test_cases():
+                snap = stdlib_snapshot(seed)
+                snap["case"] = case_name
+                snap["message"] = user_module.build_message(case_name)
+                snap["module_file"] = module_path.name
+                reports.append(snap)
+                print(f"[{{case_name}}] 모듈 리포트:", snap)
+            return {{"variant": EXAMPLE_VARIANT, "case_count": len(reports), "module": module_path.name}}
         """
 
     if template == "collection":
         return """
         def summarize_orders(orders):
-            by_team = {}
+            teams_list = [row["team"] for row in orders]
+            unique_teams_set = set(teams_list)
+            top_slice = teams_list[: min(3, len(teams_list))]
+            by_team_dict = {}
             for row in orders:
-                by_team[row["team"]] = by_team.get(row["team"], 0) + row["amount"]
-            ranking = sorted(by_team.items(), key=lambda x: x[1], reverse=True)
-            return by_team, ranking
+                by_team_dict[row["team"]] = by_team_dict.get(row["team"], 0) + row["amount"]
+            ranking_tuple = tuple(sorted(by_team_dict.items(), key=lambda x: x[1], reverse=True))
+            high_orders = [row for row in orders if row["amount"] >= 100]
+            return {
+                "team_list": teams_list,
+                "unique_teams": unique_teams_set,
+                "top_slice": top_slice,
+                "by_team": by_team_dict,
+                "ranking": ranking_tuple,
+                "high_orders": high_orders,
+            }
+
+        def choose_structure(use_case):
+            if use_case == "ordered":
+                return "list"
+            if use_case == "immutable":
+                return "tuple"
+            if use_case == "lookup":
+                return "dict"
+            return "set"
+
+        def build_test_cases():
+            cases = [
+                (
+                    "baseline",
+                    [
+                        {"team": "A", "amount": 120},
+                        {"team": "B", "amount": 90},
+                        {"team": "A", "amount": 60},
+                        {"team": "C", "amount": 200},
+                    ],
+                )
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(
+                    (
+                        "with_duplicate",
+                        [
+                            {"team": "A", "amount": 10},
+                            {"team": "A", "amount": 15},
+                            {"team": "B", "amount": 40},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(
+                    (
+                        "many_teams",
+                        [
+                            {"team": "D", "amount": 130},
+                            {"team": "E", "amount": 70},
+                            {"team": "F", "amount": 95},
+                            {"team": "G", "amount": 160},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    (
+                        "small_values",
+                        [
+                            {"team": "X", "amount": 8},
+                            {"team": "Y", "amount": 12},
+                            {"team": "Z", "amount": 18},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    (
+                        "mixed_values",
+                        [
+                            {"team": "A", "amount": 300},
+                            {"team": "B", "amount": 110},
+                            {"team": "C", "amount": 75},
+                            {"team": "B", "amount": 25},
+                        ],
+                    )
+                )
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            orders = [
-                {"team": "A", "amount": 120},
-                {"team": "B", "amount": 90},
-                {"team": "A", "amount": 60},
-                {"team": "C", "amount": 200},
-            ]
-            by_team, ranking = summarize_orders(orders)
-            print("팀별 합계:", by_team)
-            print("랭킹:", ranking)
-            return {"winner": ranking[0][0], "team_count": len(by_team)}
+            reports = []
+            for case_name, orders in build_test_cases():
+                stats = summarize_orders(orders)
+                structure = choose_structure("lookup" if len(stats["by_team"]) >= 3 else "ordered")
+                report = {
+                    "case": case_name,
+                    "team_count": len(stats["unique_teams"]),
+                    "winner": stats["ranking"][0][0],
+                    "selected_structure": structure,
+                    "top_slice": stats["top_slice"],
+                    "high_order_count": len(stats["high_orders"]),
+                }
+                reports.append(report)
+                print(f"[{case_name}] 컬렉션 리포트:", report)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(reports)}
         """
 
     if template == "file_io":
         return f"""
-        import json
+        import csv
         from pathlib import Path
 
-        def write_rows(rows):
-            out = Path(__file__).with_name("{class_id}_logs.jsonl")
-            payload = "\\n".join(json.dumps(row, ensure_ascii=False) for row in rows)
-            out.write_text(payload + "\\n", encoding="utf-8")
-            return out
+        def write_text_summary(rows, out_path):
+            lines = [f"{{row['name']}},{{row['score']}}" for row in rows]
+            out_path.write_text("\\n".join(lines) + "\\n", encoding="utf-8")
+            return out_path
 
-        def read_rows(path):
-            rows = []
-            for line in path.read_text(encoding="utf-8").splitlines():
-                if line.strip():
-                    rows.append(json.loads(line))
+        def write_csv_rows(rows, out_path):
+            with out_path.open("w", encoding="utf-8", newline="") as fp:
+                writer = csv.DictWriter(fp, fieldnames=["name", "score"])
+                writer.writeheader()
+                writer.writerows(rows)
+            return out_path
+
+        def read_csv_rows(path):
+            with path.open("r", encoding="utf-8", newline="") as fp:
+                reader = csv.DictReader(fp)
+                return [{{"name": row["name"], "score": int(row["score"])}} for row in reader]
+
+        def build_rows():
+            rows = [
+                {{"name": "A", "score": 72}},
+                {{"name": "B", "score": 88}},
+                {{"name": "C", "score": 91}},
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                rows.append({{"name": "D", "score": 67}})
+            if EXAMPLE_VARIANT >= 3:
+                rows.append({{"name": "E", "score": 95}})
+            if EXAMPLE_VARIANT >= 4:
+                rows.append({{"name": "F", "score": 84}})
+            if EXAMPLE_VARIANT >= 5:
+                rows.append({{"name": "G", "score": 78}})
             return rows
+
+        def run_automation(base_dir):
+            text_path = base_dir / "{class_id}_summary.txt"
+            csv_path = base_dir / "{class_id}_scores.csv"
+            rows = build_rows()
+            write_text_summary(rows, text_path)
+            write_csv_rows(rows, csv_path)
+            loaded = read_csv_rows(csv_path)
+            passed = [row for row in loaded if row["score"] >= 80]
+            return {{
+                "text_file": text_path.name,
+                "csv_file": csv_path.name,
+                "row_count": len(loaded),
+                "pass_count": len(passed),
+            }}
 
         def main():
             print("오늘 주제:", TOPIC)
-            source = [
-                {{"step": "extract", "ok": True}},
-                {{"step": "transform", "ok": True}},
-                {{"step": "load", "ok": False}},
-            ]
-            path = write_rows(source)
-            loaded = read_rows(path)
-            print("저장 파일:", path.name)
-            print("복원 행 수:", len(loaded))
-            return {{"file": path.name, "loaded": len(loaded)}}
+            out_dir = Path(__file__).parent
+            report = run_automation(out_dir)
+            print("파일 리포트:", report)
+            return {{"variant": EXAMPLE_VARIANT, **report}}
         """
 
     if template == "exception":
         return """
+        import traceback
+
         def safe_to_float(value):
             try:
                 return float(value)
-            except (TypeError, ValueError):
-                return None
+            except (TypeError, ValueError) as exc:
+                return {"ok": False, "value": value, "error": str(exc), "kind": type(exc).__name__}
+            finally:
+                pass
 
         def parse_batch(values):
-            parsed = [safe_to_float(v) for v in values]
-            valid = [v for v in parsed if v is not None]
+            parsed = []
+            valid = []
+            errors = []
+            for value in values:
+                item = safe_to_float(value)
+                if isinstance(item, dict):
+                    errors.append(item)
+                else:
+                    parsed.append(item)
+                    valid.append(item)
             return {
                 "parsed": parsed,
                 "valid_count": len(valid),
-                "invalid_count": len(parsed) - len(valid),
+                "invalid_count": len(errors),
+                "errors": errors,
             }
+
+        def divide(a, b):
+            if b == 0:
+                raise ZeroDivisionError("분모는 0이 될 수 없습니다.")
+            return a / b
+
+        def build_inputs():
+            cases = [["10.5", "err", None, "3"]]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(["7", "4.2", "x", "11"])
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(["0", "-3", "6.5", "bad"])
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(["100", "25", "5", "zero"])
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(["1e2", "", "NaN", "15"])
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            report = parse_batch(["10.5", "err", None, "3"])
-            print("파싱 결과:", report)
-            return report
+            reports = []
+            for idx, values in enumerate(build_inputs(), start=1):
+                report = parse_batch(values)
+                try:
+                    division = divide(100, idx - 2)
+                    report["division"] = round(division, 2)
+                except ZeroDivisionError as exc:
+                    report["division_error"] = str(exc)
+                    report["trace_hint"] = traceback.format_exc().splitlines()[-1]
+                reports.append(report)
+                print(f"[case-{idx}] 예외 리포트:", report)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(reports), "invalid_total": sum(r["invalid_count"] for r in reports)}
         """
 
     if template == "oop":
@@ -1472,6 +1896,69 @@ def build_body(template: str, class_id: str) -> str:
 
 def variant_brief(template: str) -> dict[str, str]:
     table: dict[str, dict[str, str]] = {
+        "dev_setup": {
+            "mission": "Python 인터프리터 경로와 .venv 경로를 비교해 환경 분리를 증명하세요.",
+            "check": "pip 설치 로그에서 설치 경로가 .venv인지 확인하세요.",
+            "challenge": "requirements.lock.txt 생성 자동화 스크립트를 추가하세요.",
+            "mini": "Windows/WSL 실행 절차를 체크리스트로 통합하세요.",
+            "ops": "패키지 충돌 발생 시 재설치/복구 절차를 문서화하세요.",
+        },
+        "variables": {
+            "mission": "문자열 입력 3세트를 숫자/불리언으로 형변환해 비교하세요.",
+            "check": "형변환 실패 케이스를 잡아 오류 메시지를 명확히 출력하세요.",
+            "challenge": "입력/출력 문자열 포맷을 f-string으로 통일하세요.",
+            "mini": "기본 문법 검증기(타입/연산자/포맷) 함수를 작성하세요.",
+            "ops": "입력 검증 실패 시 기본값/재입력 정책을 정의하세요.",
+        },
+        "condition": {
+            "mission": "if/elif/else 경계값을 5개 이상 테스트하세요.",
+            "check": "잘못된 조건식 우선순위를 괄호로 바로잡아 비교하세요.",
+            "challenge": "중첩 조건을 함수 분리로 리팩터링하세요.",
+            "mini": "조건 분기별 실행 횟수 집계를 출력하세요.",
+            "ops": "분기 규칙 변경 시 회귀 테스트 항목을 정리하세요.",
+        },
+        "loop": {
+            "mission": "for/while 결과를 같은 입력에서 비교하세요.",
+            "check": "break/continue 유무에 따른 결과 차이를 기록하세요.",
+            "challenge": "중첩 반복문을 함수로 분리해 가독성을 개선하세요.",
+            "mini": "실습형 문제 2개를 반복문 패턴으로 자동 채점하세요.",
+            "ops": "무한루프 방지 타임아웃/카운터 정책을 정의하세요.",
+        },
+        "collection": {
+            "mission": "list/tuple/dict/set 표현을 같은 데이터로 비교하세요.",
+            "check": "슬라이싱과 컴프리헨션 결과를 테스트 케이스로 검증하세요.",
+            "challenge": "자료구조 선택 기준을 함수 주석으로 명시하세요.",
+            "mini": "자료구조별 성능/가독성 비교 리포트를 만드세요.",
+            "ops": "데이터 구조 변경 시 역호환 체크리스트를 정의하세요.",
+        },
+        "function_module": {
+            "mission": "기본값 인자, 가변 인자, lambda를 각각 1회 이상 사용하세요.",
+            "check": "함수 입력/출력 계약을 테스트로 검증하세요.",
+            "challenge": "함수형 파이프라인(map/filter 또는 lambda)을 확장하세요.",
+            "mini": "작은 기능 3개를 함수 모듈로 분리해 재사용하세요.",
+            "ops": "함수 변경 시 영향 범위를 문서화하고 회귀 테스트하세요.",
+        },
+        "module_package": {
+            "mission": "random/math/datetime/os 호출 결과를 한 리포트로 묶으세요.",
+            "check": "사용자 정의 모듈 import 실패/성공 케이스를 모두 확인하세요.",
+            "challenge": "pip 패키지 설치 여부 점검 코드를 추가하세요.",
+            "mini": "표준 라이브러리+사용자 모듈 조합 유틸리티를 완성하세요.",
+            "ops": "의존성 버전 충돌 시 복구 절차를 문서화하세요.",
+        },
+        "file_io": {
+            "mission": "텍스트/CSV 저장 후 재로드 결과를 비교하세요.",
+            "check": "경로 오류와 파일 미존재 예외를 재현해 처리하세요.",
+            "challenge": "파일 자동화 스크립트에 백업 단계를 추가하세요.",
+            "mini": "입출력 자동화 파이프라인(읽기-가공-쓰기)을 완성하세요.",
+            "ops": "파일 손상/권한 오류 시 복구 정책을 정의하세요.",
+        },
+        "exception": {
+            "mission": "try/except/finally 동작을 케이스별로 비교하세요.",
+            "check": "에러 메시지에서 원인 라인과 타입을 정확히 해석하세요.",
+            "challenge": "사용자 정의 예외를 만들어 분기 처리하세요.",
+            "mini": "디버깅 로그 포맷을 통일한 오류 처리기를 작성하세요.",
+            "ops": "운영 장애 발생 시 에러 분류/알림 기준을 문서화하세요.",
+        },
         "ml": {
             "mission": "학습 데이터에 이상치 1개를 추가하고 MAE 변화를 비교하세요.",
             "check": "baseline 대비 개선/악화 원인을 2줄로 설명하세요.",
@@ -1636,13 +2123,6 @@ def rebuild_examples(rows: list[dict[str, str]]) -> int:
         legacy_example = class_dir / f"{class_id}_example.py"
         if legacy_example.exists():
             legacy_example.unlink()
-
-        # pyBasics는 기존 정책대로 example1~3만 유지
-        if is_python_basics(row, class_dir=class_dir):
-            for stale in (4, 5):
-                stale_path = example_path(class_dir, class_id, stale)
-                if stale_path.exists():
-                    stale_path.unlink()
 
     return written
 

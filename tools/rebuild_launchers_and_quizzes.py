@@ -273,6 +273,13 @@ PYTHON_PL_QUIZ_BANK = {
         "check": "함수별 정상/경계 테스트를 수행하고 다른 모듈에서 import 실행을 확인한다.",
         "outcome": "책임 분리된 함수·모듈 구조로 코드를 확장할 수 있다.",
     },
+    "모듈과 패키지": {
+        "concept": "import 체계와 표준 라이브러리(random/math/datetime/os), 사용자 모듈 분리가 핵심이다.",
+        "action": "표준 라이브러리 호출과 사용자 모듈 import를 같은 실습에서 검증한다.",
+        "pitfall": "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다.",
+        "check": "pip 설치 환경과 import 성공/실패 케이스를 함께 기록한다.",
+        "outcome": "모듈/패키지 구조를 재현 가능하게 운영할 수 있다.",
+    },
     "컬렉션 자료구조": {
         "concept": "list/tuple/dict/set 선택은 데이터 접근 패턴과 연산 효율을 결정한다.",
         "action": "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
@@ -311,6 +318,20 @@ PYTHON_PL_QUIZ_BANK = {
 }
 
 
+PYTHON_PL_MODULE_ALIASES = {
+    "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
+    "수업 준비 2: 필수 소프트웨어 설치 (class002)": "오리엔테이션 및 개발환경 준비",
+    "수업 준비 3: 개발환경 검증/실행 확인 (class003)": "오리엔테이션 및 개발환경 준비",
+    "Python 기초 시작: 변수와 출력 첫 실행 (class004)": "변수와 자료형",
+    "Python 외부 라이브러리 활용": "모듈과 패키지",
+}
+
+
+def normalize_python_pl_module(module: str) -> str:
+    core = module_core_name(module)
+    return PYTHON_PL_MODULE_ALIASES.get(core, core)
+
+
 def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, str]:
     normalized_subject = subject_name.strip()
     module_core = module_core_name(module)
@@ -324,7 +345,7 @@ def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, s
         if module_bank:
             return module_bank
     if normalized_subject == "Python 프로그래밍":
-        module_bank = PYTHON_PL_QUIZ_BANK.get(module)
+        module_bank = PYTHON_PL_QUIZ_BANK.get(normalize_python_pl_module(module))
         if module_bank:
             return module_bank
     return TRACK_QUIZ_BANK[track]

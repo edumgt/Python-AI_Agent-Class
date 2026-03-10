@@ -3,26 +3,64 @@
 """class003 example2: 수업 준비 3: 개발환경 검증/실행 확인 (class003) · 단계 1/1 입문 이해 [class003]"""
 
 TOPIC = "수업 준비 3: 개발환경 검증/실행 확인 (class003) · 단계 1/1 입문 이해 [class003]"
-EXAMPLE_TEMPLATE = "generic"
+EXAMPLE_TEMPLATE = "dev_setup"
+EXAMPLE_VARIANT = 2
 
-def solve_in_steps(task):
-    return [
-        f"1단계: {task} 요구사항 정리",
-        "2단계: 작은 함수로 분리",
-        "3단계: 테스트 입력 2개 이상 실행",
+from pathlib import Path
+import platform
+
+def build_setup_plan():
+    plan = [
+        ("venv", "python -m venv .venv"),
+        ("activate", "source .venv/bin/activate"),
+        ("deps", "pip install -r requirements.txt"),
+        ("run", "python class003_example1.py"),
     ]
+    if EXAMPLE_VARIANT >= 3:
+        plan.append(("freeze", "pip freeze > requirements.lock.txt"))
+    if EXAMPLE_VARIANT >= 4:
+        plan.append(("smoke", "python -c \"import numpy, pandas\""))
+    if EXAMPLE_VARIANT >= 5:
+        plan.append(("check", "python -m pip check"))
+    return plan
+
+def build_path_checks():
+    checks = ["README.md", "requirements.txt"]
+    if EXAMPLE_VARIANT >= 2:
+        checks.append("curriculum_index.csv")
+    if EXAMPLE_VARIANT >= 3:
+        checks.extend(["dataVizPrep", "tools/rebuild_examples_and_validate.py"])
+    if EXAMPLE_VARIANT >= 4:
+        checks.append("run_class.sh")
+    if EXAMPLE_VARIANT >= 5:
+        checks.append("run_day.sh")
+    return checks
+
+def scan_workspace():
+    root = Path(__file__).resolve().parents[2]
+    checks = build_path_checks()
+    existing = {rel: (root / rel).exists() for rel in checks}
+    return {
+        "platform": platform.system(),
+        "variant": EXAMPLE_VARIANT,
+        "requirements_exists": (root / "requirements.txt").exists(),
+        "readme_exists": (root / "README.md").exists(),
+        "checks": existing,
+    }
 
 def main():
     print("오늘 주제:", TOPIC)
-    steps = solve_in_steps(TOPIC)
-    for line in steps:
-        print(line)
-    return {"step_count": len(steps)}
+    plan = build_setup_plan()
+    for idx, (name, cmd) in enumerate(plan, start=1):
+        print(f"{idx}. {name} -> {cmd}")
+    status = scan_workspace()
+    print("환경 점검:", status)
+    return {"step_count": len(plan), **status}
 
 def extension_mission():
     return {
-        "mission": "입력값 2세트를 비교하고 차이를 기록하세요.",
-        "check": "예외 케이스 1개를 추가해 방어 로직을 검증하세요.",
+        "mission": "Python 인터프리터 경로와 .venv 경로를 비교해 환경 분리를 증명하세요.",
+        "check": "pip 설치 로그에서 설치 경로가 .venv인지 확인하세요.",
         "topic": TOPIC,
     }
 

@@ -1,0 +1,70 @@
+# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
+
+"""class003 example5: 수업 준비 3: 개발환경 검증/실행 확인 (class003) · 단계 1/1 입문 이해 [class003]"""
+
+TOPIC = "수업 준비 3: 개발환경 검증/실행 확인 (class003) · 단계 1/1 입문 이해 [class003]"
+EXAMPLE_TEMPLATE = "dev_setup"
+EXAMPLE_VARIANT = 5
+
+from pathlib import Path
+import platform
+
+def build_setup_plan():
+    plan = [
+        ("venv", "python -m venv .venv"),
+        ("activate", "source .venv/bin/activate"),
+        ("deps", "pip install -r requirements.txt"),
+        ("run", "python class003_example1.py"),
+    ]
+    if EXAMPLE_VARIANT >= 3:
+        plan.append(("freeze", "pip freeze > requirements.lock.txt"))
+    if EXAMPLE_VARIANT >= 4:
+        plan.append(("smoke", "python -c \"import numpy, pandas\""))
+    if EXAMPLE_VARIANT >= 5:
+        plan.append(("check", "python -m pip check"))
+    return plan
+
+def build_path_checks():
+    checks = ["README.md", "requirements.txt"]
+    if EXAMPLE_VARIANT >= 2:
+        checks.append("curriculum_index.csv")
+    if EXAMPLE_VARIANT >= 3:
+        checks.extend(["dataVizPrep", "tools/rebuild_examples_and_validate.py"])
+    if EXAMPLE_VARIANT >= 4:
+        checks.append("run_class.sh")
+    if EXAMPLE_VARIANT >= 5:
+        checks.append("run_day.sh")
+    return checks
+
+def scan_workspace():
+    root = Path(__file__).resolve().parents[2]
+    checks = build_path_checks()
+    existing = {rel: (root / rel).exists() for rel in checks}
+    return {
+        "platform": platform.system(),
+        "variant": EXAMPLE_VARIANT,
+        "requirements_exists": (root / "requirements.txt").exists(),
+        "readme_exists": (root / "README.md").exists(),
+        "checks": existing,
+    }
+
+def main():
+    print("오늘 주제:", TOPIC)
+    plan = build_setup_plan()
+    for idx, (name, cmd) in enumerate(plan, start=1):
+        print(f"{idx}. {name} -> {cmd}")
+    status = scan_workspace()
+    print("환경 점검:", status)
+    return {"step_count": len(plan), **status}
+
+def ops_readiness_check():
+    return {
+        "risk": "패키지 충돌 발생 시 재설치/복구 절차를 문서화하세요.",
+        "monitoring": "핵심 지표를 1분 주기로 기록",
+        "rollback": "문제 발생 시 이전 안정 버전으로 즉시 복귀",
+    }
+
+if __name__ == "__main__":
+    summary = main()
+    print("요약:", summary)
+    print("운영 준비 점검:", ops_readiness_check())

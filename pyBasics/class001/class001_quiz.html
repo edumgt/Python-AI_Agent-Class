@@ -409,7 +409,7 @@
   "module": "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]",
   "level": "입문",
   "session": "1/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "실습 환경을 스스로 재현하고 환경 이슈를 분리해 해결할 수 있다.",
   "questions": [
     {
       "question": "class001 (Python 프로그래밍 1/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "컬렉션 자료구조 · 단계 3/4 실전 검증 [class023] 실습: `컬렉션 자료구조` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "반복문과 흐름제어 · 단계 3/4 실전 검증 [class015] 실습: `반복문과 흐름제어` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001] 실습: `수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)` 단계 1/1 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "함수와 모듈 · 단계 3/4 실전 검증 [class019] 실습: `함수와 모듈` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "컬렉션 자료구조 · 단계 3/4 실전 검증 [class023] 실습: 동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+        "반복문과 흐름제어 · 단계 3/4 실전 검증 [class015] 실습: `for`와 `while`로 같은 문제를 풀어 반복 패턴 차이를 비교하세요.",
+        "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001] 실습: `python --version`과 `where python`으로 현재 인터프리터 경로를 확인하세요.",
+        "함수와 모듈 · 단계 3/4 실전 검증 [class019] 실습: 중복 코드를 함수로 추출하고 매개변수/반환값을 명시하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다."
+        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "조건식을 괄호로 명확히 하고 경계값 입력으로 각 분기 결과를 확인한다.",
+        "동일 데이터를 여러 컬렉션으로 표현해 조회·수정 패턴을 비교한다.",
+        "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다."
+        "인코딩이나 파일 모드를 명시하지 않아 데이터가 깨지거나 누락된다.",
+        "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다.",
+        "가변 객체 공유(얕은 복사)를 놓쳐 예상치 못한 동시 변경이 발생한다.",
+        "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -464,15 +464,15 @@
         "연산자와 조건문 · 단계 4/4 운영 최적화 [class012] 점검: 조건식이 어떤 불리언 값으로 평가되는지 설명할 수 있다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '`sys.executable` 경로가 프로젝트 `.venv`를 가리키는지 확인하고 샘플 import 테스트를 통과한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class176_example1.py",
+        "class012_example1.py",
         "class001_example1.py",
-        "class431_example1.py",
-        "class372_example1.py"
+        "class028_example1.py",
+        "class025_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class001_example1.py 입니다."
@@ -480,38 +480,38 @@
     {
       "question": "'class001_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "rag",
-        "llm_gen",
-        "loop",
-        "generic"
+        "function_module",
+        "module_package",
+        "variables",
+        "dev_setup"
       ],
       "answer_index": 3,
-      "explanation": "class001_example2.py의 EXAMPLE_TEMPLATE 값은 'generic' 입니다."
+      "explanation": "class001_example2.py의 EXAMPLE_TEMPLATE 값은 'dev_setup' 입니다."
     },
     {
       "question": "'class001_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "fit_linear",
-        "save_chart",
-        "solve_in_steps",
-        "build_generation_config"
+        "choose_structure",
+        "apply_pipeline",
+        "build_setup_plan",
+        "ensure_user_module"
       ],
       "answer_index": 2,
-      "explanation": "class001_example3.py 함수 목록: solve_in_steps, main, self_check, challenge_case"
+      "explanation": "class001_example3.py 함수 목록: build_setup_plan, build_path_checks, scan_workspace, main, self_check, challenge_case"
     },
     {
-      "question": "'class001_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class001_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "json",
-        "(import 없음)",
-        "datetime",
-        "platform"
+        "platform",
+        "pathlib",
+        "random",
+        "math"
       ],
       "answer_index": 1,
-      "explanation": "class001_example3.py import 목록: (import 없음)"
+      "explanation": "class001_example4.py import 목록: pathlib, platform"
     },
     {
-      "question": "'class001_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class001_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "invoke()",
         "process()",
@@ -519,7 +519,7 @@
         "if __name__ == \"__main__\":"
       ],
       "answer_index": 2,
-      "explanation": "class001_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class001_example1.py, class001_example2.py, class001_example3.py)"
+      "explanation": "class001_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class001_example1.py, class001_example2.py, class001_example3.py, class001_example4.py, class001_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,49 +529,103 @@
     "files": [
       "class001_example1.py",
       "class001_example2.py",
-      "class001_example3.py"
+      "class001_example3.py",
+      "class001_example4.py",
+      "class001_example5.py"
     ],
-    "template": "generic",
+    "template": "dev_setup",
     "templates": [
-      "generic"
+      "dev_setup"
     ],
-    "imports": [],
+    "imports": [
+      "pathlib",
+      "platform"
+    ],
     "functions": [
-      "solve_in_steps",
+      "build_setup_plan",
+      "build_path_checks",
+      "scan_workspace",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
       "class001_example1.py": {
-        "template": "generic",
-        "imports": [],
+        "template": "dev_setup",
+        "imports": [
+          "pathlib",
+          "platform"
+        ],
         "functions": [
-          "solve_in_steps",
+          "build_setup_plan",
+          "build_path_checks",
+          "scan_workspace",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class001_example2.py": {
-        "template": "generic",
-        "imports": [],
+        "template": "dev_setup",
+        "imports": [
+          "pathlib",
+          "platform"
+        ],
         "functions": [
-          "solve_in_steps",
+          "build_setup_plan",
+          "build_path_checks",
+          "scan_workspace",
           "main",
           "extension_mission"
         ],
         "entrypoint": "main()"
       },
       "class001_example3.py": {
-        "template": "generic",
-        "imports": [],
+        "template": "dev_setup",
+        "imports": [
+          "pathlib",
+          "platform"
+        ],
         "functions": [
-          "solve_in_steps",
+          "build_setup_plan",
+          "build_path_checks",
+          "scan_workspace",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class001_example4.py": {
+        "template": "dev_setup",
+        "imports": [
+          "pathlib",
+          "platform"
+        ],
+        "functions": [
+          "build_setup_plan",
+          "build_path_checks",
+          "scan_workspace",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class001_example5.py": {
+        "template": "dev_setup",
+        "imports": [
+          "pathlib",
+          "platform"
+        ],
+        "functions": [
+          "build_setup_plan",
+          "build_path_checks",
+          "scan_workspace",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -580,15 +634,23 @@
   "example_snippets": [
     {
       "file": "class001_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example1: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example1: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"dev_setup\"\nEXAMPLE_VARIANT = 1\n\nfrom pathlib import Path\nimport platform\n\ndef build_setup_plan():\n    plan = [\n        (\"venv\", \"python -m venv .venv\"),\n        (\"activate\", \"source .venv/bin/activate\"),\n        (\"deps\", \"pip install -r requirements.txt\"),\n        (\"run\", \"python class001_example1.py\"),\n    ]"
     },
     {
       "file": "class001_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example2: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example2: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"dev_setup\"\nEXAMPLE_VARIANT = 2\n\nfrom pathlib import Path\nimport platform\n\ndef build_setup_plan():\n    plan = [\n        (\"venv\", \"python -m venv .venv\"),\n        (\"activate\", \"source .venv/bin/activate\"),\n        (\"deps\", \"pip install -r requirements.txt\"),\n        (\"run\", \"python class001_example1.py\"),\n    ]"
     },
     {
       "file": "class001_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example3: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"generic\"\n\ndef solve_in_steps(task):\n    return [\n        f\"1단계: {task} 요구사항 정리\",\n        \"2단계: 작은 함수로 분리\",\n        \"3단계: 테스트 입력 2개 이상 실행\",\n    ]\n\ndef main():\n    print(\"오늘 주제:\", TOPIC)\n    steps = solve_in_steps(TOPIC)\n    for line in steps:"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example3: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"dev_setup\"\nEXAMPLE_VARIANT = 3\n\nfrom pathlib import Path\nimport platform\n\ndef build_setup_plan():\n    plan = [\n        (\"venv\", \"python -m venv .venv\"),\n        (\"activate\", \"source .venv/bin/activate\"),\n        (\"deps\", \"pip install -r requirements.txt\"),\n        (\"run\", \"python class001_example1.py\"),\n    ]"
+    },
+    {
+      "file": "class001_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example4: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"dev_setup\"\nEXAMPLE_VARIANT = 4\n\nfrom pathlib import Path\nimport platform\n\ndef build_setup_plan():\n    plan = [\n        (\"venv\", \"python -m venv .venv\"),\n        (\"activate\", \"source .venv/bin/activate\"),\n        (\"deps\", \"pip install -r requirements.txt\"),\n        (\"run\", \"python class001_example1.py\"),\n    ]"
+    },
+    {
+      "file": "class001_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class001 example5: 수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\"\"\n\nTOPIC = \"수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001) · 단계 1/1 입문 이해 [class001]\"\nEXAMPLE_TEMPLATE = \"dev_setup\"\nEXAMPLE_VARIANT = 5\n\nfrom pathlib import Path\nimport platform\n\ndef build_setup_plan():\n    plan = [\n        (\"venv\", \"python -m venv .venv\"),\n        (\"activate\", \"source .venv/bin/activate\"),\n        (\"deps\", \"pip install -r requirements.txt\"),\n        (\"run\", \"python class001_example1.py\"),\n    ]"
     }
   ]
 };

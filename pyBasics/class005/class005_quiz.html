@@ -409,7 +409,7 @@
   "module": "변수와 자료형 · 단계 1/4 입문 이해 [class005]",
   "level": "입문",
   "session": "5/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "PL 기초 데이터 모델(바인딩·타입·배열)을 코드로 설명할 수 있다.",
   "questions": [
     {
       "question": "class005 (Python 프로그래밍 5/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'변수와 자료형 · 단계 1/4 입문 이해 [class005]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "연산자와 조건문 · 단계 4/4 운영 최적화 [class012] 실습: `연산자와 조건문` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Python 기초 시작: 변수와 출력 첫 실행 (class004) · 단계 1/1 입문 이해 [class004] 실습: `Python 기초 시작: 변수와 출력 첫 실행 (class004)` 단계 1/1 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 실습: `API 명세서와 개발자 문서화` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "변수와 자료형 · 단계 1/4 입문 이해 [class005] 실습: `변수와 자료형` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "연산자와 조건문 · 단계 4/4 운영 최적화 [class012] 실습: 같은 입력에 대해 산술/비교/논리 연산 결과를 표로 정리해 보세요.",
+        "Python 기초 시작: 변수와 출력 첫 실행 (class004) · 단계 1/1 입문 이해 [class004] 실습: 숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요.",
+        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 실습: 예제 파일을 실행해서 결과 문장을 먼저 확인해요.",
+        "변수와 자료형 · 단계 1/4 입문 이해 [class005] 실습: 숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요."
       ],
       "answer_index": 3,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'변수와 자료형 · 단계 1/4 입문 이해 [class005]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다."
+        "`python --version`, `where python`, `.venv` 활성화 상태를 먼저 확인한다.",
+        "조건식을 괄호로 명확히 하고 경계값 입력으로 각 분기 결과를 확인한다.",
+        "값을 할당한 뒤 `type()`과 `isinstance()`로 타입 가정을 즉시 검증한다.",
+        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'변수와 자료형 · 단계 1/4 입문 이해 [class005]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다."
+        "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다.",
+        "문자열 숫자를 정수로 변환하지 않아 연산 결과가 의도와 달라진다.",
+        "종료 조건이 약해 무한 루프 또는 누락 집계가 발생한다.",
+        "인코딩이나 파일 모드를 명시하지 않아 데이터가 깨지거나 누락된다."
       ],
       "answer_index": 1,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -464,15 +464,15 @@
         "변수와 자료형 · 단계 1/4 입문 이해 [class005] 점검: 변수와 상수 관례의 차이를 예시 코드로 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '변수·상수·list를 포함한 예제를 만들고 경계 인덱스까지 테스트한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'변수와 자료형 · 단계 1/4 입문 이해 [class005]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class433_example1.py",
-        "class270_example1.py",
+        "class021_example1.py",
+        "class018_example1.py",
         "class005_example1.py",
-        "class307_example1.py"
+        "class036_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class005_example1.py 입니다."
@@ -480,9 +480,9 @@
     {
       "question": "'class005_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "ml",
-        "deep_learning",
-        "generic",
+        "file_io",
+        "function_module",
+        "dev_setup",
         "variables"
       ],
       "answer_index": 3,
@@ -492,26 +492,26 @@
       "question": "'class005_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "infer_schema",
-        "normalize_record",
-        "read_rows",
-        "compute_stats"
+        "self_check",
+        "build_test_cases",
+        "multiplication_grid"
       ],
       "answer_index": 0,
-      "explanation": "class005_example3.py 함수 목록: infer_schema, normalize_record, main, self_check, challenge_case"
+      "explanation": "class005_example3.py 함수 목록: infer_schema, parse_bool, normalize_record, format_report, build_test_cases, main, self_check, challenge_case"
     },
     {
-      "question": "'class005_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class005_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "platform",
+        "importlib",
         "(import 없음)",
-        "json",
-        "pathlib"
+        "platform",
+        "csv"
       ],
       "answer_index": 1,
-      "explanation": "class005_example3.py import 목록: (import 없음)"
+      "explanation": "class005_example4.py import 목록: (import 없음)"
     },
     {
-      "question": "'class005_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class005_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "main()",
         "process()",
@@ -519,7 +519,7 @@
         "run()"
       ],
       "answer_index": 0,
-      "explanation": "class005_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class005_example1.py, class005_example2.py, class005_example3.py)"
+      "explanation": "class005_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class005_example1.py, class005_example2.py, class005_example3.py, class005_example4.py, class005_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,7 +529,9 @@
     "files": [
       "class005_example1.py",
       "class005_example2.py",
-      "class005_example3.py"
+      "class005_example3.py",
+      "class005_example4.py",
+      "class005_example5.py"
     ],
     "template": "variables",
     "templates": [
@@ -538,11 +540,16 @@
     "imports": [],
     "functions": [
       "infer_schema",
+      "parse_bool",
       "normalize_record",
+      "format_report",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
@@ -551,7 +558,10 @@
         "imports": [],
         "functions": [
           "infer_schema",
+          "parse_bool",
           "normalize_record",
+          "format_report",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -561,7 +571,10 @@
         "imports": [],
         "functions": [
           "infer_schema",
+          "parse_bool",
           "normalize_record",
+          "format_report",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -572,10 +585,41 @@
         "imports": [],
         "functions": [
           "infer_schema",
+          "parse_bool",
           "normalize_record",
+          "format_report",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class005_example4.py": {
+        "template": "variables",
+        "imports": [],
+        "functions": [
+          "infer_schema",
+          "parse_bool",
+          "normalize_record",
+          "format_report",
+          "build_test_cases",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class005_example5.py": {
+        "template": "variables",
+        "imports": [],
+        "functions": [
+          "infer_schema",
+          "parse_bool",
+          "normalize_record",
+          "format_report",
+          "build_test_cases",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -584,15 +628,23 @@
   "example_snippets": [
     {
       "file": "class005_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example1: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef normalize_record(record):\n    return {\n        \"name\": str(record[\"name\"]).strip(),\n        \"score\": float(record[\"score\"]),\n        \"active\": bool(record[\"active\"]),\n    }\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example1: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\nEXAMPLE_VARIANT = 1\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef parse_bool(value):\n    text = str(value).strip().lower()\n    return text in {\"1\", \"true\", \"yes\", \"y\"}\n\ndef normalize_record(record):\n    name = str(record[\"name\"]).strip()\n    age = int(record[\"age\"])"
     },
     {
       "file": "class005_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example2: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef normalize_record(record):\n    return {\n        \"name\": str(record[\"name\"]).strip(),\n        \"score\": float(record[\"score\"]),\n        \"active\": bool(record[\"active\"]),\n    }\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example2: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\nEXAMPLE_VARIANT = 2\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef parse_bool(value):\n    text = str(value).strip().lower()\n    return text in {\"1\", \"true\", \"yes\", \"y\"}\n\ndef normalize_record(record):\n    name = str(record[\"name\"]).strip()\n    age = int(record[\"age\"])"
     },
     {
       "file": "class005_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example3: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef normalize_record(record):\n    return {\n        \"name\": str(record[\"name\"]).strip(),\n        \"score\": float(record[\"score\"]),\n        \"active\": bool(record[\"active\"]),\n    }\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example3: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\nEXAMPLE_VARIANT = 3\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef parse_bool(value):\n    text = str(value).strip().lower()\n    return text in {\"1\", \"true\", \"yes\", \"y\"}\n\ndef normalize_record(record):\n    name = str(record[\"name\"]).strip()\n    age = int(record[\"age\"])"
+    },
+    {
+      "file": "class005_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example4: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\nEXAMPLE_VARIANT = 4\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef parse_bool(value):\n    text = str(value).strip().lower()\n    return text in {\"1\", \"true\", \"yes\", \"y\"}\n\ndef normalize_record(record):\n    name = str(record[\"name\"]).strip()\n    age = int(record[\"age\"])"
+    },
+    {
+      "file": "class005_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class005 example5: 변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\"\"\n\nTOPIC = \"변수와 자료형 · 단계 1/4 입문 이해 [class005]\"\nEXAMPLE_TEMPLATE = \"variables\"\nEXAMPLE_VARIANT = 5\n\ndef infer_schema(record):\n    return {k: type(v).__name__ for k, v in record.items()}\n\ndef parse_bool(value):\n    text = str(value).strip().lower()\n    return text in {\"1\", \"true\", \"yes\", \"y\"}\n\ndef normalize_record(record):\n    name = str(record[\"name\"]).strip()\n    age = int(record[\"age\"])"
     }
   ]
 };

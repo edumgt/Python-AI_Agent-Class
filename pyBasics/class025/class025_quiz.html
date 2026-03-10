@@ -409,7 +409,7 @@
   "module": "파일 입출력 · 단계 1/4 입문 이해 [class025]",
   "level": "기초응용",
   "session": "25/40",
-  "track_outcome": "함수로 코드를 분리해 재사용성과 가독성을 높인다.",
+  "track_outcome": "영속 데이터 처리 파이프라인을 안정적으로 구현할 수 있다.",
   "questions": [
     {
       "question": "class025 (Python 프로그래밍 25/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'파일 입출력 · 단계 1/4 입문 이해 [class025]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "컬렉션 자료구조 · 단계 3/4 실전 검증 [class023] 실습: `컬렉션 자료구조` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "파일 입출력 · 단계 1/4 입문 이해 [class025] 실습: `파일 입출력` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Python 외부 라이브러리 활용 · 단계 2/2 운영 최적화 [class034] 실습: `Python 외부 라이브러리 활용` 단계 2/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Python 외부 라이브러리 활용 · 단계 1/2 입문 이해 [class033] 실습: `Python 외부 라이브러리 활용` 단계 1/2 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "컬렉션 자료구조 · 단계 3/4 실전 검증 [class023] 실습: 동일 데이터를 list/tuple/dict/set으로 각각 표현해 구조 차이를 비교하세요.",
+        "파일 입출력 · 단계 1/4 입문 이해 [class025] 실습: `with open(..., encoding='utf-8')`으로 텍스트 파일 읽기/쓰기를 실습하세요.",
+        "Python 외부 라이브러리 활용 · 단계 2/2 운영 최적화 [class034] 실습: `random`, `math`, `datetime`, `os`를 각각 1회 이상 호출해 결과를 출력하세요.",
+        "Python 외부 라이브러리 활용 · 단계 1/2 입문 이해 [class033] 실습: `random`, `math`, `datetime`, `os`를 각각 1회 이상 호출해 결과를 출력하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'파일 입출력 · 단계 1/4 입문 이해 [class025]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
+        "표준 라이브러리 호출과 사용자 모듈 import를 같은 실습에서 검증한다.",
+        "조건식을 괄호로 명확히 하고 경계값 입력으로 각 분기 결과를 확인한다.",
+        "값을 할당한 뒤 `type()`과 `isinstance()`로 타입 가정을 즉시 검증한다.",
+        "`with open(..., encoding='utf-8')`으로 읽기/쓰기 후 재로드 검증을 수행한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'파일 입출력 · 단계 1/4 입문 이해 [class025]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
         "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다."
+        "전역 Python과 가상환경 Python을 섞어 패키지 설치 경로가 꼬인다.",
+        "인코딩이나 파일 모드를 명시하지 않아 데이터가 깨지거나 누락된다.",
+        "패키지 설치 경로(.venv)와 인터프리터 경로가 달라 import 오류가 반복된다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -460,19 +460,19 @@
       "options": [
         "변수와 자료형 · 단계 1/4 입문 이해 [class005] 점검: 변수와 상수 관례의 차이를 예시 코드로 설명할 수 있다.",
         "파일 입출력 · 단계 1/4 입문 이해 [class025] 점검: 파일 경로, 모드(`r/w/a`), 인코딩 의미를 설명할 수 있다.",
-        "API 기본 개념과 HTTP · 단계 1/2 입문 이해 [class035] 점검: 클래스 책임과 인스턴스 책임을 구분해 설명할 수 있다.",
-        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 점검: 입력·처리·출력·예외 흐름이 문서와 코드에 일치한다."
+        "API 기본 개념과 HTTP · 단계 1/2 입문 이해 [class035] 점검: 코드가 오류 없이 끝까지 실행된다.",
+        "API 명세서와 개발자 문서화 · 단계 1/2 입문 이해 [class039] 점검: 코드가 오류 없이 끝까지 실행된다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '같은 로직을 최소 3개 입력으로 실행하고 조건 분기가 모두 동작하는지 확인한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '저장 전후 데이터 동등성 확인과 파일 예외 케이스(미존재/권한)를 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'파일 입출력 · 단계 1/4 입문 이해 [class025]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class161_example1.py",
+        "class010_example1.py",
         "class025_example1.py",
-        "class212_example1.py",
-        "class200_example1.py"
+        "class014_example1.py",
+        "class013_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class025_example1.py 입니다."
@@ -481,9 +481,9 @@
       "question": "'class025_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "file_io",
-        "data_preprocess",
-        "variables",
-        "generic"
+        "generic",
+        "condition",
+        "dev_setup"
       ],
       "answer_index": 0,
       "explanation": "class025_example2.py의 EXAMPLE_TEMPLATE 값은 'file_io' 입니다."
@@ -491,27 +491,27 @@
     {
       "question": "'class025_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "infer_schema",
-        "write_rows",
-        "fit_linear",
-        "build_prompt"
+        "self_check",
+        "write_text_summary",
+        "summarize_orders",
+        "challenge_case"
       ],
       "answer_index": 1,
-      "explanation": "class025_example3.py 함수 목록: write_rows, read_rows, main, self_check, challenge_case"
+      "explanation": "class025_example3.py 함수 목록: write_text_summary, write_csv_rows, read_csv_rows, build_rows, run_automation, main, self_check, challenge_case"
     },
     {
-      "question": "'class025_example3.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
+      "question": "'class025_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "math",
-        "json",
-        "matplotlib",
-        "numpy"
+        "pathlib",
+        "csv",
+        "datetime",
+        "math"
       ],
       "answer_index": 1,
-      "explanation": "class025_example3.py import 목록: json, pathlib"
+      "explanation": "class025_example4.py import 목록: csv, pathlib"
     },
     {
-      "question": "'class025_example3.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
+      "question": "'class025_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
       "options": [
         "process()",
         "main()",
@@ -519,7 +519,7 @@
         "run()"
       ],
       "answer_index": 1,
-      "explanation": "class025_example3.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example3 (총 3개) (class025_example1.py, class025_example2.py, class025_example3.py)"
+      "explanation": "class025_example5.py 엔트리는 'main()' 입니다. 현재 example 구성: example1~example5 (총 5개) (class025_example1.py, class025_example2.py, class025_example3.py, class025_example4.py, class025_example5.py)"
     }
   ],
   "question_count": 10,
@@ -529,35 +529,45 @@
     "files": [
       "class025_example1.py",
       "class025_example2.py",
-      "class025_example3.py"
+      "class025_example3.py",
+      "class025_example4.py",
+      "class025_example5.py"
     ],
     "template": "file_io",
     "templates": [
       "file_io"
     ],
     "imports": [
-      "json",
+      "csv",
       "pathlib"
     ],
     "functions": [
-      "write_rows",
-      "read_rows",
+      "write_text_summary",
+      "write_csv_rows",
+      "read_csv_rows",
+      "build_rows",
+      "run_automation",
       "main",
       "extension_mission",
       "self_check",
-      "challenge_case"
+      "challenge_case",
+      "mini_project_plan",
+      "ops_readiness_check"
     ],
     "entrypoint": "main()",
     "by_file": {
       "class025_example1.py": {
         "template": "file_io",
         "imports": [
-          "json",
+          "csv",
           "pathlib"
         ],
         "functions": [
-          "write_rows",
-          "read_rows",
+          "write_text_summary",
+          "write_csv_rows",
+          "read_csv_rows",
+          "build_rows",
+          "run_automation",
           "main"
         ],
         "entrypoint": "main()"
@@ -565,12 +575,15 @@
       "class025_example2.py": {
         "template": "file_io",
         "imports": [
-          "json",
+          "csv",
           "pathlib"
         ],
         "functions": [
-          "write_rows",
-          "read_rows",
+          "write_text_summary",
+          "write_csv_rows",
+          "read_csv_rows",
+          "build_rows",
+          "run_automation",
           "main",
           "extension_mission"
         ],
@@ -579,15 +592,52 @@
       "class025_example3.py": {
         "template": "file_io",
         "imports": [
-          "json",
+          "csv",
           "pathlib"
         ],
         "functions": [
-          "write_rows",
-          "read_rows",
+          "write_text_summary",
+          "write_csv_rows",
+          "read_csv_rows",
+          "build_rows",
+          "run_automation",
           "main",
           "self_check",
           "challenge_case"
+        ],
+        "entrypoint": "main()"
+      },
+      "class025_example4.py": {
+        "template": "file_io",
+        "imports": [
+          "csv",
+          "pathlib"
+        ],
+        "functions": [
+          "write_text_summary",
+          "write_csv_rows",
+          "read_csv_rows",
+          "build_rows",
+          "run_automation",
+          "main",
+          "mini_project_plan"
+        ],
+        "entrypoint": "main()"
+      },
+      "class025_example5.py": {
+        "template": "file_io",
+        "imports": [
+          "csv",
+          "pathlib"
+        ],
+        "functions": [
+          "write_text_summary",
+          "write_csv_rows",
+          "read_csv_rows",
+          "build_rows",
+          "run_automation",
+          "main",
+          "ops_readiness_check"
         ],
         "entrypoint": "main()"
       }
@@ -596,15 +646,23 @@
   "example_snippets": [
     {
       "file": "class025_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example1: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\n\nimport json\nfrom pathlib import Path\n\ndef write_rows(rows):\n    out = Path(__file__).with_name(\"class025_logs.jsonl\")\n    payload = \"\\n\".join(json.dumps(row, ensure_ascii=False) for row in rows)\n    out.write_text(payload + \"\\n\", encoding=\"utf-8\")\n    return out\n\ndef read_rows(path):\n    rows = []"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example1: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\nEXAMPLE_VARIANT = 1\n\nimport csv\nfrom pathlib import Path\n\ndef write_text_summary(rows, out_path):\n    lines = [f\"{row['name']},{row['score']}\" for row in rows]\n    out_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"utf-8\")\n    return out_path\n\ndef write_csv_rows(rows, out_path):\n    with out_path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fp:"
     },
     {
       "file": "class025_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example2: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\n\nimport json\nfrom pathlib import Path\n\ndef write_rows(rows):\n    out = Path(__file__).with_name(\"class025_logs.jsonl\")\n    payload = \"\\n\".join(json.dumps(row, ensure_ascii=False) for row in rows)\n    out.write_text(payload + \"\\n\", encoding=\"utf-8\")\n    return out\n\ndef read_rows(path):\n    rows = []"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example2: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\nEXAMPLE_VARIANT = 2\n\nimport csv\nfrom pathlib import Path\n\ndef write_text_summary(rows, out_path):\n    lines = [f\"{row['name']},{row['score']}\" for row in rows]\n    out_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"utf-8\")\n    return out_path\n\ndef write_csv_rows(rows, out_path):\n    with out_path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fp:"
     },
     {
       "file": "class025_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example3: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\n\nimport json\nfrom pathlib import Path\n\ndef write_rows(rows):\n    out = Path(__file__).with_name(\"class025_logs.jsonl\")\n    payload = \"\\n\".join(json.dumps(row, ensure_ascii=False) for row in rows)\n    out.write_text(payload + \"\\n\", encoding=\"utf-8\")\n    return out\n\ndef read_rows(path):\n    rows = []"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example3: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\nEXAMPLE_VARIANT = 3\n\nimport csv\nfrom pathlib import Path\n\ndef write_text_summary(rows, out_path):\n    lines = [f\"{row['name']},{row['score']}\" for row in rows]\n    out_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"utf-8\")\n    return out_path\n\ndef write_csv_rows(rows, out_path):\n    with out_path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fp:"
+    },
+    {
+      "file": "class025_example4.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example4: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\nEXAMPLE_VARIANT = 4\n\nimport csv\nfrom pathlib import Path\n\ndef write_text_summary(rows, out_path):\n    lines = [f\"{row['name']},{row['score']}\" for row in rows]\n    out_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"utf-8\")\n    return out_path\n\ndef write_csv_rows(rows, out_path):\n    with out_path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fp:"
+    },
+    {
+      "file": "class025_example5.py",
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class025 example5: 파일 입출력 · 단계 1/4 입문 이해 [class025]\"\"\"\n\nTOPIC = \"파일 입출력 · 단계 1/4 입문 이해 [class025]\"\nEXAMPLE_TEMPLATE = \"file_io\"\nEXAMPLE_VARIANT = 5\n\nimport csv\nfrom pathlib import Path\n\ndef write_text_summary(rows, out_path):\n    lines = [f\"{row['name']},{row['score']}\" for row in rows]\n    out_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"utf-8\")\n    return out_path\n\ndef write_csv_rows(rows, out_path):\n    with out_path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fp:"
     }
   ]
 };

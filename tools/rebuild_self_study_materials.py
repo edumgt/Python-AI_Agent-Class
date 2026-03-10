@@ -990,7 +990,9 @@ PYTHON_PL_MODULE_PROFILES = {
         "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
         "why": "인터프리터, 가상환경, 패키지 의존성을 이해해야 이후 변수·함수·클래스 실습 결과를 재현할 수 있습니다.",
         "concepts": [
+            "`Python`은 문법이 간결하고 자동화/데이터/웹/API 등 활용 범위가 넓은 인터프리터 언어입니다.",
             "`인터프리터`는 소스 코드를 해석해 실행하며 `python 파일.py`가 기본 실행 경로입니다.",
+            "`VS Code + 가상환경(venv) + pip` 조합은 실습 재현성과 패키지 충돌 방지의 기본 개발환경입니다.",
             "`가상환경(venv)`은 프로젝트별 라이브러리를 분리해 버전 충돌을 막는 실행 격리층입니다.",
             "`requirements.txt`는 의존성 버전을 고정해 팀/장비가 달라도 동일한 환경을 재구성하게 해줍니다.",
         ],
@@ -998,15 +1000,17 @@ PYTHON_PL_MODULE_PROFILES = {
         "practice_steps": [
             "`python --version`과 `where python`으로 현재 인터프리터 경로를 확인하세요.",
             "`python -m venv .venv` 후 활성화하고 `pip install -r requirements.txt`를 실행하세요.",
+            "VS Code에서 인터프리터를 `.venv`로 선택하고 동일 스크립트가 터미널/IDE에서 같은 결과인지 확인하세요.",
             "샘플 코드를 실행하고 `ModuleNotFoundError`가 나면 인터프리터/패키지 경로를 점검하세요.",
         ],
         "checklist": [
             "전역 Python과 프로젝트 `.venv`의 차이를 설명할 수 있다.",
             "가상환경 생성/활성화/비활성화 과정을 스스로 재현할 수 있다.",
+            "VS Code 인터프리터 선택과 실행 환경 일치 여부를 점검할 수 있다.",
             "`requirements.txt`의 의미(재현 가능한 환경)를 설명할 수 있다.",
         ],
         "next_tip": "다음 차시에서는 준비된 환경에서 변수·상수·타입을 다루며 PL 기본기를 시작합니다.",
-        "syntax": ["모듈 import", "변수 할당", "실행 진입점(`__name__`)", "출력(`print`)"],
+        "syntax": ["인터프리터 실행(`python 파일.py`)", "가상환경(`venv`)", "패키지 설치(`pip`)", "실행 진입점(`__name__`)"],
         "flow_steps": [
             "Python 인터프리터 버전과 실행 경로를 확인한다",
             "가상환경을 만들고 의존성 패키지를 설치한다",
@@ -1024,32 +1028,33 @@ PYTHON_PL_MODULE_PROFILES = {
         "why": "값을 어떤 타입으로 저장하고 변환하는지 이해해야 조건문·함수·클래스를 정확히 설계할 수 있습니다.",
         "concepts": [
             "`변수(variable)`는 값에 이름을 붙인 바인딩이며 Python은 실행 시 타입이 결정되는 동적 타이핑 언어입니다.",
-            "`상수(constant)`는 키워드가 아니라 `UPPER_CASE` 네이밍 관례로 변경 금지 의도를 표현합니다.",
-            "`배열`은 Python에서 보통 `list`로 구현하며 인덱싱/슬라이싱/가변성이 핵심 특성입니다.",
+            "`숫자형(int/float)·문자열(str)·불린(bool)`을 구분하고 `int/float/str/bool` 형변환 규칙을 이해해야 합니다.",
+            "`연산자(+,-,*,/,%,==,and,or)`와 `입력/출력(input, print)`은 기본 문법의 핵심 실행 단위입니다.",
+            "`문자열 포맷팅(f-string)`으로 값을 읽기 쉬운 보고 형식으로 출력할 수 있습니다.",
         ],
         "analogy": "라벨이 붙은 서랍(변수)에 물건(값)을 넣고 종류표(타입)로 분류하는 과정과 같습니다.",
         "practice_steps": [
             "숫자/문자열/불리언 값을 변수에 저장하고 `type()`으로 자료형을 확인하세요.",
-            "`MAX_RETRY` 같은 상수 이름을 정의하고 일반 변수와 역할을 구분해 보세요.",
-            "리스트를 배열처럼 사용해 인덱싱/슬라이싱/추가·수정 동작을 실험하세요.",
+            "`input()` 문자열을 숫자로 형변환하고 연산자 계산 결과를 비교하세요.",
+            "f-string으로 결과를 포맷팅해 `이름/점수/합격여부` 형태로 출력하세요.",
         ],
         "checklist": [
             "변수와 상수 관례의 차이를 예시 코드로 설명할 수 있다.",
-            "`int`, `float`, `str`, `bool`, `list` 타입을 구분해 설명할 수 있다.",
-            "리스트 인덱스 접근 시 범위 오류를 점검하는 습관을 적용했다.",
+            "`int`, `float`, `str`, `bool` 타입과 형변환 규칙을 설명할 수 있다.",
+            "연산자 계산 결과를 f-string으로 명확히 출력할 수 있다.",
         ],
         "next_tip": "다음 차시에서는 타입 기반 표현식을 연산자와 조건문으로 확장합니다.",
-        "syntax": ["변수 할당(`=`)", "상수 관례(`UPPER_CASE`)", "타입 확인(`type`, `isinstance`)", "배열/리스트(`list`)"],
+        "syntax": ["변수 할당(`=`)", "기본 자료형(`int/float/str/bool`)", "형변환(`int/float/str/bool`)", "입력/출력(`input`, `print`, f-string)"],
         "flow_steps": [
             "문제에서 필요한 값을 변수와 상수로 분리한다",
             "각 값의 타입을 확인하고 필요한 타입 변환을 정의한다",
-            "배열(list) 인덱싱/슬라이싱으로 데이터 접근 규칙을 만든다",
-            "경계값 입력으로 타입 가정이 맞는지 테스트한다",
+            "연산자로 계산식을 구성하고 결과를 비교한다",
+            "입력/출력 포맷을 정리해 읽기 쉬운 결과를 만든다",
         ],
         "focus_points": [
             "변수명만 보고도 의미와 타입이 추론되는지 확인하기",
             "`type()`/`isinstance()`로 타입 가정이 실제와 일치하는지 검증하기",
-            "리스트 인덱스 접근이 범위를 벗어나지 않는지 점검하기",
+            "형변환 실패 시 예외 케이스를 점검하는지 확인하기",
         ],
     },
     "연산자와 조건문": {
@@ -1091,12 +1096,14 @@ PYTHON_PL_MODULE_PROFILES = {
         "concepts": [
             "`for`는 시퀀스 순회, `while`은 조건 기반 반복으로 반복 패턴이 다릅니다.",
             "`break`와 `continue`는 반복 흐름을 조기 종료/건너뛰기 하여 분기 비용을 줄입니다.",
+            "`중첩 반복문`은 표/격자 데이터 처리에 사용되며 실습형 문제 풀이의 기본 패턴입니다.",
             "`누적 변수(accumulator)` 패턴은 합계/카운트/최댓값 같은 집계 로직의 기본입니다.",
         ],
         "analogy": "출석부를 한 줄씩 읽으며 조건에 맞는 학생만 체크하는 과정과 같습니다.",
         "practice_steps": [
             "`for`와 `while`로 같은 문제를 풀어 반복 패턴 차이를 비교하세요.",
             "리스트 순회 중 `break/continue`를 넣어 흐름이 어떻게 바뀌는지 확인하세요.",
+            "중첩 반복문으로 구구단/격자 탐색 같은 실습형 문제를 풀이하세요.",
             "합계·평균·개수 집계를 누적 변수로 작성하고 결과를 검증하세요.",
         ],
         "checklist": [
@@ -1105,11 +1112,11 @@ PYTHON_PL_MODULE_PROFILES = {
             "누적 변수 초기값과 갱신 규칙을 정확히 설정했다.",
         ],
         "next_tip": "다음 차시에서는 반복 로직을 함수로 추상화해 재사용 구조로 바꿉니다.",
-        "syntax": ["`for`/`while`", "`range`/`enumerate`", "`break`/`continue`", "누적 변수 패턴"],
+        "syntax": ["`for`/`while`", "`break`/`continue`", "중첩 반복문", "누적 변수 패턴"],
         "flow_steps": [
             "반복 대상 데이터와 종료 조건을 정의한다",
             "for/while 중 적합한 반복 구조를 선택한다",
-            "break/continue로 예외 흐름을 제어한다",
+            "break/continue와 중첩 반복문으로 예외 흐름을 제어한다",
             "누적 결과를 검증해 반복 로직 정확성을 확인한다",
         ],
         "focus_points": [
@@ -1123,32 +1130,67 @@ PYTHON_PL_MODULE_PROFILES = {
         "why": "함수 시그니처와 모듈 경계를 명확히 해야 유지보수성과 테스트 가능성이 올라갑니다.",
         "concepts": [
             "`함수(function)`는 입력(매개변수)과 출력(반환값)을 명시하는 최소 실행 단위입니다.",
-            "`스코프(scope)` 규칙은 지역/전역 이름 해석 범위를 정해 사이드이펙트를 제어합니다.",
-            "`모듈(module)` 분리는 책임을 나눠 코드 결합도를 낮추고 재사용성을 높입니다.",
+            "`기본값 인자`, `가변 인자(*args, **kwargs)`를 활용하면 재사용 가능한 함수 인터페이스를 설계할 수 있습니다.",
+            "`lambda`와 함수형 사고(작은 함수 조합)는 반복 변환 로직을 간결하게 만듭니다.",
+            "`스코프(scope)`와 모듈 분리는 사이드이펙트를 줄이고 테스트 가능성을 높입니다.",
         ],
         "analogy": "조립 라인 공정을 파트별 작업자(함수)로 나눠 협업하는 방식과 같습니다.",
         "practice_steps": [
             "중복 코드를 함수로 추출하고 매개변수/반환값을 명시하세요.",
-            "한 파일의 함수를 다른 파일에서 `import`해 모듈 호출을 실습하세요.",
+            "기본값 인자와 `*args`를 포함한 함수를 작성해 여러 입력을 처리하세요.",
+            "lambda를 사용해 리스트 변환 함수를 구현하고 결과를 비교하세요.",
             "함수 단위 테스트 입력을 3개 이상 만들어 정상/경계 케이스를 검증하세요.",
         ],
         "checklist": [
             "함수 이름만 보고 책임을 설명할 수 있다.",
             "매개변수 타입/의미와 반환값을 문장으로 정리했다.",
-            "모듈 분리 후 import 경로 오류 없이 실행했다.",
+            "기본값 인자/가변 인자/lambda를 각각 1회 이상 사용했다.",
         ],
         "next_tip": "다음 차시에서는 리스트·딕셔너리 같은 컬렉션 자료구조를 함수와 결합합니다.",
-        "syntax": ["`def`", "매개변수/반환값", "스코프(`local/global`)", "`import`/`from ... import`"],
+        "syntax": ["`def`", "매개변수/반환값", "기본값/가변 인자", "`lambda`/함수 조합"],
         "flow_steps": [
             "요구사항을 함수 단위 책임으로 분해한다",
             "함수 시그니처(입력/출력)를 설계한다",
-            "모듈 파일로 분리하고 import 경로를 연결한다",
-            "함수 단위 테스트로 동작을 검증한다",
+            "기본값/가변 인자를 포함해 인터페이스를 확장한다",
+            "lambda와 테스트 케이스로 함수 동작을 검증한다",
         ],
         "focus_points": [
             "함수 시그니처가 입력/출력을 명확히 드러내는지 확인하기",
             "전역 변수 의존 없이 함수가 독립적으로 동작하는지 점검하기",
-            "모듈 import 경로와 순환 의존 가능성을 점검하기",
+            "기본값 인자와 가변 인자 사용이 함수 책임과 일치하는지 점검하기",
+        ],
+    },
+    "모듈과 패키지": {
+        "kid_summary": "import와 표준 라이브러리, 사용자 정의 모듈을 묶어 패키지 활용력을 키우는 차시입니다.",
+        "why": "모듈/패키지 구조를 이해해야 코드를 분리하고 재사용하며 유지보수 비용을 줄일 수 있습니다.",
+        "concepts": [
+            "`import`와 `from ... import ...` 문법으로 필요한 기능을 모듈 단위로 가져올 수 있습니다.",
+            "`random`, `math`, `datetime`, `os` 같은 표준 라이브러리는 Python 실무 기본 도구입니다.",
+            "`사용자 정의 모듈`을 파일로 분리하면 기능 재사용과 테스트 범위 관리가 쉬워집니다.",
+        ],
+        "analogy": "공구함에서 필요한 공구(모듈)만 꺼내 조합해 작업하는 방식과 같습니다.",
+        "practice_steps": [
+            "`random`, `math`, `datetime`, `os`를 각각 1회 이상 호출해 결과를 출력하세요.",
+            "한 파일에 함수 1개를 만든 뒤 다른 파일에서 import해 실행하세요.",
+            "pip 패키지 설치 전/후 import 성공 여부를 비교해 기록하세요.",
+        ],
+        "checklist": [
+            "import 방식 2가지(`import`, `from ... import`)를 구분해 설명할 수 있다.",
+            "표준 라이브러리 4종(random/math/datetime/os)을 실습 코드에 적용했다.",
+            "사용자 정의 모듈을 분리하고 import 경로 오류 없이 실행했다.",
+        ],
+        "next_tip": "다음 차시에서는 파일 처리 자동화와 예외 처리로 실행 안정성을 강화합니다.",
+        "syntax": ["`import`", "`from ... import ...`", "표준 라이브러리(random/math/datetime/os)", "사용자 정의 모듈"],
+        "flow_steps": [
+            "필요한 기능을 모듈 단위로 식별한다",
+            "표준 라이브러리 호출 코드를 작성한다",
+            "사용자 정의 모듈을 분리하고 import한다",
+            "패키지 설치/실행 경로를 검증한다",
+        ],
+        "focus_points": [
+            "모듈 import 경로가 실행 환경(.venv)과 일치하는지 확인하기",
+            "표준 라이브러리 호출 결과가 재현 가능한지 점검하기",
+            "사용자 정의 모듈 분리 후 순환 의존이 없는지 확인하기",
         ],
     },
     "컬렉션 자료구조": {
@@ -1190,31 +1232,32 @@ PYTHON_PL_MODULE_PROFILES = {
         "concepts": [
             "`with open()`은 컨텍스트 매니저로 파일 핸들을 안전하게 열고 자동으로 닫습니다.",
             "`인코딩(encoding)`은 문자열과 바이트 변환 규칙으로, 한글 처리에서는 `utf-8` 지정이 중요합니다.",
-            "`JSON/CSV` 직렬화는 구조화된 데이터를 텍스트 파일로 저장·교환하는 표준 방식입니다.",
+            "`CSV` 직렬화는 표 데이터를 교환할 때 기본 형식이며 열 스키마를 먼저 맞춰야 합니다.",
+            "`경로 처리(pathlib/os.path)`와 자동화 스크립트는 반복 작업을 안정적으로 줄여 줍니다.",
         ],
         "analogy": "노트를 읽고 쓰되 반드시 책을 닫아 보관하는 문서 관리 절차와 같습니다.",
         "practice_steps": [
             "`with open(..., encoding='utf-8')`으로 텍스트 파일 읽기/쓰기를 실습하세요.",
-            "리스트/딕셔너리를 JSON으로 저장하고 다시 로드해 동일성 여부를 확인하세요.",
-            "없는 파일 경로를 의도적으로 실행해 예외 메시지를 확인하세요.",
+            "CSV 파일을 저장/로드하고 행 수와 주요 컬럼을 검증하세요.",
+            "경로(Path) 기준 자동화 스크립트(읽기-가공-쓰기)를 실행해 보세요.",
         ],
         "checklist": [
             "파일 경로, 모드(`r/w/a`), 인코딩 의미를 설명할 수 있다.",
             "저장한 데이터와 로드한 데이터의 일치 여부를 검증했다.",
-            "입출력 실패 시 예외 처리 흐름을 포함했다.",
+            "CSV 처리와 경로 자동화를 하나의 스크립트로 재현했다.",
         ],
         "next_tip": "다음 차시에서는 파일/네트워크 오류를 안정적으로 다루는 예외처리를 심화합니다.",
-        "syntax": ["`with open()`", "`read`/`write`", "인코딩(`utf-8`)", "`json`/`csv`"],
+        "syntax": ["`with open()`", "`read`/`write`", "`csv`", "`pathlib`/경로 처리"],
         "flow_steps": [
             "입출력 파일 경로와 모드를 정의한다",
             "파일을 읽어 데이터 구조로 파싱한다",
-            "처리 결과를 파일로 직렬화해 저장한다",
-            "저장/재로딩 검증으로 데이터 무결성을 확인한다",
+            "텍스트/CSV로 결과를 저장한다",
+            "자동화 스크립트로 저장/재로딩 무결성을 확인한다",
         ],
         "focus_points": [
             "파일 열기 모드와 인코딩이 요구사항과 맞는지 확인하기",
             "입출력 전후 데이터 구조가 보존되는지 검증하기",
-            "파일 미존재/권한 오류를 대비한 예외 처리가 있는지 점검하기",
+            "경로 처리와 파일 자동화가 운영 환경에서도 재현 가능한지 점검하기",
         ],
     },
     "예외처리와 디버깅": {
@@ -1325,6 +1368,20 @@ DEFAULT_CODE_FOCUS_POINTS = [
 ]
 
 
+PYTHON_PL_MODULE_ALIASES = {
+    "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
+    "수업 준비 2: 필수 소프트웨어 설치 (class002)": "오리엔테이션 및 개발환경 준비",
+    "수업 준비 3: 개발환경 검증/실행 확인 (class003)": "오리엔테이션 및 개발환경 준비",
+    "Python 기초 시작: 변수와 출력 첫 실행 (class004)": "변수와 자료형",
+    "Python 외부 라이브러리 활용": "모듈과 패키지",
+}
+
+
+def normalize_python_pl_module(module: str) -> str:
+    core = module_core_name(module)
+    return PYTHON_PL_MODULE_ALIASES.get(core, core)
+
+
 def is_python_pl_subject(subject_name: str) -> bool:
     return subject_name.strip() == "Python 프로그래밍"
 
@@ -1332,7 +1389,7 @@ def is_python_pl_subject(subject_name: str) -> bool:
 def get_python_pl_profile(subject_name: str, module: str) -> dict[str, object] | None:
     if not is_python_pl_subject(subject_name):
         return None
-    return PYTHON_PL_MODULE_PROFILES.get(module)
+    return PYTHON_PL_MODULE_PROFILES.get(normalize_python_pl_module(module))
 
 
 def get_data_viz_profile(subject_name: str, module: str) -> dict[str, object] | None:
@@ -1405,6 +1462,80 @@ def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str
 
 
 def resolve_example_progression(track: str, subject_name: str, module: str) -> list[str]:
+    if is_python_pl_subject(subject_name):
+        core = normalize_python_pl_module(module)
+        if core == "오리엔테이션 및 개발환경 준비":
+            return [
+                "example1: Python 실행/인터프리터 경로를 확인한다.",
+                "example2: 가상환경 생성/활성화와 pip 설치를 비교한다.",
+                "example3: VS Code 인터프리터 설정과 터미널 실행을 검증한다.",
+                "example4: 패키지 충돌/설치 실패 시나리오를 점검한다.",
+                "example5: 환경 재현 체크리스트(venv/pip/requirements)를 마무리한다.",
+            ]
+        if core == "변수와 자료형":
+            return [
+                "example1: 숫자/문자열/불리언 변수와 출력 포맷을 실행한다.",
+                "example2: 형변환(int/float/str/bool) 케이스를 확장한다.",
+                "example3: 연산자 계산과 문자열 포맷팅 결과를 비교한다.",
+                "example4: 입력값 경계(빈값/잘못된 숫자)를 테스트한다.",
+                "example5: 기본 문법 체크리스트로 타입/출력 검증을 정리한다.",
+            ]
+        if core == "연산자와 조건문":
+            return [
+                "example1: if/elif/else 기본 분기를 실행한다.",
+                "example2: 연산자 우선순위와 논리연산 분기를 비교한다.",
+                "example3: 경계값 입력으로 분기 누락을 점검한다.",
+                "example4: 중첩 조건문으로 실습형 문제를 풀이한다.",
+                "example5: 분기 규칙 변경 전후 결과를 회귀 테스트한다.",
+            ]
+        if core == "반복문과 흐름제어":
+            return [
+                "example1: for/while 반복 기본 케이스를 실행한다.",
+                "example2: break/continue 사용 전후 차이를 비교한다.",
+                "example3: 중첩 반복문으로 표/격자 문제를 풀이한다.",
+                "example4: 누적 집계(합계/평균/카운트)를 확장한다.",
+                "example5: 반복문 경계/무한루프 방지 체크를 정리한다.",
+            ]
+        if core == "함수와 모듈":
+            return [
+                "example1: 함수 정의/호출과 반환값을 확인한다.",
+                "example2: 기본값 인자와 가변 인자(*args, **kwargs)를 추가한다.",
+                "example3: lambda와 함수 조합으로 변환 로직을 확장한다.",
+                "example4: 함수 테스트 케이스를 늘려 안정성을 검증한다.",
+                "example5: 함수 책임 분리와 재사용 체크리스트를 정리한다.",
+            ]
+        if core == "모듈과 패키지":
+            return [
+                "example1: import와 표준 라이브러리(random/math/datetime/os)를 실행한다.",
+                "example2: 사용자 정의 모듈을 작성하고 import한다.",
+                "example3: 패키지 설치/미설치 환경을 비교해 점검한다.",
+                "example4: 모듈 조합 유틸리티를 작성해 자동화한다.",
+                "example5: 의존성 관리(requirements)와 복구 절차를 정리한다.",
+            ]
+        if core == "컬렉션 자료구조":
+            return [
+                "example1: list/tuple/dict/set 기본 조작을 실행한다.",
+                "example2: 슬라이싱/컴프리헨션으로 데이터 변환을 확장한다.",
+                "example3: 중복 제거/검색/집계 목적별 구조를 비교한다.",
+                "example4: 자료구조 선택 기준을 실습형 문제에 적용한다.",
+                "example5: 구조 변경 영향과 테스트 체크리스트를 정리한다.",
+            ]
+        if core == "파일 입출력":
+            return [
+                "example1: 텍스트 파일 읽기/쓰기를 실행한다.",
+                "example2: CSV 저장/로딩과 경로 처리를 확장한다.",
+                "example3: 파일 미존재/권한 오류 케이스를 점검한다.",
+                "example4: 파일 자동화 스크립트(읽기-가공-쓰기)를 구성한다.",
+                "example5: 데이터 무결성/백업/복구 기준을 정리한다.",
+            ]
+        if core == "예외처리와 디버깅":
+            return [
+                "example1: 오류 유형과 try/except/finally 흐름을 확인한다.",
+                "example2: 에러 메시지와 traceback 라인을 해석한다.",
+                "example3: 사용자 정의 예외와 입력 검증을 확장한다.",
+                "example4: 디버깅 로그를 추가해 원인 추적을 자동화한다.",
+                "example5: 장애 대응 체크리스트(분류/알림/복구)를 정리한다.",
+            ]
     if is_data_viz_subject(subject_name):
         core = module_core_name(module)
         if core == "데이터 분석 환경 구성":
