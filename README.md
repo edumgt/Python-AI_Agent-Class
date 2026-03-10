@@ -34,10 +34,12 @@
 
 1. 비전공, 미취업, PL 경험 없는 초급의 경우 문서 위주, Python 위주의 생성과 API 사용법 위주 문서 정리
 2. 전공, 취업 및 실무 유경험자는 수업 외 유사 git repo 로 개별 학습 - AI 바이브 코딩 혹은 No code 중심으로 실행 모듈 단위로 개인별 테스트
-3. 모든 문서는 MarkDown md 포맷으로 작성되며, 모든 산출물은 git repo 로 저장, 모듈 작업은 docker 로 구성, docker hub 로 공유
-4. VS Code 사용 및 각 git repo 마다 github actions 를 통한 트리거 구성
-5. 클라우드는 AWS 기반으로 서빙, 배포, AWS ML 리소스 사용
-6. 우수학생의 평가는 개인별로 매일 산출물에 해대 10k byte 이상의 결과물을 만들어가는 양적인 성실성으로 평가. 
+3. 예를들어 프롬프트로 질의할때 " 나는 javascript 는 조금 공부해서 문법을 아는데, 파이썬은 왜 __name__ == "__main__" 이렇게 언더바를 두번 사용해? " 라는 식으로 질의 및 답변을 메모
+4. 예를들어 프롬프트로 질의할때 " example1.py 의 결과가 이상한데, 해당 클래스 내용에 맞게, 다시 생성해서 실행하고, 모든 라인에 주석으로 상세히 설명 달아줘 " 라는 식으로 수정하면서 내재화(본인만의 knowledge에 맞도록 메모)
+5. 모든 문서는 MarkDown md 포맷으로 작성되며, 모든 산출물은 git repo 로 저장, 모듈 작업은 docker 로 구성, docker hub 로 공유
+6. VS Code 사용 및 각 git repo 마다 github actions 를 통한 트리거 구성
+7. 클라우드는 AWS 기반으로 서빙, 배포, AWS ML 리소스 사용
+8. 우수학생의 평가는 개인별로 매일 산출물에 해대 10k byte 이상의 결과물을 만들어가는 양적인 성실성으로 평가. 
 
 ---
 
@@ -81,8 +83,7 @@
   - `tools/`: 콘텐츠 재생성/검증 스크립트
   - `docs/`: 운영 가이드/채점 가이드/부가 문서
   - `curriculum_index.csv`: 전체 차시 인덱스
-  - `project/`: 프로젝트 트랙 원본 자료(`Prj_영문명/projectXXX`)
-  - `projectApps/`: 독립 실행 앱 묶음(`Python + FastAPI + FE + Docker`)
+  - `project/`: 프로젝트 트랙 통합 자료(`Prj_PersonaVoiceAI/projectXXX`, 커리큘럼 + FastAPI/FE/Docker 샘플 포함)
 
 ## 3-1) 과목 폴더 매핑 및 상세 학습 내용
 | 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
@@ -96,7 +97,7 @@
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, LangGraph 상태 흐름, LangSmith 추적 기반 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
-| 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `docs/OPS개념.md` 및 커리큘럼 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
+| 프로젝트 | `project` | project001~project020 | 나만의 음성 모델 만들기 프로젝트 트랙. 개인 맞춤 코칭 음성봇 PERSONA AI 기초 구축부터 사전 데이터 기반 구축·지속학습 운영까지 통합 실습 |
 
 ### 3-1-1) dataVizPrep 7단계 구성(요청 반영)
 | 단계 | 핵심 내용 | class 범위 |
@@ -150,14 +151,14 @@
 | 로컬/OnPrem 개발 표준화 | class001~class128 | 가상환경, 의존성 잠금, Docker 이미지 빌드, API 기본 서빙 | OnPrem 서버에서 재현 가능한 Python 서비스 |
 | ML 학습·추론 분리 | class081~class224 | 모델 학습 파이프라인, 추론 API, 배치/실시간 추론 전략 | 학습 잡 + 추론 서버 분리 배포 |
 | LLM/Prompt 서비스화 | class289~class448 | 외부 라이브러리(LangChain 등) 통합, 안전한 응답 정책, 관측성 | LLM 기반 백엔드 API 운영 |
-| 프로젝트 통합 운영 | project001~project020 | DevOps 배포 자동화 + MLOps 모델 운영 + AIOps 관측/자동복구 + LLMOps 품질관리 | 보고서 기반(DevOps/MLOps/AIOps/LLMOps) 통합 운영 체계 구현 |
+| 프로젝트 통합 운영 | project001~project020 | 개인 맞춤 코칭 음성봇 PERSONA AI 구축 + STT/LLM/TTS 대화 루프 + 사전 데이터 기반 품질 개선 + 지속학습 운영 | 음성 AI 서비스 구현부터 운영 자동화까지 연결한 통합 프로젝트 결과물 |
 
 ## 3-2-1) 프로젝트 과목과 보고서 접목
 - 기준 문서: [OPS개념.md](/home/Python-AI_Agent-Class/docs/OPS개념.md)
-- project001~project005: DevOps 프로젝트 착수/요구사항 정의(보고서 2장 DevOps 비교표, 4장 배포 영역)
-- project006~project010: MLOps 파이프라인·모델 레지스트리(보고서 2장 MLOps 비교표, 3장 도구 매핑)
-- project011~project015: LLMOps/RAG 서비스 품질관리(보고서 2장 LLMOps 비교표, 4장 Agent/RAG 영역)
-- project016~project020: AIOps 관측성·이상탐지·자동복구(보고서 2장 AIOps 비교표, 4장 운영 이상탐지)
+- project001~project005: 개인 맞춤 코칭 음성봇 PERSONA AI 기초 구축(프로필/코칭 시나리오/기본 음성 응답)
+- project006~project010: STT↔LLM↔TTS 코칭 대화 파이프라인 구현(지연·품질·fallback 검증)
+- project011~project015: 사전 데이터 기반 PERSONA AI 구축(데이터 스키마/라벨 일관성/유사도 평가)
+- project016~project020: PERSONA AI 지속학습과 품질 운영(드리프트 감지/재학습/롤백 runbook)
 
 ## 3-3) 공공 데이터·API Hub 연계 학습
 - 공공데이터포털(`data.go.kr`) OpenAPI: 교통/환경/인구 등 API 수집, 전처리, 시각화, 예측 실습

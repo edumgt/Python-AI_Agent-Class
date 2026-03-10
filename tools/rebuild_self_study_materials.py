@@ -414,6 +414,10 @@ def is_rag_subject(subject_name: str) -> bool:
     return subject_name.strip() == "RAG(Retrieval-Augmented Generation)"
 
 
+def is_project_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "프로젝트"
+
+
 DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     "데이터 분석 환경 구성": {
         "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
@@ -3022,6 +3026,137 @@ RAG_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     },
 }
 
+PROJECT_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "개인 맞춤 코칭 음성봇 PERSONA AI 만들기": {
+        "kid_summary": "개인 맞춤 코칭 음성봇 PERSONA AI를 기초부터 설계하는 프로젝트 시작 구간입니다.",
+        "why": "이미지 요구사항의 1축인 개인 맞춤 코칭 음성봇 PERSONA AI 기초 구축을 구현하려면 페르소나 정의와 코칭 시나리오가 먼저 고정돼야 합니다.",
+        "concepts": [
+            "`PERSONA 프로필`은 톤, 말속도, 코칭 스타일, 금지 표현을 구조화해 일관된 음성 응답을 만드는 기준입니다.",
+            "`코칭 시나리오`는 목표-질문-피드백 흐름을 단계별로 설계해 사용자 경험을 안정화합니다.",
+            "`기초 파이프라인`은 입력 텍스트 -> 응답 생성 -> 음성 출력 흐름을 최소 기능으로 연결하는 작업입니다.",
+        ],
+        "practice_steps": [
+            "페르소나 프로필(JSON)을 작성해 톤/속도/스타일 규칙을 정의하세요.",
+            "기본 코칭 대화 3턴을 설계하고 실패 문장(금지 표현) 필터를 추가하세요.",
+            "텍스트 응답을 음성 출력 규칙으로 변환하는 baseline 함수를 구현하세요.",
+        ],
+        "checklist": [
+            "PERSONA 프로필(톤/스타일/금지 규칙)을 작성했다.",
+            "코칭 대화 흐름(질문-피드백-다음 행동)을 정의했다.",
+            "최소 동작 파이프라인을 실행하고 로그를 남겼다.",
+        ],
+        "syntax": ["프로필 dict", "규칙 기반 라우팅", "코칭 시나리오 함수", "실행 로그 출력"],
+        "flow_steps": [
+            "PERSONA 목표와 코칭 범위를 정의한다",
+            "프로필 규칙과 대화 시나리오를 구조화한다",
+            "텍스트 응답과 음성 출력 흐름을 연결한다",
+            "기초 동작 결과를 체크리스트로 검증한다",
+        ],
+        "focus_points": [
+            "페르소나 규칙이 구체적이고 충돌 없이 정의됐는지 확인하기",
+            "코칭 응답이 과도한 일반 답변으로 흐르지 않는지 점검하기",
+            "실패 케이스 로그(금지 표현/빈 입력)를 남기는지 확인하기",
+        ],
+        "next_tip": "다음 구간에서는 STT↔LLM↔TTS 실시간 루프로 코칭 대화를 고도화합니다.",
+    },
+    "PERSONA 코칭 대화 파이프라인(STT↔LLM↔TTS)": {
+        "kid_summary": "음성 입력(STT)과 생성(LLM), 음성 출력(TTS)을 묶어 코칭 루프를 완성하는 구간입니다.",
+        "why": "개인 코칭봇을 서비스처럼 쓰려면 단일 모델이 아니라 `STT→LLM→TTS` 왕복 지연과 품질을 함께 제어해야 합니다.",
+        "concepts": [
+            "`STT 품질`은 코칭 의도 인식 정확도에 직접 영향해 오인식 대응 로직이 필요합니다.",
+            "`LLM 응답 제어`는 페르소나 규칙과 안전 정책을 함께 반영해야 일관성이 유지됩니다.",
+            "`TTS 출력 조절`은 말속도·억양·길이를 상황별로 조정해 사용자 피드백 수용도를 높입니다.",
+        ],
+        "practice_steps": [
+            "STT 결과 신뢰도 임계치를 정하고 재질문 fallback을 구현하세요.",
+            "LLM 응답에 PERSONA 규칙 프롬프트를 주입해 톤 일관성을 비교하세요.",
+            "TTS 속도/톤 파라미터를 바꿔 코칭 문장 샘플을 테스트하세요.",
+        ],
+        "checklist": [
+            "STT 오인식 대응(재질문/정정)을 적용했다.",
+            "LLM 응답에 페르소나 규칙을 강제했다.",
+            "TTS 출력 품질(톤/속도/자연스러움)을 비교 기록했다.",
+        ],
+        "syntax": ["STT 결과 스코어", "프롬프트 가드레일", "TTS 파라미터 설정", "파이프라인 상태 로그"],
+        "flow_steps": [
+            "음성 입력을 STT로 텍스트 변환한다",
+            "페르소나 규칙 기반으로 LLM 응답을 생성한다",
+            "응답을 TTS로 합성해 사용자에게 전달한다",
+            "왕복 지연과 품질 지표를 측정해 개선한다",
+        ],
+        "focus_points": [
+            "STT 오류 시 재시도/재질문 정책이 있는지 확인하기",
+            "LLM 응답이 PERSONA 스타일을 유지하는지 점검하기",
+            "TTS 길이/속도/톤 조합이 과도하지 않은지 확인하기",
+        ],
+        "next_tip": "다음 구간에서는 사전 데이터 기반으로 페르소나 품질을 안정화합니다.",
+    },
+    "사전 데이터 기반 PERSONA AI 구축": {
+        "kid_summary": "사전 데이터(대화 스크립트/음성 샘플/라벨)를 기반으로 PERSONA AI를 학습용 구조로 정리하는 구간입니다.",
+        "why": "이미지 요구사항의 2축인 사전 데이터 기반 PERSONA AI 구축과 지속학습을 위해선 데이터셋 품질과 라벨 정책이 먼저 갖춰져야 합니다.",
+        "concepts": [
+            "`사전 데이터셋`은 대화 의도, 코칭 답변, 음성 샘플을 연결한 학습 자산입니다.",
+            "`라벨 일관성`은 같은 상황에서 같은 의도/피드백 라벨이 유지되도록 관리하는 품질 기준입니다.",
+            "`페르소나 유사도`는 생성 응답이 목표 화자 스타일을 얼마나 따르는지 측정하는 지표입니다.",
+        ],
+        "practice_steps": [
+            "코칭 대화 데이터를 intent/response/style 태그로 분할 정리하세요.",
+            "라벨 충돌 샘플을 찾아 정정 규칙을 문서화하세요.",
+            "샘플 응답의 페르소나 유사도 기준(톤/단어/길이)을 정의하세요.",
+        ],
+        "checklist": [
+            "학습용 대화·음성 데이터 스키마를 확정했다.",
+            "라벨 일관성 점검표를 작성했다.",
+            "페르소나 유사도 측정 기준을 정리했다.",
+        ],
+        "syntax": ["데이터 스키마 dict", "라벨 검증 함수", "유사도 점수 계산", "품질 리포트"],
+        "flow_steps": [
+            "사전 데이터를 수집하고 스키마로 정렬한다",
+            "의도/스타일 라벨을 검증해 정제한다",
+            "페르소나 유사도 기준으로 데이터 품질을 측정한다",
+            "학습/추론에 사용할 데이터셋 버전을 확정한다",
+        ],
+        "focus_points": [
+            "라벨 충돌/누락 데이터를 탐지하는지 확인하기",
+            "데이터 버전과 변경 이력을 남기는지 점검하기",
+            "유사도 지표가 단일 값이 아닌 복수 항목으로 구성됐는지 확인하기",
+        ],
+        "next_tip": "다음 구간에서는 지속학습 루프와 운영 품질관리까지 완성합니다.",
+    },
+    "PERSONA AI 지속학습과 품질 운영": {
+        "kid_summary": "배포 후 피드백 데이터를 이용해 PERSONA AI를 지속학습하고 품질을 운영하는 마무리 구간입니다.",
+        "why": "실제 서비스에서는 초기 모델보다 운영 중 수집되는 피드백을 반영하는 지속학습 루프가 성능과 만족도를 좌우합니다.",
+        "concepts": [
+            "`지속학습 루프`는 로그 수집 -> 오류 분류 -> 재학습 -> 재배포를 반복하는 개선 구조입니다.",
+            "`품질 운영 지표`는 응답 만족도, 페르소나 유지율, 지연시간, 실패율을 함께 봐야 합니다.",
+            "`운영 안전장치`는 롤백, 알림, 수동 검수 큐를 통해 품질 하락을 빠르게 차단합니다.",
+        ],
+        "practice_steps": [
+            "운영 로그에서 실패 패턴(STT 오류/톤 이탈/지연)을 분류하세요.",
+            "재학습 후보 데이터를 선별하고 버전별 지표를 비교하세요.",
+            "품질 저하 시 롤백/알림 절차를 체크리스트로 자동화하세요.",
+        ],
+        "checklist": [
+            "지속학습 파이프라인(수집-분류-재학습-배포)을 설계했다.",
+            "운영 품질 지표 대시보드 항목을 정의했다.",
+            "롤백/알림 등 장애 대응 절차를 문서화했다.",
+        ],
+        "syntax": ["운영 로그 파서", "지표 집계 함수", "재학습 후보 큐", "롤백 조건문"],
+        "flow_steps": [
+            "운영 로그와 사용자 피드백을 수집한다",
+            "오류 패턴을 분류해 재학습 후보를 만든다",
+            "버전별 품질 지표를 비교해 배포 여부를 결정한다",
+            "품질 저하 시 롤백/알림 절차를 실행한다",
+        ],
+        "focus_points": [
+            "지속학습 주기와 데이터 기준이 명확한지 확인하기",
+            "배포 전후 지표 비교가 자동화됐는지 점검하기",
+            "문제 발생 시 즉시 복귀 가능한 롤백 경로가 있는지 확인하기",
+        ],
+        "next_tip": "전체 프로젝트 결과를 포트폴리오(설계서+지표+데모) 형태로 정리해 보세요.",
+    },
+}
+
 PYTHON_PL_MODULE_PROFILES = {
     "오리엔테이션 및 개발환경 준비": {
         "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
@@ -3477,9 +3612,16 @@ def get_rag_profile(subject_name: str, module: str) -> dict[str, object] | None:
     return RAG_MODULE_OVERRIDES.get(module_core_name(module))
 
 
+def get_project_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_project_subject(subject_name):
+        return None
+    return PROJECT_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
     for profile in (
+        get_project_profile(subject_name, module),
         get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
@@ -3500,6 +3642,7 @@ def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[st
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_project_profile(subject_name, module),
         get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
@@ -3518,6 +3661,7 @@ def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_project_profile(subject_name, module),
         get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
@@ -3536,6 +3680,7 @@ def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_project_profile(subject_name, module),
         get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
@@ -3559,6 +3704,40 @@ def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str
 
 
 def resolve_example_progression(track: str, subject_name: str, module: str) -> list[str]:
+    if is_project_subject(subject_name):
+        core = module_core_name(module)
+        if core == "개인 맞춤 코칭 음성봇 PERSONA AI 만들기":
+            return [
+                "example1: PERSONA 프로필과 기본 코칭 시나리오를 정의한다.",
+                "example2: 입력 유형(목표/톤/길이)을 확장해 응답 일관성을 점검한다.",
+                "example3: 금지 표현/빈 입력 등 실패 케이스를 재현한다.",
+                "example4: 코칭 응답 품질 지표를 비교해 규칙을 개선한다.",
+                "example5: 운영 체크리스트(로그/알림/롤백)를 반영한다.",
+            ]
+        if core == "PERSONA 코칭 대화 파이프라인(STT↔LLM↔TTS)":
+            return [
+                "example1: STT→LLM→TTS 기본 루프를 실행한다.",
+                "example2: STT 신뢰도 기준과 재질문 fallback을 적용한다.",
+                "example3: LLM 톤 이탈/환각 시나리오를 점검한다.",
+                "example4: TTS 속도/톤 파라미터 조합별 품질을 비교한다.",
+                "example5: 왕복 지연과 안정성 지표 기반 운영 기준을 정리한다.",
+            ]
+        if core == "사전 데이터 기반 PERSONA AI 구축":
+            return [
+                "example1: 코칭 데이터 스키마(intent/response/style)를 정의한다.",
+                "example2: 라벨 분포와 누락 데이터를 점검한다.",
+                "example3: 라벨 충돌/잡음 데이터를 정제한다.",
+                "example4: 페르소나 유사도 지표를 계산해 비교한다.",
+                "example5: 데이터셋 버전 관리와 재학습 후보 큐를 구성한다.",
+            ]
+        if core == "PERSONA AI 지속학습과 품질 운영":
+            return [
+                "example1: 운영 로그 기반 품질 지표 대시보드를 구성한다.",
+                "example2: 실패 패턴(STT 오류/톤 이탈/지연)을 분류한다.",
+                "example3: 재학습 전후 버전 성능을 비교한다.",
+                "example4: 드리프트 감지와 알림 정책을 적용한다.",
+                "example5: 롤백/재배포 runbook으로 운영 마무리를 수행한다.",
+            ]
     if is_prompt_eng_subject(subject_name):
         core = module_core_name(module)
         if core == "프롬프트 엔지니어링 개요":
@@ -4303,8 +4482,42 @@ def resolve_example_progression(track: str, subject_name: str, module: str) -> l
 AUTO_TECH_STACK_START = "<!-- AUTO-GENERATED: TECH_STACK_FLOW START -->"
 AUTO_TECH_STACK_END = "<!-- AUTO-GENERATED: TECH_STACK_FLOW END -->"
 TERM_TOKEN_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9+\-]*|[가-힣]+")
+BACKTICK_TERM_PATTERN = re.compile(r"`([^`]+)`")
 PARTICLE_SUFFIXES = ("은", "는", "이", "가", "을", "를", "와", "과", "의")
-SKIP_TERMS = {"및", "와", "과", "등"}
+SKIP_TERMS = {
+    "및",
+    "와",
+    "과",
+    "등",
+    "단계",
+    "기초",
+    "입문",
+    "이해",
+    "실전",
+    "응용",
+    "확장",
+    "운영",
+    "최적화",
+    "개요",
+    "개요와",
+    "수업",
+    "준비",
+    "필수",
+    "첫",
+}
+
+LOW_VALUE_TERMS = {
+    "기본",
+    "시작",
+    "실습",
+    "구성",
+    "환경",
+    "처리",
+    "개선",
+    "입력",
+    "출력",
+    "기반",
+}
 
 TRACK_TERM_CONTEXT = {
     "python": "코드 문법을 통해 문제를 절차적으로 해결하는 역량을 기르는 교과목입니다.",
@@ -4334,6 +4547,13 @@ TERM_ALIASES = {
     "vectorstore": "VectorStore",
     "prompttemplate": "PromptTemplate",
     "outputparser": "OutputParser",
+    "문제정의": "문제 정의",
+    "언어모델": "언어 모델",
+    "품질관리": "품질 관리",
+    "단계적": "단계별",
+    "명세서와": "명세서",
+    "착수와": "착수",
+    "persona": "PERSONA",
 }
 
 TERM_LEXICON: dict[str, dict[str, str]] = {
@@ -4372,6 +4592,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "hanja": "分析",
         "english": "analysis",
         "technical": "데이터를 분해해 의미 있는 결론을 도출하는 과정입니다.",
+    },
+    "문제 정의": {
+        "grammar": "명사구",
+        "hanja": "問題定義",
+        "english": "problem definition",
+        "technical": "해결할 목표, 입력·출력, 성공 지표를 명확히 정해 모델/코드 방향을 고정하는 단계입니다.",
     },
     "머신러닝": {
         "grammar": "명사(외래어)",
@@ -4505,11 +4731,29 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "english": "service",
         "technical": "사용자에게 기능을 제공하는 실행 가능한 애플리케이션 단위입니다.",
     },
+    "애플리케이션": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "application",
+        "technical": "사용자 문제를 해결하기 위해 기능을 묶어 배포·운영 가능한 소프트웨어 단위입니다.",
+    },
     "구현": {
         "grammar": "명사",
         "hanja": "具現",
         "english": "implementation",
         "technical": "설계를 실제 코드와 시스템 동작으로 구체화하는 과정입니다.",
+    },
+    "설계": {
+        "grammar": "명사",
+        "hanja": "設計",
+        "english": "design",
+        "technical": "요구사항을 만족하도록 데이터 흐름, 함수/모듈 경계, 평가 기준을 구조화하는 작업입니다.",
+    },
+    "전략": {
+        "grammar": "명사",
+        "hanja": "戰略",
+        "english": "strategy",
+        "technical": "목표 달성을 위해 어떤 순서와 기준으로 실험/구현할지 정하는 실행 계획입니다.",
     },
     "요약": {
         "grammar": "명사",
@@ -4523,6 +4767,18 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "english": "classification",
         "technical": "입력을 사전 정의된 카테고리로 할당하는 지도학습 과제입니다.",
     },
+    "지도학습": {
+        "grammar": "명사",
+        "hanja": "指導學習",
+        "english": "supervised learning",
+        "technical": "라벨이 있는 데이터를 사용해 입력-정답 관계를 학습하는 머신러닝 방식입니다.",
+    },
+    "비지도학습": {
+        "grammar": "명사",
+        "hanja": "非指導學習",
+        "english": "unsupervised learning",
+        "technical": "정답 라벨 없이 데이터 구조와 군집 패턴을 스스로 찾는 학습 방식입니다.",
+    },
     "추출": {
         "grammar": "명사",
         "hanja": "抽出",
@@ -4534,6 +4790,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "hanja": "-",
         "english": "token",
         "technical": "모델이 처리하는 최소 단위 문자열 조각입니다.",
+    },
+    "토큰화": {
+        "grammar": "명사",
+        "hanja": "토큰化",
+        "english": "tokenization",
+        "technical": "문장을 모델 입력 단위로 분해해 벡터화/임베딩 가능한 형태로 바꾸는 과정입니다.",
     },
     "컨텍스트": {
         "grammar": "명사(외래어)",
@@ -4558,6 +4820,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "hanja": "應答",
         "english": "response",
         "technical": "모델이 입력 프롬프트에 대해 반환하는 출력 텍스트입니다.",
+    },
+    "텍스트": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "text",
+        "technical": "문자열 기반 데이터로, 요약·분류·추출·생성 작업의 기본 입력/출력 단위입니다.",
     },
     "LLM": {
         "grammar": "약어명사",
@@ -4594,6 +4862,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "hanja": "-",
         "english": "Deep Learning",
         "technical": "심층 신경망으로 표현학습을 수행하는 방법론입니다.",
+    },
+    "PERSONA": {
+        "grammar": "고유명사(프로필 개념)",
+        "hanja": "-",
+        "english": "persona",
+        "technical": "목표 화자의 말투·톤·스타일·금지 규칙을 구조화해 모델 응답 일관성을 유지하는 프로필입니다.",
     },
     "LangChain": {
         "grammar": "고유명사(프레임워크명)",
@@ -4637,6 +4911,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "english": "chain",
         "technical": "여러 처리 단계를 순차 연결한 실행 파이프라인입니다.",
     },
+    "체인": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "chain",
+        "technical": "입력 전처리, 검색, 생성, 후처리 단계를 목적에 맞게 연결한 LLM 실행 흐름입니다.",
+    },
     "Memory": {
         "grammar": "명사(영어)",
         "hanja": "-",
@@ -4673,6 +4953,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "english": "document",
         "technical": "RAG 검색과 근거 생성에 사용하는 텍스트 단위 데이터입니다.",
     },
+    "청크": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "chunk",
+        "technical": "긴 문서를 검색/생성에 맞게 분할한 단위로, 크기와 겹침이 검색 정확도에 직접 영향합니다.",
+    },
     "검색": {
         "grammar": "명사",
         "hanja": "搜索",
@@ -4696,6 +4982,12 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "hanja": "-",
         "english": "embedding",
         "technical": "텍스트/신호를 벡터 공간에 사상해 의미 유사도를 계산하는 표현입니다.",
+    },
+    "벡터": {
+        "grammar": "명사",
+        "hanja": "vector",
+        "english": "vector",
+        "technical": "여러 수치 차원으로 표현된 값 묶음으로, 유사도 계산과 검색 인덱싱의 기본 단위입니다.",
     },
     "파이프라인": {
         "grammar": "명사(외래어)",
@@ -4955,6 +5247,48 @@ TERM_LEXICON: dict[str, dict[str, str]] = {
         "english": "tuning",
         "technical": "파라미터/하이퍼파라미터 조정으로 성능을 개선하는 작업입니다.",
     },
+    "품질": {
+        "grammar": "명사",
+        "hanja": "品質",
+        "english": "quality",
+        "technical": "정확도, 일관성, 안정성처럼 결과가 요구사항을 만족하는 정도를 나타내는 기준입니다.",
+    },
+    "관측성": {
+        "grammar": "명사",
+        "hanja": "觀測性",
+        "english": "observability",
+        "technical": "로그/메트릭/트레이스로 시스템 상태와 실패 원인을 빠르게 파악할 수 있는 운영 능력입니다.",
+    },
+    "언어 모델": {
+        "grammar": "명사구",
+        "hanja": "言語模型",
+        "english": "language model",
+        "technical": "텍스트 시퀀스의 다음 토큰 확률을 학습해 이해/생성 작업을 수행하는 모델 계열입니다.",
+    },
+    "품질 관리": {
+        "grammar": "명사구",
+        "hanja": "品質管理",
+        "english": "quality management",
+        "technical": "평가 지표, 검증 규칙, 운영 모니터링을 통해 모델 출력 품질을 지속적으로 유지하는 활동입니다.",
+    },
+    "단계별": {
+        "grammar": "부사성 명사",
+        "hanja": "段階別",
+        "english": "step-by-step",
+        "technical": "문제를 작은 절차로 나눠 검증 가능한 순서로 처리해 오류를 줄이는 접근입니다.",
+    },
+    "명세서": {
+        "grammar": "명사",
+        "hanja": "明細書",
+        "english": "specification",
+        "technical": "API 입력/출력, 오류 코드, 제약조건을 문서화해 개발자 간 구현 기준을 맞추는 문서입니다.",
+    },
+    "레지스트리": {
+        "grammar": "명사(외래어)",
+        "hanja": "-",
+        "english": "registry",
+        "technical": "모델 버전, 메타데이터, 배포 상태를 추적해 재현성과 롤백을 보장하는 저장소입니다.",
+    },
 }
 
 
@@ -4962,7 +5296,7 @@ def normalize_term(term: str) -> str:
     raw = term.strip().strip(".,")
     if not raw:
         return ""
-    if raw in SKIP_TERMS:
+    if is_low_value_term(raw):
         return ""
 
     alias = TERM_ALIASES.get(raw)
@@ -4978,20 +5312,29 @@ def normalize_term(term: str) -> str:
     for suffix in PARTICLE_SUFFIXES:
         if raw.endswith(suffix) and len(raw) > len(suffix) + 1:
             candidate = raw[: -len(suffix)]
+            if is_low_value_term(candidate):
+                return ""
             if candidate in TERM_LEXICON:
                 return candidate
             alias_candidate = TERM_ALIASES.get(candidate) or TERM_ALIASES.get(candidate.lower())
             if alias_candidate:
                 return alias_candidate
+            return candidate
 
     if raw.endswith("하기") and len(raw) > 2:
         candidate = raw[:-2]
+        if is_low_value_term(candidate):
+            return ""
         if candidate in TERM_LEXICON:
             return candidate
+        return candidate
     if raw.endswith("한") and len(raw) > 1:
         candidate = raw[:-1]
+        if is_low_value_term(candidate):
+            return ""
         if candidate in TERM_LEXICON:
             return candidate
+        return candidate
 
     return raw
 
@@ -5003,13 +5346,19 @@ def collect_key_terms(text: str, max_terms: int = 6) -> list[str]:
         .replace("/", " ")
         .replace("+", " ")
         .replace(",", " ")
+        .replace("·", " ")
+        .replace(":", " ")
+        .replace("[", " ")
+        .replace("]", " ")
     )
     tokens = TERM_TOKEN_PATTERN.findall(normalized_text)
     terms: list[str] = []
     seen: set[str] = set()
     for token in tokens:
         base = normalize_term(token)
-        if not base or base in SKIP_TERMS:
+        if not base or is_low_value_term(base):
+            continue
+        if len(base) == 1 and not re.fullmatch(r"[A-Za-z0-9]", base):
             continue
         key = base.lower()
         if key in seen:
@@ -5021,7 +5370,97 @@ def collect_key_terms(text: str, max_terms: int = 6) -> list[str]:
     return terms
 
 
-def lookup_term_info(term: str) -> dict[str, str]:
+def is_low_value_term(term: str) -> bool:
+    lowered = term.strip().lower()
+    if not lowered:
+        return True
+    if term in SKIP_TERMS or lowered in SKIP_TERMS:
+        return True
+    if term in LOW_VALUE_TERMS or lowered in LOW_VALUE_TERMS:
+        return True
+    if re.fullmatch(r"class\d*", lowered):
+        return True
+    if re.fullmatch(r"\d+", lowered):
+        return True
+    return False
+
+
+def normalize_term_match(text: str) -> str:
+    return re.sub(r"[^0-9A-Za-z가-힣]+", "", text).lower()
+
+
+def build_term_context_sentences(track: str, subject_name: str, module: str) -> list[str]:
+    info = resolve_learning_info(track=track, subject_name=subject_name, module=module)
+    focus_points = resolve_focus_points(track=track, subject_name=subject_name, module=module)
+    candidates: list[str] = [
+        info["kid_summary"],
+        info["why"],
+        *info["concepts"],
+        *focus_points,
+    ]
+    return [item.strip() for item in candidates if isinstance(item, str) and item.strip()]
+
+
+def collect_high_signal_terms(sentences: list[str], max_terms: int = 12) -> list[str]:
+    terms: list[str] = []
+    seen: set[str] = set()
+
+    for sentence in sentences:
+        for chunk in BACKTICK_TERM_PATTERN.findall(sentence):
+            split_chunks = re.split(r"[,+/()]", chunk)
+            for part in split_chunks:
+                for token in part.split():
+                    normalized = normalize_term(token.strip())
+                    if not normalized or is_low_value_term(normalized):
+                        continue
+                    key = normalized.lower()
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    terms.append(normalized)
+                    if len(terms) >= max_terms:
+                        return terms
+    return terms
+
+
+TRACK_TERM_DETAIL_HINT = {
+    "python": "`{term}`는 `{module_core}` 실습에서 코드 구조와 실행 결과를 안정적으로 만들기 위한 핵심 용어입니다.",
+    "data": "`{term}`는 `{module_core}` 단계에서 데이터 품질과 해석 정확도를 직접 좌우하는 용어입니다.",
+    "ml": "`{term}`는 `{module_core}` 주제에서 모델 성능과 일반화 결과를 판단할 때 기준이 되는 용어입니다.",
+    "nlp": "`{term}`는 `{module_core}` 과정에서 텍스트/음성 표현을 모델 입력으로 연결하는 핵심 용어입니다.",
+    "llm": "`{term}`는 `{module_core}` 실습에서 생성 결과의 품질·안전성·제어 가능성을 높이는 데 쓰입니다.",
+    "speech": "`{term}`는 `{module_core}` 단계에서 음향 특징과 모델 추론 품질을 연결하는 실무 용어입니다.",
+    "prompt": "`{term}`는 `{module_core}`에서 응답 형식과 품질을 일관되게 제어하기 위한 설계 단위입니다.",
+    "langchain": "`{term}`는 `{module_core}` 실습에서 체인 구성 요소를 조합해 동작 흐름을 설계할 때 쓰입니다.",
+    "rag": "`{term}`는 `{module_core}`에서 검색 근거와 생성 답변을 연결해 신뢰도를 높이는 핵심 용어입니다.",
+    "generic": "`{term}`는 `{module_core}` 주제에서 구현/검증 흐름을 이해하기 위해 먼저 정의해야 할 용어입니다.",
+}
+
+
+def build_contextual_term_description(
+    term: str,
+    track: str,
+    module: str,
+    term_context: list[str],
+) -> str:
+    normalized_term = normalize_term_match(term)
+    for sentence in term_context:
+        if normalized_term and normalized_term in normalize_term_match(sentence):
+            cleaned = sentence.strip().rstrip(".")
+            return f"이번 차시 맥락: {cleaned}. 이를 기준으로 `{term}`를 코드와 결과 해석에 연결합니다."
+
+    module_core = module_core_name(module)
+    template = TRACK_TERM_DETAIL_HINT.get(track, TRACK_TERM_DETAIL_HINT["generic"])
+    return template.format(term=term, module_core=module_core)
+
+
+def lookup_term_info(
+    term: str,
+    *,
+    track: str,
+    module: str,
+    term_context: list[str],
+) -> dict[str, str]:
     if term in TERM_LEXICON:
         return TERM_LEXICON[term]
     lowered = term.lower()
@@ -5029,19 +5468,26 @@ def lookup_term_info(term: str) -> dict[str, str]:
         if key.lower() == lowered:
             return value
 
+    technical = build_contextual_term_description(
+        term=term,
+        track=track,
+        module=module,
+        term_context=term_context,
+    )
+
     if re.fullmatch(r"[A-Za-z][A-Za-z0-9+\-]*", term):
         return {
             "grammar": "영문 기술명/약어",
             "hanja": "-",
             "english": term,
-            "technical": f"용어 `{term}`: 이번 차시에서 쓰이는 핵심 기술 용어입니다.",
+            "technical": technical,
         }
 
     return {
-        "grammar": "명사(기술 개념어)",
+        "grammar": "명사(주제 핵심 용어)",
         "hanja": "-",
-        "english": "(context-specific)",
-        "technical": f"용어 `{term}`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다.",
+        "english": "(topic-specific)",
+        "technical": technical,
     }
 
 
@@ -5067,7 +5513,13 @@ def escape_table_cell(value: str) -> str:
     return value.replace("|", "\\|")
 
 
-def render_term_table(terms: list[str]) -> str:
+def render_term_table(
+    terms: list[str],
+    *,
+    track: str,
+    module: str,
+    term_context: list[str],
+) -> str:
     if not terms:
         return "- (추출된 핵심 용어가 없습니다.)"
 
@@ -5076,7 +5528,12 @@ def render_term_table(terms: list[str]) -> str:
         "| --- | --- | --- | --- | --- |",
     ]
     for term in terms:
-        info = lookup_term_info(term)
+        info = lookup_term_info(
+            term,
+            track=track,
+            module=module,
+            term_context=term_context,
+        )
         lines.append(
             "| "
             + " | ".join(
@@ -5094,10 +5551,33 @@ def render_term_table(terms: list[str]) -> str:
 
 
 def render_term_guide(subject_name: str, module: str, track: str) -> str:
+    term_context = build_term_context_sentences(track=track, subject_name=subject_name, module=module)
     subject_terms = collect_key_terms(subject_name, max_terms=6)
-    module_terms = collect_key_terms(module, max_terms=6)
-    subject_table = render_term_table(subject_terms)
-    module_table = render_term_table(module_terms)
+    module_core = module_core_name(module)
+    module_terms = collect_key_terms(module_core, max_terms=6)
+    if len(module_terms) < 6:
+        supplement_terms = collect_high_signal_terms(term_context, max_terms=12)
+        seen = {item.lower() for item in module_terms}
+        for candidate in supplement_terms:
+            lowered = candidate.lower()
+            if lowered in seen:
+                continue
+            module_terms.append(candidate)
+            seen.add(lowered)
+            if len(module_terms) >= 6:
+                break
+    subject_table = render_term_table(
+        subject_terms,
+        track=track,
+        module=module,
+        term_context=term_context,
+    )
+    module_table = render_term_table(
+        module_terms,
+        track=track,
+        module=module,
+        term_context=term_context,
+    )
     subject_context = TRACK_TERM_CONTEXT.get(track, TRACK_TERM_CONTEXT["generic"])
     lines = [
         f"#### 교과목 표현 분석: `{subject_name}`",
@@ -5107,7 +5587,7 @@ def render_term_guide(subject_name: str, module: str, track: str) -> str:
         "",
         f"#### 학습주제 표현 분석: `{module}`",
         f"- 문법 포인트: {describe_phrase_grammar(module)}",
-        f"- 기술 포인트: 이번 차시는 `{module}` 용어를 중심으로 문제 정의, 코드 구현, 결과 검증까지 연결합니다.",
+        f"- 기술 포인트: 이번 차시는 `{module_core}` 핵심 개념을 코드 구현, 결과 해석, 점검 기준으로 연결합니다.",
         module_table,
     ]
     return "\n".join(lines)
@@ -5299,6 +5779,8 @@ def save_flow_png(steps: list[str], out_path: Path, class_id: str, module: str) 
 
 
 def choose_track(subject_name: str, module: str) -> str:
+    if is_project_subject(subject_name):
+        return "generic"
     if is_llm_text_gen_subject(subject_name):
         return "llm"
     text = f"{subject_name} {module}"

@@ -19,15 +19,15 @@
 
 #### 학습주제 표현 분석: `Model/LLM 연결 · 단계 2/5 기초 구현 [class406]`
 - 문법 포인트: 핵심 개념 명사를 중심으로 한 명사구 구조입니다.
-- 기술 포인트: 이번 차시는 `Model/LLM 연결 · 단계 2/5 기초 구현 [class406]` 용어를 중심으로 문제 정의, 코드 구현, 결과 검증까지 연결합니다.
+- 기술 포인트: 이번 차시는 `Model/LLM 연결` 핵심 개념을 코드 구현, 결과 해석, 점검 기준으로 연결합니다.
 | 용어 | 문법/품사 | 한글·한자 | 영어 | 기술 설명 |
 | --- | --- | --- | --- | --- |
-| `Model` | 영문 기술명/약어 | Model (한자 없음) | Model | 용어 `Model`: 이번 차시에서 쓰이는 핵심 기술 용어입니다. |
+| `Model` | 영문 기술명/약어 | Model (한자 없음) | Model | 이번 차시 맥락: Model 연결을 중심으로 LangChain 핵심 구성요소(Model, PromptTemplate, Chain, Output Parser, Memory, Retriever, Tool, Agent)를 한 번에 정리하는 차시입니다. 이를 기준으로 `Model`를 코드와 결과 해석에 연결합니다. |
 | `LLM` | 약어명사 | LLM (한자 없음) | Large Language Model | 대규모 텍스트로 사전학습된 생성형 언어 모델입니다. |
-| `연결` | 명사(기술 개념어) | 연결 (한자 없음) | (context-specific) | 용어 `연결`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
-| `단계` | 명사(기술 개념어) | 단계 (한자 없음) | (context-specific) | 용어 `단계`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
-| `기초` | 명사(기술 개념어) | 기초 (한자 없음) | (context-specific) | 용어 `기초`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
-| `구현` | 명사 | 구현 (具現) | implementation | 설계를 실제 코드와 시스템 동작으로 구체화하는 과정입니다. |
+| `연결` | 명사(주제 핵심 용어) | 연결 (한자 없음) | (topic-specific) | 이번 차시 맥락: Model 연결을 중심으로 LangChain 핵심 구성요소(Model, PromptTemplate, Chain, Output Parser, Memory, Retriever, Tool, Agent)를 한 번에 정리하는 차시입니다. 이를 기준으로 `연결`를 코드와 결과 해석에 연결합니다. |
+| `PromptTemplate` | 복합명사(클래스명) | PromptTemplate (한자 없음) | PromptTemplate | 변수 기반 프롬프트를 재사용 가능하게 만드는 템플릿 구성요소입니다. |
+| `Chain` | 명사(영어) | Chain (한자 없음) | chain | 여러 처리 단계를 순차 연결한 실행 파이프라인입니다. |
+| `Output` | 영문 기술명/약어 | Output (한자 없음) | Output | 이번 차시 맥락: Model 연결을 중심으로 LangChain 핵심 구성요소(Model, PromptTemplate, Chain, Output Parser, Memory, Retriever, Tool, Agent)를 한 번에 정리하는 차시입니다. 이를 기준으로 `Output`를 코드와 결과 해석에 연결합니다. |
 
 ## 2) 이전에 배운 내용 (복습)
 - 이전 차시: **class405 / Model/LLM 연결 · 단계 1/5 입문 이해 [class405]** (Day 51 / 5교시)

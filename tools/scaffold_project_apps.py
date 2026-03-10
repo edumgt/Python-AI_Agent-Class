@@ -8,7 +8,7 @@ from textwrap import dedent
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_FILE = ROOT / "curriculum_index.csv"
-APPS_ROOT = ROOT / "projectApps"
+PROJECT_ROOT = ROOT / "project"
 
 
 def load_project_rows() -> list[dict[str, str]]:
@@ -29,6 +29,13 @@ def project_name_from_md_file(md_file: str) -> str:
     if len(parts) >= 2 and parts[0] == "project" and parts[1].startswith("Prj_"):
         return parts[1]
     return "Prj_Project"
+
+
+def class_dir_from_row(row: dict[str, str]) -> Path:
+    md_file = (row.get("md_file") or "").strip()
+    if md_file:
+        return ROOT / Path(md_file).parent
+    return PROJECT_ROOT / "Prj_PersonaVoiceAI" / row["class"].strip()
 
 
 def write(path: Path, text: str) -> None:
@@ -92,43 +99,40 @@ def build_core_py(track_code: str) -> str:
             std = _safe_stdev(values)
 
             if track_code == "프로젝트-1":
-                # DevOps kickoff: readiness gate
-                readiness = max(0.0, min(100.0, round((1.0 - avg) * 100, 2)))
-                status = "go" if readiness >= 60 else "hold"
+                profile_score = max(0.0, min(100.0, round(avg * 100, 2)))
+                style_consistency = max(0.0, min(100.0, round((1.0 - std) * 100, 2)))
+                status = "ready" if profile_score >= 70 else "design"
                 summary = {{
-                    "readiness_score": readiness,
-                    "gate": "deployment-readiness",
-                    "risk_mean": round(avg, 4),
+                    "phase": "개인 맞춤 코칭 음성봇 기초 구축",
+                    "profile_score": profile_score,
+                    "style_consistency": style_consistency,
                     "note": note,
                 }}
             elif track_code == "프로젝트-2":
-                # MLOps pipeline: model quality stability
-                quality = max(0.0, min(100.0, round(avg * 100, 2)))
-                status = "stable" if std <= 0.12 else "unstable"
+                loop_quality = max(0.0, min(100.0, round((avg - std * 0.4) * 100, 2)))
+                status = "stable" if loop_quality >= 68 else "tune"
                 summary = {{
-                    "quality_score": quality,
-                    "drift_std": round(std, 4),
-                    "pipeline_state": status,
+                    "phase": "STT-LLM-TTS 코칭 대화 파이프라인",
+                    "loop_quality": loop_quality,
+                    "latency_hint_ms": int((0.18 + std) * 1000),
                     "note": note,
                 }}
             elif track_code == "프로젝트-3":
-                # LLMOps/RAG: answer quality guardrail
-                grounded = max(0.0, min(100.0, round(avg * 100, 2)))
-                status = "pass" if grounded >= 70 else "review"
+                dataset_quality = max(0.0, min(100.0, round((avg * 0.7 + (1.0 - std) * 0.3) * 100, 2)))
+                status = "usable" if dataset_quality >= 72 else "relabel"
                 summary = {{
-                    "groundedness": grounded,
-                    "guardrail": status,
-                    "signal_std": round(std, 4),
+                    "phase": "사전 데이터 기반 PERSONA AI 구축",
+                    "dataset_quality": dataset_quality,
+                    "label_consistency": round((1.0 - std) * 100, 2),
                     "note": note,
                 }}
             else:
-                # AIOps: anomaly monitoring
-                anomaly_score = max(0.0, min(100.0, round((avg + std) * 100, 2)))
-                status = "alert" if anomaly_score >= 65 else "normal"
+                drift_score = max(0.0, min(100.0, round(((1.0 - avg) + std) * 100, 2)))
+                status = "retrain" if drift_score >= 35 else "monitor"
                 summary = {{
-                    "anomaly_score": anomaly_score,
-                    "status": status,
-                    "baseline_std": round(std, 4),
+                    "phase": "PERSONA AI 지속학습과 품질 운영",
+                    "drift_score": drift_score,
+                    "next_action": "재학습 큐 등록" if status == "retrain" else "모니터링 유지",
                     "note": note,
                 }}
 
@@ -177,9 +181,7 @@ def scaffold_project(row: dict[str, str]) -> None:
 
     project_num = int(project_id.replace("project", ""))
     host_port = 9100 + project_num
-    project_slug = slug_from_prj_name(prj_name)
-
-    app_root = APPS_ROOT / prj_name / project_id
+    app_root = class_dir_from_row(row)
 
     write(
         app_root / "requirements.txt",
@@ -457,12 +459,12 @@ def scaffold_project(row: dict[str, str]) -> None:
             class CoreScenarioTests(unittest.TestCase):
                 def test_evaluate_returns_status(self) -> None:
                     result = evaluate(track_code="프로젝트-1", values=[0.1, 0.2, 0.3], note="unit-test")
-                    self.assertIn(result.status, {"go", "hold"})
+                    self.assertIn(result.status, {"ready", "design"})
                     self.assertIsInstance(result.summary, dict)
 
-                def test_aiops_track_has_anomaly_score(self) -> None:
+                def test_continual_track_has_drift_score(self) -> None:
                     result = evaluate(track_code="프로젝트-4", values=[0.8, 0.9, 0.7], note="aiops")
-                    self.assertIn("anomaly_score", result.summary)
+                    self.assertIn("drift_score", result.summary)
 
 
             if __name__ == "__main__":
@@ -722,9 +724,9 @@ def build_master_readme(rows: list[dict[str, str]]) -> str:
         groups.setdefault(prj_name, []).append(row)
 
     lines = [
-        "# Project Apps",
+        "# Project Apps (Merged)",
         "",
-        "`projectApps/`는 커리큘럼용 `project/` 폴더와 분리된 실행/테스트용 애플리케이션 묶음입니다.",
+        "`project/` 폴더 안에 커리큘럼 자료와 실행/테스트용 앱(FastAPI + FE + Docker)을 통합 구성합니다.",
         "",
         "구성: 각 프로젝트별 `Python core + FastAPI + FE + Docker + tests`",
         "",
@@ -745,7 +747,7 @@ def build_master_readme(rows: list[dict[str, str]]) -> str:
             "",
             "## Quick Start (example)",
             "```bash",
-            "cd projectApps/Prj_DevOpsKickoff/project001",
+            "cd project/Prj_PersonaVoiceAI/project001",
             "python -m venv .venv",
             "source .venv/bin/activate",
             "pip install -r requirements.txt",
@@ -754,7 +756,7 @@ def build_master_readme(rows: list[dict[str, str]]) -> str:
             "",
             "## Docker",
             "```bash",
-            "cd projectApps/Prj_DevOpsKickoff/project001",
+            "cd project/Prj_PersonaVoiceAI/project001",
             "docker compose up -d --build",
             "curl -sS http://127.0.0.1:9101/health",
             "```",
@@ -766,13 +768,14 @@ def build_master_readme(rows: list[dict[str, str]]) -> str:
 
 def main() -> None:
     rows = load_project_rows()
-    APPS_ROOT.mkdir(parents=True, exist_ok=True)
+    PROJECT_ROOT.mkdir(parents=True, exist_ok=True)
 
     manifest: list[dict] = []
     for row in rows:
         scaffold_project(row)
         project_id = row["class"].strip()
         project_num = int(project_id.replace("project", ""))
+        app_rel = class_dir_from_row(row).relative_to(ROOT).as_posix()
         manifest.append(
             {
                 "project_id": project_id,
@@ -780,15 +783,15 @@ def main() -> None:
                 "topic": topic_from_module(row.get("module", "")),
                 "group": project_name_from_md_file(row.get("md_file", "")),
                 "docker_port": 9100 + project_num,
-                "app_path": f"projectApps/{project_name_from_md_file(row.get('md_file', ''))}/{project_id}",
+                "app_path": app_rel,
             }
         )
 
-    write(APPS_ROOT / "README.md", build_master_readme(rows))
-    write(APPS_ROOT / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    write(PROJECT_ROOT / "README.md", build_master_readme(rows))
+    write(PROJECT_ROOT / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
 
     print(f"Scaffolded apps: {len(rows)}")
-    print(f"Root: {APPS_ROOT}")
+    print(f"Root: {PROJECT_ROOT}")
 
 
 if __name__ == "__main__":

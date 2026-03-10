@@ -769,6 +769,37 @@ RAG_QUIZ_BANK = {
     },
 }
 
+PROJECT_QUIZ_BANK = {
+    "개인 맞춤 코칭 음성봇 PERSONA AI 만들기": {
+        "concept": "PERSONA 프로필(톤/스타일/금지 규칙)과 코칭 시나리오를 먼저 정의해야 음성봇 응답 일관성이 생긴다.",
+        "action": "프로필 스키마와 코칭 대화 3턴을 작성한 뒤 baseline 응답을 실행한다.",
+        "pitfall": "페르소나 규칙 없이 LLM 기본 응답만 사용해 톤이 매번 달라진다.",
+        "check": "프로필 규칙 적용 전후 응답 샘플을 비교하고 금지 표현 필터를 검증한다.",
+        "outcome": "개인 맞춤 코칭 음성봇의 기초 설계와 최소 동작 구현을 설명할 수 있다.",
+    },
+    "PERSONA 코칭 대화 파이프라인(STT↔LLM↔TTS)": {
+        "concept": "STT→LLM→TTS 파이프라인은 인식 정확도, 응답 품질, 합성 음성 품질을 함께 다뤄야 한다.",
+        "action": "STT 신뢰도 임계치와 재질문 fallback, TTS 속도/톤 파라미터를 함께 실험한다.",
+        "pitfall": "정상 음성만 테스트하고 오인식/지연/톤 이탈 케이스를 놓친다.",
+        "check": "왕복 지연, 재시도 횟수, 스타일 유지율을 지표로 기록한다.",
+        "outcome": "실서비스형 코칭 대화 루프를 안정적으로 운영할 기준을 세울 수 있다.",
+    },
+    "사전 데이터 기반 PERSONA AI 구축": {
+        "concept": "사전 데이터 기반 PERSONA 구축은 데이터 스키마, 라벨 일관성, 스타일 유사도 관리가 핵심이다.",
+        "action": "intent/response/style 스키마를 고정하고 라벨 충돌 샘플을 정제한다.",
+        "pitfall": "데이터 라벨 규칙 없이 학습해 페르소나 응답이 불안정해진다.",
+        "check": "라벨 누락률, 충돌 건수, 유사도 점수를 버전별로 비교한다.",
+        "outcome": "재학습 가능한 PERSONA 데이터셋을 설계하고 품질 기준을 운영할 수 있다.",
+    },
+    "PERSONA AI 지속학습과 품질 운영": {
+        "concept": "운영 단계에서는 로그 기반 지속학습 루프와 롤백/알림 같은 안전장치가 필수다.",
+        "action": "실패 패턴 분류 후 재학습 후보를 만들고 버전 지표를 비교한다.",
+        "pitfall": "배포 후 피드백을 수집하지 않아 품질 저하를 늦게 인지한다.",
+        "check": "드리프트 경보 기준과 롤백 절차를 runbook으로 검증한다.",
+        "outcome": "PERSONA AI를 지속학습 가능한 운영 서비스로 관리할 수 있다.",
+    },
+}
+
 
 PYTHON_PL_MODULE_ALIASES = {
     "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
@@ -788,6 +819,10 @@ def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, s
     normalized_subject = subject_name.strip()
     module_core = module_core_name(module)
 
+    if normalized_subject == "프로젝트":
+        module_bank = PROJECT_QUIZ_BANK.get(module_core)
+        if module_bank:
+            return module_bank
     if normalized_subject == "RAG(Retrieval-Augmented Generation)":
         module_bank = RAG_QUIZ_BANK.get(module_core)
         if module_bank:
@@ -1062,6 +1097,8 @@ def filter_rows_by_subject_roots(rows: list[dict[str, str]], roots: set[str]) ->
 
 
 def choose_track(subject_name: str, module: str) -> str:
+    if subject_name.strip() == "프로젝트":
+        return "generic"
     if subject_name.strip() == "거대 언어 모델을 활용한 자연어 생성":
         return "llm"
     text = f"{subject_name} {module}"

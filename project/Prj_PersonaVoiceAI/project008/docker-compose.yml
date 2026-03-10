@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PROJECT_ID: ${PROJECT_ID:-project008}
+      PROJECT_NAME: ${PROJECT_NAME:-Prj_PersonaVoiceAI}
+      PROJECT_TRACK: ${PROJECT_TRACK:-프로젝트-2}
+      PROJECT_TOPIC: ${PROJECT_TOPIC:-PERSONA 코칭 대화 파이프라인(STT↔LLM↔TTS) · 단계 3/5 응용 확장}
+    ports:
+      - "${APP_HOST_PORT:-9108}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
