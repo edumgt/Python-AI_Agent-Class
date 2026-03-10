@@ -398,6 +398,10 @@ def is_speech_tts_stt_subject(subject_name: str) -> bool:
     return subject_name.strip() == "음성 데이터 활용한 TTS와 STT 모델 개발"
 
 
+def is_llm_text_gen_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "거대 언어 모델을 활용한 자연어 생성"
+
+
 DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     "데이터 분석 환경 구성": {
         "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
@@ -1713,6 +1717,330 @@ SPEECH_TTS_STT_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     },
 }
 
+LLM_TEXT_GEN_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "LLM 개요": {
+        "kid_summary": "LLM의 정의와 Transformer 기반 구조, 사전학습/파인튜닝 개념을 정리하는 시작 차시입니다.",
+        "why": "LLM의 작동 원리를 먼저 이해해야 생성 결과를 올바르게 해석하고 실무에 안전하게 적용할 수 있습니다.",
+        "concepts": [
+            "`LLM`은 대규모 텍스트를 사전학습해 다양한 생성 작업을 수행하는 언어 모델입니다.",
+            "`기존 NLP 모델` 대비 LLM은 범용성, 문맥 처리 범위, zero/few-shot 적응력이 높습니다.",
+            "`Transformer`는 self-attention 기반으로 토큰 간 관계를 학습해 문맥을 유지합니다.",
+            "`사전학습`과 `파인튜닝`은 범용 지식 학습과 도메인 특화 학습을 분리하는 핵심 흐름입니다.",
+        ],
+        "practice_steps": [
+            "LLM과 기존 NLP 모델의 차이를 표(입력/학습/출력/활용)로 정리하세요.",
+            "Transformer, 토큰, 컨텍스트, 사전학습, 파인튜닝 용어를 연결 다이어그램으로 작성하세요.",
+            "실무 시나리오 1개를 선택해 파인튜닝이 필요한 이유를 설명하세요.",
+        ],
+        "checklist": [
+            "LLM의 정의와 기존 NLP 모델 차이를 설명할 수 있다.",
+            "Transformer와 토큰/컨텍스트 개념을 설명할 수 있다.",
+            "사전학습과 파인튜닝의 역할을 구분할 수 있다.",
+        ],
+        "syntax": ["모델 구성 dict", "토큰/컨텍스트 계산", "학습 단계 요약 함수", "비교 리포트 출력"],
+        "flow_steps": [
+            "LLM 구조와 핵심 용어를 정의한다",
+            "기존 NLP 방식과 차이를 비교한다",
+            "Transformer 기반 문맥 처리 흐름을 점검한다",
+            "사전학습/파인튜닝 적용 기준을 정리한다",
+        ],
+        "focus_points": [
+            "개념 정의가 구현 관점(입력/출력/한계)과 연결되는지 확인하기",
+            "토큰/컨텍스트 개념이 실제 추론 흐름과 일치하는지 점검하기",
+            "파인튜닝 필요 조건을 데이터 기준으로 설명하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 다음 토큰 예측과 확률 기반 생성 원리를 실습으로 확인합니다.",
+    },
+    "토큰/컨텍스트 이해": {
+        "kid_summary": "다음 토큰 예측과 컨텍스트 창(window) 동작이 생성 결과에 미치는 영향을 다루는 차시입니다.",
+        "why": "토큰 단위와 문맥 길이를 이해해야 응답 품질 저하, 반복, 누락 원인을 정확히 찾을 수 있습니다.",
+        "concepts": [
+            "`다음 토큰 예측`은 현재 컨텍스트를 기반으로 확률이 높은 토큰을 선택하는 생성 원리입니다.",
+            "`컨텍스트 유지`는 토큰 창 길이와 대화 히스토리 관리 전략에 따라 달라집니다.",
+            "`프롬프트 민감성`은 작은 입력 변화가 출력 차이를 크게 만들 수 있음을 의미합니다.",
+        ],
+        "practice_steps": [
+            "같은 질문에 컨텍스트 길이를 바꿔 응답 차이를 비교하세요.",
+            "토큰 분할 결과와 출력 길이 제한이 생성 내용에 미치는 영향을 기록하세요.",
+            "프롬프트 문구 1~2단어 변경 시 출력 변화를 비교하세요.",
+        ],
+        "checklist": [
+            "다음 토큰 예측 흐름을 설명할 수 있다.",
+            "컨텍스트 창 길이 변화의 영향을 실험으로 확인했다.",
+            "프롬프트 민감성 사례를 재현하고 기록했다.",
+        ],
+        "syntax": ["토큰화 함수", "컨텍스트 슬라이싱", "다음 토큰 확률 테이블", "비교 로그 출력"],
+        "flow_steps": [
+            "입력 문장을 토큰 단위로 분해한다",
+            "컨텍스트 창을 구성해 예측 입력을 만든다",
+            "다음 토큰 확률을 계산하고 선택한다",
+            "컨텍스트 변화에 따른 출력 차이를 분석한다",
+        ],
+        "focus_points": [
+            "토큰 경계 처리 규칙이 일관적인지 확인하기",
+            "컨텍스트 초과 시 잘림(truncation) 정책이 명확한지 점검하기",
+            "출력 차이를 정량 지표(길이/반복률)로 기록하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 temperature, top-k, top-p로 생성 다양성을 제어합니다.",
+    },
+    "생성 파라미터": {
+        "kid_summary": "확률 기반 생성 파라미터(temperature, top-k, top-p)와 환각 위험의 관계를 다루는 차시입니다.",
+        "why": "파라미터 튜닝 없이 모델을 사용하면 품질 편차와 환각 위험을 제어하기 어렵습니다.",
+        "concepts": [
+            "`temperature`는 확률 분포를 평탄화/집중화해 출력 창의성과 안정성을 조절합니다.",
+            "`top-k`, `top-p`는 후보 토큰 집합을 제한해 무작위성과 일관성을 균형화합니다.",
+            "`hallucination`은 그럴듯하지만 사실이 아닌 내용을 생성하는 현상입니다.",
+        ],
+        "practice_steps": [
+            "temperature 값을 3단계로 바꿔 생성 결과 길이/반복률을 비교하세요.",
+            "top-k와 top-p 조합별 출력 차이를 표로 정리하세요.",
+            "환각 가능 문장을 탐지하는 규칙(근거 없음/확신 표현)을 추가하세요.",
+        ],
+        "checklist": [
+            "temperature, top-k, top-p 역할을 설명할 수 있다.",
+            "파라미터 조합별 결과 차이를 비교했다.",
+            "환각 탐지 기준을 코드에 반영했다.",
+        ],
+        "syntax": ["생성 파라미터 dict", "확률 정규화", "top-k/top-p 필터", "환각 탐지 함수"],
+        "flow_steps": [
+            "기본 파라미터를 설정한다",
+            "확률 분포에서 후보 토큰을 제한한다",
+            "출력 다양성과 일관성을 비교한다",
+            "환각 위험 문장을 점검해 품질을 보정한다",
+        ],
+        "focus_points": [
+            "파라미터 변경 실험이 동일 프롬프트 조건에서 수행되는지 확인하기",
+            "출력 품질 지표(정확성/다양성/길이)가 함께 기록되는지 점검하기",
+            "환각 판단 시 근거 확인 절차가 포함되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 프롬프트 설계로 생성 작업 유형(요약/Q&A/초안)을 구현합니다.",
+    },
+    "프롬프트 기반 생성": {
+        "kid_summary": "기본 프롬프트 설계로 텍스트 생성, 요약, 이메일/보고서 초안 생성을 실습하는 차시입니다.",
+        "why": "프롬프트 구조가 불명확하면 같은 모델에서도 결과 품질과 재현성이 크게 떨어집니다.",
+        "concepts": [
+            "`기본 프롬프트`는 역할, 목표, 제약, 출력 형식을 명시해야 안정적입니다.",
+            "`생성 작업`은 요약, 질의응답, 문서 초안 작성처럼 목적별 템플릿이 필요합니다.",
+            "`규칙 기반 vs LLM 기반` 비교는 자동화 범위와 유지보수 비용 판단의 기준입니다.",
+        ],
+        "practice_steps": [
+            "기본 프롬프트로 동일 입력을 3회 생성해 일관성을 비교하세요.",
+            "문서 요약과 이메일/보고서 초안 프롬프트 템플릿을 작성하세요.",
+            "규칙 기반 출력과 LLM 출력의 장단점을 표로 비교하세요.",
+        ],
+        "checklist": [
+            "역할/목표/형식이 포함된 프롬프트를 작성했다.",
+            "요약과 문서 초안 생성 실습을 수행했다.",
+            "규칙 기반과 LLM 기반 차이를 설명할 수 있다.",
+        ],
+        "syntax": ["프롬프트 템플릿", "작업 유형 라우팅", "결과 비교 함수", "출력 리포트"],
+        "flow_steps": [
+            "작업 목적에 맞는 프롬프트를 설계한다",
+            "요약/초안 등 작업별 출력을 생성한다",
+            "규칙 기반 결과와 LLM 결과를 비교한다",
+            "품질 기준에 맞게 프롬프트를 개선한다",
+        ],
+        "focus_points": [
+            "프롬프트에 불필요한 모호성이 없는지 확인하기",
+            "작업 유형별 출력 형식이 요구사항과 일치하는지 점검하기",
+            "비교 실험에서 입력 조건을 통제하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 요약/분류/정보추출 등 생성 작업 유형을 확장합니다.",
+    },
+    "요약/분류/추출": {
+        "kid_summary": "요약, 질의응답, 번역, 분류, 정보추출, 코드 생성 등 다양한 생성 작업을 다루는 차시입니다.",
+        "why": "실무에서는 단일 챗봇 응답보다 과업별 파이프라인을 구성할 수 있어야 생산성이 높아집니다.",
+        "concepts": [
+            "`요약/질의응답/번역/문서작성`은 입력 구조와 품질 기준이 서로 다릅니다.",
+            "`코드 생성`은 실행 가능성, 보안, 테스트 커버리지 관점 검증이 필요합니다.",
+            "`분류/정보추출`은 구조화된 출력(JSON/스키마)로 후처리 자동화를 쉽게 만듭니다.",
+        ],
+        "practice_steps": [
+            "하나의 원문으로 요약/질의응답/번역 출력을 각각 생성하세요.",
+            "분류와 정보추출 결과를 JSON 구조로 강제해 보세요.",
+            "코드 생성 결과에 대해 최소 실행/검증 체크를 수행하세요.",
+        ],
+        "checklist": [
+            "작업 유형별 프롬프트/평가 기준을 구분했다.",
+            "분류/정보추출 결과를 구조화 출력으로 생성했다.",
+            "코드 생성 결과의 검증 절차를 적용했다.",
+        ],
+        "syntax": ["작업 타입 enum", "프롬프트 라우터", "JSON 스키마 강제", "과업별 평가 함수"],
+        "flow_steps": [
+            "작업 유형을 정의하고 입력을 분류한다",
+            "유형별 프롬프트와 파라미터를 적용한다",
+            "구조화 출력과 자유 출력 결과를 비교한다",
+            "검증 기준으로 최종 결과를 선택한다",
+        ],
+        "focus_points": [
+            "작업 유형과 평가 지표가 일치하는지 확인하기",
+            "구조화 출력(JSON) 실패 시 복구 규칙이 있는지 점검하기",
+            "코드 생성 결과에 안전성 검사가 포함되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 대화형 응답 설계와 문맥 유지 전략을 다룹니다.",
+    },
+    "대화형 응답 설계": {
+        "kid_summary": "챗봇 응답 생성에서 문맥 유지, 길이/톤/스타일 제어를 설계하는 차시입니다.",
+        "why": "대화형 서비스는 한 번의 출력보다 대화 연속성, 제어 가능성, 오류 처리가 더 중요합니다.",
+        "concepts": [
+            "`문맥 유지`는 최근 대화 요약/핵심 슬롯 추출로 컨텍스트를 관리하는 방식입니다.",
+            "`톤/스타일 제어`는 사용자군(고객/내부 보고)에 맞는 응답 품질을 만듭니다.",
+            "`오류 응답 처리`는 불확실성 고지, 재질문 유도, fallback 응답 규칙을 포함합니다.",
+        ],
+        "practice_steps": [
+            "3턴 대화 시나리오를 구성하고 문맥 유지 규칙을 적용하세요.",
+            "같은 답변을 친절형/간결형 톤으로 각각 생성해 비교하세요.",
+            "모호한 질문 입력 시 오류 응답 템플릿을 설계하세요.",
+        ],
+        "checklist": [
+            "대화 문맥 유지 전략을 코드로 구현했다.",
+            "길이/톤/스타일 제어 파라미터를 적용했다.",
+            "오류 응답과 fallback 규칙을 정의했다.",
+        ],
+        "syntax": ["대화 상태(state) dict", "톤/스타일 프리셋", "fallback 핸들러", "턴별 로그"],
+        "flow_steps": [
+            "대화 상태와 사용자 의도를 저장한다",
+            "톤/스타일 규칙으로 응답 초안을 생성한다",
+            "문맥 일관성과 길이 제약을 검증한다",
+            "오류/불확실 응답을 fallback 규칙으로 보정한다",
+        ],
+        "focus_points": [
+            "문맥 저장 범위가 과도하거나 부족하지 않은지 확인하기",
+            "스타일 제어가 사실성 저하를 만들지 않는지 점검하기",
+            "오류 응답이 사용자 다음 행동을 안내하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 안전성/환각 관리와 실무 검증 절차를 강화합니다.",
+    },
+    "안전성/환각 관리": {
+        "kid_summary": "환각, 사실성 한계, 최신성 한계, 개인정보/보안 이슈를 다루는 안전성 차시입니다.",
+        "why": "생성형 AI 결과는 검증 없이 사용하면 잘못된 정보 전달과 보안 사고로 이어질 수 있습니다.",
+        "concepts": [
+            "`사실성 문제`는 모델이 근거 없는 내용을 단정적으로 생성할 때 발생합니다.",
+            "`최신성 한계`는 학습 시점 이후 정보 부재로 인해 오래된 답을 낼 수 있음을 의미합니다.",
+            "`보안/개인정보`와 `프롬프트 민감성`은 서비스 적용 시 필수로 관리해야 하는 위험 요소입니다.",
+        ],
+        "practice_steps": [
+            "환각 가능 문장(근거 없음, 과도한 확신 표현)을 탐지하세요.",
+            "민감정보 필터링 규칙과 마스킹 출력을 적용하세요.",
+            "사실 검증 체크리스트(출처 확인/재질문/사람 검토)를 작성하세요.",
+        ],
+        "checklist": [
+            "환각 위험 문장을 식별하고 태깅했다.",
+            "개인정보/보안 필터링 규칙을 적용했다.",
+            "실무 적용 전 검증 절차를 문서화했다.",
+        ],
+        "syntax": ["안전성 필터 함수", "환각 리스크 스코어", "민감정보 마스킹", "검증 체크리스트"],
+        "flow_steps": [
+            "생성 결과에서 위험 신호를 탐지한다",
+            "민감정보/보안 규칙으로 출력을 필터링한다",
+            "사실성/최신성 검증 절차를 적용한다",
+            "검증 결과에 따라 응답을 수정하거나 차단한다",
+        ],
+        "focus_points": [
+            "환각 탐지 기준이 구체적 문장 패턴으로 정의되는지 확인하기",
+            "민감정보 필터가 과차단/미차단 없이 동작하는지 점검하기",
+            "최종 배포 전 사람 검토 루프가 포함되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 도메인 적용 시 비용/성능/보안을 함께 최적화합니다.",
+    },
+    "도메인 적용 시나리오": {
+        "kid_summary": "API, 오픈소스, 클라우드, 로컬 추론 방식을 도메인 요구사항에 맞춰 선택하는 차시입니다.",
+        "why": "활용 방식 선택은 품질뿐 아니라 비용, 지연, 보안, 운영 난이도를 함께 결정합니다.",
+        "concepts": [
+            "`API 기반`은 빠른 도입이 장점이고, `오픈모델`은 커스터마이징 유연성이 큽니다.",
+            "`클라우드 추론`은 확장성과 운영 편의성이 높고, `로컬 추론`은 보안/비용 통제가 유리합니다.",
+            "`비용/성능/보안`은 서로 trade-off가 있으므로 도메인별 우선순위를 명확히 해야 합니다.",
+        ],
+        "practice_steps": [
+            "API/오픈모델/클라우드/로컬 방식의 장단점을 비교표로 작성하세요.",
+            "도메인 시나리오(예: 고객지원, 내부문서 요약)에 맞는 추론 방식을 선택하세요.",
+            "선택 근거를 비용, 지연, 보안 항목으로 문서화하세요.",
+        ],
+        "checklist": [
+            "활용 방식별 장단점과 적용 조건을 설명할 수 있다.",
+            "도메인별 비용/성능/보안 기준을 수립했다.",
+            "선택한 아키텍처의 운영 리스크를 기록했다.",
+        ],
+        "syntax": ["배포 옵션 카드", "비용 추정 함수", "보안 등급 매핑", "의사결정 리포트"],
+        "flow_steps": [
+            "도메인 요구사항을 정리한다",
+            "추론 방식(API/오픈/클라우드/로컬)을 비교한다",
+            "비용·성능·보안 기준으로 우선순위를 결정한다",
+            "최종 아키텍처와 운영 정책을 확정한다",
+        ],
+        "focus_points": [
+            "비용 계산에 토큰/요청량 가정이 명시되는지 확인하기",
+            "보안 요구사항(개인정보/망분리)이 반영되는지 점검하기",
+            "선택 아키텍처의 장애 대응 계획이 포함되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 API 호출 실습과 오류 처리 패턴을 구현합니다.",
+    },
+    "API 연동 실습": {
+        "kid_summary": "LLM API 또는 오픈모델 엔드포인트를 호출해 생성 기능을 구현하는 실습 차시입니다.",
+        "why": "실제 서비스에서는 모델 품질만큼 요청/응답 포맷, 재시도, 오류 복구 로직이 중요합니다.",
+        "concepts": [
+            "`API 기반 활용`은 요청 payload 설계와 응답 파싱 안정성이 핵심입니다.",
+            "`JSON 응답 강제`는 후처리 자동화와 시스템 연동 안정성을 높입니다.",
+            "`오류 처리`는 타임아웃, rate limit, invalid output에 대한 재시도 정책을 포함합니다.",
+        ],
+        "practice_steps": [
+            "기본 프롬프트 요청 payload를 구성하고 텍스트를 생성하세요.",
+            "요약/초안 작성 요청을 JSON 출력 스키마로 강제하세요.",
+            "오류 코드별 재시도/대체 응답 처리 로직을 추가하세요.",
+        ],
+        "checklist": [
+            "API 요청/응답 구조를 구현하고 검증했다.",
+            "JSON 응답 강제와 파싱 로직을 적용했다.",
+            "오류 응답 처리와 재시도 규칙을 구성했다.",
+        ],
+        "syntax": ["API payload dict", "JSON schema 검증", "예외/재시도 핸들러", "응답 파서"],
+        "flow_steps": [
+            "요청 파라미터와 프롬프트를 구성한다",
+            "API/모델 엔드포인트를 호출한다",
+            "응답을 JSON 스키마로 검증한다",
+            "오류 상황에 따라 재시도 또는 fallback 처리한다",
+        ],
+        "focus_points": [
+            "요청 파라미터가 작업 목적과 일치하는지 확인하기",
+            "JSON 파싱 실패 시 안전한 fallback이 있는지 점검하기",
+            "오류 로그에 재현 가능한 정보가 남는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Agent 형태로 생성 기능을 통합해 서비스 흐름을 완성합니다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "kid_summary": "생성 기능을 서비스형 Agent로 통합해 라우팅, 검증, 모니터링까지 구현하는 마무리 차시입니다.",
+        "why": "서비스형 AI 역량은 단일 생성 결과보다 전체 워크플로우를 안정적으로 운영하는 능력에서 완성됩니다.",
+        "concepts": [
+            "`Agent 통합`은 입력 분류, 도구 호출, 생성, 검증, 응답 반환 단계를 연결합니다.",
+            "`규칙 기반 + LLM 기반` 하이브리드 설계는 안정성과 유연성을 동시에 확보합니다.",
+            "`실무 적용`에서는 사실성 검증, 로그 추적, 보안 정책을 함께 운영해야 합니다.",
+        ],
+        "practice_steps": [
+            "규칙 기반 라우터와 LLM 생성기를 하나의 파이프라인으로 연결하세요.",
+            "챗봇 응답, 문서 요약, 정보추출 기능을 Agent 워크플로우에 통합하세요.",
+            "운영 로그/알림/검증 체크를 포함한 서비스 점검표를 작성하세요.",
+        ],
+        "checklist": [
+            "Agent 워크플로우(입력-처리-검증-응답)를 구현했다.",
+            "규칙 기반 vs LLM 기반 처리 경계를 명확히 정의했다.",
+            "실무 적용 전 검증/보안/모니터링 절차를 포함했다.",
+        ],
+        "syntax": ["라우팅 함수", "도구 호출 스텁", "응답 검증 체인", "운영 로그/알림"],
+        "flow_steps": [
+            "요청을 분류해 처리 경로를 선택한다",
+            "LLM 생성과 규칙 기반 처리를 조합한다",
+            "사실성/안전성 검증을 통과한 결과만 반환한다",
+            "로그·모니터링·복구 정책으로 운영 안정성을 확보한다",
+        ],
+        "focus_points": [
+            "규칙 기반과 LLM 기반 경계 조건이 명확한지 확인하기",
+            "검증 실패 시 사용자 안내와 재처리 경로가 있는지 점검하기",
+            "운영 로그가 품질 개선 루프로 연결되는지 확인하기",
+        ],
+        "next_tip": "과목 전체를 복습하며 도메인별 생성형 AI 서비스 설계 원칙을 정리하세요.",
+    },
+}
+
 PYTHON_PL_MODULE_PROFILES = {
     "오리엔테이션 및 개발환경 준비": {
         "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
@@ -2144,9 +2472,16 @@ def get_speech_tts_stt_profile(subject_name: str, module: str) -> dict[str, obje
     return SPEECH_TTS_STT_MODULE_OVERRIDES.get(module_core_name(module))
 
 
+def get_llm_text_gen_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_llm_text_gen_subject(subject_name):
+        return None
+    return LLM_TEXT_GEN_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
     for profile in (
+        get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
         get_nlp_speech_profile(subject_name, module),
         get_data_viz_profile(subject_name, module),
@@ -2163,6 +2498,7 @@ def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[st
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
         get_nlp_speech_profile(subject_name, module),
         get_data_viz_profile(subject_name, module),
@@ -2177,6 +2513,7 @@ def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
         get_nlp_speech_profile(subject_name, module),
         get_data_viz_profile(subject_name, module),
@@ -2191,6 +2528,7 @@ def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
         get_nlp_speech_profile(subject_name, module),
         get_data_viz_profile(subject_name, module),
@@ -2210,6 +2548,88 @@ def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str
 
 
 def resolve_example_progression(track: str, subject_name: str, module: str) -> list[str]:
+    if is_llm_text_gen_subject(subject_name):
+        core = module_core_name(module)
+        if core == "LLM 개요":
+            return [
+                "example1: LLM 정의와 기존 NLP 모델 차이를 정리한다.",
+                "example2: Transformer, 토큰, 컨텍스트 흐름을 도식화한다.",
+                "example3: 사전학습/파인튜닝 적용 시나리오를 비교한다.",
+                "example4: 모델 구조 선택 근거를 실무 관점으로 점검한다.",
+                "example5: LLM 개요 운영 체크리스트를 정리한다.",
+            ]
+        if core == "토큰/컨텍스트 이해":
+            return [
+                "example1: 토큰화와 다음 토큰 예측 기본 흐름을 실행한다.",
+                "example2: 컨텍스트 길이 변화에 따른 응답 차이를 비교한다.",
+                "example3: 프롬프트 민감성 케이스를 재현한다.",
+                "example4: 문맥 유지 실패/누락 케이스를 점검한다.",
+                "example5: 컨텍스트 관리 기준을 운영 관점으로 정리한다.",
+            ]
+        if core == "생성 파라미터":
+            return [
+                "example1: temperature/top-k/top-p 기본 조합을 실행한다.",
+                "example2: 확률 기반 생성 다양성/일관성을 비교한다.",
+                "example3: 파라미터 과도 설정 시 환각 위험을 점검한다.",
+                "example4: 문맥 유지와 품질 지표 trade-off를 분석한다.",
+                "example5: 생성 파라미터 튜닝 기준을 정리한다.",
+            ]
+        if core == "프롬프트 기반 생성":
+            return [
+                "example1: 기본 프롬프트로 텍스트 생성을 실행한다.",
+                "example2: 문서 요약과 이메일/보고서 초안 생성을 확장한다.",
+                "example3: 챗봇 응답 프롬프트를 추가해 비교한다.",
+                "example4: 규칙 기반 vs LLM 기반 결과를 점검한다.",
+                "example5: 프롬프트 템플릿 운영 규칙을 정리한다.",
+            ]
+        if core == "요약/분류/추출":
+            return [
+                "example1: 요약/질의응답/번역 기본 작업을 실행한다.",
+                "example2: 문서 작성/코드 생성 작업을 추가한다.",
+                "example3: 분류/정보추출 결과를 JSON으로 강제한다.",
+                "example4: 작업 유형별 품질 지표를 비교한다.",
+                "example5: 다중 작업 라우팅 운영 체크를 정리한다.",
+            ]
+        if core == "대화형 응답 설계":
+            return [
+                "example1: 대화형 챗봇 기본 응답 흐름을 실행한다.",
+                "example2: 문맥 유지 전략(히스토리/요약 메모리)을 확장한다.",
+                "example3: 길이/톤/스타일 제어를 비교한다.",
+                "example4: 오류 응답/재질문 fallback 케이스를 점검한다.",
+                "example5: 대화형 서비스 품질 기준을 정리한다.",
+            ]
+        if core == "안전성/환각 관리":
+            return [
+                "example1: 환각 탐지와 사실성 점검 기본 규칙을 실행한다.",
+                "example2: 최신성 한계와 검증 루프를 확장한다.",
+                "example3: 개인정보/보안 필터링 케이스를 점검한다.",
+                "example4: 프롬프트 민감성으로 인한 위험 응답을 분석한다.",
+                "example5: 실무 검증 체크리스트를 문서화한다.",
+            ]
+        if core == "도메인 적용 시나리오":
+            return [
+                "example1: API 기반 활용 기본 시나리오를 실행한다.",
+                "example2: 오픈모델/클라우드/로컬 추론 옵션을 비교한다.",
+                "example3: 비용/성능/보안 trade-off 케이스를 점검한다.",
+                "example4: 도메인별 아키텍처 선택 기준을 분석한다.",
+                "example5: 배포 의사결정 체크리스트를 정리한다.",
+            ]
+        if core == "API 연동 실습":
+            return [
+                "example1: API 요청으로 기본 텍스트 생성을 실행한다.",
+                "example2: 요약/초안 작성 요청을 JSON 응답으로 확장한다.",
+                "example3: 에러 응답/타임아웃 처리 케이스를 점검한다.",
+                "example4: 오픈모델 엔드포인트 대체 경로를 검증한다.",
+                "example5: API 운영 로그/재시도 정책을 정리한다.",
+            ]
+        if core == "Agent 시스템 통합 구현":
+            return [
+                "example1: Agent 입력 분류-생성-검증 흐름을 실행한다.",
+                "example2: 규칙 기반 vs LLM 기반 라우팅을 확장한다.",
+                "example3: 작업 유형(챗봇/요약/추출) 통합 케이스를 점검한다.",
+                "example4: 품질/안전성 검증 실패 복구를 분석한다.",
+                "example5: 서비스형 AI 운영 기준을 정리한다.",
+            ]
     if is_speech_tts_stt_subject(subject_name):
         core = module_core_name(module)
         if core == "음성 AI 개요":
@@ -3622,6 +4042,8 @@ def save_flow_png(steps: list[str], out_path: Path, class_id: str, module: str) 
 
 
 def choose_track(subject_name: str, module: str) -> str:
+    if is_llm_text_gen_subject(subject_name):
+        return "llm"
     text = f"{subject_name} {module}"
     lowered = text.lower()
     if "mlops" in lowered or "모델 레지스트리" in text or "배포 자동화" in text:

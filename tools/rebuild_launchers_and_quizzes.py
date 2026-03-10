@@ -477,6 +477,79 @@ SPEECH_TTS_STT_QUIZ_BANK = {
     },
 }
 
+LLM_TEXT_GEN_QUIZ_BANK = {
+    "LLM 개요": {
+        "concept": "LLM은 Transformer 기반 사전학습 모델로 기존 NLP 모델보다 범용 생성 능력이 크다.",
+        "action": "LLM 정의, 기존 NLP 대비 차이, 토큰/컨텍스트, 사전학습/파인튜닝을 한 표로 정리한다.",
+        "pitfall": "LLM을 단순 챗봇 도구로만 보고 구조와 학습 흐름을 구분하지 않는다.",
+        "check": "Transformer, 토큰, 컨텍스트, 파인튜닝 개념을 연결해 설명한다.",
+        "outcome": "LLM 구조와 핵심 개념을 실무 관점으로 설명할 수 있다.",
+    },
+    "토큰/컨텍스트 이해": {
+        "concept": "자연어 생성은 다음 토큰 예측과 컨텍스트 유지 전략으로 동작한다.",
+        "action": "컨텍스트 길이와 프롬프트 문구를 바꿔 출력 변화를 비교한다.",
+        "pitfall": "토큰 길이 제한과 프롬프트 민감성을 무시해 응답 품질 저하 원인을 놓친다.",
+        "check": "토큰화 결과, 컨텍스트 창, 출력 차이를 함께 기록한다.",
+        "outcome": "토큰/컨텍스트 기반 생성 원리를 재현하고 분석할 수 있다.",
+    },
+    "생성 파라미터": {
+        "concept": "temperature, top-k, top-p는 확률 기반 생성 다양성과 안정성을 제어한다.",
+        "action": "파라미터 조합별 출력 품질과 환각 위험을 비교한다.",
+        "pitfall": "기본값만 사용해 품질 편차와 환각 리스크를 방치한다.",
+        "check": "조합별 결과를 정확성/다양성/길이 기준으로 점검한다.",
+        "outcome": "생성 파라미터 튜닝 기준을 실습으로 설명할 수 있다.",
+    },
+    "프롬프트 기반 생성": {
+        "concept": "프롬프트 구조(역할/목표/형식)는 생성 결과 재현성과 품질을 좌우한다.",
+        "action": "기본 프롬프트로 텍스트 생성, 요약, 이메일/보고서 초안 작성을 수행한다.",
+        "pitfall": "프롬프트 제약 없이 생성해 출력 형식과 품질이 매번 달라진다.",
+        "check": "규칙 기반과 LLM 기반 출력을 같은 입력으로 비교한다.",
+        "outcome": "실무형 프롬프트 템플릿을 설계하고 평가할 수 있다.",
+    },
+    "요약/분류/추출": {
+        "concept": "요약·질의응답·번역·문서작성·코드생성·분류/추출은 작업별 설계가 필요하다.",
+        "action": "작업 유형별 프롬프트를 분리하고 JSON 구조 출력으로 검증한다.",
+        "pitfall": "작업 유형을 구분하지 않아 지표와 출력 형식이 혼합된다.",
+        "check": "작업별 결과를 품질 지표와 함께 비교한다.",
+        "outcome": "다양한 생성 작업을 구조화된 방식으로 구현할 수 있다.",
+    },
+    "대화형 응답 설계": {
+        "concept": "대화형 서비스는 문맥 유지, 길이/톤/스타일 제어, 오류 대응 설계가 핵심이다.",
+        "action": "챗봇 응답을 다중 턴으로 생성하고 톤/스타일 제어를 적용한다.",
+        "pitfall": "한 번의 답변 품질만 보고 대화 연속성과 오류 복구를 검증하지 않는다.",
+        "check": "문맥 유지와 fallback 응답을 같은 시나리오에서 점검한다.",
+        "outcome": "대화형 LLM 응답 설계를 서비스 요구사항에 맞게 구성할 수 있다.",
+    },
+    "안전성/환각 관리": {
+        "concept": "사실성 문제, 최신성 한계, 보안/개인정보 이슈를 검증 루프로 관리해야 한다.",
+        "action": "환각 탐지, 민감정보 필터링, 사실 검증 체크를 적용한다.",
+        "pitfall": "생성 결과를 검증 없이 사용해 잘못된 정보와 보안 위험을 유발한다.",
+        "check": "환각/보안/최신성 항목을 체크리스트로 점검한다.",
+        "outcome": "LLM 한계와 주의사항을 반영한 안전 운용 기준을 제시할 수 있다.",
+    },
+    "도메인 적용 시나리오": {
+        "concept": "API·오픈모델·클라우드·로컬 추론은 비용/성능/보안 trade-off가 다르다.",
+        "action": "도메인별 요구사항에 맞는 추론 방식을 선택하고 근거를 문서화한다.",
+        "pitfall": "기술 선호만으로 방식을 선택해 비용·보안·지연 이슈를 초래한다.",
+        "check": "비용, 성능, 보안 기준으로 선택안을 비교한다.",
+        "outcome": "도메인별 LLM 활용 아키텍처를 합리적으로 선택할 수 있다.",
+    },
+    "API 연동 실습": {
+        "concept": "API 연동은 요청 포맷, JSON 응답 강제, 오류 처리 설계가 핵심이다.",
+        "action": "기본 생성, 요약, 초안 작성 요청을 API로 호출하고 구조화 응답을 검증한다.",
+        "pitfall": "오류 코드/타임아웃 처리 없이 단순 호출만 구현한다.",
+        "check": "재시도, fallback, JSON 파싱 실패 케이스를 함께 점검한다.",
+        "outcome": "서비스형 LLM API 연동 기능을 안정적으로 구현할 수 있다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "concept": "Agent 통합은 규칙 기반과 LLM 기반을 조합해 안정성과 유연성을 함께 확보한다.",
+        "action": "입력 라우팅, 생성, 검증, 응답 반환을 하나의 워크플로우로 통합한다.",
+        "pitfall": "생성 기능만 연결하고 검증/모니터링/복구 절차를 생략한다.",
+        "check": "운영 로그와 검증 실패 복구 경로를 포함해 점검한다.",
+        "outcome": "서비스형 AI 기능 구현 역량을 갖춘 Agent 시스템을 설계할 수 있다.",
+    },
+}
+
 
 PYTHON_PL_MODULE_ALIASES = {
     "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
@@ -496,6 +569,10 @@ def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, s
     normalized_subject = subject_name.strip()
     module_core = module_core_name(module)
 
+    if normalized_subject == "거대 언어 모델을 활용한 자연어 생성":
+        module_bank = LLM_TEXT_GEN_QUIZ_BANK.get(module_core)
+        if module_bank:
+            return module_bank
     if normalized_subject == "음성 데이터 활용한 TTS와 STT 모델 개발":
         module_bank = SPEECH_TTS_STT_QUIZ_BANK.get(module_core)
         if module_bank:
@@ -754,6 +831,8 @@ def filter_rows_by_subject_roots(rows: list[dict[str, str]], roots: set[str]) ->
 
 
 def choose_track(subject_name: str, module: str) -> str:
+    if subject_name.strip() == "거대 언어 모델을 활용한 자연어 생성":
+        return "llm"
     text = f"{subject_name} {module}"
     lowered = text.lower()
     if "mlops" in lowered or "모델 레지스트리" in text or "배포 자동화" in text:

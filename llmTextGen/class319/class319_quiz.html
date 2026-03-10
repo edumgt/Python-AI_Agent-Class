@@ -409,7 +409,7 @@
   "module": "요약/분류/추출 · 단계 5/6 실전 검증 [class319]",
   "level": "기초응용",
   "session": "31/64",
-  "track_outcome": "주요 단어 빈도를 계산해 핵심 내용을 찾을 수 있다.",
+  "track_outcome": "다양한 생성 작업을 구조화된 방식으로 구현할 수 있다.",
   "questions": [
     {
       "question": "class319 (거대 언어 모델을 활용한 자연어 생성 31/64) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'요약/분류/추출 · 단계 5/6 실전 검증 [class319]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "프롬프트 기반 생성 · 단계 3/6 응용 확장 [class311] 실습: `프롬프트 기반 생성` 단계 3/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "요약/분류/추출 · 단계 1/6 입문 이해 [class315] 실습: `요약/분류/추출` 단계 1/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "요약/분류/추출 · 단계 5/6 실전 검증 [class319] 실습: `요약/분류/추출` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "LLM 개요 · 단계 4/7 응용 확장 [class292] 실습: `LLM 개요` 단계 4/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "프롬프트 기반 생성 · 단계 3/6 응용 확장 [class311] 실습: 기본 프롬프트로 동일 입력을 3회 생성해 일관성을 비교하세요.",
+        "요약/분류/추출 · 단계 1/6 입문 이해 [class315] 실습: 하나의 원문으로 요약/질의응답/번역 출력을 각각 생성하세요.",
+        "요약/분류/추출 · 단계 5/6 실전 검증 [class319] 실습: 하나의 원문으로 요약/질의응답/번역 출력을 각각 생성하세요.",
+        "LLM 개요 · 단계 4/7 응용 확장 [class292] 실습: LLM과 기존 NLP 모델의 차이를 표(입력/학습/출력/활용)로 정리하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'요약/분류/추출 · 단계 5/6 실전 검증 [class319]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다."
+        "작업 유형별 프롬프트를 분리하고 JSON 구조 출력으로 검증한다.",
+        "챗봇 응답을 다중 턴으로 생성하고 톤/스타일 제어를 적용한다.",
+        "기본 프롬프트로 텍스트 생성, 요약, 이메일/보고서 초안 작성을 수행한다.",
+        "기본 생성, 요약, 초안 작성 요청을 API로 호출하고 구조화 응답을 검증한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'요약/분류/추출 · 단계 5/6 실전 검증 [class319]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다."
+        "작업 유형을 구분하지 않아 지표와 출력 형식이 혼합된다.",
+        "프롬프트 제약 없이 생성해 출력 형식과 품질이 매번 달라진다.",
+        "LLM을 단순 챗봇 도구로만 보고 구조와 학습 흐름을 구분하지 않는다.",
+        "기본값만 사용해 품질 편차와 환각 리스크를 방치한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'요약/분류/추출 · 단계 5/6 실전 검증 [class319]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "API 연동 실습 · 단계 1/6 입문 이해 [class341] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다.",
-        "요약/분류/추출 · 단계 5/6 실전 검증 [class319] 점검: 토큰화 전/후 차이를 설명할 수 있다.",
-        "도메인 적용 시나리오 · 단계 5/7 실전 검증 [class338] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다.",
-        "요약/분류/추출 · 단계 2/6 기초 구현 [class316] 점검: 토큰화 전/후 차이를 설명할 수 있다."
+        "API 연동 실습 · 단계 1/6 입문 이해 [class341] 점검: API 요청/응답 구조를 구현하고 검증했다.",
+        "요약/분류/추출 · 단계 5/6 실전 검증 [class319] 점검: 작업 유형별 프롬프트/평가 기준을 구분했다.",
+        "도메인 적용 시나리오 · 단계 5/7 실전 검증 [class338] 점검: 활용 방식별 장단점과 적용 조건을 설명할 수 있다.",
+        "요약/분류/추출 · 단계 2/6 기초 구현 [class316] 점검: 작업 유형별 프롬프트/평가 기준을 구분했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '전처리 전후 토큰 샘플을 비교하고 빈도 변화 이유를 설명한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '작업별 결과를 품질 지표와 함께 비교한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'요약/분류/추출 · 단계 5/6 실전 검증 [class319]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class319_example1.py",
-        "class288_example1.py",
-        "class089_example1.py",
-        "class167_example1.py"
+        "class306_example1.py",
+        "class332_example1.py",
+        "class339_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class319_example1.py 입니다."
@@ -480,32 +480,32 @@
     {
       "question": "'class319_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "generic",
-        "rag",
-        "dev_setup",
-        "nlp"
+        "python",
+        "speech",
+        "data",
+        "llm_gen"
       ],
       "answer_index": 3,
-      "explanation": "class319_example2.py의 EXAMPLE_TEMPLATE 값은 'nlp' 입니다."
+      "explanation": "class319_example2.py의 EXAMPLE_TEMPLATE 값은 'llm_gen' 입니다."
     },
     {
       "question": "'class319_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_generation_config",
-        "scan_workspace",
-        "relu",
-        "tokenize"
+        "build_mode_summary",
+        "simulate_generation",
+        "rule_based_reply",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class319_example3.py 함수 목록: tokenize, top_k, main, self_check, challenge_case"
+      "explanation": "class319_example3.py 함수 목록: resolve_mode, build_prompt_cases, build_generation_config, tokenize, context_window, next_token_probs, apply_top_k_top_p, choose_next_token"
     },
     {
       "question": "'class319_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "json",
-        "platform",
-        "pathlib"
+        "re",
+        "datetime",
+        "json"
       ],
       "answer_index": 0,
       "explanation": "class319_example4.py import 목록: (import 없음)"
@@ -533,14 +533,29 @@
       "class319_example4.py",
       "class319_example5.py"
     ],
-    "template": "nlp",
+    "template": "llm_gen",
     "templates": [
-      "nlp"
+      "llm_gen"
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
+      "build_prompt_cases",
+      "build_generation_config",
       "tokenize",
-      "top_k",
+      "context_window",
+      "next_token_probs",
+      "apply_top_k_top_p",
+      "choose_next_token",
+      "simulate_generation",
+      "hallucination_guard",
+      "build_task_outputs",
+      "deployment_options",
+      "to_json_schema_payload",
+      "handle_error",
+      "rule_based_reply",
+      "llm_based_reply",
+      "build_mode_summary",
       "main",
       "extension_mission",
       "self_check",
@@ -551,32 +566,77 @@
     "entrypoint": "main()",
     "by_file": {
       "class319_example1.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class319_example2.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "extension_mission"
         ],
         "entrypoint": "main()"
       },
       "class319_example3.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "self_check",
           "challenge_case"
@@ -584,22 +644,52 @@
         "entrypoint": "main()"
       },
       "class319_example4.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "mini_project_plan"
         ],
         "entrypoint": "main()"
       },
       "class319_example5.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "ops_readiness_check"
         ],
@@ -610,23 +700,23 @@
   "example_snippets": [
     {
       "file": "class319_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example1: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example1: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 1\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class319_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example2: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example2: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 2\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class319_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example3: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example3: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 3\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class319_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example4: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example4: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 4\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class319_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example5: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class319 example5: 요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\"\"\n\nTOPIC = \"요약/분류/추출 · 단계 5/6 실전 검증 [class319]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 5\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     }
   ]
 };

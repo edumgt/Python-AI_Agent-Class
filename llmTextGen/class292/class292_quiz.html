@@ -409,7 +409,7 @@
   "module": "LLM 개요 · 단계 4/7 응용 확장 [class292]",
   "level": "입문",
   "session": "4/64",
-  "track_outcome": "좋은 프롬프트와 나쁜 프롬프트의 차이를 설명할 수 있다.",
+  "track_outcome": "LLM 구조와 핵심 개념을 실무 관점으로 설명할 수 있다.",
   "questions": [
     {
       "question": "class292 (거대 언어 모델을 활용한 자연어 생성 4/64) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'LLM 개요 · 단계 4/7 응용 확장 [class292]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "API 연동 실습 · 단계 6/6 운영 최적화 [class346] 실습: `API 연동 실습` 단계 6/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "LLM 개요 · 단계 4/7 응용 확장 [class292] 실습: `LLM 개요` 단계 4/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 1/6 입문 이해 [class347] 실습: `Agent 시스템 통합 구현` 단계 1/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "대화형 응답 설계 · 단계 2/7 기초 구현 [class322] 실습: `대화형 응답 설계` 단계 2/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "API 연동 실습 · 단계 6/6 운영 최적화 [class346] 실습: 기본 프롬프트 요청 payload를 구성하고 텍스트를 생성하세요.",
+        "LLM 개요 · 단계 4/7 응용 확장 [class292] 실습: LLM과 기존 NLP 모델의 차이를 표(입력/학습/출력/활용)로 정리하세요.",
+        "Agent 시스템 통합 구현 · 단계 1/6 입문 이해 [class347] 실습: 규칙 기반 라우터와 LLM 생성기를 하나의 파이프라인으로 연결하세요.",
+        "대화형 응답 설계 · 단계 2/7 기초 구현 [class322] 실습: 3턴 대화 시나리오를 구성하고 문맥 유지 규칙을 적용하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'LLM 개요 · 단계 4/7 응용 확장 [class292]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다."
+        "챗봇 응답을 다중 턴으로 생성하고 톤/스타일 제어를 적용한다.",
+        "도메인별 요구사항에 맞는 추론 방식을 선택하고 근거를 문서화한다.",
+        "파라미터 조합별 출력 품질과 환각 위험을 비교한다.",
+        "LLM 정의, 기존 NLP 대비 차이, 토큰/컨텍스트, 사전학습/파인튜닝을 한 표로 정리한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'LLM 개요 · 단계 4/7 응용 확장 [class292]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다."
+        "기본값만 사용해 품질 편차와 환각 리스크를 방치한다.",
+        "LLM을 단순 챗봇 도구로만 보고 구조와 학습 흐름을 구분하지 않는다.",
+        "기술 선호만으로 방식을 선택해 비용·보안·지연 이슈를 초래한다.",
+        "오류 코드/타임아웃 처리 없이 단순 호출만 구현한다."
       ],
       "answer_index": 1,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'LLM 개요 · 단계 4/7 응용 확장 [class292]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 점검: 토큰화 전/후 차이를 설명할 수 있다.",
-        "토큰/컨텍스트 이해 · 단계 4/6 응용 확장 [class299] 점검: 토큰화 전/후 차이를 설명할 수 있다.",
-        "대화형 응답 설계 · 단계 4/7 응용 확장 [class324] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다.",
-        "LLM 개요 · 단계 4/7 응용 확장 [class292] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다."
+        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 점검: 다음 토큰 예측 흐름을 설명할 수 있다.",
+        "토큰/컨텍스트 이해 · 단계 4/6 응용 확장 [class299] 점검: 다음 토큰 예측 흐름을 설명할 수 있다.",
+        "대화형 응답 설계 · 단계 4/7 응용 확장 [class324] 점검: 대화 문맥 유지 전략을 코드로 구현했다.",
+        "LLM 개요 · 단계 4/7 응용 확장 [class292] 점검: LLM의 정의와 기존 NLP 모델 차이를 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '같은 질문을 2회 이상 실행해 형식 일관성과 누락 항목을 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'Transformer, 토큰, 컨텍스트, 파인튜닝 개념을 연결해 설명한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'LLM 개요 · 단계 4/7 응용 확장 [class292]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "project015_example1.py",
-        "class415_example1.py",
+        "class322_example1.py",
+        "class347_example1.py",
         "class292_example1.py",
-        "class448_example1.py"
+        "class317_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class292_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class292_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "condition",
-        "ml",
+        "python",
+        "nlp",
         "llm_gen",
-        "dev_setup"
+        "data"
       ],
       "answer_index": 2,
       "explanation": "class292_example2.py의 EXAMPLE_TEMPLATE 값은 'llm_gen' 입니다."
@@ -491,21 +491,21 @@
     {
       "question": "'class292_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_generation_config",
-        "challenge_case",
-        "scan_workspace",
-        "dense_forward"
+        "resolve_mode",
+        "tokenize",
+        "rule_based_reply",
+        "ops_readiness_check"
       ],
       "answer_index": 0,
-      "explanation": "class292_example3.py 함수 목록: build_generation_config, simulate_generation, safety_guard, main, self_check, challenge_case"
+      "explanation": "class292_example3.py 함수 목록: resolve_mode, build_prompt_cases, build_generation_config, tokenize, context_window, next_token_probs, apply_top_k_top_p, choose_next_token"
     },
     {
       "question": "'class292_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "matplotlib",
         "json",
-        "datetime"
+        "pathlib",
+        "re"
       ],
       "answer_index": 0,
       "explanation": "class292_example4.py import 목록: (import 없음)"
@@ -539,9 +539,23 @@
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
+      "build_prompt_cases",
       "build_generation_config",
+      "tokenize",
+      "context_window",
+      "next_token_probs",
+      "apply_top_k_top_p",
+      "choose_next_token",
       "simulate_generation",
-      "safety_guard",
+      "hallucination_guard",
+      "build_task_outputs",
+      "deployment_options",
+      "to_json_schema_payload",
+      "handle_error",
+      "rule_based_reply",
+      "llm_based_reply",
+      "build_mode_summary",
       "main",
       "extension_mission",
       "self_check",
@@ -555,9 +569,23 @@
         "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
           "build_generation_config",
+          "tokenize",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
           "simulate_generation",
-          "safety_guard",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main"
         ],
         "entrypoint": "main()"
@@ -566,9 +594,23 @@
         "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
           "build_generation_config",
+          "tokenize",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
           "simulate_generation",
-          "safety_guard",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "extension_mission"
         ],
@@ -578,9 +620,23 @@
         "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
           "build_generation_config",
+          "tokenize",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
           "simulate_generation",
-          "safety_guard",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "self_check",
           "challenge_case"
@@ -591,9 +647,23 @@
         "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
           "build_generation_config",
+          "tokenize",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
           "simulate_generation",
-          "safety_guard",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "mini_project_plan"
         ],
@@ -603,9 +673,23 @@
         "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
           "build_generation_config",
+          "tokenize",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
           "simulate_generation",
-          "safety_guard",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +700,23 @@
   "example_snippets": [
     {
       "file": "class292_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example1: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\n\ndef build_generation_config(temp=0.5, max_tokens=180):\n    return {\"temperature\": temp, \"max_tokens\": max_tokens, \"top_p\": 0.9}\n\ndef simulate_generation(prompt, cfg):\n    return f\"[SIM] prompt={prompt} | temp={cfg['temperature']} | max_tokens={cfg['max_tokens']}\"\n\ndef safety_guard(text):\n    blocked = [\"개인정보\", \"비밀번호\"]\n    found = [w for w in blocked if w in text]\n    return {\"ok\": not found, \"blocked_terms\": found}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example1: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 1\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class292_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example2: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\n\ndef build_generation_config(temp=0.5, max_tokens=180):\n    return {\"temperature\": temp, \"max_tokens\": max_tokens, \"top_p\": 0.9}\n\ndef simulate_generation(prompt, cfg):\n    return f\"[SIM] prompt={prompt} | temp={cfg['temperature']} | max_tokens={cfg['max_tokens']}\"\n\ndef safety_guard(text):\n    blocked = [\"개인정보\", \"비밀번호\"]\n    found = [w for w in blocked if w in text]\n    return {\"ok\": not found, \"blocked_terms\": found}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example2: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 2\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class292_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example3: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\n\ndef build_generation_config(temp=0.5, max_tokens=180):\n    return {\"temperature\": temp, \"max_tokens\": max_tokens, \"top_p\": 0.9}\n\ndef simulate_generation(prompt, cfg):\n    return f\"[SIM] prompt={prompt} | temp={cfg['temperature']} | max_tokens={cfg['max_tokens']}\"\n\ndef safety_guard(text):\n    blocked = [\"개인정보\", \"비밀번호\"]\n    found = [w for w in blocked if w in text]\n    return {\"ok\": not found, \"blocked_terms\": found}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example3: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 3\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class292_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example4: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\n\ndef build_generation_config(temp=0.5, max_tokens=180):\n    return {\"temperature\": temp, \"max_tokens\": max_tokens, \"top_p\": 0.9}\n\ndef simulate_generation(prompt, cfg):\n    return f\"[SIM] prompt={prompt} | temp={cfg['temperature']} | max_tokens={cfg['max_tokens']}\"\n\ndef safety_guard(text):\n    blocked = [\"개인정보\", \"비밀번호\"]\n    found = [w for w in blocked if w in text]\n    return {\"ok\": not found, \"blocked_terms\": found}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example4: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 4\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class292_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example5: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\n\ndef build_generation_config(temp=0.5, max_tokens=180):\n    return {\"temperature\": temp, \"max_tokens\": max_tokens, \"top_p\": 0.9}\n\ndef simulate_generation(prompt, cfg):\n    return f\"[SIM] prompt={prompt} | temp={cfg['temperature']} | max_tokens={cfg['max_tokens']}\"\n\ndef safety_guard(text):\n    blocked = [\"개인정보\", \"비밀번호\"]\n    found = [w for w in blocked if w in text]\n    return {\"ok\": not found, \"blocked_terms\": found}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class292 example5: LLM 개요 · 단계 4/7 응용 확장 [class292]\"\"\"\n\nTOPIC = \"LLM 개요 · 단계 4/7 응용 확장 [class292]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 5\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     }
   ]
 };

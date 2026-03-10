@@ -409,7 +409,7 @@
   "module": "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]",
   "level": "기초응용",
   "session": "13/64",
-  "track_outcome": "주요 단어 빈도를 계산해 핵심 내용을 찾을 수 있다.",
+  "track_outcome": "토큰/컨텍스트 기반 생성 원리를 재현하고 분석할 수 있다.",
   "questions": [
     {
       "question": "class301 (거대 언어 모델을 활용한 자연어 생성 13/64) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "요약/분류/추출 · 단계 6/6 운영 최적화 [class320] 실습: `요약/분류/추출` 단계 6/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "도메인 적용 시나리오 · 단계 6/7 실전 검증 [class339] 실습: `도메인 적용 시나리오` 단계 6/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "도메인 적용 시나리오 · 단계 7/7 운영 최적화 [class340] 실습: `도메인 적용 시나리오` 단계 7/7 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 실습: `토큰/컨텍스트 이해` 단계 6/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "요약/분류/추출 · 단계 6/6 운영 최적화 [class320] 실습: 하나의 원문으로 요약/질의응답/번역 출력을 각각 생성하세요.",
+        "도메인 적용 시나리오 · 단계 6/7 실전 검증 [class339] 실습: API/오픈모델/클라우드/로컬 방식의 장단점을 비교표로 작성하세요.",
+        "도메인 적용 시나리오 · 단계 7/7 운영 최적화 [class340] 실습: API/오픈모델/클라우드/로컬 방식의 장단점을 비교표로 작성하세요.",
+        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 실습: 같은 질문에 컨텍스트 길이를 바꿔 응답 차이를 비교하세요."
       ],
       "answer_index": 3,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다."
+        "파라미터 조합별 출력 품질과 환각 위험을 비교한다.",
+        "기본 프롬프트로 텍스트 생성, 요약, 이메일/보고서 초안 작성을 수행한다.",
+        "컨텍스트 길이와 프롬프트 문구를 바꿔 출력 변화를 비교한다.",
+        "기본 생성, 요약, 초안 작성 요청을 API로 호출하고 구조화 응답을 검증한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+        "프롬프트 제약 없이 생성해 출력 형식과 품질이 매번 달라진다.",
+        "기본값만 사용해 품질 편차와 환각 리스크를 방치한다.",
+        "오류 코드/타임아웃 처리 없이 단순 호출만 구현한다.",
+        "토큰 길이 제한과 프롬프트 민감성을 무시해 응답 품질 저하 원인을 놓친다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "요약/분류/추출 · 단계 3/6 응용 확장 [class317] 점검: 토큰화 전/후 차이를 설명할 수 있다.",
-        "Agent 시스템 통합 구현 · 단계 3/6 응용 확장 [class349] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다.",
-        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 점검: 토큰화 전/후 차이를 설명할 수 있다.",
-        "LLM 개요 · 단계 2/7 기초 구현 [class290] 점검: 프롬프트의 역할/목표/출력형식을 구분해 설명할 수 있다."
+        "요약/분류/추출 · 단계 3/6 응용 확장 [class317] 점검: 작업 유형별 프롬프트/평가 기준을 구분했다.",
+        "Agent 시스템 통합 구현 · 단계 3/6 응용 확장 [class349] 점검: Agent 워크플로우(입력-처리-검증-응답)를 구현했다.",
+        "토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301] 점검: 다음 토큰 예측 흐름을 설명할 수 있다.",
+        "LLM 개요 · 단계 2/7 기초 구현 [class290] 점검: LLM의 정의와 기존 NLP 모델 차이를 설명할 수 있다."
       ],
       "answer_index": 2,
-      "explanation": "이 차시는 '전처리 전후 토큰 샘플을 비교하고 빈도 변화 이유를 설명한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '토큰화 결과, 컨텍스트 창, 출력 차이를 함께 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class301_example1.py",
-        "class412_example1.py",
-        "class494_example1.py",
-        "class119_example1.py"
+        "class334_example1.py",
+        "class340_example1.py",
+        "class338_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class301_example1.py 입니다."
@@ -480,32 +480,32 @@
     {
       "question": "'class301_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "speech",
-        "variables",
-        "collection",
-        "nlp"
+        "ml",
+        "python",
+        "data",
+        "llm_gen"
       ],
       "answer_index": 3,
-      "explanation": "class301_example2.py의 EXAMPLE_TEMPLATE 값은 'nlp' 입니다."
+      "explanation": "class301_example2.py의 EXAMPLE_TEMPLATE 값은 'llm_gen' 입니다."
     },
     {
       "question": "'class301_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "mini_project_plan",
-        "normalize_record",
-        "tokenize",
-        "step_retrieve"
+        "hallucination_guard",
+        "context_window",
+        "resolve_mode",
+        "self_check"
       ],
       "answer_index": 2,
-      "explanation": "class301_example3.py 함수 목록: tokenize, top_k, main, self_check, challenge_case"
+      "explanation": "class301_example3.py 함수 목록: resolve_mode, build_prompt_cases, build_generation_config, tokenize, context_window, next_token_probs, apply_top_k_top_p, choose_next_token"
     },
     {
       "question": "'class301_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "datetime",
-        "numpy",
-        "math"
+        "pathlib",
+        "math",
+        "json"
       ],
       "answer_index": 0,
       "explanation": "class301_example4.py import 목록: (import 없음)"
@@ -533,14 +533,29 @@
       "class301_example4.py",
       "class301_example5.py"
     ],
-    "template": "nlp",
+    "template": "llm_gen",
     "templates": [
-      "nlp"
+      "llm_gen"
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
+      "build_prompt_cases",
+      "build_generation_config",
       "tokenize",
-      "top_k",
+      "context_window",
+      "next_token_probs",
+      "apply_top_k_top_p",
+      "choose_next_token",
+      "simulate_generation",
+      "hallucination_guard",
+      "build_task_outputs",
+      "deployment_options",
+      "to_json_schema_payload",
+      "handle_error",
+      "rule_based_reply",
+      "llm_based_reply",
+      "build_mode_summary",
       "main",
       "extension_mission",
       "self_check",
@@ -551,32 +566,77 @@
     "entrypoint": "main()",
     "by_file": {
       "class301_example1.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class301_example2.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "extension_mission"
         ],
         "entrypoint": "main()"
       },
       "class301_example3.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "self_check",
           "challenge_case"
@@ -584,22 +644,52 @@
         "entrypoint": "main()"
       },
       "class301_example4.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "mini_project_plan"
         ],
         "entrypoint": "main()"
       },
       "class301_example5.py": {
-        "template": "nlp",
+        "template": "llm_gen",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "build_prompt_cases",
+          "build_generation_config",
           "tokenize",
-          "top_k",
+          "context_window",
+          "next_token_probs",
+          "apply_top_k_top_p",
+          "choose_next_token",
+          "simulate_generation",
+          "hallucination_guard",
+          "build_task_outputs",
+          "deployment_options",
+          "to_json_schema_payload",
+          "handle_error",
+          "rule_based_reply",
+          "llm_based_reply",
+          "build_mode_summary",
           "main",
           "ops_readiness_check"
         ],
@@ -610,23 +700,23 @@
   "example_snippets": [
     {
       "file": "class301_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example1: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example1: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 1\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class301_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example2: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example2: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 2\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class301_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example3: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example3: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 3\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class301_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example4: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example4: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 4\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     },
     {
       "file": "class301_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example5: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class301 example5: 토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\"\"\n\nTOPIC = \"토큰/컨텍스트 이해 · 단계 6/6 운영 최적화 [class301]\"\nEXAMPLE_TEMPLATE = \"llm_gen\"\nEXAMPLE_VARIANT = 5\n\nVOCAB = [\"정확성\", \"요약\", \"근거\", \"응답\", \"검증\", \"안전\", \"JSON\", \"맥락\", \"추론\", \"서비스\"]\nKNOWLEDGE_TERMS = {\n    \"llm\", \"transformer\", \"token\", \"context\", \"temperature\", \"topk\", \"topp\",\n    \"요약\", \"질의응답\", \"번역\", \"문서\", \"코드\", \"분류\", \"추출\", \"json\",\n    \"api\", \"cloud\", \"local\", \"security\", \"cost\", \"performance\"\n}\n\ndef resolve_mode():\n    if \"LLM 개요\" in TOPIC:\n        return \"overview\""
     }
   ]
 };
