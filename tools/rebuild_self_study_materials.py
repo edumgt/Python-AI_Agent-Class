@@ -386,6 +386,10 @@ def is_data_viz_subject(subject_name: str) -> bool:
     return subject_name.strip() == "Python 전처리 및 시각화"
 
 
+def is_ml_deep_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "머신러닝과 딥러닝"
+
+
 DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     "데이터 분석 환경 구성": {
         "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
@@ -696,6 +700,288 @@ DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
             "개선 전후 결과를 수치로 비교해 품질 향상을 검증하기",
         ],
         "next_tip": "다음 과목에서는 통합 구현 패턴을 LLM/RAG 파이프라인으로 확장합니다.",
+    },
+}
+
+ML_DEEP_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "ML/DL 개요와 문제정의": {
+        "kid_summary": "AI, 머신러닝, 딥러닝의 차이와 문제정의 방법을 정리하는 시작 차시입니다.",
+        "why": "규칙기반 방식과 학습기반 방식의 차이를 이해해야 어떤 문제에 ML/DL을 적용할지 올바르게 판단할 수 있습니다.",
+        "concepts": [
+            "`AI/ML/DL`은 포함 관계이며 학습 데이터/특징(feature)/라벨(label)이 모델 성능을 좌우합니다.",
+            "`규칙기반`은 사람이 규칙을 직접 작성하고, `학습기반`은 데이터로 규칙을 학습합니다.",
+            "`모델 학습 흐름`은 문제 정의 -> 데이터 준비 -> 학습 -> 평가 -> 개선 순서로 진행됩니다.",
+        ],
+        "practice_steps": [
+            "같은 문제를 규칙기반 방식과 학습기반 방식으로 각각 설명해 보세요.",
+            "학습 데이터, feature, label을 분리해 표로 정리하세요.",
+            "ML/DL 학습 흐름을 단계별 체크리스트로 작성하세요.",
+        ],
+        "checklist": [
+            "AI/ML/DL 차이를 예시와 함께 설명할 수 있다.",
+            "feature와 label을 구분해 데이터 구조를 설계할 수 있다.",
+            "모델 학습 흐름을 단계별로 설명할 수 있다.",
+        ],
+        "flow_steps": [
+            "문제 유형과 목표 지표를 정의한다",
+            "규칙기반/학습기반 접근을 비교한다",
+            "feature·label 구조를 설계한다",
+            "학습-평가-개선 흐름을 문서화한다",
+        ],
+        "focus_points": [
+            "문제정의가 예측/분류/군집 중 무엇인지 명확한지 확인하기",
+            "feature와 label 분리가 누락 없이 정의됐는지 점검하기",
+            "규칙기반 대비 학습기반 장단점을 근거로 설명하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 지도학습/비지도학습과 훈련·검증·테스트 분할을 본격적으로 다룹니다.",
+    },
+    "지도학습 기초": {
+        "kid_summary": "지도학습과 비지도학습, 분류/회귀, 데이터 분할과 일반화 개념을 다루는 차시입니다.",
+        "why": "훈련/검증/테스트를 분리하지 않으면 모델 성능을 과대평가하고 실서비스에서 실패할 가능성이 커집니다.",
+        "concepts": [
+            "`지도학습/비지도학습` 구분은 라벨 유무에 따라 결정됩니다.",
+            "`분류/회귀` 문제 유형에 따라 모델과 평가 지표가 달라집니다.",
+            "`과적합/일반화`를 이해하고 훈련·검증·테스트 분할을 유지해야 합니다.",
+        ],
+        "practice_steps": [
+            "예시 문제를 지도학습/비지도학습으로 분류해 보세요.",
+            "분류/회귀 문제를 각각 1개씩 정의하고 목표 지표를 정하세요.",
+            "train/valid/test 분할 비율을 바꿔 성능 차이를 기록하세요.",
+        ],
+        "checklist": [
+            "지도/비지도와 분류/회귀를 정확히 구분할 수 있다.",
+            "훈련/검증/테스트 데이터 분할 이유를 설명할 수 있다.",
+            "과적합 징후와 일반화 실패 신호를 식별할 수 있다.",
+        ],
+        "flow_steps": [
+            "문제를 지도/비지도 유형으로 분류한다",
+            "분류/회귀 목표와 지표를 정의한다",
+            "훈련·검증·테스트 데이터를 분할한다",
+            "일반화 성능을 점검한다",
+        ],
+        "focus_points": [
+            "분할된 데이터가 누출(leakage) 없이 분리됐는지 확인하기",
+            "문제 유형과 평가 지표가 일치하는지 점검하기",
+            "훈련 성능과 검증 성능 차이를 함께 보는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 scikit-learn으로 기본 모델 학습과 예측 파이프라인을 실습합니다.",
+    },
+    "회귀 모델": {
+        "kid_summary": "선형회귀 중심으로 연속값 예측 모델을 학습하고 평가하는 차시입니다.",
+        "why": "회귀 문제에서 MAE/MSE/RMSE/R²를 함께 봐야 오차의 크기와 설명력을 균형 있게 해석할 수 있습니다.",
+        "concepts": [
+            "`선형회귀`는 회귀 문제의 기본 모델이며 feature와 target의 선형 관계를 학습합니다.",
+            "`train_test_split`, `fit`, `predict`는 scikit-learn 기본 학습 흐름입니다.",
+            "`MAE/MSE/RMSE/R²`는 회귀 평가의 핵심 지표입니다.",
+        ],
+        "practice_steps": [
+            "scikit-learn 선형회귀로 baseline 모델을 학습하세요.",
+            "train_test_split 비율을 바꿔 지표 변화를 비교하세요.",
+            "MAE/MSE/RMSE/R²를 동시에 출력해 해석하세요.",
+        ],
+        "checklist": [
+            "회귀 문제에서 입력/출력 변수 정의를 명확히 했다.",
+            "fit/predict 흐름으로 baseline 모델을 재현했다.",
+            "회귀 지표 4종을 함께 해석할 수 있다.",
+        ],
+        "flow_steps": [
+            "회귀 데이터셋을 로딩하고 분할한다",
+            "선형회귀 모델을 학습한다",
+            "예측값과 실제값 오차를 계산한다",
+            "회귀 지표로 성능을 평가한다",
+        ],
+        "focus_points": [
+            "회귀 지표 해석이 동일 데이터 분포 기준으로 비교되는지 확인하기",
+            "train_test_split random_state를 고정해 재현 가능한지 점검하기",
+            "오차가 큰 샘플을 찾아 원인을 기록하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 분류 모델(로지스틱/KNN/트리/앙상블/SVM)로 확장합니다.",
+    },
+    "분류 모델": {
+        "kid_summary": "로지스틱 회귀, KNN, 의사결정나무, 랜덤포레스트, SVM을 비교하는 차시입니다.",
+        "why": "문제와 데이터 특성에 맞는 분류 모델을 선택해야 정확도뿐 아니라 재현율/정밀도 균형을 맞출 수 있습니다.",
+        "concepts": [
+            "`로지스틱 회귀/KNN/트리/랜덤포레스트/SVM`은 대표 분류 모델입니다.",
+            "`Pipeline`으로 전처리와 모델을 연결하면 재현성과 누출 방지가 쉬워집니다.",
+            "`Confusion Matrix`, `Accuracy/Precision/Recall/F1`로 분류 성능을 다각도로 평가합니다.",
+        ],
+        "practice_steps": [
+            "대표 분류 모델 2개 이상을 같은 데이터에서 비교하세요.",
+            "Pipeline으로 스케일링 + 모델을 연결해 학습하세요.",
+            "Confusion Matrix와 F1-score를 기준으로 모델을 비교하세요.",
+        ],
+        "checklist": [
+            "대표 분류 모델의 특성과 사용 시점을 설명할 수 있다.",
+            "Pipeline 기반으로 fit/predict 흐름을 재현했다.",
+            "정확도 외에 정밀도/재현율/F1을 함께 해석했다.",
+        ],
+        "flow_steps": [
+            "분류 데이터셋을 로딩하고 분할한다",
+            "Pipeline으로 전처리-모델 체인을 구성한다",
+            "여러 분류 모델을 학습/예측한다",
+            "지표와 혼동행렬로 결과를 비교한다",
+        ],
+        "focus_points": [
+            "클래스 불균형 상황에서 accuracy만 보지 않는지 확인하기",
+            "모델 비교 시 동일 분할/동일 전처리 조건을 유지하는지 점검하기",
+            "혼동행렬 기반 오분류 패턴을 해석하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 ROC/AUC와 교차검증까지 포함한 평가 체계를 확장합니다.",
+    },
+    "모델 평가 지표": {
+        "kid_summary": "회귀/분류 평가 지표와 ROC/AUC, 교차검증 기초를 다루는 차시입니다.",
+        "why": "문제 유형별로 올바른 지표를 선택하지 않으면 모델 개선 방향을 잘못 잡게 됩니다.",
+        "concepts": [
+            "`회귀 평가`는 MAE, MSE, RMSE, R²를 함께 확인해야 합니다.",
+            "`분류 평가`는 Accuracy, Precision, Recall, F1-score, Confusion Matrix가 핵심입니다.",
+            "`ROC/AUC`와 `교차검증`은 일반화 성능을 안정적으로 추정하는 도구입니다.",
+        ],
+        "practice_steps": [
+            "회귀/분류 예제 각각에서 평가 지표를 계산하세요.",
+            "Confusion Matrix와 ROC/AUC를 함께 시각화하거나 기록하세요.",
+            "교차검증(k-fold) 점수 평균과 편차를 비교하세요.",
+        ],
+        "checklist": [
+            "회귀/분류 지표를 상황에 맞게 선택할 수 있다.",
+            "Confusion Matrix와 ROC/AUC 해석을 설명할 수 있다.",
+            "교차검증 결과로 과적합 가능성을 점검했다.",
+        ],
+        "flow_steps": [
+            "문제 유형별 지표를 선택한다",
+            "모델 예측 결과로 지표를 계산한다",
+            "ROC/AUC와 혼동행렬을 점검한다",
+            "교차검증으로 일반화 성능을 확인한다",
+        ],
+        "focus_points": [
+            "지표 선택이 업무 목표와 일치하는지 확인하기",
+            "교차검증 없이 단일 split 성능만 믿지 않는지 점검하기",
+            "지표 간 trade-off를 설명할 수 있는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 특성공학과 하이퍼파라미터 튜닝으로 모델을 개선합니다.",
+    },
+    "특성공학과 전처리": {
+        "kid_summary": "특성 공학과 전처리(스케일링·정규화·인코딩)로 모델 성능을 개선하는 차시입니다.",
+        "why": "좋은 feature와 일관된 전처리 없이는 복잡한 모델을 써도 성능 향상이 제한됩니다.",
+        "concepts": [
+            "`Feature engineering`은 문제에 맞는 정보 표현을 만드는 과정입니다.",
+            "`스케일링/정규화/인코딩`은 모델 입력 품질과 학습 안정성을 높입니다.",
+            "`하이퍼파라미터 튜닝`과 `Grid Search`는 성능 개선의 기본 루틴입니다.",
+        ],
+        "practice_steps": [
+            "원본 feature와 가공 feature를 비교해 성능 변화를 확인하세요.",
+            "스케일링/정규화/인코딩을 Pipeline에 연결해 학습하세요.",
+            "Grid Search로 기본 하이퍼파라미터를 탐색하세요.",
+        ],
+        "checklist": [
+            "feature engineering 전후 성능 차이를 수치로 제시했다.",
+            "전처리와 모델을 Pipeline으로 연결해 재현성을 확보했다.",
+            "Grid Search 결과(best params)를 기록했다.",
+        ],
+        "flow_steps": [
+            "원본 feature 품질을 진단한다",
+            "스케일링/정규화/인코딩을 적용한다",
+            "가공 feature 기반 모델을 학습한다",
+            "Grid Search로 튜닝 결과를 검증한다",
+        ],
+        "focus_points": [
+            "전처리 과정이 train/test 누출 없이 분리되는지 확인하기",
+            "feature 추가가 과적합을 유발하지 않는지 점검하기",
+            "튜닝 결과를 baseline과 동일 조건에서 비교하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 과적합과 일반화 관점으로 튜닝 결과를 검증합니다.",
+    },
+    "과적합과 일반화": {
+        "kid_summary": "과적합 신호를 찾고 일반화 성능을 높이는 전략을 다루는 차시입니다.",
+        "why": "훈련 성능만 높은 모델은 실제 운영 데이터에서 성능이 급격히 떨어질 수 있습니다.",
+        "concepts": [
+            "`과적합`은 훈련 데이터에 과도하게 맞춘 상태이며 일반화 실패를 유발합니다.",
+            "`일반화`는 보지 못한 데이터에서도 성능을 유지하는 능력입니다.",
+            "`검증 전략(교차검증/정규화/모델 단순화)`은 과적합 완화 핵심입니다.",
+        ],
+        "practice_steps": [
+            "훈련/검증 성능 곡선을 비교해 과적합 여부를 확인하세요.",
+            "모델 복잡도(깊이/규제)를 바꿔 일반화 성능을 비교하세요.",
+            "교차검증으로 분할 의존성을 줄여 보세요.",
+        ],
+        "checklist": [
+            "과적합 징후를 수치(훈련 vs 검증)로 설명할 수 있다.",
+            "일반화 성능 개선 전략 2개 이상을 적용했다.",
+            "검증 결과 기반으로 모델 선택 근거를 남겼다.",
+        ],
+        "flow_steps": [
+            "훈련·검증 성능 차이를 진단한다",
+            "모델 복잡도와 규제 강도를 조정한다",
+            "교차검증으로 일반화 성능을 확인한다",
+            "최종 모델 선택 근거를 기록한다",
+        ],
+        "focus_points": [
+            "훈련 성능 향상이 검증 성능 악화로 이어지지 않는지 확인하기",
+            "일반화 전략 적용 전후를 동일 지표로 비교하는지 점검하기",
+            "최종 모델 선택 기준이 명확한지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 신경망 기초와 딥러닝 프레임워크 실습으로 넘어갑니다.",
+    },
+    "신경망 기초": {
+        "kid_summary": "TensorFlow 또는 PyTorch 기반으로 간단한 신경망을 구성하는 차시입니다.",
+        "why": "딥러닝 프레임워크의 기본 사용법을 알아야 이후 학습 루프와 실전 데이터셋 실습을 확장할 수 있습니다.",
+        "concepts": [
+            "`TensorFlow/PyTorch`는 신경망 구성·학습·추론을 지원하는 대표 프레임워크입니다.",
+            "`신경망 모델 작성`은 입력층-은닉층-출력층 구조를 명확히 정의하는 것에서 시작합니다.",
+            "`학습 루프`에서 epoch, batch, optimizer 개념을 이해해야 학습 안정성을 해석할 수 있습니다.",
+        ],
+        "practice_steps": [
+            "TensorFlow 또는 PyTorch로 간단한 분류 모델을 작성하세요.",
+            "epoch, batch size, optimizer를 바꿔 학습 결과를 비교하세요.",
+            "학습 손실(loss)과 정확도 변화를 기록하세요.",
+        ],
+        "checklist": [
+            "프레임워크 기반 기본 신경망 모델을 실행했다.",
+            "epoch/batch/optimizer 개념을 코드와 함께 설명할 수 있다.",
+            "학습 루프 결과(손실/정확도)를 해석할 수 있다.",
+        ],
+        "flow_steps": [
+            "프레임워크와 데이터셋을 준비한다",
+            "신경망 구조를 정의한다",
+            "학습 루프(epoch/batch/optimizer)를 실행한다",
+            "학습 결과를 평가한다",
+        ],
+        "focus_points": [
+            "모델 구조와 입력 차원이 일치하는지 확인하기",
+            "학습 루프에서 optimizer/loss 설정이 올바른지 점검하기",
+            "epoch 증가에 따른 성능 추세를 해석하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 MNIST 기반 분류 실습과 오분류 분석으로 확장합니다.",
+    },
+    "딥러닝 학습 구조": {
+        "kid_summary": "MNIST(가능 시) 기반 분류 실습으로 예측, 시각화, 오분류 분석을 수행하는 차시입니다.",
+        "why": "실제 이미지 분류 예제를 통해 학습 루프와 평가 결과를 실무형으로 연결할 수 있습니다.",
+        "concepts": [
+            "`MNIST 손글씨 분류`는 딥러닝 입문에서 가장 널리 쓰이는 기본 예제입니다.",
+            "`학습 루프`를 통해 epoch/batch/optimizer 설정이 성능에 미치는 영향을 관찰합니다.",
+            "`오분류 사례 분석`은 모델 개선 포인트를 찾는 핵심 단계입니다.",
+        ],
+        "practice_steps": [
+            "MNIST(또는 대체 digits) 데이터로 분류 모델을 학습하세요.",
+            "예측 결과를 시각화하고 정확도를 확인하세요.",
+            "오분류 사례를 최소 3건 이상 추출해 원인을 기록하세요.",
+        ],
+        "checklist": [
+            "기본 분류 모델 학습과 예측 실행을 완료했다.",
+            "결과 시각화와 예측값 확인 과정을 재현했다.",
+            "오분류 사례를 분석해 개선 아이디어를 제시했다.",
+        ],
+        "flow_steps": [
+            "MNIST(또는 대체 데이터셋)를 로딩한다",
+            "신경망 모델을 학습한다",
+            "예측값과 정확도를 계산한다",
+            "오분류 사례를 분석하고 개선안을 정리한다",
+        ],
+        "focus_points": [
+            "데이터셋 전처리(정규화/reshape)가 일관된지 확인하기",
+            "예측 결과를 수치와 샘플 사례로 함께 점검하는지 확인하기",
+            "오분류 원인을 데이터/모델 관점에서 구분하는지 점검하기",
+        ],
+        "next_tip": "다음 차시에서는 모델 운영 관점의 통합 실습으로 연결됩니다.",
     },
 }
 
@@ -1055,9 +1341,19 @@ def get_data_viz_profile(subject_name: str, module: str) -> dict[str, object] | 
     return DATA_VIZ_MODULE_OVERRIDES.get(module_core_name(module))
 
 
+def get_ml_deep_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_ml_deep_subject(subject_name):
+        return None
+    return ML_DEEP_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
-    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+    for profile in (
+        get_data_viz_profile(subject_name, module),
+        get_ml_deep_profile(subject_name, module),
+        get_python_pl_profile(subject_name, module),
+    ):
         if not profile:
             continue
         for key in ("kid_summary", "why", "concepts", "analogy", "practice_steps", "checklist", "next_tip"):
@@ -1067,7 +1363,11 @@ def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[st
 
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
-    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+    for profile in (
+        get_data_viz_profile(subject_name, module),
+        get_ml_deep_profile(subject_name, module),
+        get_python_pl_profile(subject_name, module),
+    ):
         syntax = profile.get("syntax") if profile else None
         if isinstance(syntax, list) and syntax:
             return syntax
@@ -1075,7 +1375,11 @@ def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]
 
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
-    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+    for profile in (
+        get_data_viz_profile(subject_name, module),
+        get_ml_deep_profile(subject_name, module),
+        get_python_pl_profile(subject_name, module),
+    ):
         flow_steps = profile.get("flow_steps") if profile else None
         if isinstance(flow_steps, list) and len(flow_steps) >= 4:
             return flow_steps
@@ -1083,7 +1387,11 @@ def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
 
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
-    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+    for profile in (
+        get_data_viz_profile(subject_name, module),
+        get_ml_deep_profile(subject_name, module),
+        get_python_pl_profile(subject_name, module),
+    ):
         points = profile.get("focus_points") if profile else None
         if isinstance(points, list) and len(points) >= 3:
             return points[:3]
@@ -1178,6 +1486,80 @@ def resolve_example_progression(track: str, subject_name: str, module: str) -> l
                 "example3: 실패 시나리오를 재현해 복구 로직을 검증한다.",
                 "example4: 개선 전후 결과를 비교해 병목 지점을 찾는다.",
                 "example5: 운영 기준(모니터링/알림/롤백)으로 최종 점검한다.",
+            ]
+    if is_ml_deep_subject(subject_name):
+        core = module_core_name(module)
+        if core == "ML/DL 개요와 문제정의":
+            return [
+                "example1: AI/ML/DL 개념 차이와 데이터 구조(feature/label)를 확인한다.",
+                "example2: 규칙기반과 학습기반 접근을 비교한다.",
+                "example3: 문제정의 템플릿(입력/출력/지표)을 확장한다.",
+                "example4: 학습 흐름(데이터-학습-평가)을 시뮬레이션한다.",
+                "example5: 운영 점검(모델 버전/롤백 기준)까지 정리한다.",
+            ]
+        if core == "지도학습 기초":
+            return [
+                "example1: 지도학습 기본 흐름을 실행한다.",
+                "example2: train/valid/test 분할을 적용한다.",
+                "example3: 비지도 학습(군집) 비교 케이스를 추가한다.",
+                "example4: 분류/회귀 문제를 구분해 실험한다.",
+                "example5: 과적합 신호를 점검한다.",
+            ]
+        if core == "회귀 모델":
+            return [
+                "example1: 선형회귀 baseline을 학습한다.",
+                "example2: split 비율을 바꿔 회귀 지표를 비교한다.",
+                "example3: 이상치 데이터에서 회귀 오차를 점검한다.",
+                "example4: Pipeline으로 전처리+모델을 결합한다.",
+                "example5: MAE/MSE/RMSE/R²와 교차검증을 기록한다.",
+            ]
+        if core == "분류 모델":
+            return [
+                "example1: 로지스틱 회귀 분류를 실행한다.",
+                "example2: KNN/의사결정나무를 비교한다.",
+                "example3: 랜덤포레스트/SVM을 추가해 확장한다.",
+                "example4: 혼동행렬과 F1-score를 비교한다.",
+                "example5: ROC/AUC와 하이퍼파라미터 탐색을 점검한다.",
+            ]
+        if core == "모델 평가 지표":
+            return [
+                "example1: 회귀/분류 기본 지표를 계산한다.",
+                "example2: Confusion Matrix와 ROC/AUC를 확인한다.",
+                "example3: 교차검증으로 일반화 성능을 점검한다.",
+                "example4: 지표 trade-off를 비교한다.",
+                "example5: 최종 지표 리포트를 자동화한다.",
+            ]
+        if core == "특성공학과 전처리":
+            return [
+                "example1: baseline feature로 모델을 학습한다.",
+                "example2: 스케일링/정규화/인코딩을 적용한다.",
+                "example3: 파생 feature를 추가해 성능 변화를 확인한다.",
+                "example4: Pipeline으로 전처리와 모델을 결합한다.",
+                "example5: Grid Search로 튜닝 결과를 비교한다.",
+            ]
+        if core == "과적합과 일반화":
+            return [
+                "example1: baseline 모델의 train/test 성능을 비교한다.",
+                "example2: 모델 복잡도를 높여 과적합을 재현한다.",
+                "example3: 규제/검증 전략으로 일반화를 개선한다.",
+                "example4: 교차검증 결과를 비교한다.",
+                "example5: 최종 모델 선택 근거를 문서화한다.",
+            ]
+        if core == "신경망 기초":
+            return [
+                "example1: TensorFlow 또는 PyTorch 기본 모델을 작성한다.",
+                "example2: epoch/batch/optimizer 조합을 비교한다.",
+                "example3: 학습 루프 로그를 확장한다.",
+                "example4: 예측 결과와 손실 추세를 점검한다.",
+                "example5: 운영 전 학습 안정성 체크리스트를 점검한다.",
+            ]
+        if core == "딥러닝 학습 구조":
+            return [
+                "example1: MNIST(또는 대체 digits) 분류 baseline을 학습한다.",
+                "example2: 학습 하이퍼파라미터를 바꿔 결과를 비교한다.",
+                "example3: 예측값 샘플과 정확도를 점검한다.",
+                "example4: 결과 시각화와 오분류 사례를 분석한다.",
+                "example5: 개선 포인트와 운영 체크리스트를 정리한다.",
             ]
     return TRACK_EXAMPLE_PROGRESS.get(track, TRACK_EXAMPLE_PROGRESS["generic"])
 

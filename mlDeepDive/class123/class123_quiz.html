@@ -409,7 +409,7 @@
   "module": "딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]",
   "level": "실전심화",
   "session": "43/48",
-  "track_outcome": "예측 결과와 오차를 해석해 개선 아이디어를 낼 수 있다.",
+  "track_outcome": "딥러닝 분류 실습 결과를 시각화와 함께 해석할 수 있다.",
   "questions": [
     {
       "question": "class123 (머신러닝과 딥러닝 43/48) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "지도학습 기초 · 단계 1/5 입문 이해 [class086] 실습: `지도학습 기초` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "분류 모델 · 단계 1/5 입문 이해 [class096] 실습: `분류 모델` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123] 실습: `딥러닝 학습 구조` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "분류 모델 · 단계 4/5 실전 검증 [class099] 실습: `분류 모델` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "지도학습 기초 · 단계 1/5 입문 이해 [class086] 실습: 예시 문제를 지도학습/비지도학습으로 분류해 보세요.",
+        "분류 모델 · 단계 1/5 입문 이해 [class096] 실습: 대표 분류 모델 2개 이상을 같은 데이터에서 비교하세요.",
+        "딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123] 실습: MNIST(또는 대체 digits) 데이터로 분류 모델을 학습하세요.",
+        "분류 모델 · 단계 4/5 실전 검증 [class099] 실습: 대표 분류 모델 2개 이상을 같은 데이터에서 비교하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
+        "기본 분류 모델 학습 후 예측값과 오분류 샘플을 확인한다.",
+        "train_test_split -> fit -> predict 순서로 baseline 회귀를 실행한다.",
+        "전처리와 모델을 Pipeline으로 연결하고 baseline 대비 개선을 측정한다.",
+        "학습 데이터, feature, label, 목표 지표를 먼저 정의한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다."
+        "훈련 성능 개선을 일반화 성능 개선으로 착각한다.",
+        "단일 split 결과를 일반화 성능으로 과대해석한다.",
+        "정확도 숫자만 보고 오분류 패턴 분석을 생략한다.",
+        "R²만 보고 오차 크기(MAE/RMSE)를 확인하지 않는다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "지도학습 기초 · 단계 3/5 응용 확장 [class088] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "분류 모델 · 단계 5/5 운영 최적화 [class100] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "회귀 모델 · 단계 3/5 응용 확장 [class093] 점검: 입력값과 정답값의 의미를 설명할 수 있다."
+        "지도학습 기초 · 단계 3/5 응용 확장 [class088] 점검: 지도/비지도와 분류/회귀를 정확히 구분할 수 있다.",
+        "딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123] 점검: 기본 분류 모델 학습과 예측 실행을 완료했다.",
+        "분류 모델 · 단계 5/5 운영 최적화 [class100] 점검: 대표 분류 모델의 특성과 사용 시점을 설명할 수 있다.",
+        "회귀 모델 · 단계 3/5 응용 확장 [class093] 점검: 회귀 문제에서 입력/출력 변수 정의를 명확히 했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '훈련/검증 분리를 유지하고 오차 지표(MSE/정확도)를 함께 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '오분류 사례를 최소 3건 이상 분석해 개선안을 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class108_example1.py",
-        "class124_example1.py",
+        "class087_example1.py",
+        "class088_example1.py",
         "class123_example1.py",
-        "class371_example1.py"
+        "class104_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class123_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class123_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "generic",
+        "ml",
         "deep_learning",
-        "variables",
-        "rag"
+        "nlp",
+        "speech"
       ],
       "answer_index": 1,
       "explanation": "class123_example2.py의 EXAMPLE_TEMPLATE 값은 'deep_learning' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class123_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "answer",
-        "relu",
-        "solve_in_steps",
-        "safety_guard"
+        "mini_project_plan",
+        "load_digit_dataset",
+        "resolve_mode",
+        "self_check"
       ],
       "answer_index": 1,
-      "explanation": "class123_example3.py 함수 목록: relu, dense_forward, predict_batch, main, self_check, challenge_case"
+      "explanation": "class123_example3.py 함수 목록: load_digit_dataset, run_torch_demo, run_tf_demo, run_numpy_fallback, main, self_check, challenge_case"
     },
     {
       "question": "'class123_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "(import 없음)",
-        "pathlib",
-        "matplotlib",
-        "platform"
+        "random",
+        "sklearn",
+        "tensorflow",
+        "torch"
       ],
       "answer_index": 0,
-      "explanation": "class123_example4.py import 목록: (import 없음)"
+      "explanation": "class123_example4.py import 목록: random, numpy, torch, tensorflow, sklearn"
     },
     {
       "question": "'class123_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,18 @@
     "templates": [
       "deep_learning"
     ],
-    "imports": [],
+    "imports": [
+      "random",
+      "numpy",
+      "torch",
+      "tensorflow",
+      "sklearn"
+    ],
     "functions": [
-      "relu",
-      "dense_forward",
-      "predict_batch",
+      "load_digit_dataset",
+      "run_torch_demo",
+      "run_tf_demo",
+      "run_numpy_fallback",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +560,36 @@
     "by_file": {
       "class123_example1.py": {
         "template": "deep_learning",
-        "imports": [],
+        "imports": [
+          "random",
+          "numpy",
+          "torch",
+          "tensorflow",
+          "sklearn"
+        ],
         "functions": [
-          "relu",
-          "dense_forward",
-          "predict_batch",
+          "load_digit_dataset",
+          "run_torch_demo",
+          "run_tf_demo",
+          "run_numpy_fallback",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class123_example2.py": {
         "template": "deep_learning",
-        "imports": [],
+        "imports": [
+          "random",
+          "numpy",
+          "torch",
+          "tensorflow",
+          "sklearn"
+        ],
         "functions": [
-          "relu",
-          "dense_forward",
-          "predict_batch",
+          "load_digit_dataset",
+          "run_torch_demo",
+          "run_tf_demo",
+          "run_numpy_fallback",
           "main",
           "extension_mission"
         ],
@@ -576,11 +597,18 @@
       },
       "class123_example3.py": {
         "template": "deep_learning",
-        "imports": [],
+        "imports": [
+          "random",
+          "numpy",
+          "torch",
+          "tensorflow",
+          "sklearn"
+        ],
         "functions": [
-          "relu",
-          "dense_forward",
-          "predict_batch",
+          "load_digit_dataset",
+          "run_torch_demo",
+          "run_tf_demo",
+          "run_numpy_fallback",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +617,18 @@
       },
       "class123_example4.py": {
         "template": "deep_learning",
-        "imports": [],
+        "imports": [
+          "random",
+          "numpy",
+          "torch",
+          "tensorflow",
+          "sklearn"
+        ],
         "functions": [
-          "relu",
-          "dense_forward",
-          "predict_batch",
+          "load_digit_dataset",
+          "run_torch_demo",
+          "run_tf_demo",
+          "run_numpy_fallback",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +636,18 @@
       },
       "class123_example5.py": {
         "template": "deep_learning",
-        "imports": [],
+        "imports": [
+          "random",
+          "numpy",
+          "torch",
+          "tensorflow",
+          "sklearn"
+        ],
         "functions": [
-          "relu",
-          "dense_forward",
-          "predict_batch",
+          "load_digit_dataset",
+          "run_torch_demo",
+          "run_tf_demo",
+          "run_numpy_fallback",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +658,23 @@
   "example_snippets": [
     {
       "file": "class123_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example1: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\n\ndef relu(x):\n    return x if x > 0 else 0.0\n\ndef dense_forward(inputs, weights, bias):\n    z = sum(i * w for i, w in zip(inputs, weights)) + bias\n    return relu(z)\n\ndef predict_batch(batch, weights, bias):\n    return [round(dense_forward(x, weights, bias), 4) for x in batch]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example1: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\nEXAMPLE_VARIANT = 1\n\nimport random\n\ntry:\n    import numpy as np\nexcept Exception:\n    np = None\n\ntry:\n    import torch\n    import torch.nn as nn"
     },
     {
       "file": "class123_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example2: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\n\ndef relu(x):\n    return x if x > 0 else 0.0\n\ndef dense_forward(inputs, weights, bias):\n    z = sum(i * w for i, w in zip(inputs, weights)) + bias\n    return relu(z)\n\ndef predict_batch(batch, weights, bias):\n    return [round(dense_forward(x, weights, bias), 4) for x in batch]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example2: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\nEXAMPLE_VARIANT = 2\n\nimport random\n\ntry:\n    import numpy as np\nexcept Exception:\n    np = None\n\ntry:\n    import torch\n    import torch.nn as nn"
     },
     {
       "file": "class123_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example3: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\n\ndef relu(x):\n    return x if x > 0 else 0.0\n\ndef dense_forward(inputs, weights, bias):\n    z = sum(i * w for i, w in zip(inputs, weights)) + bias\n    return relu(z)\n\ndef predict_batch(batch, weights, bias):\n    return [round(dense_forward(x, weights, bias), 4) for x in batch]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example3: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\nEXAMPLE_VARIANT = 3\n\nimport random\n\ntry:\n    import numpy as np\nexcept Exception:\n    np = None\n\ntry:\n    import torch\n    import torch.nn as nn"
     },
     {
       "file": "class123_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example4: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\n\ndef relu(x):\n    return x if x > 0 else 0.0\n\ndef dense_forward(inputs, weights, bias):\n    z = sum(i * w for i, w in zip(inputs, weights)) + bias\n    return relu(z)\n\ndef predict_batch(batch, weights, bias):\n    return [round(dense_forward(x, weights, bias), 4) for x in batch]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example4: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\nEXAMPLE_VARIANT = 4\n\nimport random\n\ntry:\n    import numpy as np\nexcept Exception:\n    np = None\n\ntry:\n    import torch\n    import torch.nn as nn"
     },
     {
       "file": "class123_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example5: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\n\ndef relu(x):\n    return x if x > 0 else 0.0\n\ndef dense_forward(inputs, weights, bias):\n    z = sum(i * w for i, w in zip(inputs, weights)) + bias\n    return relu(z)\n\ndef predict_batch(batch, weights, bias):\n    return [round(dense_forward(x, weights, bias), 4) for x in batch]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class123 example5: 딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\"\"\n\nTOPIC = \"딥러닝 학습 구조 · 단계 4/5 실전 검증 [class123]\"\nEXAMPLE_TEMPLATE = \"deep_learning\"\nEXAMPLE_VARIANT = 5\n\nimport random\n\ntry:\n    import numpy as np\nexcept Exception:\n    np = None\n\ntry:\n    import torch\n    import torch.nn as nn"
     }
   ]
 };

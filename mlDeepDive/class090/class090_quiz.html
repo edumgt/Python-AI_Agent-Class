@@ -409,7 +409,7 @@
   "module": "지도학습 기초 · 단계 5/5 운영 최적화 [class090]",
   "level": "기초응용",
   "session": "10/48",
-  "track_outcome": "예측 결과와 오차를 해석해 개선 아이디어를 낼 수 있다.",
+  "track_outcome": "문제 유형과 데이터 분할 전략을 일관되게 설계할 수 있다.",
   "questions": [
     {
       "question": "class090 (머신러닝과 딥러닝 10/48) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'지도학습 기초 · 단계 5/5 운영 최적화 [class090]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "신경망 기초 · 단계 2/5 기초 구현 [class116] 실습: `신경망 기초` 단계 2/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "지도학습 기초 · 단계 5/5 운영 최적화 [class090] 실습: `지도학습 기초` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "모델 평가 지표 · 단계 2/4 기초 구현 [class102] 실습: `모델 평가 지표` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "딥러닝 학습 구조 · 단계 3/5 응용 확장 [class122] 실습: `딥러닝 학습 구조` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "신경망 기초 · 단계 2/5 기초 구현 [class116] 실습: TensorFlow 또는 PyTorch로 간단한 분류 모델을 작성하세요.",
+        "지도학습 기초 · 단계 5/5 운영 최적화 [class090] 실습: 예시 문제를 지도학습/비지도학습으로 분류해 보세요.",
+        "모델 평가 지표 · 단계 2/4 기초 구현 [class102] 실습: 회귀/분류 예제 각각에서 평가 지표를 계산하세요.",
+        "딥러닝 학습 구조 · 단계 3/5 응용 확장 [class122] 실습: MNIST(또는 대체 digits) 데이터로 분류 모델을 학습하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'지도학습 기초 · 단계 5/5 운영 최적화 [class090]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다."
+        "전처리와 모델을 Pipeline으로 연결하고 baseline 대비 개선을 측정한다.",
+        "epoch, batch, optimizer를 바꿔 손실/정확도 변화를 확인한다.",
+        "train/valid/test 분할을 먼저 고정하고 baseline을 실행한다.",
+        "Pipeline으로 전처리+모델을 연결해 여러 분류기를 같은 조건에서 비교한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'지도학습 기초 · 단계 5/5 운영 최적화 [class090]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+        "학습 루프 개념 없이 프레임워크 코드만 복사해 원인을 해석하지 못한다.",
+        "정확도 숫자만 보고 오분류 패턴 분석을 생략한다.",
+        "데이터 분할 없이 단일 데이터 성능만 보고 일반화 성능을 오판한다.",
+        "문제 유형을 정하지 않고 모델부터 선택해 성능 해석이 불가능해진다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -459,19 +459,19 @@
       "question": "'지도학습 기초 · 단계 5/5 운영 최적화 [class090]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
         "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class125] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "지도학습 기초 · 단계 5/5 운영 최적화 [class090] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "분류 모델 · 단계 4/5 실전 검증 [class099] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "모델 평가 지표 · 단계 1/4 입문 이해 [class101] 점검: 입력값과 정답값의 의미를 설명할 수 있다."
+        "지도학습 기초 · 단계 5/5 운영 최적화 [class090] 점검: 지도/비지도와 분류/회귀를 정확히 구분할 수 있다.",
+        "분류 모델 · 단계 4/5 실전 검증 [class099] 점검: 대표 분류 모델의 특성과 사용 시점을 설명할 수 있다.",
+        "모델 평가 지표 · 단계 1/4 입문 이해 [class101] 점검: 회귀/분류 지표를 상황에 맞게 선택할 수 있다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '훈련/검증 분리를 유지하고 오차 지표(MSE/정확도)를 함께 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '훈련-검증 성능 차이와 누출 여부를 함께 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'지도학습 기초 · 단계 5/5 운영 최적화 [class090]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class384_example1.py",
-        "class146_example1.py",
-        "class204_example1.py",
+        "class105_example1.py",
+        "class091_example1.py",
+        "class094_example1.py",
         "class090_example1.py"
       ],
       "answer_index": 3,
@@ -480,10 +480,10 @@
     {
       "question": "'class090_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "function_module",
-        "dev_setup",
+        "python",
+        "speech",
         "ml",
-        "condition"
+        "deep_learning"
       ],
       "answer_index": 2,
       "explanation": "class090_example2.py의 EXAMPLE_TEMPLATE 값은 'ml' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class090_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "rolling_average",
-        "clean_rows",
-        "scan_workspace",
-        "make_dataset"
+        "main",
+        "build_classification_case",
+        "load_digit_dataset",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class090_example3.py 함수 목록: make_dataset, fit_linear, mae, main, self_check, challenge_case"
+      "explanation": "class090_example3.py 함수 목록: resolve_mode, classifier_names_for_variant, build_regression_case, make_classifier, build_classification_case, build_unsupervised_case, main, self_check"
     },
     {
       "question": "'class090_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "platform",
-        "(import 없음)",
-        "datetime",
-        "json"
+        "tensorflow",
+        "math",
+        "torch",
+        "sklearn"
       ],
       "answer_index": 1,
-      "explanation": "class090_example4.py import 목록: (import 없음)"
+      "explanation": "class090_example4.py import 목록: math, random, sklearn"
     },
     {
       "question": "'class090_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,18 @@
     "templates": [
       "ml"
     ],
-    "imports": [],
+    "imports": [
+      "math",
+      "random",
+      "sklearn"
+    ],
     "functions": [
-      "make_dataset",
-      "fit_linear",
-      "mae",
+      "resolve_mode",
+      "classifier_names_for_variant",
+      "build_regression_case",
+      "make_classifier",
+      "build_classification_case",
+      "build_unsupervised_case",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +560,36 @@
     "by_file": {
       "class090_example1.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class090_example2.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "extension_mission"
         ],
@@ -576,11 +597,18 @@
       },
       "class090_example3.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +617,18 @@
       },
       "class090_example4.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +636,18 @@
       },
       "class090_example5.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +658,23 @@
   "example_snippets": [
     {
       "file": "class090_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example1: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example1: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 1\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class090_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example2: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example2: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 2\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class090_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example3: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example3: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 3\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class090_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example4: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example4: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 4\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class090_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example5: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class090 example5: 지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\"\"\n\nTOPIC = \"지도학습 기초 · 단계 5/5 운영 최적화 [class090]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 5\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     }
   ]
 };

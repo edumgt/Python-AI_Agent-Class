@@ -163,6 +163,80 @@ DATA_VIZ_QUIZ_BANK = {
 }
 
 
+ML_DEEP_QUIZ_BANK = {
+    "ML/DL 개요와 문제정의": {
+        "concept": "AI/머신러닝/딥러닝 차이와 규칙기반/학습기반 접근을 구분해야 문제정의가 정확해진다.",
+        "action": "학습 데이터, feature, label, 목표 지표를 먼저 정의한다.",
+        "pitfall": "문제 유형을 정하지 않고 모델부터 선택해 성능 해석이 불가능해진다.",
+        "check": "문제정의 문서에 입력/출력/지표/제약을 명시했는지 점검한다.",
+        "outcome": "ML/DL 적용 가능성과 학습 흐름을 구조적으로 설명할 수 있다.",
+    },
+    "지도학습 기초": {
+        "concept": "지도학습/비지도학습과 분류/회귀 구분, 훈련/검증/테스트 분할이 핵심이다.",
+        "action": "train/valid/test 분할을 먼저 고정하고 baseline을 실행한다.",
+        "pitfall": "데이터 분할 없이 단일 데이터 성능만 보고 일반화 성능을 오판한다.",
+        "check": "훈련-검증 성능 차이와 누출 여부를 함께 검증한다.",
+        "outcome": "문제 유형과 데이터 분할 전략을 일관되게 설계할 수 있다.",
+    },
+    "회귀 모델": {
+        "concept": "scikit-learn 선형회귀와 회귀 지표(MAE/MSE/RMSE/R²) 해석이 회귀 기본기다.",
+        "action": "train_test_split -> fit -> predict 순서로 baseline 회귀를 실행한다.",
+        "pitfall": "R²만 보고 오차 크기(MAE/RMSE)를 확인하지 않는다.",
+        "check": "MAE/MSE/RMSE/R²를 함께 기록하고 split 조건을 고정한다.",
+        "outcome": "회귀 모델 결과를 오차 관점으로 해석하고 개선할 수 있다.",
+    },
+    "분류 모델": {
+        "concept": "로지스틱 회귀, KNN, 의사결정나무, 랜덤포레스트, SVM은 대표 분류 모델군이다.",
+        "action": "Pipeline으로 전처리+모델을 연결해 여러 분류기를 같은 조건에서 비교한다.",
+        "pitfall": "정확도(Accuracy)만 보고 정밀도/재현율/F1을 무시한다.",
+        "check": "Confusion Matrix와 F1-score를 함께 비교한다.",
+        "outcome": "분류 모델별 특성을 이해하고 문제에 맞게 선택할 수 있다.",
+    },
+    "모델 평가 지표": {
+        "concept": "회귀/분류 지표, ROC/AUC, 교차검증을 함께 봐야 신뢰 가능한 평가가 된다.",
+        "action": "문제 유형에 맞는 지표를 먼저 고른 뒤 계산한다.",
+        "pitfall": "단일 split 결과를 일반화 성능으로 과대해석한다.",
+        "check": "교차검증 평균/편차와 ROC/AUC를 함께 보고한다.",
+        "outcome": "지표 기반 모델 선택 근거를 명확히 제시할 수 있다.",
+    },
+    "특성공학과 전처리": {
+        "concept": "feature engineering, 스케일링/정규화/인코딩, Grid Search는 성능 개선 핵심이다.",
+        "action": "전처리와 모델을 Pipeline으로 연결하고 baseline 대비 개선을 측정한다.",
+        "pitfall": "특성 추가만 반복하고 데이터 누출 여부를 확인하지 않는다.",
+        "check": "feature 추가 전후 지표와 best params를 비교 기록한다.",
+        "outcome": "전처리-모델-튜닝 흐름을 재현 가능한 실험으로 운영할 수 있다.",
+    },
+    "과적합과 일반화": {
+        "concept": "과적합은 훈련 성능 과대, 일반화는 미지 데이터 성능 유지 능력이다.",
+        "action": "훈련/검증 곡선을 비교해 과적합 신호를 먼저 점검한다.",
+        "pitfall": "훈련 성능 개선을 일반화 성능 개선으로 착각한다.",
+        "check": "교차검증과 규제 적용 전후를 같은 지표로 비교한다.",
+        "outcome": "과적합을 탐지하고 일반화 개선 전략을 적용할 수 있다.",
+    },
+    "신경망 기초": {
+        "concept": "TensorFlow 또는 PyTorch로 간단한 신경망과 학습 루프를 구성하는 것이 핵심이다.",
+        "action": "epoch, batch, optimizer를 바꿔 손실/정확도 변화를 확인한다.",
+        "pitfall": "학습 루프 개념 없이 프레임워크 코드만 복사해 원인을 해석하지 못한다.",
+        "check": "epoch/batch/optimizer 설정과 결과를 함께 기록한다.",
+        "outcome": "프레임워크 기반 딥러닝 기초 실습을 독립적으로 수행할 수 있다.",
+    },
+    "딥러닝 학습 구조": {
+        "concept": "MNIST(또는 대체 digits) 분류 실습으로 예측/오분류 분석까지 연결한다.",
+        "action": "기본 분류 모델 학습 후 예측값과 오분류 샘플을 확인한다.",
+        "pitfall": "정확도 숫자만 보고 오분류 패턴 분석을 생략한다.",
+        "check": "오분류 사례를 최소 3건 이상 분석해 개선안을 기록한다.",
+        "outcome": "딥러닝 분류 실습 결과를 시각화와 함께 해석할 수 있다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "concept": "학습/평가/배포 관점을 통합해 운영 가능한 ML/DL 파이프라인을 구성한다.",
+        "action": "정상/오류 입력으로 단계별 로그를 검증한다.",
+        "pitfall": "모델 정확도만 보고 운영 지표(지연/복구/버전)를 점검하지 않는다.",
+        "check": "모델 버전, 평가 지표, 롤백 절차를 함께 점검한다.",
+        "outcome": "ML/DL 결과를 실제 서비스 운영 관점으로 연결할 수 있다.",
+    },
+}
+
+
 PYTHON_PL_QUIZ_BANK = {
     "오리엔테이션 및 개발환경 준비": {
         "concept": "인터프리터·가상환경·의존성 고정은 실행 재현성의 기본이다.",
@@ -238,11 +312,18 @@ PYTHON_PL_QUIZ_BANK = {
 
 
 def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, str]:
-    if subject_name.strip() == "Python 전처리 및 시각화":
-        module_bank = DATA_VIZ_QUIZ_BANK.get(module_core_name(module))
+    normalized_subject = subject_name.strip()
+    module_core = module_core_name(module)
+
+    if normalized_subject == "Python 전처리 및 시각화":
+        module_bank = DATA_VIZ_QUIZ_BANK.get(module_core)
         if module_bank:
             return module_bank
-    if subject_name.strip() == "Python 프로그래밍":
+    if normalized_subject == "머신러닝과 딥러닝":
+        module_bank = ML_DEEP_QUIZ_BANK.get(module_core)
+        if module_bank:
+            return module_bank
+    if normalized_subject == "Python 프로그래밍":
         module_bank = PYTHON_PL_QUIZ_BANK.get(module)
         if module_bank:
             return module_bank

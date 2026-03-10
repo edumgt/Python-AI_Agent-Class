@@ -409,7 +409,7 @@
   "module": "특성공학과 전처리 · 단계 4/5 실전 검증 [class108]",
   "level": "기초응용",
   "session": "28/48",
-  "track_outcome": "예측 결과와 오차를 해석해 개선 아이디어를 낼 수 있다.",
+  "track_outcome": "전처리-모델-튜닝 흐름을 재현 가능한 실험으로 운영할 수 있다.",
   "questions": [
     {
       "question": "class108 (머신러닝과 딥러닝 28/48) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'특성공학과 전처리 · 단계 4/5 실전 검증 [class108]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "분류 모델 · 단계 1/5 입문 이해 [class096] 실습: `분류 모델` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class125] 실습: `Agent 시스템 통합 구현` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "특성공학과 전처리 · 단계 4/5 실전 검증 [class108] 실습: `특성공학과 전처리` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127] 실습: `Agent 시스템 통합 구현` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "분류 모델 · 단계 1/5 입문 이해 [class096] 실습: 대표 분류 모델 2개 이상을 같은 데이터에서 비교하세요.",
+        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class125] 실습: 예제의 입력/정답 쌍을 먼저 표처럼 정리해 봐요.",
+        "특성공학과 전처리 · 단계 4/5 실전 검증 [class108] 실습: 원본 feature와 가공 feature를 비교해 성능 변화를 확인하세요.",
+        "Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127] 실습: 예제의 입력/정답 쌍을 먼저 표처럼 정리해 봐요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'특성공학과 전처리 · 단계 4/5 실전 검증 [class108]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
+        "전처리와 모델을 Pipeline으로 연결하고 baseline 대비 개선을 측정한다.",
+        "훈련/검증 곡선을 비교해 과적합 신호를 먼저 점검한다.",
+        "기본 분류 모델 학습 후 예측값과 오분류 샘플을 확인한다.",
+        "학습 데이터, feature, label, 목표 지표를 먼저 정의한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'특성공학과 전처리 · 단계 4/5 실전 검증 [class108]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다."
+        "단일 split 결과를 일반화 성능으로 과대해석한다.",
+        "R²만 보고 오차 크기(MAE/RMSE)를 확인하지 않는다.",
+        "정확도 숫자만 보고 오분류 패턴 분석을 생략한다.",
+        "특성 추가만 반복하고 데이터 누출 여부를 확인하지 않는다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'특성공학과 전처리 · 단계 4/5 실전 검증 [class108]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "특성공학과 전처리 · 단계 4/5 실전 검증 [class108] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "ML/DL 개요와 문제정의 · 단계 4/5 실전 검증 [class084] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "분류 모델 · 단계 4/5 실전 검증 [class099] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
+        "특성공학과 전처리 · 단계 4/5 실전 검증 [class108] 점검: feature engineering 전후 성능 차이를 수치로 제시했다.",
+        "ML/DL 개요와 문제정의 · 단계 4/5 실전 검증 [class084] 점검: AI/ML/DL 차이를 예시와 함께 설명할 수 있다.",
+        "분류 모델 · 단계 4/5 실전 검증 [class099] 점검: 대표 분류 모델의 특성과 사용 시점을 설명할 수 있다.",
         "Agent 시스템 통합 구현 · 단계 2/4 기초 구현 [class126] 점검: 입력값과 정답값의 의미를 설명할 수 있다."
       ],
       "answer_index": 0,
-      "explanation": "이 차시는 '훈련/검증 분리를 유지하고 오차 지표(MSE/정확도)를 함께 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'feature 추가 전후 지표와 best params를 비교 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'특성공학과 전처리 · 단계 4/5 실전 검증 [class108]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class257_example1.py",
-        "class102_example1.py",
+        "class121_example1.py",
+        "class087_example1.py",
         "class108_example1.py",
-        "class317_example1.py"
+        "class096_example1.py"
       ],
       "answer_index": 2,
       "explanation": "기본 예제 파일은 class108_example1.py 입니다."
@@ -480,9 +480,9 @@
     {
       "question": "'class108_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "rag",
-        "function_module",
-        "data_preprocess",
+        "speech",
+        "python",
+        "nlp",
         "ml"
       ],
       "answer_index": 3,
@@ -491,24 +491,24 @@
     {
       "question": "'class108_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "retrieve",
-        "top_k",
-        "read_rows",
-        "make_dataset"
+        "mini_project_plan",
+        "self_check",
+        "build_classification_case",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class108_example3.py 함수 목록: make_dataset, fit_linear, mae, main, self_check, challenge_case"
+      "explanation": "class108_example3.py 함수 목록: resolve_mode, classifier_names_for_variant, build_regression_case, make_classifier, build_classification_case, build_unsupervised_case, main, self_check"
     },
     {
       "question": "'class108_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "json",
+        "sklearn",
         "numpy",
-        "math",
-        "(import 없음)"
+        "random",
+        "math"
       ],
       "answer_index": 3,
-      "explanation": "class108_example4.py import 목록: (import 없음)"
+      "explanation": "class108_example4.py import 목록: math, random, sklearn"
     },
     {
       "question": "'class108_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,18 @@
     "templates": [
       "ml"
     ],
-    "imports": [],
+    "imports": [
+      "math",
+      "random",
+      "sklearn"
+    ],
     "functions": [
-      "make_dataset",
-      "fit_linear",
-      "mae",
+      "resolve_mode",
+      "classifier_names_for_variant",
+      "build_regression_case",
+      "make_classifier",
+      "build_classification_case",
+      "build_unsupervised_case",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +560,36 @@
     "by_file": {
       "class108_example1.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class108_example2.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "extension_mission"
         ],
@@ -576,11 +597,18 @@
       },
       "class108_example3.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +617,18 @@
       },
       "class108_example4.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +636,18 @@
       },
       "class108_example5.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +658,23 @@
   "example_snippets": [
     {
       "file": "class108_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example1: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example1: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 1\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class108_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example2: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example2: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 2\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class108_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example3: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example3: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 3\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class108_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example4: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example4: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 4\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class108_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example5: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class108 example5: 특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\"\"\n\nTOPIC = \"특성공학과 전처리 · 단계 4/5 실전 검증 [class108]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 5\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     }
   ]
 };

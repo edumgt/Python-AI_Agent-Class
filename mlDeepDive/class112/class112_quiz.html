@@ -409,7 +409,7 @@
   "module": "과적합과 일반화 · 단계 3/5 응용 확장 [class112]",
   "level": "기초응용",
   "session": "32/48",
-  "track_outcome": "예측 결과와 오차를 해석해 개선 아이디어를 낼 수 있다.",
+  "track_outcome": "과적합을 탐지하고 일반화 개선 전략을 적용할 수 있다.",
   "questions": [
     {
       "question": "class112 (머신러닝과 딥러닝 32/48) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'과적합과 일반화 · 단계 3/5 응용 확장 [class112]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "ML/DL 개요와 문제정의 · 단계 3/5 응용 확장 [class083] 실습: `ML/DL 개요와 문제정의` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127] 실습: `Agent 시스템 통합 구현` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "과적합과 일반화 · 단계 3/5 응용 확장 [class112] 실습: `과적합과 일반화` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "신경망 기초 · 단계 3/5 응용 확장 [class117] 실습: `신경망 기초` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "ML/DL 개요와 문제정의 · 단계 3/5 응용 확장 [class083] 실습: 같은 문제를 규칙기반 방식과 학습기반 방식으로 각각 설명해 보세요.",
+        "Agent 시스템 통합 구현 · 단계 3/4 실전 검증 [class127] 실습: 예제의 입력/정답 쌍을 먼저 표처럼 정리해 봐요.",
+        "과적합과 일반화 · 단계 3/5 응용 확장 [class112] 실습: 훈련/검증 성능 곡선을 비교해 과적합 여부를 확인하세요.",
+        "신경망 기초 · 단계 3/5 응용 확장 [class117] 실습: TensorFlow 또는 PyTorch로 간단한 분류 모델을 작성하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'과적합과 일반화 · 단계 3/5 응용 확장 [class112]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다."
+        "train/valid/test 분할을 먼저 고정하고 baseline을 실행한다.",
+        "epoch, batch, optimizer를 바꿔 손실/정확도 변화를 확인한다.",
+        "훈련/검증 곡선을 비교해 과적합 신호를 먼저 점검한다.",
+        "Pipeline으로 전처리+모델을 연결해 여러 분류기를 같은 조건에서 비교한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'과적합과 일반화 · 단계 3/5 응용 확장 [class112]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다."
+        "훈련 성능 개선을 일반화 성능 개선으로 착각한다.",
+        "모델 정확도만 보고 운영 지표(지연/복구/버전)를 점검하지 않는다.",
+        "특성 추가만 반복하고 데이터 누출 여부를 확인하지 않는다.",
+        "정확도(Accuracy)만 보고 정밀도/재현율/F1을 무시한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'과적합과 일반화 · 단계 3/5 응용 확장 [class112]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "ML/DL 개요와 문제정의 · 단계 1/5 입문 이해 [class081] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
+        "ML/DL 개요와 문제정의 · 단계 1/5 입문 이해 [class081] 점검: AI/ML/DL 차이를 예시와 함께 설명할 수 있다.",
         "Agent 시스템 통합 구현 · 단계 2/4 기초 구현 [class126] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "과적합과 일반화 · 단계 2/5 기초 구현 [class111] 점검: 입력값과 정답값의 의미를 설명할 수 있다.",
-        "과적합과 일반화 · 단계 3/5 응용 확장 [class112] 점검: 입력값과 정답값의 의미를 설명할 수 있다."
+        "과적합과 일반화 · 단계 2/5 기초 구현 [class111] 점검: 과적합 징후를 수치(훈련 vs 검증)로 설명할 수 있다.",
+        "과적합과 일반화 · 단계 3/5 응용 확장 [class112] 점검: 과적합 징후를 수치(훈련 vs 검증)로 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '훈련/검증 분리를 유지하고 오차 지표(MSE/정확도)를 함께 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '교차검증과 규제 적용 전후를 같은 지표로 비교한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'과적합과 일반화 · 단계 3/5 응용 확장 [class112]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class327_example1.py",
+        "class101_example1.py",
         "class112_example1.py",
-        "project016_example1.py",
-        "class412_example1.py"
+        "class119_example1.py",
+        "class115_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class112_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class112_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "llm_gen",
-        "collection",
+        "nlp",
+        "python",
         "ml",
-        "pandas"
+        "data"
       ],
       "answer_index": 2,
       "explanation": "class112_example2.py의 EXAMPLE_TEMPLATE 값은 'ml' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class112_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_setup_plan",
-        "rolling_average",
-        "make_dataset",
-        "perimeter_rectangle"
+        "run_tf_demo",
+        "build_classification_case",
+        "resolve_mode",
+        "make_classifier"
       ],
       "answer_index": 2,
-      "explanation": "class112_example3.py 함수 목록: make_dataset, fit_linear, mae, main, self_check, challenge_case"
+      "explanation": "class112_example3.py 함수 목록: resolve_mode, classifier_names_for_variant, build_regression_case, make_classifier, build_classification_case, build_unsupervised_case, main, self_check"
     },
     {
       "question": "'class112_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "json",
-        "(import 없음)",
-        "pandas",
-        "datetime"
+        "sklearn",
+        "math",
+        "numpy",
+        "torch"
       ],
       "answer_index": 1,
-      "explanation": "class112_example4.py import 목록: (import 없음)"
+      "explanation": "class112_example4.py import 목록: math, random, sklearn"
     },
     {
       "question": "'class112_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,18 @@
     "templates": [
       "ml"
     ],
-    "imports": [],
+    "imports": [
+      "math",
+      "random",
+      "sklearn"
+    ],
     "functions": [
-      "make_dataset",
-      "fit_linear",
-      "mae",
+      "resolve_mode",
+      "classifier_names_for_variant",
+      "build_regression_case",
+      "make_classifier",
+      "build_classification_case",
+      "build_unsupervised_case",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +560,36 @@
     "by_file": {
       "class112_example1.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class112_example2.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "extension_mission"
         ],
@@ -576,11 +597,18 @@
       },
       "class112_example3.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +617,18 @@
       },
       "class112_example4.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +636,18 @@
       },
       "class112_example5.py": {
         "template": "ml",
-        "imports": [],
+        "imports": [
+          "math",
+          "random",
+          "sklearn"
+        ],
         "functions": [
-          "make_dataset",
-          "fit_linear",
-          "mae",
+          "resolve_mode",
+          "classifier_names_for_variant",
+          "build_regression_case",
+          "make_classifier",
+          "build_classification_case",
+          "build_unsupervised_case",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +658,23 @@
   "example_snippets": [
     {
       "file": "class112_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example1: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example1: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 1\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class112_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example2: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example2: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 2\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class112_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example3: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example3: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 3\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class112_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example4: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example4: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 4\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     },
     {
       "file": "class112_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example5: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\n\ndef make_dataset():\n    return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]\n\ndef fit_linear(points):\n    xs = [x for x, _ in points]\n    ys = [y for _, y in points]\n    mean_x = sum(xs) / len(xs)\n    mean_y = sum(ys) / len(ys)\n    num = sum((x - mean_x) * (y - mean_y) for x, y in points)\n    den = sum((x - mean_x) ** 2 for x in xs)\n    slope = num / den"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class112 example5: 과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\"\"\n\nTOPIC = \"과적합과 일반화 · 단계 3/5 응용 확장 [class112]\"\nEXAMPLE_TEMPLATE = \"ml\"\nEXAMPLE_VARIANT = 5\n\nfrom math import sqrt\nimport random\n\ntry:\n    from sklearn.datasets import make_classification, make_regression, make_blobs\n    from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV\n    from sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler, MinMaxScaler\n    from sklearn.linear_model import LinearRegression, LogisticRegression\n    from sklearn.neighbors import KNeighborsClassifier"
     }
   ]
 };

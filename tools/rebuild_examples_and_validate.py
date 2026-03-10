@@ -761,54 +761,503 @@ def build_body(template: str, class_id: str) -> str:
 
     if template == "ml":
         return """
-        def make_dataset():
-            return [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91)]
+        from math import sqrt
+        import random
 
-        def fit_linear(points):
-            xs = [x for x, _ in points]
-            ys = [y for _, y in points]
-            mean_x = sum(xs) / len(xs)
-            mean_y = sum(ys) / len(ys)
-            num = sum((x - mean_x) * (y - mean_y) for x, y in points)
-            den = sum((x - mean_x) ** 2 for x in xs)
-            slope = num / den
-            bias = mean_y - slope * mean_x
-            return slope, bias
+        try:
+            from sklearn.datasets import make_classification, make_regression, make_blobs
+            from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
+            from sklearn.pipeline import Pipeline
+            from sklearn.preprocessing import StandardScaler, MinMaxScaler
+            from sklearn.linear_model import LinearRegression, LogisticRegression
+            from sklearn.neighbors import KNeighborsClassifier
+            from sklearn.tree import DecisionTreeClassifier
+            from sklearn.ensemble import RandomForestClassifier
+            from sklearn.svm import SVC
+            from sklearn.cluster import KMeans
+            from sklearn.metrics import (
+                mean_absolute_error,
+                mean_squared_error,
+                r2_score,
+                accuracy_score,
+                precision_score,
+                recall_score,
+                f1_score,
+                confusion_matrix,
+                roc_auc_score,
+            )
+            SKLEARN_OK = True
+        except Exception:
+            SKLEARN_OK = False
 
-        def mae(points, slope, bias):
-            errors = [abs(y - (slope * x + bias)) for x, y in points]
-            return sum(errors) / len(errors)
+        def resolve_mode():
+            if "ML/DL 개요" in TOPIC or "문제정의" in TOPIC:
+                return "overview"
+            if "지도학습" in TOPIC:
+                return "supervised"
+            if "회귀" in TOPIC:
+                return "regression"
+            if "분류" in TOPIC:
+                return "classification"
+            if "평가 지표" in TOPIC:
+                return "evaluation"
+            if "특성공학" in TOPIC:
+                return "feature"
+            if "과적합" in TOPIC or "일반화" in TOPIC:
+                return "generalization"
+            return "ml_general"
+
+        def classifier_names_for_variant():
+            names = ["logistic"]
+            if EXAMPLE_VARIANT >= 2:
+                names.append("knn")
+            if EXAMPLE_VARIANT >= 3:
+                names.append("decision_tree")
+            if EXAMPLE_VARIANT >= 4:
+                names.append("random_forest")
+            if EXAMPLE_VARIANT >= 5:
+                names.append("svm")
+            return names
+
+        def build_regression_case(seed):
+            if not SKLEARN_OK:
+                points = [(1, 52), (2, 61), (3, 70), (4, 82), (5, 91), (6, 103)]
+                xs = [x for x, _ in points]
+                ys = [y for _, y in points]
+                mean_x = sum(xs) / len(xs)
+                mean_y = sum(ys) / len(ys)
+                num = sum((x - mean_x) * (y - mean_y) for x, y in points)
+                den = sum((x - mean_x) ** 2 for x in xs)
+                slope = num / den
+                bias = mean_y - slope * mean_x
+                preds = [slope * x + bias for x in xs]
+                errors = [abs(y - p) for y, p in zip(ys, preds)]
+                mae = sum(errors) / len(errors)
+                return {
+                    "backend": "python",
+                    "model": "manual_linear",
+                    "mae": round(mae, 4),
+                    "mse": round(sum((y - p) ** 2 for y, p in zip(ys, preds)) / len(ys), 4),
+                    "rmse": round(sqrt(sum((y - p) ** 2 for y, p in zip(ys, preds)) / len(ys)), 4),
+                    "r2": 0.0,
+                }
+
+            x, y = make_regression(
+                n_samples=180 + EXAMPLE_VARIANT * 20,
+                n_features=4,
+                noise=12 + EXAMPLE_VARIANT * 2,
+                random_state=seed,
+            )
+            x_train_full, x_test, y_train_full, y_test = train_test_split(
+                x, y, test_size=0.2, random_state=seed
+            )
+            x_train, x_valid, y_train, y_valid = train_test_split(
+                x_train_full, y_train_full, test_size=0.25, random_state=seed
+            )
+            pipe = Pipeline(
+                [
+                    ("scale", StandardScaler()),
+                    ("model", LinearRegression()),
+                ]
+            )
+            pipe.fit(x_train, y_train)
+            y_pred = pipe.predict(x_test)
+            y_valid_pred = pipe.predict(x_valid)
+            report = {
+                "backend": "sklearn",
+                "model": "LinearRegression",
+                "train_size": len(x_train),
+                "valid_size": len(x_valid),
+                "test_size": len(x_test),
+                "mae": round(float(mean_absolute_error(y_test, y_pred)), 4),
+                "mse": round(float(mean_squared_error(y_test, y_pred)), 4),
+                "rmse": round(float(sqrt(mean_squared_error(y_test, y_pred))), 4),
+                "r2": round(float(r2_score(y_test, y_pred)), 4),
+                "valid_mae": round(float(mean_absolute_error(y_valid, y_valid_pred)), 4),
+                "pipeline": "StandardScaler + LinearRegression",
+            }
+            if EXAMPLE_VARIANT >= 5:
+                cv = cross_val_score(pipe, x, y, cv=4, scoring="neg_mean_squared_error")
+                report["cv_rmse_mean"] = round(float(sqrt(abs(cv.mean()))), 4)
+            return report
+
+        def make_classifier(name):
+            if name == "logistic":
+                return LogisticRegression(max_iter=400), True
+            if name == "knn":
+                return KNeighborsClassifier(n_neighbors=5), True
+            if name == "decision_tree":
+                return DecisionTreeClassifier(max_depth=5, random_state=7), False
+            if name == "random_forest":
+                return RandomForestClassifier(n_estimators=120, random_state=7), False
+            return SVC(kernel="rbf", probability=True, random_state=7), True
+
+        def build_classification_case(seed, model_name):
+            if not SKLEARN_OK:
+                raw = [
+                    {"x1": 0.1, "x2": 0.2, "y": 0},
+                    {"x1": 0.3, "x2": 0.8, "y": 1},
+                    {"x1": 0.2, "x2": 0.1, "y": 0},
+                    {"x1": 0.8, "x2": 0.9, "y": 1},
+                ]
+                pred = [1 if item["x2"] >= 0.5 else 0 for item in raw]
+                true = [item["y"] for item in raw]
+                acc = sum(1 for t, p in zip(true, pred) if t == p) / len(true)
+                return {
+                    "backend": "python",
+                    "model": "rule_threshold",
+                    "accuracy": round(acc, 4),
+                    "precision": round(acc, 4),
+                    "recall": round(acc, 4),
+                    "f1": round(acc, 4),
+                    "confusion_matrix": [[2, 0], [0, 2]],
+                    "roc_auc": 1.0,
+                }
+
+            x, y = make_classification(
+                n_samples=320 + EXAMPLE_VARIANT * 30,
+                n_features=8,
+                n_informative=5,
+                n_redundant=1,
+                class_sep=1.0 + EXAMPLE_VARIANT * 0.05,
+                random_state=seed,
+            )
+            if "특성공학" in TOPIC:
+                # feature engineering: interaction-like column
+                extra = (x[:, 0] * x[:, 1]).reshape(-1, 1)
+                x = __import__("numpy").concatenate([x, extra], axis=1)
+
+            x_train_full, x_test, y_train_full, y_test = train_test_split(
+                x, y, test_size=0.2, random_state=seed, stratify=y
+            )
+            x_train, x_valid, y_train, y_valid = train_test_split(
+                x_train_full, y_train_full, test_size=0.25, random_state=seed, stratify=y_train_full
+            )
+            model, need_scale = make_classifier(model_name)
+            steps = []
+            if need_scale:
+                scaler = MinMaxScaler() if "특성공학" in TOPIC else StandardScaler()
+                steps.append(("scale", scaler))
+            steps.append(("model", model))
+            pipe = Pipeline(steps)
+            pipe.fit(x_train, y_train)
+            y_pred = pipe.predict(x_test)
+            y_valid_pred = pipe.predict(x_valid)
+
+            y_score = None
+            if hasattr(pipe, "predict_proba"):
+                y_score = pipe.predict_proba(x_test)[:, 1]
+            elif hasattr(pipe, "decision_function"):
+                y_score = pipe.decision_function(x_test)
+
+            report = {
+                "backend": "sklearn",
+                "model": model_name,
+                "train_size": len(x_train),
+                "valid_size": len(x_valid),
+                "test_size": len(x_test),
+                "accuracy": round(float(accuracy_score(y_test, y_pred)), 4),
+                "precision": round(float(precision_score(y_test, y_pred, zero_division=0)), 4),
+                "recall": round(float(recall_score(y_test, y_pred, zero_division=0)), 4),
+                "f1": round(float(f1_score(y_test, y_pred, zero_division=0)), 4),
+                "confusion_matrix": confusion_matrix(y_test, y_pred).tolist(),
+                "valid_f1": round(float(f1_score(y_valid, y_valid_pred, zero_division=0)), 4),
+                "pipeline": " -> ".join(name for name, _ in steps),
+            }
+            if y_score is not None:
+                report["roc_auc"] = round(float(roc_auc_score(y_test, y_score)), 4)
+            if EXAMPLE_VARIANT >= 5:
+                search = GridSearchCV(
+                    pipe,
+                    param_grid={"model__C": [0.1, 1.0, 3.0]} if model_name == "logistic" else {},
+                    cv=3,
+                    scoring="f1",
+                )
+                if search.param_grid:
+                    search.fit(x_train, y_train)
+                    report["grid_search_best_score"] = round(float(search.best_score_), 4)
+                    report["grid_search_best_params"] = dict(search.best_params_)
+            return report
+
+        def build_unsupervised_case(seed):
+            if not SKLEARN_OK:
+                return {"backend": "python", "algorithm": "manual_grouping", "clusters": 2}
+            x, _ = make_blobs(n_samples=180, centers=3, cluster_std=1.2, random_state=seed)
+            kmeans = KMeans(n_clusters=3, n_init=10, random_state=seed)
+            labels = kmeans.fit_predict(x)
+            return {
+                "backend": "sklearn",
+                "algorithm": "KMeans",
+                "clusters": int(len(set(labels))),
+                "inertia": round(float(kmeans.inertia_), 4),
+            }
 
         def main():
             print("오늘 주제:", TOPIC)
-            points = make_dataset()
-            slope, bias = fit_linear(points)
-            metric = round(mae(points, slope, bias), 3)
-            report = {"slope": round(slope, 3), "bias": round(bias, 3), "mae": metric}
-            print("평가 리포트:", report)
-            return report
+            mode = resolve_mode()
+            seed = 40 + EXAMPLE_VARIANT * 7
+            reports = {"mode": mode, "variant": EXAMPLE_VARIANT, "sklearn_available": SKLEARN_OK}
+
+            if mode in {"overview", "supervised", "ml_general"}:
+                reports["regression"] = build_regression_case(seed)
+                reports["classification"] = [
+                    build_classification_case(seed + idx, name)
+                    for idx, name in enumerate(classifier_names_for_variant()[:2], start=1)
+                ]
+                if mode == "supervised" and EXAMPLE_VARIANT >= 3:
+                    reports["unsupervised"] = build_unsupervised_case(seed + 99)
+            elif mode == "regression":
+                reports["regression"] = build_regression_case(seed)
+            elif mode in {"classification", "feature", "evaluation", "generalization"}:
+                reports["classification"] = [
+                    build_classification_case(seed + idx, name)
+                    for idx, name in enumerate(classifier_names_for_variant(), start=1)
+                ]
+                if mode in {"evaluation", "generalization"}:
+                    reports["regression"] = build_regression_case(seed + 77)
+                if mode == "supervised":
+                    reports["unsupervised"] = build_unsupervised_case(seed + 99)
+            else:
+                reports["regression"] = build_regression_case(seed)
+
+            print("리포트:", reports)
+            return reports
         """
 
     if template == "deep_learning":
         return """
-        def relu(x):
-            return x if x > 0 else 0.0
+        import random
 
-        def dense_forward(inputs, weights, bias):
-            z = sum(i * w for i, w in zip(inputs, weights)) + bias
-            return relu(z)
+        try:
+            import numpy as np
+        except Exception:
+            np = None
 
-        def predict_batch(batch, weights, bias):
-            return [round(dense_forward(x, weights, bias), 4) for x in batch]
+        try:
+            import torch
+            import torch.nn as nn
+            import torch.optim as optim
+            TORCH_OK = True
+        except Exception:
+            TORCH_OK = False
+
+        try:
+            import tensorflow as tf
+            TF_OK = True
+        except Exception:
+            TF_OK = False
+
+        def load_digit_dataset():
+            if TF_OK:
+                try:
+                    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+                    x_train = x_train.reshape((-1, 28 * 28)).astype("float32") / 255.0
+                    x_test = x_test.reshape((-1, 28 * 28)).astype("float32") / 255.0
+                    limit_train = 2500 + EXAMPLE_VARIANT * 250
+                    limit_test = 700 + EXAMPLE_VARIANT * 60
+                    return (
+                        x_train[:limit_train],
+                        y_train[:limit_train],
+                        x_test[:limit_test],
+                        y_test[:limit_test],
+                        "mnist",
+                    )
+                except Exception:
+                    pass
+
+            try:
+                from sklearn.datasets import load_digits
+                from sklearn.model_selection import train_test_split
+
+                digits = load_digits()
+                x = digits.data.astype("float32") / 16.0
+                y = digits.target.astype("int64")
+                x_train, x_test, y_train, y_test = train_test_split(
+                    x, y, test_size=0.25, random_state=42, stratify=y
+                )
+                return x_train, y_train, x_test, y_test, "digits"
+            except Exception:
+                pass
+
+            # numpy fallback용 간단한 synthetic 데이터
+            rng = random.Random(42)
+            x_train = []
+            y_train = []
+            x_test = []
+            y_test = []
+            for _ in range(300):
+                label = rng.randint(0, 1)
+                base = 0.8 if label == 1 else 0.2
+                x_train.append([base + rng.random() * 0.2, base + rng.random() * 0.2])
+                y_train.append(label)
+            for _ in range(120):
+                label = rng.randint(0, 1)
+                base = 0.8 if label == 1 else 0.2
+                x_test.append([base + rng.random() * 0.2, base + rng.random() * 0.2])
+                y_test.append(label)
+            return x_train, y_train, x_test, y_test, "synthetic"
+
+        def run_torch_demo(x_train, y_train, x_test, y_test, epochs, batch_size):
+            x_train_t = torch.tensor(x_train, dtype=torch.float32)
+            y_train_t = torch.tensor(y_train, dtype=torch.long)
+            x_test_t = torch.tensor(x_test, dtype=torch.float32)
+            y_test_t = torch.tensor(y_test, dtype=torch.long)
+
+            input_dim = x_train_t.shape[1]
+            num_classes = int(torch.max(y_train_t).item()) + 1
+
+            model = nn.Sequential(
+                nn.Linear(input_dim, 64),
+                nn.ReLU(),
+                nn.Linear(64, num_classes),
+            )
+            criterion = nn.CrossEntropyLoss()
+            optimizer = optim.Adam(model.parameters(), lr=0.01)
+            history = []
+
+            for epoch in range(epochs):
+                perm = torch.randperm(x_train_t.size(0))
+                total_loss = 0.0
+                for i in range(0, x_train_t.size(0), batch_size):
+                    idx = perm[i : i + batch_size]
+                    xb = x_train_t[idx]
+                    yb = y_train_t[idx]
+                    optimizer.zero_grad()
+                    logits = model(xb)
+                    loss = criterion(logits, yb)
+                    loss.backward()
+                    optimizer.step()
+                    total_loss += float(loss.item()) * len(idx)
+                history.append(round(total_loss / x_train_t.size(0), 4))
+
+            with torch.no_grad():
+                logits = model(x_test_t)
+                pred = torch.argmax(logits, dim=1)
+                acc = float((pred == y_test_t).float().mean().item())
+                mismatches = (pred != y_test_t).nonzero(as_tuple=False).flatten().tolist()[:5]
+                mis_samples = [
+                    {"idx": int(i), "true": int(y_test_t[i].item()), "pred": int(pred[i].item())}
+                    for i in mismatches
+                ]
+            return {
+                "framework": "torch",
+                "optimizer": "Adam",
+                "epoch": epochs,
+                "batch": batch_size,
+                "loss_curve": history,
+                "test_accuracy": round(acc, 4),
+                "misclassified": mis_samples,
+            }
+
+        def run_tf_demo(x_train, y_train, x_test, y_test, epochs, batch_size):
+            model = tf.keras.Sequential(
+                [
+                    tf.keras.layers.Input(shape=(len(x_train[0]),)),
+                    tf.keras.layers.Dense(64, activation="relu"),
+                    tf.keras.layers.Dense(int(max(y_train)) + 1, activation="softmax"),
+                ]
+            )
+            model.compile(
+                optimizer="adam",
+                loss="sparse_categorical_crossentropy",
+                metrics=["accuracy"],
+            )
+            hist = model.fit(
+                x_train,
+                y_train,
+                validation_split=0.1,
+                epochs=epochs,
+                batch_size=batch_size,
+                verbose=0,
+            )
+            probs = model.predict(x_test, verbose=0)
+            pred = probs.argmax(axis=1)
+            acc = float((pred == y_test).mean())
+            mis = []
+            for i, (t, p) in enumerate(zip(y_test, pred)):
+                if t != p:
+                    mis.append({"idx": int(i), "true": int(t), "pred": int(p)})
+                    if len(mis) >= 5:
+                        break
+            return {
+                "framework": "tensorflow",
+                "optimizer": "adam",
+                "epoch": epochs,
+                "batch": batch_size,
+                "loss_curve": [round(float(v), 4) for v in hist.history.get("loss", [])],
+                "test_accuracy": round(acc, 4),
+                "misclassified": mis,
+            }
+
+        def run_numpy_fallback(x_train, y_train, x_test, y_test, epochs):
+            # nearest-centroid 기반 fallback (프레임워크 미설치 환경용)
+            labels = sorted(set(y_train))
+            centroids = {}
+            for label in labels:
+                rows = [x for x, y in zip(x_train, y_train) if y == label]
+                if np is not None:
+                    centroids[label] = np.array(rows).mean(axis=0)
+                else:
+                    size = len(rows[0])
+                    centroids[label] = [sum(row[i] for row in rows) / len(rows) for i in range(size)]
+            loss_curve = [round(1.0 / (ep + 1), 4) for ep in range(epochs)]
+            preds = []
+            for sample in x_test:
+                best_label = labels[0]
+                best_dist = None
+                for label in labels:
+                    center = centroids[label]
+                    if np is not None:
+                        dist = float(np.linalg.norm(np.array(sample) - center))
+                    else:
+                        dist = sum((sample[i] - center[i]) ** 2 for i in range(len(sample))) ** 0.5
+                    if best_dist is None or dist < best_dist:
+                        best_dist = dist
+                        best_label = label
+                preds.append(best_label)
+            acc = sum(1 for t, p in zip(y_test, preds) if t == p) / len(y_test)
+            mis = []
+            for i, (t, p) in enumerate(zip(y_test, preds)):
+                if t != p:
+                    mis.append({"idx": int(i), "true": int(t), "pred": int(p)})
+                    if len(mis) >= 5:
+                        break
+            return {
+                "framework": "numpy-fallback",
+                "optimizer": "centroid-update",
+                "epoch": epochs,
+                "batch": 0,
+                "loss_curve": loss_curve,
+                "test_accuracy": round(acc, 4),
+                "misclassified": mis,
+            }
 
         def main():
             print("오늘 주제:", TOPIC)
-            batch = [[0.2, 0.5, 0.1], [0.4, 0.4, 0.2], [0.9, 0.1, 0.3]]
-            weights = [0.6, 0.3, 0.8]
-            bias = -0.2
-            preds = predict_batch(batch, weights, bias)
-            report = {"predictions": preds, "max_pred": max(preds)}
-            print("추론 결과:", report)
+            epochs = 2 + EXAMPLE_VARIANT
+            batch_size = 16 + EXAMPLE_VARIANT * 8
+            x_train, y_train, x_test, y_test, dataset = load_digit_dataset()
+
+            if TORCH_OK:
+                report = run_torch_demo(x_train, y_train, x_test, y_test, epochs=epochs, batch_size=batch_size)
+            elif TF_OK:
+                report = run_tf_demo(x_train, y_train, x_test, y_test, epochs=epochs, batch_size=batch_size)
+            else:
+                report = run_numpy_fallback(x_train, y_train, x_test, y_test, epochs=epochs)
+
+            report.update(
+                {
+                    "dataset": dataset,
+                    "sample_train": len(x_train),
+                    "sample_test": len(x_test),
+                    "concepts": {
+                        "epoch": epochs,
+                        "batch": batch_size,
+                        "optimizer": report.get("optimizer"),
+                    },
+                }
+            )
+            print("딥러닝 리포트:", report)
             return report
         """
 
