@@ -409,7 +409,7 @@
   "module": "질문 구조화 · 단계 4/4 운영 최적화 [class360]",
   "level": "입문",
   "session": "8/40",
-  "track_outcome": "좋은 프롬프트와 나쁜 프롬프트의 차이를 설명할 수 있다.",
+  "track_outcome": "재사용 가능한 구조화 프롬프트를 설계할 수 있다.",
   "questions": [
     {
       "question": "class360 (프롬프트 엔지니어링 8/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'질문 구조화 · 단계 4/4 운영 최적화 [class360]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "예시 기반 학습 · 단계 4/4 운영 최적화 [class372] 실습: `예시 기반 학습` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "자동화 프롬프트 패턴 · 단계 4/4 운영 최적화 [class384] 실습: `자동화 프롬프트 패턴` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "질문 구조화 · 단계 4/4 운영 최적화 [class360] 실습: `질문 구조화` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "평가와 개선 · 단계 4/4 운영 최적화 [class380] 실습: `평가와 개선` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "예시 기반 학습 · 단계 4/4 운영 최적화 [class372] 실습: 동일 작업을 zero/one/few-shot으로 각각 실행해 비교하세요.",
+        "자동화 프롬프트 패턴 · 단계 4/4 운영 최적화 [class384] 실습: 재사용 가능한 템플릿 함수를 작성하고 입력 변수를 분리하세요.",
+        "질문 구조화 · 단계 4/4 운영 최적화 [class360] 실습: 동일 작업을 구조 없는 프롬프트와 구조화 프롬프트로 비교하세요.",
+        "평가와 개선 · 단계 4/4 운영 최적화 [class380] 실습: 애매한 지시문을 명확한 지시문으로 수정해 성능을 비교하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'질문 구조화 · 단계 4/4 운영 최적화 [class360]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다."
+        "동일 과업에서 여러 프롬프트 버전을 A/B 비교한다.",
+        "도메인별 템플릿과 필수 규칙을 분리해 작성한다.",
+        "단일 지시와 단계적 지시를 비교해 중간 검증을 추가한다.",
+        "입력 변수와 지시문을 분리한 템플릿으로 프롬프트를 작성한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'질문 구조화 · 단계 4/4 운영 최적화 [class360]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다."
+        "단일 템플릿을 모든 도메인에 적용해 품질 편차가 커진다.",
+        "예시 품질 점검 없이 개수만 늘려 오히려 일반화를 해친다.",
+        "수동 복붙 방식으로 운영해 변경 추적과 회귀 검증이 불가능해진다.",
+        "구조 없이 지시를 나열해 출력 누락과 형식 불일치를 만든다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,20 +458,20 @@
     {
       "question": "'질문 구조화 · 단계 4/4 운영 최적화 [class360]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "평가와 개선 · 단계 4/4 운영 최적화 [class380] 점검: 역할/목표/형식을 각각 설명할 수 있다.",
-        "역할/맥락 설정 · 단계 4/4 운영 최적화 [class364] 점검: 역할/목표/형식을 각각 설명할 수 있다.",
-        "출력 포맷 제어 · 단계 4/4 운영 최적화 [class368] 점검: 역할/목표/형식을 각각 설명할 수 있다.",
-        "질문 구조화 · 단계 4/4 운영 최적화 [class360] 점검: 역할/목표/형식을 각각 설명할 수 있다."
+        "평가와 개선 · 단계 4/4 운영 최적화 [class380] 점검: 실패 패턴을 분류해 원인-대응을 연결했다.",
+        "역할/맥락 설정 · 단계 4/4 운영 최적화 [class364] 점검: 역할과 맥락을 별도 필드로 설계했다.",
+        "출력 포맷 제어 · 단계 4/4 운영 최적화 [class368] 점검: 구조화 출력(JSON 또는 표)을 안정적으로 생성했다.",
+        "질문 구조화 · 단계 4/4 운영 최적화 [class360] 점검: 역할/목표/입력/형식/제약 5요소를 포함한 템플릿을 작성했다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '같은 질문을 2회 이상 실행해 형식 일관성과 누락 항목을 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '5요소 포함 여부와 템플릿 재사용성을 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'질문 구조화 · 단계 4/4 운영 최적화 [class360]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class168_example1.py",
-        "class122_example1.py",
-        "class492_example1.py",
+        "class361_example1.py",
+        "class384_example1.py",
+        "class392_example1.py",
         "class360_example1.py"
       ],
       "answer_index": 3,
@@ -480,10 +480,10 @@
     {
       "question": "'class360_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "numpy",
+        "data",
         "prompt",
-        "variables",
-        "nlp"
+        "ml",
+        "python"
       ],
       "answer_index": 1,
       "explanation": "class360_example2.py의 EXAMPLE_TEMPLATE 값은 'prompt' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class360_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "relu",
-        "simulate_generation",
-        "infer_schema",
-        "build_prompt"
+        "build_regression_case",
+        "choose_output_formats",
+        "build_constraints",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class360_example3.py 함수 목록: build_prompt, lint_prompt, main, self_check, challenge_case"
+      "explanation": "class360_example3.py 함수 목록: resolve_mode, template_version, build_cases, build_constraints, split_system_user_prompts, build_prompt, lint_prompt, build_zero_one_few_prompts"
     },
     {
       "question": "'class360_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "pandas",
-        "datetime",
-        "(import 없음)",
-        "numpy"
+        "sklearn",
+        "pathlib",
+        "json",
+        "datetime"
       ],
       "answer_index": 2,
-      "explanation": "class360_example4.py import 목록: (import 없음)"
+      "explanation": "class360_example4.py import 목록: json"
     },
     {
       "question": "'class360_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,10 +537,31 @@
     "templates": [
       "prompt"
     ],
-    "imports": [],
+    "imports": [
+      "json"
+    ],
     "functions": [
+      "resolve_mode",
+      "template_version",
+      "build_cases",
+      "build_constraints",
+      "split_system_user_prompts",
       "build_prompt",
       "lint_prompt",
+      "build_zero_one_few_prompts",
+      "build_reasoning_prompts",
+      "parse_max_chars",
+      "enforce_length",
+      "enforce_banned_rules",
+      "apply_tone",
+      "render_output",
+      "simulate_response",
+      "check_format",
+      "evaluate_response",
+      "choose_output_formats",
+      "build_prompt_variants",
+      "analyze_failure_patterns",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -552,20 +573,62 @@
     "by_file": {
       "class360_example1.py": {
         "template": "prompt",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
+          "resolve_mode",
+          "template_version",
+          "build_cases",
+          "build_constraints",
+          "split_system_user_prompts",
           "build_prompt",
           "lint_prompt",
+          "build_zero_one_few_prompts",
+          "build_reasoning_prompts",
+          "parse_max_chars",
+          "enforce_length",
+          "enforce_banned_rules",
+          "apply_tone",
+          "render_output",
+          "simulate_response",
+          "check_format",
+          "evaluate_response",
+          "choose_output_formats",
+          "build_prompt_variants",
+          "analyze_failure_patterns",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class360_example2.py": {
         "template": "prompt",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
+          "resolve_mode",
+          "template_version",
+          "build_cases",
+          "build_constraints",
+          "split_system_user_prompts",
           "build_prompt",
           "lint_prompt",
+          "build_zero_one_few_prompts",
+          "build_reasoning_prompts",
+          "parse_max_chars",
+          "enforce_length",
+          "enforce_banned_rules",
+          "apply_tone",
+          "render_output",
+          "simulate_response",
+          "check_format",
+          "evaluate_response",
+          "choose_output_formats",
+          "build_prompt_variants",
+          "analyze_failure_patterns",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -573,10 +636,31 @@
       },
       "class360_example3.py": {
         "template": "prompt",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
+          "resolve_mode",
+          "template_version",
+          "build_cases",
+          "build_constraints",
+          "split_system_user_prompts",
           "build_prompt",
           "lint_prompt",
+          "build_zero_one_few_prompts",
+          "build_reasoning_prompts",
+          "parse_max_chars",
+          "enforce_length",
+          "enforce_banned_rules",
+          "apply_tone",
+          "render_output",
+          "simulate_response",
+          "check_format",
+          "evaluate_response",
+          "choose_output_formats",
+          "build_prompt_variants",
+          "analyze_failure_patterns",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -585,10 +669,31 @@
       },
       "class360_example4.py": {
         "template": "prompt",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
+          "resolve_mode",
+          "template_version",
+          "build_cases",
+          "build_constraints",
+          "split_system_user_prompts",
           "build_prompt",
           "lint_prompt",
+          "build_zero_one_few_prompts",
+          "build_reasoning_prompts",
+          "parse_max_chars",
+          "enforce_length",
+          "enforce_banned_rules",
+          "apply_tone",
+          "render_output",
+          "simulate_response",
+          "check_format",
+          "evaluate_response",
+          "choose_output_formats",
+          "build_prompt_variants",
+          "analyze_failure_patterns",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -596,10 +701,31 @@
       },
       "class360_example5.py": {
         "template": "prompt",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
+          "resolve_mode",
+          "template_version",
+          "build_cases",
+          "build_constraints",
+          "split_system_user_prompts",
           "build_prompt",
           "lint_prompt",
+          "build_zero_one_few_prompts",
+          "build_reasoning_prompts",
+          "parse_max_chars",
+          "enforce_length",
+          "enforce_banned_rules",
+          "apply_tone",
+          "render_output",
+          "simulate_response",
+          "check_format",
+          "evaluate_response",
+          "choose_output_formats",
+          "build_prompt_variants",
+          "analyze_failure_patterns",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -610,23 +736,23 @@
   "example_snippets": [
     {
       "file": "class360_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example1: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example1: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\nEXAMPLE_VARIANT = 1\n\nimport json\n\nLEARNING_GOALS = [\n    \"원하는 결과를 얻기 위한 프롬프트 설계 능력 습득\",\n    \"프롬프트 패턴과 전략 이해\",\n    \"출력 품질·형식·안정성 개선 방법 습득\",\n    \"LLM 응답 제어 기술 확보\",\n]\nBANNED_RULES = [\"무조건 정답\", \"100% 보장\", \"절대 틀리지 않음\"]"
     },
     {
       "file": "class360_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example2: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example2: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\nEXAMPLE_VARIANT = 2\n\nimport json\n\nLEARNING_GOALS = [\n    \"원하는 결과를 얻기 위한 프롬프트 설계 능력 습득\",\n    \"프롬프트 패턴과 전략 이해\",\n    \"출력 품질·형식·안정성 개선 방법 습득\",\n    \"LLM 응답 제어 기술 확보\",\n]\nBANNED_RULES = [\"무조건 정답\", \"100% 보장\", \"절대 틀리지 않음\"]"
     },
     {
       "file": "class360_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example3: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example3: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\nEXAMPLE_VARIANT = 3\n\nimport json\n\nLEARNING_GOALS = [\n    \"원하는 결과를 얻기 위한 프롬프트 설계 능력 습득\",\n    \"프롬프트 패턴과 전략 이해\",\n    \"출력 품질·형식·안정성 개선 방법 습득\",\n    \"LLM 응답 제어 기술 확보\",\n]\nBANNED_RULES = [\"무조건 정답\", \"100% 보장\", \"절대 틀리지 않음\"]"
     },
     {
       "file": "class360_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example4: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example4: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\nEXAMPLE_VARIANT = 4\n\nimport json\n\nLEARNING_GOALS = [\n    \"원하는 결과를 얻기 위한 프롬프트 설계 능력 습득\",\n    \"프롬프트 패턴과 전략 이해\",\n    \"출력 품질·형식·안정성 개선 방법 습득\",\n    \"LLM 응답 제어 기술 확보\",\n]\nBANNED_RULES = [\"무조건 정답\", \"100% 보장\", \"절대 틀리지 않음\"]"
     },
     {
       "file": "class360_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example5: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class360 example5: 질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\"\"\n\nTOPIC = \"질문 구조화 · 단계 4/4 운영 최적화 [class360]\"\nEXAMPLE_TEMPLATE = \"prompt\"\nEXAMPLE_VARIANT = 5\n\nimport json\n\nLEARNING_GOALS = [\n    \"원하는 결과를 얻기 위한 프롬프트 설계 능력 습득\",\n    \"프롬프트 패턴과 전략 이해\",\n    \"출력 품질·형식·안정성 개선 방법 습득\",\n    \"LLM 응답 제어 기술 확보\",\n]\nBANNED_RULES = [\"무조건 정답\", \"100% 보장\", \"절대 틀리지 않음\"]"
     }
   ]
 };
