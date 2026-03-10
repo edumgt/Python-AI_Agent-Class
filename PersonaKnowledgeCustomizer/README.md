@@ -1,4 +1,4 @@
-# project003 · 사전 데이터 기반 PERSO AI의 답변 커스텀하기
+# PersonaKnowledgeCustomizer · 사전 데이터 기반 PERSO AI의 답변 커스텀하기
 
 독립 실행형 지식 커스텀 답변 프로젝트입니다.
 
@@ -9,7 +9,7 @@
 
 ## 실행
 ```bash
-cd project/Prj_PersonaVoiceAI/project003
+cd PersonaKnowledgeCustomizer
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

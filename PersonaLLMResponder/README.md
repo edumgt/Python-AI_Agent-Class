@@ -1,4 +1,4 @@
-# project002 · 거대 언어 모델을 활용한 PERSONA AI 답변 기능 구현하기
+# PersonaLLMResponder · 거대 언어 모델을 활용한 PERSONA AI 답변 기능 구현하기
 
 독립 실행형 PERSONA 답변 프로젝트입니다.
 
@@ -9,7 +9,7 @@
 
 ## 실행
 ```bash
-cd project/Prj_PersonaVoiceAI/project002
+cd PersonaLLMResponder
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

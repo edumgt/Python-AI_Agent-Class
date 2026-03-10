@@ -1,4 +1,4 @@
-# project001 · 나만의 음성 모델 만들기
+# VoiceModelBuilder · 나만의 음성 모델 만들기
 
 독립 실행형 음성 모델 실습 프로젝트입니다.
 
@@ -9,7 +9,7 @@
 
 ## 실행
 ```bash
-cd project/Prj_PersonaVoiceAI/project001
+cd VoiceModelBuilder
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

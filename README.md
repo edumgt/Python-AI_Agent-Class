@@ -47,7 +47,7 @@
 최종 목표: `Agent/` 폴더의 실제 시스템 구축을 단계별로 연습하는 개발자 중심 커리큘럼 (520개 고유 학습주제)
 
 첨부 커리큘럼의 **정규교과 520시간** 기준으로 세분화한 교육 저장소이며, 520개 클래스의 학습주제를 모두 고유하게 구성했습니다.  
-`class001`부터 `class500`은 정규교과, `project001`부터 `project020`은 프로젝트 과목으로 운영합니다.
+`class001`부터 `class500`은 정규교과, 프로젝트 과목은 루트의 3개 독립 앱(`VoiceModelBuilder`, `PersonaLLMResponder`, `PersonaKnowledgeCustomizer`)으로 운영합니다.
 
 ## 1) 현재까지 반영된 핵심 작업
 - 520개 차시 `classXXX.md` 자동 정비
@@ -84,7 +84,8 @@
   - `tools/`: 콘텐츠 재생성/검증 스크립트
   - `docs/`: 운영 가이드/채점 가이드/부가 문서
   - `curriculum_index.csv`: 전체 차시 인덱스
-  - `project/`: 프로젝트 트랙 통합 자료(`Prj_PersonaVoiceAI/projectXXX`, 커리큘럼 + FastAPI/FE/Docker 샘플 포함)
+  - `VoiceModelBuilder/`, `PersonaLLMResponder/`, `PersonaKnowledgeCustomizer/`: 프로젝트 독립 앱(FastAPI + Vanilla JS + Docker)
+  - `project/`: 프로젝트 인덱스/매니페스트
 
 ## 3-1) 과목 폴더 매핑 및 상세 학습 내용
 | 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
@@ -98,7 +99,7 @@
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, LangGraph 상태 흐름, LangSmith 추적 기반 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
-| 프로젝트 | `project` | project001~project020 | 나만의 음성 모델 만들기 프로젝트 트랙. 개인 맞춤 코칭 음성봇 PERSONA AI 기초 구축부터 사전 데이터 기반 구축·지속학습 운영까지 통합 실습 |
+| 프로젝트 앱 | `VoiceModelBuilder`, `PersonaLLMResponder`, `PersonaKnowledgeCustomizer` | 독립 앱 3종 | 음성 모델 생성, PERSONA LLM 답변, 사전 데이터 기반 답변 커스텀을 각각 독립 서비스로 실습 |
 
 ### 3-1-1) dataVizPrep 7단계 구성(요청 반영)
 | 단계 | 핵심 내용 | class 범위 |
@@ -152,14 +153,13 @@
 | 로컬/OnPrem 개발 표준화 | class001~class128 | 가상환경, 의존성 잠금, Docker 이미지 빌드, API 기본 서빙 | OnPrem 서버에서 재현 가능한 Python 서비스 |
 | ML 학습·추론 분리 | class081~class224 | 모델 학습 파이프라인, 추론 API, 배치/실시간 추론 전략 | 학습 잡 + 추론 서버 분리 배포 |
 | LLM/Prompt 서비스화 | class289~class448 | 외부 라이브러리(LangChain 등) 통합, 안전한 응답 정책, 관측성 | LLM 기반 백엔드 API 운영 |
-| 프로젝트 통합 운영 | project001~project020 | 개인 맞춤 코칭 음성봇 PERSONA AI 구축 + STT/LLM/TTS 대화 루프 + 사전 데이터 기반 품질 개선 + 지속학습 운영 | 음성 AI 서비스 구현부터 운영 자동화까지 연결한 통합 프로젝트 결과물 |
+| 프로젝트 통합 운영 | VoiceModelBuilder / PersonaLLMResponder / PersonaKnowledgeCustomizer | 음성 모델 생성, PERSONA 답변, 사전 데이터 기반 커스텀 파이프라인을 독립 개발 후 통합 운영 | 음성 AI 서비스 핵심 컴포넌트를 분리 설계하고 운영 자동화까지 연결 |
 
 ## 3-2-1) 프로젝트 과목과 보고서 접목
 - 기준 문서: [OPS개념.md](/home/Python-AI_Agent-Class/docs/OPS개념.md)
-- project001~project005: 개인 맞춤 코칭 음성봇 PERSONA AI 기초 구축(프로필/코칭 시나리오/기본 음성 응답)
-- project006~project010: STT↔LLM↔TTS 코칭 대화 파이프라인 구현(지연·품질·fallback 검증)
-- project011~project015: 사전 데이터 기반 PERSONA AI 구축(데이터 스키마/라벨 일관성/유사도 평가)
-- project016~project020: PERSONA AI 지속학습과 품질 운영(드리프트 감지/재학습/롤백 runbook)
+- `VoiceModelBuilder`: 개인 맞춤 코칭 음성 모델 구축(프로필/학습 품질/합성 프리뷰)
+- `PersonaLLMResponder`: 거대 언어 모델 기반 PERSONA 답변 기능 구현(페르소나 규칙/응답 생성)
+- `PersonaKnowledgeCustomizer`: 사전 데이터 기반 PERSO 답변 커스텀(지식 업서트/검색/근거 기반 응답)
 
 ## 3-3) 공공 데이터·API Hub 연계 학습
 - 공공데이터포털(`data.go.kr`) OpenAPI: 교통/환경/인구 등 API 수집, 전처리, 시각화, 예측 실습
