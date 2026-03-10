@@ -410,6 +410,10 @@ def is_langchain_subject(subject_name: str) -> bool:
     return subject_name.strip() == "Langchain 활용하기"
 
 
+def is_rag_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "RAG(Retrieval-Augmented Generation)"
+
+
 DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     "데이터 분석 환경 구성": {
         "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
@@ -2695,6 +2699,329 @@ LANGCHAIN_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     },
 }
 
+RAG_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "RAG 개요": {
+        "kid_summary": "RAG가 왜 필요한지, LLM 단독 사용 한계와 검색+생성 결합 구조를 이해하는 시작 차시입니다.",
+        "why": "LLM 단독 답변은 최신 정보와 사내 문서 반영이 어렵고 근거 없는 환각이 발생할 수 있어 검색 결합이 필요합니다.",
+        "concepts": [
+            "`RAG 필요성`은 최신 정보/사내 정보/근거 기반 답변을 안정적으로 반영하기 위함입니다.",
+            "`LLM 단독 한계`는 학습 시점 이후 정보 공백, 출처 부재, 환각 위험으로 나타납니다.",
+            "`검색+생성 구조`는 검색기로 문서를 찾고 생성 모델에 문맥을 주입해 답변 품질을 높입니다.",
+        ],
+        "practice_steps": [
+            "같은 질문을 LLM 단독 방식과 RAG 방식으로 각각 실행해 차이를 비교하세요.",
+            "최신 정보 질문과 사내 정책 질문을 분리해 실패/성공 패턴을 기록하세요.",
+            "RAG 아키텍처(검색-주입-생성-출처반환)를 다이어그램으로 정리하세요.",
+        ],
+        "checklist": [
+            "RAG가 필요한 이유를 LLM 단독 한계와 연결해 설명할 수 있다.",
+            "최신 정보/사내 정보 활용 문제를 사례로 설명할 수 있다.",
+            "검색+생성 결합 구조를 단계별로 설명할 수 있다.",
+        ],
+        "syntax": ["질문 정규화", "retriever 호출", "컨텍스트 주입 프롬프트", "출처 포함 응답"],
+        "flow_steps": [
+            "질문 목적과 정보 최신성 요구를 확인한다",
+            "관련 문서를 검색해 근거 후보를 수집한다",
+            "검색 결과를 프롬프트 문맥으로 주입한다",
+            "근거와 함께 최종 답변을 생성한다",
+        ],
+        "focus_points": [
+            "LLM 단독과 RAG 결과 비교가 동일 조건에서 수행되는지 확인하기",
+            "근거 없는 문장을 탐지/표시하는 규칙이 있는지 점검하기",
+            "사내 문서 접근 범위와 보안 조건이 명시됐는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 문서 수집부터 답변 생성까지 RAG 전체 구조를 파이프라인으로 구현합니다.",
+    },
+    "문서 수집 전략": {
+        "kid_summary": "문서 수집, 청크, 임베딩, 벡터 저장, 검색, 프롬프트 주입, 답변 생성으로 이어지는 전체 파이프라인을 다룹니다.",
+        "why": "RAG 품질은 모델 자체보다 데이터 파이프라인 설계 품질에 더 크게 좌우됩니다.",
+        "concepts": [
+            "`RAG 전체 구조`는 문서 수집 -> 문서 분할 -> 임베딩 -> 벡터 저장 -> 검색 -> 프롬프트 주입 -> 답변 생성 단계입니다.",
+            "`수집 전략`은 문서 최신성, 접근 권한, 메타데이터 일관성을 함께 관리해야 합니다.",
+            "`파이프라인 분리`는 수집/인덱싱/질의응답 단계를 분리해 장애 복구와 운영을 쉽게 만듭니다.",
+        ],
+        "practice_steps": [
+            "문서 수집부터 답변 생성까지 단계별 입출력 스키마를 정의하세요.",
+            "사내 위키/FAQ/PDF 같은 소스별 수집 규칙을 구분해 작성하세요.",
+            "단계별 실패 지점(수집 실패, 임베딩 실패, 검색 실패)을 로그로 점검하세요.",
+        ],
+        "checklist": [
+            "RAG 전체 파이프라인 7단계를 순서대로 설명할 수 있다.",
+            "문서 수집 정책(최신성/권한/메타데이터)을 정의했다.",
+            "파이프라인 단계별 장애 대응 포인트를 정리했다.",
+        ],
+        "syntax": ["loader 인터페이스", "pipeline stage 함수", "단계별 로그", "실패 재시도"],
+        "flow_steps": [
+            "문서 소스와 수집 주기를 정의한다",
+            "수집 문서를 표준 포맷으로 변환한다",
+            "인덱싱과 질의응답 파이프라인을 분리 구성한다",
+            "단계별 모니터링과 오류 복구를 적용한다",
+        ],
+        "focus_points": [
+            "수집 단계에서 문서 중복/누락을 탐지하는지 확인하기",
+            "단계 간 입력 스키마가 일관적인지 점검하기",
+            "재색인 주기와 운영 비용 균형을 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 문서 전처리와 chunking 전략으로 검색 품질 기반을 다집니다.",
+    },
+    "문서 청크 설계": {
+        "kid_summary": "PDF/TXT/HTML/CSV 문서를 처리하고 chunk 크기/overlap/메타데이터 설계를 통해 검색 정확도를 높이는 차시입니다.",
+        "why": "문서 구조를 보존하지 않고 무작위로 분할하면 검색 적중률과 답변 근거성이 크게 떨어집니다.",
+        "concepts": [
+            "`문서 전처리`는 PDF, TXT, HTML, CSV 형식을 공통 텍스트+메타데이터 구조로 정규화하는 작업입니다.",
+            "`chunk 크기/overlap`은 검색 정밀도와 문맥 보존 사이의 균형을 결정합니다.",
+            "`메타데이터 관리`(문서ID, 페이지, 섹션, 작성일)는 source 반환과 품질 평가에 필수입니다.",
+        ],
+        "practice_steps": [
+            "형식별 문서(PDF/TXT/HTML/CSV)를 같은 스키마로 변환해 보세요.",
+            "chunk size와 overlap 조합을 바꿔 검색 품질 변화를 비교하세요.",
+            "메타데이터 누락/오류가 source 반환에 미치는 영향을 점검하세요.",
+        ],
+        "checklist": [
+            "문서 형식별 전처리 규칙을 구현했다.",
+            "chunk size/overlap별 검색 품질 비교 결과를 기록했다.",
+            "메타데이터를 활용해 출처 추적이 가능하도록 구성했다.",
+        ],
+        "syntax": ["문서 로더", "chunk splitter", "overlap 설정", "메타데이터 dict"],
+        "flow_steps": [
+            "문서 형식을 감지해 표준 텍스트로 변환한다",
+            "chunk size/overlap 전략으로 문서를 분할한다",
+            "각 청크에 메타데이터를 부여한다",
+            "검색 품질 기준으로 분할 전략을 검증한다",
+        ],
+        "focus_points": [
+            "문장/문단 경계가 과도하게 깨지지 않는지 확인하기",
+            "메타데이터(출처/페이지/버전) 누락이 없는지 점검하기",
+            "분할 전략 변경 시 품질 지표 재측정을 수행하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 임베딩 개념과 코사인 유사도를 기반으로 의미 검색을 구현합니다.",
+    },
+    "임베딩 생성": {
+        "kid_summary": "임베딩 개념, 문장 의미 벡터, cosine similarity, 임베딩 모델 선택 기준을 학습하는 차시입니다.",
+        "why": "검색 정확도는 키워드 매칭보다 의미 벡터 품질에 크게 좌우되므로 임베딩 이해가 핵심입니다.",
+        "concepts": [
+            "`임베딩`은 텍스트 의미를 고정 길이 벡터로 변환해 유사도 계산을 가능하게 합니다.",
+            "`코사인 유사도`는 벡터 방향 유사성을 측정해 의미 기반 검색 순위를 만듭니다.",
+            "`모델 선택 기준`은 언어 지원, 도메인 적합성, 비용, 지연시간, 차원 수를 함께 봐야 합니다.",
+        ],
+        "practice_steps": [
+            "문장 임베딩을 생성하고 코사인 유사도로 상위 유사 문장을 찾으세요.",
+            "두 개 이상 임베딩 모델을 가정해 검색 결과 차이를 비교하세요.",
+            "차원 수/정규화 설정이 검색 점수에 주는 영향을 점검하세요.",
+        ],
+        "checklist": [
+            "임베딩과 키워드 검색의 차이를 설명할 수 있다.",
+            "코사인 유사도 계산 흐름을 구현했다.",
+            "모델 선택 기준(품질/비용/지연)을 정리했다.",
+        ],
+        "syntax": ["embedding 함수", "cosine similarity", "벡터 정규화", "모델 선택표"],
+        "flow_steps": [
+            "문장을 벡터로 변환한다",
+            "질문 벡터와 문서 벡터 유사도를 계산한다",
+            "유사도 점수로 후보를 정렬한다",
+            "모델/파라미터별 품질을 비교한다",
+        ],
+        "focus_points": [
+            "임베딩 전처리(소문자화/기호 처리)가 일관적인지 확인하기",
+            "코사인 계산에서 0벡터 예외 처리가 있는지 점검하기",
+            "모델 변경 시 품질과 비용을 함께 비교하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 벡터DB 인덱싱과 Top-K 검색, reranking 기초를 연결합니다.",
+    },
+    "벡터DB 기초": {
+        "kid_summary": "Chroma/FAISS/Qdrant 개요와 인덱싱, Top-K 검색, reranking 개념, 검색 실패 분석을 다루는 차시입니다.",
+        "why": "임베딩만으로는 운영 검색을 할 수 없고, 벡터DB 인덱싱과 검색 전략이 실제 성능을 좌우합니다.",
+        "concepts": [
+            "`벡터DB`는 Chroma(개발 편의), FAISS(로컬 고성능), Qdrant(서비스형 운영)에 강점이 다릅니다.",
+            "`인덱싱 + Top-K 검색`은 질의 응답 지연과 검색 정확도 균형을 맞추는 기본 구조입니다.",
+            "`reranking`은 1차 검색 후보를 재정렬해 정답률을 높이고 실패 케이스를 줄이는 방법입니다.",
+        ],
+        "practice_steps": [
+            "동일 청크를 가정해 Chroma/FAISS/Qdrant 선택 기준표를 작성하세요.",
+            "Top-K 값을 바꾸며 검색 결과와 응답 품질을 비교하세요.",
+            "검색 실패 사례를 수집해 reranking 적용 전후를 점검하세요.",
+        ],
+        "checklist": [
+            "벡터DB별 특징과 선택 기준을 설명할 수 있다.",
+            "인덱싱과 Top-K 검색 흐름을 구현했다.",
+            "검색 실패 원인과 reranking 개선 결과를 기록했다.",
+        ],
+        "syntax": ["vector upsert", "index build", "top_k query", "rerank 함수"],
+        "flow_steps": [
+            "임베딩 벡터를 인덱스에 저장한다",
+            "질문 벡터로 Top-K 후보를 검색한다",
+            "후보를 reranking으로 재정렬한다",
+            "실패 사례를 분석해 검색 전략을 보완한다",
+        ],
+        "focus_points": [
+            "Top-K가 과소/과대 설정되지 않았는지 확인하기",
+            "reranking 적용 비용 대비 품질 개선 폭을 점검하기",
+            "검색 실패 로그를 재학습/재색인에 연결하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 검색 품질 개선과 하이브리드 검색 전략으로 정확도를 높입니다.",
+    },
+    "검색 품질 개선": {
+        "kid_summary": "검색 실패 사례를 분석하고 query rewrite, threshold, hybrid 검색으로 성능을 개선하는 차시입니다.",
+        "why": "RAG 품질 저하는 대부분 검색 단계에서 시작되므로 검색 전략 개선이 가장 큰 효과를 냅니다.",
+        "concepts": [
+            "`검색 품질 개선`은 query rewrite, score threshold, reranking 조합으로 수행합니다.",
+            "`하이브리드 검색`은 키워드 검색과 벡터 검색을 결합해 재현율/정밀도를 균형 있게 맞춥니다.",
+            "`실패 사례 분석`은 질의 의도 불일치, 청크 품질 문제, 메타데이터 누락으로 분류합니다.",
+        ],
+        "practice_steps": [
+            "검색 실패 케이스를 유형별로 분류해 원인을 기록하세요.",
+            "벡터 검색과 하이브리드 검색 결과를 같은 질의에서 비교하세요.",
+            "score threshold와 reranking 규칙을 조정해 개선 폭을 측정하세요.",
+        ],
+        "checklist": [
+            "검색 실패 유형과 원인을 정리했다.",
+            "하이브리드 검색 적용 전/후 성능을 비교했다.",
+            "검색 개선 규칙을 운영 설정으로 문서화했다.",
+        ],
+        "syntax": ["query rewrite", "score threshold", "hybrid search", "failure log"],
+        "flow_steps": [
+            "실패 질의를 수집해 유형을 분류한다",
+            "검색 전략(벡터/하이브리드)을 비교 실행한다",
+            "reranking/threshold를 조정한다",
+            "개선 결과를 지표로 검증한다",
+        ],
+        "focus_points": [
+            "개선 실험이 동일 데이터·동일 질문 조건인지 확인하기",
+            "재현율과 정밀도 중 우선순위 기준을 점검하기",
+            "실패 케이스가 운영 모니터링에 누적되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 LangChain Retriever와 프롬프트 문맥 주입을 연결합니다.",
+    },
+    "프롬프트 결합": {
+        "kid_summary": "Retriever 결과를 Prompt에 주입해 검색 기반 답변을 생성하고 hallucination을 줄이는 차시입니다.",
+        "why": "검색 결과를 프롬프트에 구조적으로 넣지 않으면 답변 근거가 약해지고 환각이 증가합니다.",
+        "concepts": [
+            "`Retriever 구성`은 검색 후보를 질문 의도에 맞게 안정적으로 반환하는 핵심 장치입니다.",
+            "`문맥 주입 프롬프트`는 검색 결과를 출처와 함께 규격화해 답변 품질을 높입니다.",
+            "`hallucination 감소`는 근거 없는 문장 금지 규칙과 source 기반 응답 형식으로 강화할 수 있습니다.",
+        ],
+        "practice_steps": [
+            "Retriever 검색 결과를 Prompt 템플릿에 삽입해 답변을 생성하세요.",
+            "source 포함/미포함 프롬프트를 비교해 환각 차이를 확인하세요.",
+            "근거 부족 시 '확인 필요'를 반환하는 안전 규칙을 추가하세요.",
+        ],
+        "checklist": [
+            "Retriever와 Prompt 주입 흐름을 구현했다.",
+            "검색 결과 기반 답변 생성을 확인했다.",
+            "환각 감소용 규칙을 프롬프트에 반영했다.",
+        ],
+        "syntax": ["retriever 래퍼", "context prompt template", "source 태그", "안전 규칙"],
+        "flow_steps": [
+            "질문으로 Retriever를 호출한다",
+            "검색 결과를 프롬프트 문맥에 주입한다",
+            "근거 기반 답변을 생성한다",
+            "출력 형식과 안전 규칙을 검증한다",
+        ],
+        "focus_points": [
+            "프롬프트에 근거 문서가 누락되지 않는지 확인하기",
+            "source 포맷이 후처리 가능한 형태인지 점검하기",
+            "근거 부족 응답 정책이 정의됐는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 source 반환과 응답 검증으로 신뢰도를 강화합니다.",
+    },
+    "응답 검증/출처화": {
+        "kid_summary": "답변 정확성을 점검하고 source를 반환해 근거 추적 가능한 RAG 응답을 만드는 차시입니다.",
+        "why": "출처 없는 답변은 실무에서 신뢰할 수 없고, 검증 가능한 출력 포맷이 있어야 서비스로 운영할 수 있습니다.",
+        "concepts": [
+            "`source 반환`은 답변 문장과 문서/페이지/섹션을 연결해 검증 가능성을 만듭니다.",
+            "`응답 검증`은 검색 근거 포함 여부와 근거-답변 일치도를 확인하는 단계입니다.",
+            "`hallucination 감소`는 근거 매칭 실패 문장을 표시하거나 제거하는 정책으로 구현합니다.",
+        ],
+        "practice_steps": [
+            "답변과 source 목록을 함께 반환하는 출력 스키마를 구현하세요.",
+            "근거 없는 문장을 표시하는 검증 함수를 추가하세요.",
+            "출처 누락/오표기 실패 케이스를 재현해 복구 로직을 점검하세요.",
+        ],
+        "checklist": [
+            "답변에 source를 포함하는 구조를 구현했다.",
+            "근거 일치 검증 규칙을 적용했다.",
+            "출처화 실패 케이스 대응 방안을 정리했다.",
+        ],
+        "syntax": ["answer schema", "source map", "grounding check", "hallucination guard"],
+        "flow_steps": [
+            "답변과 근거를 매핑한다",
+            "문장별 근거 일치 여부를 검증한다",
+            "근거 부족 문장을 표시/제거한다",
+            "출처 포함 최종 응답을 반환한다",
+        ],
+        "focus_points": [
+            "source ID와 문서 메타데이터가 일관적인지 확인하기",
+            "검증 실패 문장 처리 정책이 명확한지 점검하기",
+            "사용자에게 근거를 읽기 쉬운 형태로 제공하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 검색 정확도와 답변 정확도를 수치로 평가하고 개선합니다.",
+    },
+    "평가 지표 설계": {
+        "kid_summary": "검색 정확도와 답변 정확도를 측정하고 chunking/프롬프트/검색 전략 개선 루프를 설계하는 차시입니다.",
+        "why": "측정 없는 개선은 주관적 판단에 머물러 운영 품질을 안정적으로 높일 수 없습니다.",
+        "concepts": [
+            "`검색 정확도 평가`는 정답 문서 포함률, 재현율, 정밀도, MRR 같은 지표로 측정합니다.",
+            "`답변 정확도 평가`는 근거 일치도, 사실성, 출처 포함률로 확인합니다.",
+            "`개선 루프`는 chunking 전략, 프롬프트 튜닝, 하이브리드 검색 적용을 반복 검증합니다.",
+        ],
+        "practice_steps": [
+            "검색 정확도와 답변 정확도 지표를 각각 계산하세요.",
+            "chunking 전략을 바꿔 지표 변화(정확도/지연)를 비교하세요.",
+            "프롬프트 튜닝과 하이브리드 검색 적용 전후 결과를 비교하세요.",
+        ],
+        "checklist": [
+            "검색/답변 평가 지표를 구분해 정의했다.",
+            "개선 전후 지표 비교표를 작성했다.",
+            "하이브리드 검색 적용 기준을 정리했다.",
+        ],
+        "syntax": ["precision/recall", "grounded accuracy", "A/B 비교 리포트", "hybrid score"],
+        "flow_steps": [
+            "기준 지표와 목표치를 정의한다",
+            "검색/답변 지표를 각각 측정한다",
+            "chunking/프롬프트/검색 전략을 개선 적용한다",
+            "개선 효과를 수치로 검증한다",
+        ],
+        "focus_points": [
+            "지표 계산 대상 데이터셋이 고정돼 있는지 확인하기",
+            "정확도와 지연시간을 함께 비교하는지 점검하기",
+            "개선안 채택 기준이 수치로 명시됐는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 사내 문서 Q&A/FAQ/PDF 검색 통합 실습으로 마무리합니다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "kid_summary": "사내 문서 Q&A, FAQ 챗봇, PDF 검색, 출처 포함 답변 생성을 통합해 실무형 RAG 서비스를 완성하는 차시입니다.",
+        "why": "실무에서는 단일 기능보다 검색-생성-검증-출처화를 하나의 서비스로 통합하는 능력이 중요합니다.",
+        "concepts": [
+            "`사내 문서 Q&A`는 내부 정책/절차 문서를 근거로 답변하는 대표 RAG 시나리오입니다.",
+            "`FAQ 챗봇 + PDF 검색`은 정형/비정형 문서를 함께 다루는 통합 검색 패턴입니다.",
+            "`출처 포함 답변`은 운영 신뢰성과 감사 가능성을 높이는 필수 기능입니다.",
+        ],
+        "practice_steps": [
+            "사내 문서 Q&A 시나리오를 구현하고 source를 함께 반환하세요.",
+            "FAQ 데이터와 PDF 문서를 함께 검색하는 통합 흐름을 구성하세요.",
+            "운영 체크리스트(재색인, 실패 복구, 지표 모니터링)를 포함해 마무리하세요.",
+        ],
+        "checklist": [
+            "사내 문서 Q&A 시스템을 실행했다.",
+            "FAQ/PDF 통합 검색 기반 챗봇을 구성했다.",
+            "출처 포함 답변과 운영 기준을 함께 검증했다.",
+        ],
+        "syntax": ["통합 라우터", "retriever 조합", "source-aware 응답", "운영 대시보드 지표"],
+        "flow_steps": [
+            "질문 유형을 분류해 검색 경로를 결정한다",
+            "FAQ/PDF/사내문서에서 근거를 수집한다",
+            "근거 기반 답변과 출처를 함께 생성한다",
+            "품질 지표와 운영 로그를 점검한다",
+        ],
+        "focus_points": [
+            "질문 유형 라우팅 정확도가 충분한지 확인하기",
+            "통합 검색에서 source 누락이 없는지 점검하기",
+            "운영 장애(검색 실패/지연) 복구 절차를 점검하기",
+        ],
+        "next_tip": "과목 전체를 복습하며 사내 지식 기반 RAG 서비스 포트폴리오를 완성하세요.",
+    },
+}
+
 PYTHON_PL_MODULE_PROFILES = {
     "오리엔테이션 및 개발환경 준비": {
         "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
@@ -3144,9 +3471,16 @@ def get_langchain_profile(subject_name: str, module: str) -> dict[str, object] |
     return LANGCHAIN_MODULE_OVERRIDES.get(module_core_name(module))
 
 
+def get_rag_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_rag_subject(subject_name):
+        return None
+    return RAG_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
     for profile in (
+        get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
@@ -3166,6 +3500,7 @@ def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[st
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
@@ -3183,6 +3518,7 @@ def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
@@ -3200,6 +3536,7 @@ def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_rag_profile(subject_name, module),
         get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
@@ -3385,6 +3722,88 @@ def resolve_example_progression(track: str, subject_name: str, module: str) -> l
                 "example3: 외부 데이터 연결 실패 케이스를 점검한다.",
                 "example4: 통합 체인 시나리오 품질을 비교한다.",
                 "example5: 실전 워크플로우 운영 체크리스트를 완성한다.",
+            ]
+    if is_rag_subject(subject_name):
+        core = module_core_name(module)
+        if core == "RAG 개요":
+            return [
+                "example1: LLM 단독 답변과 RAG 답변을 비교한다.",
+                "example2: 최신 정보/사내 정보 질문으로 성능 차이를 확인한다.",
+                "example3: 근거 없는 답변(환각) 케이스를 재현해 점검한다.",
+                "example4: 검색+생성 결합 구조 개선 전후를 비교한다.",
+                "example5: RAG 적용 기준과 운영 체크리스트를 정리한다.",
+            ]
+        if core == "문서 수집 전략":
+            return [
+                "example1: 문서 수집→검색→생성 기본 파이프라인을 실행한다.",
+                "example2: 문서 소스별(위키/FAQ/PDF) 수집 규칙을 확장한다.",
+                "example3: 수집 누락/중복 케이스를 점검한다.",
+                "example4: 단계별 장애(수집/인덱싱/검색) 복구를 비교한다.",
+                "example5: 파이프라인 운영 정책(주기/권한/재시도)을 정리한다.",
+            ]
+        if core == "문서 청크 설계":
+            return [
+                "example1: PDF/TXT/HTML/CSV 문서를 청크로 분할한다.",
+                "example2: chunk size/overlap 조합별 검색 품질을 비교한다.",
+                "example3: 메타데이터 누락/오류 케이스를 점검한다.",
+                "example4: 문서 구조 보존 전략 전후를 비교한다.",
+                "example5: 청크 설계 운영 기준을 문서화한다.",
+            ]
+        if core == "임베딩 생성":
+            return [
+                "example1: 문장 임베딩과 cosine similarity를 계산한다.",
+                "example2: 임베딩 모델 선택 기준(품질/비용/지연)을 비교한다.",
+                "example3: 임베딩 품질 저하 케이스를 재현해 점검한다.",
+                "example4: 모델/차원 변경 전후 검색 성능을 비교한다.",
+                "example5: 임베딩 운영 점검 기준을 정리한다.",
+            ]
+        if core == "벡터DB 기초":
+            return [
+                "example1: 벡터 인덱싱과 Top-K 검색을 실행한다.",
+                "example2: Chroma/FAISS/Qdrant 선택 기준을 비교한다.",
+                "example3: 검색 실패 케이스를 수집해 원인을 점검한다.",
+                "example4: reranking 적용 전후 결과를 비교한다.",
+                "example5: 벡터DB 운영 기준(재색인/지연/비용)을 정리한다.",
+            ]
+        if core == "검색 품질 개선":
+            return [
+                "example1: 검색 실패 사례를 분류하고 baseline을 실행한다.",
+                "example2: score threshold/top_k 조정 효과를 비교한다.",
+                "example3: query rewrite와 reranking 적용을 점검한다.",
+                "example4: 하이브리드 검색 적용 전후를 비교한다.",
+                "example5: 검색 품질 개선 체크리스트를 완성한다.",
+            ]
+        if core == "프롬프트 결합":
+            return [
+                "example1: Retriever 결과를 프롬프트에 주입해 답변을 생성한다.",
+                "example2: source 포함/미포함 프롬프트를 비교한다.",
+                "example3: 문맥 누락으로 인한 환각 케이스를 점검한다.",
+                "example4: 근거 기반 응답 안정화 규칙을 비교한다.",
+                "example5: RAG 프롬프트 템플릿 운영 기준을 정리한다.",
+            ]
+        if core == "응답 검증/출처화":
+            return [
+                "example1: 답변과 source를 함께 반환하는 구조를 구현한다.",
+                "example2: 문장-근거 매핑 검증을 확장한다.",
+                "example3: 출처 누락/오표기 실패 케이스를 점검한다.",
+                "example4: hallucination 감소 규칙 전후를 비교한다.",
+                "example5: 출처화 품질 기준과 감사 로그 정책을 정리한다.",
+            ]
+        if core == "평가 지표 설계":
+            return [
+                "example1: 검색 정확도 지표를 계산한다.",
+                "example2: 답변 정확도 지표를 계산한다.",
+                "example3: chunking 전략 개선 전후를 점검한다.",
+                "example4: 프롬프트 튜닝/하이브리드 검색 효과를 비교한다.",
+                "example5: 평가 기반 개선 루프 운영 기준을 정리한다.",
+            ]
+        if core == "Agent 시스템 통합 구현":
+            return [
+                "example1: 사내 문서 질의응답 시나리오를 구현한다.",
+                "example2: FAQ 챗봇과 PDF 검색을 통합한다.",
+                "example3: source 포함 답변 실패 케이스를 점검한다.",
+                "example4: 통합 서비스 품질/지연 지표를 비교한다.",
+                "example5: RAG 운영/복구 체크리스트를 완성한다.",
             ]
     if is_llm_text_gen_subject(subject_name):
         core = module_core_name(module)

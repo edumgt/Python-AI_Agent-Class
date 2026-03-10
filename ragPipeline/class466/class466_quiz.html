@@ -409,7 +409,7 @@
   "module": "임베딩 생성 · 단계 2/5 기초 구현 [class466]",
   "level": "기초응용",
   "session": "18/52",
-  "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
+  "track_outcome": "임베딩 모델 선택 기준을 근거 있게 제시할 수 있다.",
   "questions": [
     {
       "question": "class466 (RAG(Retrieval-Augmented Generation) 18/52) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'임베딩 생성 · 단계 2/5 기초 구현 [class466]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "임베딩 생성 · 단계 5/5 운영 최적화 [class469] 실습: `임베딩 생성` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 실습: `임베딩 생성` 단계 2/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "검색 품질 개선 · 단계 4/6 응용 확장 [class478] 실습: `검색 품질 개선` 단계 4/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "RAG 개요 · 단계 4/6 응용 확장 [class452] 실습: `RAG 개요` 단계 4/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "임베딩 생성 · 단계 5/5 운영 최적화 [class469] 실습: 문장 임베딩을 생성하고 코사인 유사도로 상위 유사 문장을 찾으세요.",
+        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 실습: 문장 임베딩을 생성하고 코사인 유사도로 상위 유사 문장을 찾으세요.",
+        "검색 품질 개선 · 단계 4/6 응용 확장 [class478] 실습: 검색 실패 케이스를 유형별로 분류해 원인을 기록하세요.",
+        "RAG 개요 · 단계 4/6 응용 확장 [class452] 실습: 같은 질문을 LLM 단독 방식과 RAG 방식으로 각각 실행해 차이를 비교하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'임베딩 생성 · 단계 2/5 기초 구현 [class466]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다."
+        "문서 형식별 전처리 후 chunk 전략을 바꿔 결과를 비교한다.",
+        "문서 수집 -> 분할 -> 임베딩 -> 검색 -> 생성 흐름을 단계별로 설계한다.",
+        "질문/문서 임베딩을 생성해 코사인 유사도 기반 검색을 실행한다.",
+        "통합 시나리오를 구현하고 품질/지연/복구 지표를 동시에 점검한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'임베딩 생성 · 단계 2/5 기초 구현 [class466]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다."
+        "모델 선택 기준 없이 임베딩 모델을 고정해 품질/비용 균형을 놓친다.",
+        "단일 지표만 보고 개선 의사결정을 내린다.",
+        "source 없는 자유 생성 응답을 허용해 근거 불일치가 증가한다.",
+        "검색 실패 사례를 수집하지 않아 개선 포인트를 놓친다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'임베딩 생성 · 단계 2/5 기초 구현 [class466]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "문서 청크 설계 · 단계 4/5 실전 검증 [class463] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "평가 지표 설계 · 단계 5/5 운영 최적화 [class495] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "문서 수집 전략 · 단계 3/5 응용 확장 [class457] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+        "문서 청크 설계 · 단계 4/5 실전 검증 [class463] 점검: 문서 형식별 전처리 규칙을 구현했다.",
+        "평가 지표 설계 · 단계 5/5 운영 최적화 [class495] 점검: 검색/답변 평가 지표를 구분해 정의했다.",
+        "문서 수집 전략 · 단계 3/5 응용 확장 [class457] 점검: RAG 전체 파이프라인 7단계를 순서대로 설명할 수 있다.",
+        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 점검: 임베딩과 키워드 검색의 차이를 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '모델별 검색 품질, 지연, 비용을 비교해 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'임베딩 생성 · 단계 2/5 기초 구현 [class466]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class019_example1.py",
+        "class450_example1.py",
         "class466_example1.py",
-        "class454_example1.py",
-        "class216_example1.py"
+        "class462_example1.py",
+        "class487_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class466_example1.py 입니다."
@@ -480,32 +480,32 @@
     {
       "question": "'class466_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
+        "rag",
+        "python",
         "nlp",
-        "condition",
-        "loop",
-        "langchain"
+        "speech"
       ],
       "answer_index": 0,
-      "explanation": "class466_example2.py의 EXAMPLE_TEMPLATE 값은 'nlp' 입니다."
+      "explanation": "class466_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
     },
     {
       "question": "'class466_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "tokenize",
-        "summarize",
-        "make_dataset",
-        "mini_project_plan"
+        "resolve_mode",
+        "ops_readiness_check",
+        "lexical_score",
+        "rerank_hits"
       ],
       "answer_index": 0,
-      "explanation": "class466_example3.py 함수 목록: tokenize, top_k, main, self_check, challenge_case"
+      "explanation": "class466_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class466_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "pathlib",
-        "matplotlib",
-        "math"
+        "json",
+        "re",
+        "pathlib"
       ],
       "answer_index": 0,
       "explanation": "class466_example4.py import 목록: (import 없음)"
@@ -533,14 +533,33 @@
       "class466_example4.py",
       "class466_example5.py"
     ],
-    "template": "nlp",
+    "template": "rag",
     "templates": [
-      "nlp"
+      "rag"
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
       "tokenize",
-      "top_k",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
+      "build_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -551,32 +570,89 @@
     "entrypoint": "main()",
     "by_file": {
       "class466_example1.py": {
-        "template": "nlp",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "top_k",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class466_example2.py": {
-        "template": "nlp",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "top_k",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
         "entrypoint": "main()"
       },
       "class466_example3.py": {
-        "template": "nlp",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "top_k",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -584,22 +660,60 @@
         "entrypoint": "main()"
       },
       "class466_example4.py": {
-        "template": "nlp",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "top_k",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
         "entrypoint": "main()"
       },
       "class466_example5.py": {
-        "template": "nlp",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "top_k",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -610,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class466_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example1: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example1: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class466_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example2: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example2: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class466_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example3: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example3: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class466_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example4: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example4: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class466_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example5: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"nlp\"\n\ndef tokenize(text):\n    cleaned = text.replace(\",\", \" \").replace(\".\", \" \").replace(\"/\", \" \")\n    return [tok.lower() for tok in cleaned.split() if tok]\n\ndef top_k(tokens, k=5):\n    freq = {}\n    for tok in tokens:\n        freq[tok] = freq.get(tok, 0) + 1\n    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:k]\n\ndef main():"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class466 example5: 임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\"\"\n\nTOPIC = \"임베딩 생성 · 단계 2/5 기초 구현 [class466]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };

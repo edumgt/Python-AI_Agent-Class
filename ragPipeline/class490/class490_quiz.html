@@ -409,7 +409,7 @@
   "module": "응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]",
   "level": "실전심화",
   "session": "42/52",
-  "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
+  "track_outcome": "출처 기반 검증 가능한 RAG 응답을 구현할 수 있다.",
   "questions": [
     {
       "question": "class490 (RAG(Retrieval-Augmented Generation) 42/52) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "프롬프트 결합 · 단계 5/5 운영 최적화 [class485] 실습: `프롬프트 결합` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "응답 검증/출처화 · 단계 5/5 운영 최적화 [class490] 실습: `응답 검증/출처화` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 수집 전략 · 단계 4/5 실전 검증 [class458] 실습: `문서 수집 전략` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "임베딩 생성 · 단계 1/5 입문 이해 [class465] 실습: `임베딩 생성` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "프롬프트 결합 · 단계 5/5 운영 최적화 [class485] 실습: Retriever 검색 결과를 Prompt 템플릿에 삽입해 답변을 생성하세요.",
+        "응답 검증/출처화 · 단계 5/5 운영 최적화 [class490] 실습: 답변과 source 목록을 함께 반환하는 출력 스키마를 구현하세요.",
+        "문서 수집 전략 · 단계 4/5 실전 검증 [class458] 실습: 문서 수집부터 답변 생성까지 단계별 입출력 스키마를 정의하세요.",
+        "임베딩 생성 · 단계 1/5 입문 이해 [class465] 실습: 문장 임베딩을 생성하고 코사인 유사도로 상위 유사 문장을 찾으세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다."
+        "문서 수집 -> 분할 -> 임베딩 -> 검색 -> 생성 흐름을 단계별로 설계한다.",
+        "질문/문서 임베딩을 생성해 코사인 유사도 기반 검색을 실행한다.",
+        "답변과 함께 문서/페이지 출처를 반환하도록 스키마를 강제한다.",
+        "벡터 검색과 하이브리드 검색을 같은 질의셋으로 비교한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "학습 데이터와 평가 데이터를 섞어 과대평가된 점수를 믿는다."
+        "출처 누락과 근거 없는 문장을 검증 없이 사용자에게 반환한다.",
+        "모델 선택 기준 없이 임베딩 모델을 고정해 품질/비용 균형을 놓친다.",
+        "source 없는 자유 생성 응답을 허용해 근거 불일치가 증가한다.",
+        "검색 실패 사례를 수집하지 않아 개선 포인트를 놓친다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "응답 검증/출처화 · 단계 5/5 운영 최적화 [class490] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+        "응답 검증/출처화 · 단계 5/5 운영 최적화 [class490] 점검: 답변에 source를 포함하는 구조를 구현했다.",
+        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: RAG가 필요한 이유를 LLM 단독 한계와 연결해 설명할 수 있다.",
+        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: Retriever와 Prompt 주입 흐름을 구현했다.",
+        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 점검: 문서 형식별 전처리 규칙을 구현했다."
       ],
       "answer_index": 0,
-      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '근거 일치도와 source 포함률을 지표로 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class110_example1.py",
+        "class464_example1.py",
         "class490_example1.py",
-        "class309_example1.py",
-        "class247_example1.py"
+        "class455_example1.py",
+        "class492_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class490_example1.py 입니다."
@@ -481,9 +481,9 @@
       "question": "'class490_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "rag",
-        "speech",
-        "condition",
-        "function_module"
+        "nlp",
+        "ml",
+        "data"
       ],
       "answer_index": 0,
       "explanation": "class490_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
@@ -491,21 +491,21 @@
     {
       "question": "'class490_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "challenge_case",
-        "dense_forward",
-        "step_collect",
-        "tokenize"
+        "split_text_tokens",
+        "generate_answer",
+        "run_case",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class490_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
+      "explanation": "class490_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class490_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "json",
-        "(import 없음)",
         "pathlib",
-        "platform"
+        "(import 없음)",
+        "json",
+        "datetime"
       ],
       "answer_index": 1,
       "explanation": "class490_example4.py import 목록: (import 없음)"
@@ -539,9 +539,27 @@
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
       "tokenize",
-      "retrieve",
-      "answer",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
+      "build_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -555,9 +573,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
@@ -566,9 +602,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -578,9 +632,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -591,9 +663,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -603,9 +693,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class490_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example1: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example1: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class490_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example2: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example2: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class490_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example3: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example3: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class490_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example4: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example4: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class490_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example5: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class490 example5: 응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\"\"\n\nTOPIC = \"응답 검증/출처화 · 단계 5/5 운영 최적화 [class490]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };

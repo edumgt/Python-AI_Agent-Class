@@ -696,6 +696,79 @@ LANGCHAIN_QUIZ_BANK = {
     },
 }
 
+RAG_QUIZ_BANK = {
+    "RAG 개요": {
+        "concept": "RAG는 LLM 단독 한계를 보완하기 위해 검색과 생성을 결합하는 구조다.",
+        "action": "LLM 단독 답변과 RAG 답변을 같은 질문으로 비교한다.",
+        "pitfall": "최신 정보/사내 정보 질문에서도 검색 근거 없이 생성만 수행한다.",
+        "check": "근거 문서 존재 여부와 출처 포함 여부를 함께 점검한다.",
+        "outcome": "RAG 필요성과 구조를 실무 사례로 설명할 수 있다.",
+    },
+    "문서 수집 전략": {
+        "concept": "문서 수집은 RAG 파이프라인의 시작점이며 최신성·권한·메타데이터 관리가 핵심이다.",
+        "action": "문서 수집 -> 분할 -> 임베딩 -> 검색 -> 생성 흐름을 단계별로 설계한다.",
+        "pitfall": "수집 주기와 접근 권한을 정의하지 않아 오래된 문서가 검색된다.",
+        "check": "수집 누락/중복과 메타데이터 완전성을 로그로 검증한다.",
+        "outcome": "운영 가능한 문서 수집 파이프라인 기준을 세울 수 있다.",
+    },
+    "문서 청크 설계": {
+        "concept": "PDF/TXT/HTML/CSV 문서 전처리와 chunk size/overlap 설계가 검색 품질을 좌우한다.",
+        "action": "문서 형식별 전처리 후 chunk 전략을 바꿔 결과를 비교한다.",
+        "pitfall": "문서 구조와 메타데이터를 보존하지 않아 출처 추적이 끊긴다.",
+        "check": "청크 전략별 검색 적중률과 source 품질을 함께 점검한다.",
+        "outcome": "문맥 보존형 chunking 전략을 설계할 수 있다.",
+    },
+    "임베딩 생성": {
+        "concept": "임베딩은 문장 의미 벡터를 만들고 cosine similarity로 유사도를 계산하는 핵심 단계다.",
+        "action": "질문/문서 임베딩을 생성해 코사인 유사도 기반 검색을 실행한다.",
+        "pitfall": "모델 선택 기준 없이 임베딩 모델을 고정해 품질/비용 균형을 놓친다.",
+        "check": "모델별 검색 품질, 지연, 비용을 비교해 기록한다.",
+        "outcome": "임베딩 모델 선택 기준을 근거 있게 제시할 수 있다.",
+    },
+    "벡터DB 기초": {
+        "concept": "Chroma/FAISS/Qdrant는 인덱싱과 Top-K 검색을 제공하며 reranking으로 품질을 높일 수 있다.",
+        "action": "벡터 저장/검색을 실행하고 Top-K와 reranking을 조정한다.",
+        "pitfall": "검색 실패 사례를 수집하지 않아 개선 포인트를 놓친다.",
+        "check": "검색 실패 원인과 reranking 전후 품질 변화를 비교한다.",
+        "outcome": "벡터DB 선택과 검색 튜닝 기준을 설명할 수 있다.",
+    },
+    "검색 품질 개선": {
+        "concept": "검색 품질 개선은 query rewrite, threshold, hybrid 검색 조합으로 수행한다.",
+        "action": "벡터 검색과 하이브리드 검색을 같은 질의셋으로 비교한다.",
+        "pitfall": "정확도만 보고 재현율이나 지연시간을 함께 보지 않는다.",
+        "check": "정밀도/재현율/지연을 함께 측정해 개선안을 선택한다.",
+        "outcome": "검색 실패를 줄이는 개선 루프를 운영할 수 있다.",
+    },
+    "프롬프트 결합": {
+        "concept": "Retriever 결과를 Prompt에 주입해야 검색 기반 답변과 환각 감소가 가능하다.",
+        "action": "검색 결과를 문맥으로 넣은 프롬프트와 미주입 프롬프트를 비교한다.",
+        "pitfall": "source 없는 자유 생성 응답을 허용해 근거 불일치가 증가한다.",
+        "check": "답변 문장별 근거 문서 매핑이 가능한지 점검한다.",
+        "outcome": "검색 결과 기반 답변 생성 체인을 설계할 수 있다.",
+    },
+    "응답 검증/출처화": {
+        "concept": "응답 검증과 source 반환은 RAG 신뢰성을 보장하는 필수 단계다.",
+        "action": "답변과 함께 문서/페이지 출처를 반환하도록 스키마를 강제한다.",
+        "pitfall": "출처 누락과 근거 없는 문장을 검증 없이 사용자에게 반환한다.",
+        "check": "근거 일치도와 source 포함률을 지표로 점검한다.",
+        "outcome": "출처 기반 검증 가능한 RAG 응답을 구현할 수 있다.",
+    },
+    "평가 지표 설계": {
+        "concept": "검색 정확도와 답변 정확도를 분리 측정하고 chunking/프롬프트/검색 전략을 개선해야 한다.",
+        "action": "retrieval 지표와 answer 지표를 각각 계산해 비교한다.",
+        "pitfall": "단일 지표만 보고 개선 의사결정을 내린다.",
+        "check": "chunking, 프롬프트, 하이브리드 검색 변경 전후를 동일 데이터로 검증한다.",
+        "outcome": "지표 기반 RAG 개선 루프를 설계하고 운영할 수 있다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "concept": "사내 문서 Q&A, FAQ 챗봇, PDF 검색, source 포함 답변 생성을 통합하면 실무형 RAG 서비스가 된다.",
+        "action": "통합 시나리오를 구현하고 품질/지연/복구 지표를 동시에 점검한다.",
+        "pitfall": "개별 기능만 테스트하고 통합 워크플로우 장애를 놓친다.",
+        "check": "질문 유형 라우팅, 검색 근거, 출처 반환, 실패 복구를 함께 검증한다.",
+        "outcome": "사내 지식 기반 RAG 시스템 구현 역량을 확보할 수 있다.",
+    },
+}
+
 
 PYTHON_PL_MODULE_ALIASES = {
     "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
@@ -715,6 +788,10 @@ def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, s
     normalized_subject = subject_name.strip()
     module_core = module_core_name(module)
 
+    if normalized_subject == "RAG(Retrieval-Augmented Generation)":
+        module_bank = RAG_QUIZ_BANK.get(module_core)
+        if module_bank:
+            return module_bank
     if normalized_subject == "Langchain 활용하기":
         module_bank = LANGCHAIN_QUIZ_BANK.get(module_core)
         if module_bank:

@@ -409,7 +409,7 @@
   "module": "평가 지표 설계 · 단계 1/5 입문 이해 [class491]",
   "level": "실전심화",
   "session": "43/52",
-  "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
+  "track_outcome": "지표 기반 RAG 개선 루프를 설계하고 운영할 수 있다.",
   "questions": [
     {
       "question": "class491 (RAG(Retrieval-Augmented Generation) 43/52) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'평가 지표 설계 · 단계 1/5 입문 이해 [class491]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "평가 지표 설계 · 단계 1/5 입문 이해 [class491] 실습: `평가 지표 설계` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 실습: `임베딩 생성` 단계 2/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "응답 검증/출처화 · 단계 4/5 실전 검증 [class489] 실습: `응답 검증/출처화` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "응답 검증/출처화 · 단계 1/5 입문 이해 [class486] 실습: `응답 검증/출처화` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "평가 지표 설계 · 단계 1/5 입문 이해 [class491] 실습: 검색 정확도와 답변 정확도 지표를 각각 계산하세요.",
+        "임베딩 생성 · 단계 2/5 기초 구현 [class466] 실습: 문장 임베딩을 생성하고 코사인 유사도로 상위 유사 문장을 찾으세요.",
+        "응답 검증/출처화 · 단계 4/5 실전 검증 [class489] 실습: 답변과 source 목록을 함께 반환하는 출력 스키마를 구현하세요.",
+        "응답 검증/출처화 · 단계 1/5 입문 이해 [class486] 실습: 답변과 source 목록을 함께 반환하는 출력 스키마를 구현하세요."
       ],
       "answer_index": 0,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'평가 지표 설계 · 단계 1/5 입문 이해 [class491]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다."
+        "문서 형식별 전처리 후 chunk 전략을 바꿔 결과를 비교한다.",
+        "벡터 저장/검색을 실행하고 Top-K와 reranking을 조정한다.",
+        "문서 수집 -> 분할 -> 임베딩 -> 검색 -> 생성 흐름을 단계별로 설계한다.",
+        "retrieval 지표와 answer 지표를 각각 계산해 비교한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'평가 지표 설계 · 단계 1/5 입문 이해 [class491]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다."
+        "모델 선택 기준 없이 임베딩 모델을 고정해 품질/비용 균형을 놓친다.",
+        "수집 주기와 접근 권한을 정의하지 않아 오래된 문서가 검색된다.",
+        "단일 지표만 보고 개선 의사결정을 내린다.",
+        "검색 실패 사례를 수집하지 않아 개선 포인트를 놓친다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'평가 지표 설계 · 단계 1/5 입문 이해 [class491]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "평가 지표 설계 · 단계 1/5 입문 이해 [class491] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "벡터DB 기초 · 단계 4/5 실전 검증 [class473] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+        "평가 지표 설계 · 단계 1/5 입문 이해 [class491] 점검: 검색/답변 평가 지표를 구분해 정의했다.",
+        "벡터DB 기초 · 단계 4/5 실전 검증 [class473] 점검: 벡터DB별 특징과 선택 기준을 설명할 수 있다.",
+        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 점검: 벡터DB별 특징과 선택 기준을 설명할 수 있다.",
+        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: RAG가 필요한 이유를 LLM 단독 한계와 연결해 설명할 수 있다."
       ],
       "answer_index": 0,
-      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'chunking, 프롬프트, 하이브리드 검색 변경 전후를 동일 데이터로 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'평가 지표 설계 · 단계 1/5 입문 이해 [class491]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class491_example1.py",
-        "class044_example1.py",
-        "class292_example1.py",
-        "class236_example1.py"
+        "class451_example1.py",
+        "class463_example1.py",
+        "class492_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class491_example1.py 입니다."
@@ -480,32 +480,32 @@
     {
       "question": "'class491_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "deep_learning",
-        "prompt",
-        "loop",
-        "condition"
+        "nlp",
+        "rag",
+        "speech",
+        "python"
       ],
       "answer_index": 1,
-      "explanation": "class491_example2.py의 EXAMPLE_TEMPLATE 값은 'prompt' 입니다."
+      "explanation": "class491_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
     },
     {
       "question": "'class491_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "rolling_average",
-        "summarize_utterances",
-        "build_prompt",
-        "relu"
+        "self_check",
+        "embed_text",
+        "resolve_mode",
+        "generate_answer"
       ],
       "answer_index": 2,
-      "explanation": "class491_example3.py 함수 목록: build_prompt, lint_prompt, main, self_check, challenge_case"
+      "explanation": "class491_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class491_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "math",
         "pathlib",
-        "matplotlib"
+        "math",
+        "re"
       ],
       "answer_index": 0,
       "explanation": "class491_example4.py import 목록: (import 없음)"
@@ -533,14 +533,33 @@
       "class491_example4.py",
       "class491_example5.py"
     ],
-    "template": "prompt",
+    "template": "rag",
     "templates": [
-      "prompt"
+      "rag"
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
+      "tokenize",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
       "build_prompt",
-      "lint_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -551,32 +570,89 @@
     "entrypoint": "main()",
     "by_file": {
       "class491_example1.py": {
-        "template": "prompt",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "tokenize",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
           "build_prompt",
-          "lint_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class491_example2.py": {
-        "template": "prompt",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "tokenize",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
           "build_prompt",
-          "lint_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
         "entrypoint": "main()"
       },
       "class491_example3.py": {
-        "template": "prompt",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "tokenize",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
           "build_prompt",
-          "lint_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -584,22 +660,60 @@
         "entrypoint": "main()"
       },
       "class491_example4.py": {
-        "template": "prompt",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "tokenize",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
           "build_prompt",
-          "lint_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
         "entrypoint": "main()"
       },
       "class491_example5.py": {
-        "template": "prompt",
+        "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
+          "tokenize",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
           "build_prompt",
-          "lint_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -610,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class491_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example1: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example1: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class491_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example2: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example2: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class491_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example3: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example3: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class491_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example4: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example4: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class491_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example5: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"prompt\"\n\ndef build_prompt(role, task, output_format):\n    return (\n        f\"[ROLE] {role}\\n\"\n        f\"[TASK] {task}\\n\"\n        f\"[FORMAT] {output_format}\\n\"\n        \"[RULE] 근거 없는 내용은 '확인 필요'라고 표시\"\n    )\n\ndef lint_prompt(prompt):\n    required = [\"[ROLE]\", \"[TASK]\", \"[FORMAT]\", \"[RULE]\"]\n    missing = [tag for tag in required if tag not in prompt]"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class491 example5: 평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\"\"\n\nTOPIC = \"평가 지표 설계 · 단계 1/5 입문 이해 [class491]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };

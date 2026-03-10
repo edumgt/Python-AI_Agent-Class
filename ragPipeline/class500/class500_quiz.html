@@ -409,7 +409,7 @@
   "module": "Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]",
   "level": "실전심화",
   "session": "52/52",
-  "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
+  "track_outcome": "사내 지식 기반 RAG 시스템 구현 역량을 확보할 수 있다.",
   "questions": [
     {
       "question": "class500 (RAG(Retrieval-Augmented Generation) 52/52) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "문서 청크 설계 · 단계 5/5 운영 최적화 [class464] 실습: `문서 청크 설계` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 청크 설계 · 단계 1/5 입문 이해 [class460] 실습: `문서 청크 설계` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 청크 설계 · 단계 4/5 실전 검증 [class463] 실습: `문서 청크 설계` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500] 실습: `Agent 시스템 통합 구현` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "문서 청크 설계 · 단계 5/5 운영 최적화 [class464] 실습: 형식별 문서(PDF/TXT/HTML/CSV)를 같은 스키마로 변환해 보세요.",
+        "문서 청크 설계 · 단계 1/5 입문 이해 [class460] 실습: 형식별 문서(PDF/TXT/HTML/CSV)를 같은 스키마로 변환해 보세요.",
+        "문서 청크 설계 · 단계 4/5 실전 검증 [class463] 실습: 형식별 문서(PDF/TXT/HTML/CSV)를 같은 스키마로 변환해 보세요.",
+        "Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500] 실습: 사내 문서 Q&A 시나리오를 구현하고 source를 함께 반환하세요."
       ],
       "answer_index": 3,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
+        "벡터 저장/검색을 실행하고 Top-K와 reranking을 조정한다.",
+        "문서 수집 -> 분할 -> 임베딩 -> 검색 -> 생성 흐름을 단계별로 설계한다.",
+        "통합 시나리오를 구현하고 품질/지연/복구 지표를 동시에 점검한다.",
+        "LLM 단독 답변과 RAG 답변을 같은 질문으로 비교한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다."
+        "개별 기능만 테스트하고 통합 워크플로우 장애를 놓친다.",
+        "최신 정보/사내 정보 질문에서도 검색 근거 없이 생성만 수행한다.",
+        "모델 선택 기준 없이 임베딩 모델을 고정해 품질/비용 균형을 놓친다.",
+        "수집 주기와 접근 권한을 정의하지 않아 오래된 문서가 검색된다."
       ],
       "answer_index": 0,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,20 +458,20 @@
     {
       "question": "'Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "RAG 개요 · 단계 5/6 실전 검증 [class453] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+        "RAG 개요 · 단계 5/6 실전 검증 [class453] 점검: RAG가 필요한 이유를 LLM 단독 한계와 연결해 설명할 수 있다.",
+        "Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500] 점검: 사내 문서 Q&A 시스템을 실행했다.",
+        "RAG 개요 · 단계 6/6 운영 최적화 [class454] 점검: RAG가 필요한 이유를 LLM 단독 한계와 연결해 설명할 수 있다.",
+        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: Retriever와 Prompt 주입 흐름을 구현했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '질문 유형 라우팅, 검색 근거, 출처 반환, 실패 복구를 함께 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class459_example1.py",
-        "class010_example1.py",
-        "class008_example1.py",
+        "class477_example1.py",
+        "class491_example1.py",
+        "class449_example1.py",
         "class500_example1.py"
       ],
       "answer_index": 3,
@@ -480,10 +480,10 @@
     {
       "question": "'class500_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "langchain",
+        "speech",
         "rag",
-        "ml",
-        "pandas"
+        "nlp",
+        "ml"
       ],
       "answer_index": 1,
       "explanation": "class500_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
@@ -491,21 +491,21 @@
     {
       "question": "'class500_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_prompt",
-        "area_circle",
-        "tokenize",
-        "step_collect"
+        "build_cases",
+        "embed_text",
+        "resolve_mode",
+        "run_case"
       ],
       "answer_index": 2,
-      "explanation": "class500_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
+      "explanation": "class500_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class500_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
-        "math",
-        "numpy",
-        "pandas"
+        "pathlib",
+        "datetime",
+        "math"
       ],
       "answer_index": 0,
       "explanation": "class500_example4.py import 목록: (import 없음)"
@@ -539,9 +539,27 @@
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
       "tokenize",
-      "retrieve",
-      "answer",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
+      "build_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -555,9 +573,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
@@ -566,9 +602,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -578,9 +632,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -591,9 +663,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -603,9 +693,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class500_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example1: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example1: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class500_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example2: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example2: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class500_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example3: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example3: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class500_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example4: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example4: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class500_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example5: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class500 example5: Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\"\"\n\nTOPIC = \"Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };

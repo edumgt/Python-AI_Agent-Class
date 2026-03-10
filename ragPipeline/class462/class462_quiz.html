@@ -409,7 +409,7 @@
   "module": "문서 청크 설계 · 단계 3/5 응용 확장 [class462]",
   "level": "기초응용",
   "session": "14/52",
-  "track_outcome": "답변에 출처를 포함해 신뢰도를 높일 수 있다.",
+  "track_outcome": "문맥 보존형 chunking 전략을 설계할 수 있다.",
   "questions": [
     {
       "question": "class462 (RAG(Retrieval-Augmented Generation) 14/52) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'문서 청크 설계 · 단계 3/5 응용 확장 [class462]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 실습: `벡터DB 기초` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 실습: `문서 청크 설계` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 수집 전략 · 단계 1/5 입문 이해 [class455] 실습: `문서 수집 전략` 단계 1/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "평가 지표 설계 · 단계 5/5 운영 최적화 [class495] 실습: `평가 지표 설계` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 실습: 동일 청크를 가정해 Chroma/FAISS/Qdrant 선택 기준표를 작성하세요.",
+        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 실습: 형식별 문서(PDF/TXT/HTML/CSV)를 같은 스키마로 변환해 보세요.",
+        "문서 수집 전략 · 단계 1/5 입문 이해 [class455] 실습: 문서 수집부터 답변 생성까지 단계별 입출력 스키마를 정의하세요.",
+        "평가 지표 설계 · 단계 5/5 운영 최적화 [class495] 실습: 검색 정확도와 답변 정확도 지표를 각각 계산하세요."
       ],
       "answer_index": 1,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'문서 청크 설계 · 단계 3/5 응용 확장 [class462]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "X/y 형태를 점검하고 오차를 계산해 품질을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다."
+        "검색 결과를 문맥으로 넣은 프롬프트와 미주입 프롬프트를 비교한다.",
+        "문서 형식별 전처리 후 chunk 전략을 바꿔 결과를 비교한다.",
+        "retrieval 지표와 answer 지표를 각각 계산해 비교한다.",
+        "답변과 함께 문서/페이지 출처를 반환하도록 스키마를 강제한다."
       ],
       "answer_index": 1,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'문서 청크 설계 · 단계 3/5 응용 확장 [class462]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다."
+        "최신 정보/사내 정보 질문에서도 검색 근거 없이 생성만 수행한다.",
+        "문서 구조와 메타데이터를 보존하지 않아 출처 추적이 끊긴다.",
+        "출처 누락과 근거 없는 문장을 검증 없이 사용자에게 반환한다.",
+        "검색 실패 사례를 수집하지 않아 개선 포인트를 놓친다."
       ],
       "answer_index": 1,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,20 +458,20 @@
     {
       "question": "'문서 청크 설계 · 단계 3/5 응용 확장 [class462]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "문서 수집 전략 · 단계 1/5 입문 이해 [class455] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 점검: 질문과 문서의 연결 기준을 설명할 수 있다.",
-        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: 질문과 문서의 연결 기준을 설명할 수 있다."
+        "문서 청크 설계 · 단계 3/5 응용 확장 [class462] 점검: 문서 형식별 전처리 규칙을 구현했다.",
+        "문서 수집 전략 · 단계 1/5 입문 이해 [class455] 점검: RAG 전체 파이프라인 7단계를 순서대로 설명할 수 있다.",
+        "벡터DB 기초 · 단계 1/5 입문 이해 [class470] 점검: 벡터DB별 특징과 선택 기준을 설명할 수 있다.",
+        "프롬프트 결합 · 단계 2/5 기초 구현 [class482] 점검: Retriever와 Prompt 주입 흐름을 구현했다."
       ],
       "answer_index": 0,
-      "explanation": "이 차시는 '답변 문장별로 근거 문서와 출처를 매핑해 근거 없는 문장을 표시한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '청크 전략별 검색 적중률과 source 품질을 함께 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'문서 청크 설계 · 단계 3/5 응용 확장 [class462]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class306_example1.py",
-        "class451_example1.py",
-        "class489_example1.py",
+        "class469_example1.py",
+        "class495_example1.py",
+        "class480_example1.py",
         "class462_example1.py"
       ],
       "answer_index": 3,
@@ -480,10 +480,10 @@
     {
       "question": "'class462_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "numpy",
-        "pandas",
+        "ml",
+        "speech",
         "rag",
-        "variables"
+        "python"
       ],
       "answer_index": 2,
       "explanation": "class462_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
@@ -491,21 +491,21 @@
     {
       "question": "'class462_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "retrieve",
-        "summarize",
-        "simulate_generation",
-        "tokenize"
+        "summarize_mode",
+        "rerank_hits",
+        "eval_answer",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class462_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
+      "explanation": "class462_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class462_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "(import 없음)",
+        "pathlib",
         "json",
-        "matplotlib",
-        "math"
+        "re"
       ],
       "answer_index": 0,
       "explanation": "class462_example4.py import 목록: (import 없음)"
@@ -539,9 +539,27 @@
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
       "tokenize",
-      "retrieve",
-      "answer",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
+      "build_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -555,9 +573,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
@@ -566,9 +602,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -578,9 +632,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -591,9 +663,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -603,9 +693,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class462_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example1: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example1: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class462_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example2: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example2: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class462_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example3: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example3: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class462_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example4: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example4: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class462_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example5: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class462 example5: 문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\"\"\n\nTOPIC = \"문서 청크 설계 · 단계 3/5 응용 확장 [class462]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };
