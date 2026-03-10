@@ -1,15 +1,13 @@
-# project002 App (Prj_PersonaVoiceAI)
+# project002 · 거대 언어 모델을 활용한 PERSONA AI 답변 기능 구현하기
 
-- Track: `프로젝트-1`
-- Topic: `개인 맞춤 코칭 음성봇 PERSONA AI 만들기 · 단계 2/5 기초 구현`
-- Curriculum Link: `project/Prj_PersonaVoiceAI/project002/project002.md`
+독립 실행형 PERSONA 답변 프로젝트입니다.
 
-## Modules
-- `backend/app/core.py`: pure Python scenario logic
-- `backend/app/main.py`: FastAPI service
-- `frontend/`: FE static module
+## 기능
+- Persona 등록/수정
+- Persona별 질문 응답 생성
+- OpenAI 키가 있으면 LLM 응답, 없으면 로컬 규칙 응답
 
-## Local Run
+## 실행
 ```bash
 cd project/Prj_PersonaVoiceAI/project002
 python -m venv .venv
@@ -18,14 +16,8 @@ pip install -r requirements.txt
 python -m uvicorn backend.app.main:app --reload --port 8080
 ```
 
-## Test
-```bash
-python -m unittest discover -s backend/tests -p 'test_*.py'
-```
-
 ## Docker
 ```bash
 docker compose up -d --build
-# health
 curl -sS http://127.0.0.1:9102/health
 ```

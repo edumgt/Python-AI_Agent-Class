@@ -1,47 +1,48 @@
-async function fetchJson(url, options) {
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP ${res.status}: ${text}`);
   }
-  return response.json();
+  return res.json();
 }
 
-function parseValues(raw) {
-  return raw
-    .split(",")
-    .map((v) => Number(v.trim()))
-    .filter((v) => Number.isFinite(v));
-}
+const el = (id) => document.getElementById(id);
 
-document.getElementById("meta-btn").addEventListener("click", async () => {
-  const box = document.getElementById("meta-box");
-  box.textContent = "loading...";
-  try {
-    const data = await fetchJson("/v1/project/meta");
-    box.textContent = JSON.stringify(data, null, 2);
-  } catch (error) {
-    box.textContent = String(error);
-  }
+(async function init() {
+  const meta = await fetchJson('/v1/project/meta');
+  el('metaBox').textContent = JSON.stringify(meta, null, 2);
+})();
+
+el('saveBtn').addEventListener('click', async () => {
+  const payload = {
+    persona_id: el('personaId').value || null,
+    name: el('name').value,
+    role: el('role').value,
+    tone: el('tone').value,
+    speaking_rules: el('rules').value.split(',').map((v) => v.trim()).filter(Boolean),
+  };
+  const out = await fetchJson('/v1/persona/upsert', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  el('personaBox').textContent = JSON.stringify(out, null, 2);
+  el('askPersonaId').value = out.persona_id;
+  el('personaId').value = out.persona_id;
 });
 
-document.getElementById("run-btn").addEventListener("click", async () => {
-  const valuesRaw = document.getElementById("values").value;
-  const note = document.getElementById("note").value || "frontend-run";
+el('askBtn').addEventListener('click', async () => {
   const payload = {
-    values: parseValues(valuesRaw),
-    note,
+    persona_id: el('askPersonaId').value,
+    question: el('question').value,
+    context: el('context').value,
+    use_llm: el('useLlm').checked,
   };
-
-  const box = document.getElementById("run-box");
-  box.textContent = "running...";
-  try {
-    const data = await fetchJson("/v1/project/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    box.textContent = JSON.stringify(data, null, 2);
-  } catch (error) {
-    box.textContent = String(error);
-  }
+  const out = await fetchJson('/v1/persona/answer', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  el('answerBox').textContent = JSON.stringify(out, null, 2);
 });

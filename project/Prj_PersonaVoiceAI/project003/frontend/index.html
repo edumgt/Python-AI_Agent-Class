@@ -3,30 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>project003 - Prj_PersonaVoiceAI</title>
+  <title>project003 · 사전 데이터 기반 PERSO AI 커스텀</title>
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
   <main class="container">
-    <section class="card">
-      <h1>project003 · Prj_PersonaVoiceAI</h1>
-      <p class="topic">개인 맞춤 코칭 음성봇 PERSONA AI 만들기 · 단계 3/5 응용 확장</p>
-      <p class="meta">Day 63 / 7교시 · 세션 3/20</p>
-      <button id="meta-btn">프로젝트 메타 로드</button>
-      <pre id="meta-box">메타 정보를 불러오세요.</pre>
+    <section class="card hero">
+      <h1>사전 데이터 기반 PERSO AI의 답변 커스텀하기</h1>
+      <p>지식 데이터 업서트 후 검색 기반 커스텀 답변을 생성합니다.</p>
+      <pre id="metaBox">메타 정보를 불러오는 중...</pre>
     </section>
 
     <section class="card">
-      <h2>시나리오 실행</h2>
-      <label>values (comma separated)</label>
-      <input id="values" value="0.2,0.4,0.6" />
-      <label>note</label>
-      <input id="note" value="frontend-run" />
-      <button id="run-btn">실행</button>
-      <pre id="run-box">실행 결과가 여기에 표시됩니다.</pre>
+      <h2>1) 지식 데이터 준비</h2>
+      <button id="bootstrapBtn">기본 지식 로드</button>
+      <button id="listBtn">지식 목록 조회</button>
+      <pre id="knowledgeBox">지식 데이터 결과</pre>
+    </section>
+
+    <section class="card">
+      <h2>2) 커스텀 답변 생성</h2>
+      <div class="grid">
+        <input id="persona" value="PERSO" placeholder="persona name" />
+        <input id="style" value="친절하고 실행 중심" placeholder="style" />
+        <input id="question" value="RAG 검색 품질을 높이려면 어떤 기준으로 chunking 해야 해?" />
+        <input id="topk" type="number" value="3" />
+      </div>
+      <button id="answerBtn">커스텀 답변 생성</button>
+      <pre id="answerBox">답변 결과</pre>
     </section>
   </main>
-
   <script src="/assets/app.js"></script>
 </body>
 </html>

@@ -5,9 +5,9 @@ services:
       dockerfile: Dockerfile
     environment:
       PROJECT_ID: ${PROJECT_ID:-project003}
-      PROJECT_NAME: ${PROJECT_NAME:-Prj_PersonaVoiceAI}
-      PROJECT_TRACK: ${PROJECT_TRACK:-프로젝트-1}
-      PROJECT_TOPIC: ${PROJECT_TOPIC:-개인 맞춤 코칭 음성봇 PERSONA AI 만들기 · 단계 3/5 응용 확장}
+      PROJECT_NAME: ${PROJECT_NAME:-사전 데이터 기반 PERSO AI의 답변 커스텀하기}
+      PROJECT_TRACK: ${PROJECT_TRACK:-프로젝트-C}
+      PROJECT_TOPIC: ${PROJECT_TOPIC:-사전 데이터 기반 PERSO AI의 답변 커스텀하기}
     ports:
       - "${APP_HOST_PORT:-9103}:8080"
     healthcheck:

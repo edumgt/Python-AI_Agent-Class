@@ -1,69 +1,67 @@
 :root {
-  --bg: #f2f5f8;
+  --bg: #fff8f1;
   --card: #ffffff;
-  --ink: #0f172a;
-  --muted: #475569;
-  --brand: #0ea5e9;
+  --line: #e8d8c8;
+  --ink: #33261e;
+  --brand: #ff6a00;
 }
-
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
-  font-family: "Noto Sans KR", "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top left, #e0f2fe, var(--bg));
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  background: radial-gradient(circle at 90% 0%, #ffe9d6 0%, var(--bg) 45%);
   color: var(--ink);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 24px;
 }
-
-.container {
-  width: min(920px, 100%);
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
 }
-
-.card {
-  background: var(--card);
+.box {
+  border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  padding: 18px;
+  background: var(--card);
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(120, 72, 0, 0.08);
 }
-
-h1, h2 { margin: 0 0 12px 0; }
-.topic { color: var(--muted); margin: 0 0 6px 0; }
-.meta { color: var(--muted); margin-top: 0; font-size: 0.9rem; }
-
-label { display: block; margin: 10px 0 6px; font-weight: 600; }
+.title {
+  background: linear-gradient(120deg, #fff5ea, #ffefe0);
+}
+.grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
 input {
   width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
   padding: 10px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
 }
-
 button {
-  margin-top: 12px;
-  background: var(--brand);
-  color: white;
+  margin-top: 10px;
   border: 0;
-  border-radius: 8px;
-  padding: 10px 12px;
-  cursor: pointer;
+  background: var(--brand);
+  color: #fff;
   font-weight: 700;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
 }
-
 pre {
   margin-top: 10px;
-  background: #0b1220;
-  color: #e2e8f0;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px;
-  min-height: 110px;
+  background: #1c140f;
+  color: #ffe9d0;
+  min-height: 90px;
   overflow: auto;
+}
+label {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
 }

@@ -1,15 +1,13 @@
-# project001 App (Prj_PersonaVoiceAI)
+# project001 · 나만의 음성 모델 만들기
 
-- Track: `프로젝트-1`
-- Topic: `개인 맞춤 코칭 음성봇 PERSONA AI 만들기 · 단계 1/5 입문 이해`
-- Curriculum Link: `project/Prj_PersonaVoiceAI/project001/project001.md`
+독립 실행형 음성 모델 실습 프로젝트입니다.
 
-## Modules
-- `backend/app/core.py`: pure Python scenario logic
-- `backend/app/main.py`: FastAPI service
-- `frontend/`: FE static module
+## 기능
+- 음성 프로필 생성
+- 학습 품질 시뮬레이션
+- SSML 기반 합성 프리뷰 생성
 
-## Local Run
+## 실행
 ```bash
 cd project/Prj_PersonaVoiceAI/project001
 python -m venv .venv
@@ -18,14 +16,8 @@ pip install -r requirements.txt
 python -m uvicorn backend.app.main:app --reload --port 8080
 ```
 
-## Test
-```bash
-python -m unittest discover -s backend/tests -p 'test_*.py'
-```
-
 ## Docker
 ```bash
 docker compose up -d --build
-# health
 curl -sS http://127.0.0.1:9101/health
 ```

@@ -1,69 +1,62 @@
 :root {
-  --bg: #f2f5f8;
+  --bg: #f4f8ff;
+  --ink: #122033;
+  --muted: #456;
   --card: #ffffff;
-  --ink: #0f172a;
-  --muted: #475569;
-  --brand: #0ea5e9;
+  --line: #c9d9ef;
+  --brand: #0066ff;
 }
-
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
-  font-family: "Noto Sans KR", "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top left, #e0f2fe, var(--bg));
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  background: radial-gradient(circle at 15% 10%, #dbeafe 0%, var(--bg) 42%);
   color: var(--ink);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 24px;
 }
-
-.container {
-  width: min(920px, 100%);
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
 }
-
-.card {
+.panel {
   background: var(--card);
+  border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  padding: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 32px rgba(0, 56, 128, 0.08);
 }
-
-h1, h2 { margin: 0 0 12px 0; }
-.topic { color: var(--muted); margin: 0 0 6px 0; }
-.meta { color: var(--muted); margin-top: 0; font-size: 0.9rem; }
-
-label { display: block; margin: 10px 0 6px; font-weight: 600; }
+.hero {
+  background: linear-gradient(125deg, #f8fbff 0%, #eef5ff 60%, #f3f9ff 100%);
+}
+.grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
 input {
   width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
   padding: 10px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
 }
-
 button {
-  margin-top: 12px;
-  background: var(--brand);
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 12px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-pre {
   margin-top: 10px;
-  background: #0b1220;
-  color: #e2e8f0;
-  border-radius: 8px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--brand);
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+pre {
+  margin: 10px 0 0;
+  border-radius: 10px;
   padding: 10px;
-  min-height: 110px;
+  background: #0f172a;
+  color: #d7e8ff;
+  min-height: 88px;
   overflow: auto;
 }

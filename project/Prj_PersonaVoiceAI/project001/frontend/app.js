@@ -1,47 +1,64 @@
-async function fetchJson(url, options) {
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP ${res.status}: ${text}`);
   }
-  return response.json();
+  return res.json();
 }
 
-function parseValues(raw) {
-  return raw
-    .split(",")
-    .map((v) => Number(v.trim()))
-    .filter((v) => Number.isFinite(v));
+function byId(id) {
+  return document.getElementById(id);
 }
 
-document.getElementById("meta-btn").addEventListener("click", async () => {
-  const box = document.getElementById("meta-box");
-  box.textContent = "loading...";
-  try {
-    const data = await fetchJson("/v1/project/meta");
-    box.textContent = JSON.stringify(data, null, 2);
-  } catch (error) {
-    box.textContent = String(error);
-  }
+(async function init() {
+  const meta = await fetchJson('/v1/project/meta');
+  byId('metaBox').textContent = JSON.stringify(meta, null, 2);
+})();
+
+byId('createBtn').addEventListener('click', async () => {
+  const payload = {
+    name: byId('name').value,
+    base_voice: byId('baseVoice').value,
+    style_tags: byId('styleTags').value.split(',').map((v) => v.trim()).filter(Boolean),
+  };
+  const out = await fetchJson('/v1/voice/profiles', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  byId('profileBox').textContent = JSON.stringify(out, null, 2);
+  byId('trainProfileId').value = out.profile_id;
+  byId('synthProfileId').value = out.profile_id;
 });
 
-document.getElementById("run-btn").addEventListener("click", async () => {
-  const valuesRaw = document.getElementById("values").value;
-  const note = document.getElementById("note").value || "frontend-run";
+byId('trainBtn').addEventListener('click', async () => {
   const payload = {
-    values: parseValues(valuesRaw),
-    note,
+    profile_id: byId('trainProfileId').value,
+    recordings_count: Number(byId('recordings').value),
+    total_minutes: Number(byId('minutes').value),
+    noise_level: Number(byId('noise').value),
+    pronunciation_score: Number(byId('pron').value),
+    emotion_score: Number(byId('emo').value),
   };
+  const out = await fetchJson('/v1/voice/train', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  byId('trainBox').textContent = JSON.stringify(out, null, 2);
+});
 
-  const box = document.getElementById("run-box");
-  box.textContent = "running...";
-  try {
-    const data = await fetchJson("/v1/project/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    box.textContent = JSON.stringify(data, null, 2);
-  } catch (error) {
-    box.textContent = String(error);
-  }
+byId('synthBtn').addEventListener('click', async () => {
+  const payload = {
+    profile_id: byId('synthProfileId').value,
+    text: byId('synthText').value,
+    style_strength: Number(byId('strength').value),
+  };
+  const out = await fetchJson('/v1/voice/synthesize', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  byId('synthBox').textContent = JSON.stringify(out, null, 2);
 });
