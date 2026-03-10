@@ -447,7 +447,7 @@
     {
       "question": "'LangChain 개요 · 단계 6/6 운영 최적화 [class398]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "개별 체인만 검증하고 통합 워크플로우 테스트를 생략한다.",
+        "개별 체인만 검증하고 상태 전이/추적 로그 없이 운영에 투입한다.",
         "단일 호출 중심으로만 설계해 체인 구조 필요성을 놓친다.",
         "하드코딩 프롬프트를 유지해 재사용성과 테스트 가능성을 잃는다.",
         "체인 단계를 한 번에 묶어 실패 지점 추적이 불가능해진다."
@@ -458,7 +458,7 @@
     {
       "question": "'LangChain 개요 · 단계 6/6 운영 최적화 [class398]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "실전 체인 애플리케이션 · 단계 3/5 응용 확장 [class446] 점검: 요약/질의응답/챗봇/외부연동 예제를 실행했다.",
+        "실전 체인 애플리케이션 · 단계 3/5 응용 확장 [class446] 점검: 요약/질의응답/챗봇/외부연동 통합 시나리오를 실행했다.",
         "LangChain 개요 · 단계 6/6 운영 최적화 [class398] 점검: LangChain의 목적과 필요성을 설명할 수 있다.",
         "Model/LLM 연결 · 단계 1/5 입문 이해 [class405] 점검: 핵심 구성요소 8개의 역할을 설명할 수 있다.",
         "LangChain 개요 · 단계 4/6 응용 확장 [class396] 점검: LangChain의 목적과 필요성을 설명할 수 있다."
@@ -491,10 +491,10 @@
     {
       "question": "'class398_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "practice_bundle",
-        "build_cases",
+        "rerank_hits",
+        "build_index",
         "resolve_mode",
-        "run_agent"
+        "lexical_score"
       ],
       "answer_index": 2,
       "explanation": "class398_example3.py 함수 목록: resolve_mode, build_cases, tokenize, build_prompt_template, render_prompt, model_stub, transform_input, single_chain"
@@ -561,6 +561,8 @@
       "tool_calculate",
       "tool_api",
       "run_agent",
+      "langgraph_workflow",
+      "langsmith_observe",
       "practice_bundle",
       "execute_case",
       "summarize_mode",
@@ -599,6 +601,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -632,6 +636,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -666,6 +672,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -701,6 +709,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -735,6 +745,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",

@@ -491,13 +491,13 @@
     {
       "question": "'class433_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "practice_bundle",
-        "sequential_chain",
-        "answer",
-        "tokenize"
+        "vector_search",
+        "rag_chain",
+        "load_documents",
+        "resolve_mode"
       ],
       "answer_index": 3,
-      "explanation": "class433_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
+      "explanation": "class433_example3.py 함수 목록: resolve_mode, tokenize, load_documents, split_text_tokens, build_chunks, embed_text, cosine_similarity, select_embedding_model"
     },
     {
       "question": "'class433_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
@@ -539,9 +539,27 @@
     ],
     "imports": [],
     "functions": [
+      "resolve_mode",
       "tokenize",
-      "retrieve",
-      "answer",
+      "load_documents",
+      "split_text_tokens",
+      "build_chunks",
+      "embed_text",
+      "cosine_similarity",
+      "select_embedding_model",
+      "build_index",
+      "lexical_score",
+      "vector_search",
+      "rerank_hits",
+      "hybrid_search",
+      "build_prompt",
+      "generate_answer",
+      "grounded_ratio",
+      "eval_retrieval",
+      "eval_answer",
+      "build_cases",
+      "run_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -555,9 +573,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
@@ -566,9 +602,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -578,9 +632,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -591,9 +663,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -603,9 +693,27 @@
         "template": "rag",
         "imports": [],
         "functions": [
+          "resolve_mode",
           "tokenize",
-          "retrieve",
-          "answer",
+          "load_documents",
+          "split_text_tokens",
+          "build_chunks",
+          "embed_text",
+          "cosine_similarity",
+          "select_embedding_model",
+          "build_index",
+          "lexical_score",
+          "vector_search",
+          "rerank_hits",
+          "hybrid_search",
+          "build_prompt",
+          "generate_answer",
+          "grounded_ratio",
+          "eval_retrieval",
+          "eval_answer",
+          "build_cases",
+          "run_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +724,23 @@
   "example_snippets": [
     {
       "file": "class433_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example1: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example1: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class433_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example2: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example2: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class433_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example3: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example3: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class433_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example4: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example4: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     },
     {
       "file": "class433_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example5: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class433 example5: 문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 1/5 입문 이해 [class433]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\nDOCUMENTS = [\n    {\n        \"id\": \"D1\",\n        \"title\": \"사내 보안 정책\",\n        \"type\": \"PDF\",\n        \"section\": \"보안\",\n        \"text\": \"사내 보안 정책은 민감 데이터 조회 시 다중인증을 요구한다. 정책 위반은 보안팀 승인 절차로 처리한다.\",\n    },\n    {\n        \"id\": \"D2\","
     }
   ]
 };

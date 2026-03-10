@@ -94,7 +94,7 @@
 | 음성 데이터 활용한 TTS와 STT 모델 개발 | `speechTtsStt` | class225~class288 | 발화/화자 데이터 구성, 오디오 특징 추출, STT·TTS 모델 구성/평가, 품질 개선 루프 실습 |
 | 거대 언어 모델을 활용한 자연어 생성 | `llmTextGen` | class289~class352 | LLM 구조/Transformer/토큰·컨텍스트, 확률 기반 생성(temperature/top-k/top-p), API·오픈모델·클라우드/로컬 추론, 생성 작업(요약·Q&A·번역·문서·코드·추출), 품질 제어(JSON·톤·길이·오류 처리), 한계/주의(사실성·최신성·보안·검증)까지 통합 실습 |
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
-| Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
+| Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, LangGraph 상태 흐름, LangSmith 추적 기반 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
 | 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `docs/OPS개념.md` 및 커리큘럼 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
 

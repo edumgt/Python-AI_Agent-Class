@@ -438,7 +438,7 @@
       "options": [
         "사용자 입력 변수를 분리해 템플릿 렌더링을 실행한다.",
         "단일 체인 baseline 후 순차 체인으로 확장해 비교한다.",
-        "요약/질의응답/챗봇/외부연동 4개 시나리오를 체인으로 구성해 실행한다.",
+        "요약/질의응답/챗봇/외부연동 시나리오를 통합하고 LangGraph 분기 + LangSmith 로그를 점검한다.",
         "Model-Prompt-Parser 기본 체인을 만든 뒤 Memory/Retriever/Tool을 선택적으로 결합한다."
       ],
       "answer_index": 1,
@@ -491,10 +491,10 @@
     {
       "question": "'class419_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "build_prompt_template",
+        "model_stub",
         "resolve_mode",
-        "summarize_mode",
-        "tokenize"
+        "grounded_ratio",
+        "build_prompt_template"
       ],
       "answer_index": 1,
       "explanation": "class419_example3.py 함수 목록: resolve_mode, build_cases, tokenize, build_prompt_template, render_prompt, model_stub, transform_input, single_chain"
@@ -561,6 +561,8 @@
       "tool_calculate",
       "tool_api",
       "run_agent",
+      "langgraph_workflow",
+      "langsmith_observe",
       "practice_bundle",
       "execute_case",
       "summarize_mode",
@@ -599,6 +601,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -632,6 +636,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -666,6 +672,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -701,6 +709,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -735,6 +745,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",

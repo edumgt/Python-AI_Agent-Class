@@ -427,7 +427,7 @@
       "options": [
         "Memory 활용 · 단계 2/6 기초 구현 [class422] 실습: 세션별 메모리 버퍼를 만들고 대화 3턴 이상을 유지하세요.",
         "LangChain 개요 · 단계 4/6 응용 확장 [class396] 실습: LangChain 없이 구현한 흐름과 LangChain 구성 흐름을 비교해 보세요.",
-        "실전 체인 애플리케이션 · 단계 4/5 실전 검증 [class447] 실습: 문서 요약 체인과 질의응답 체인을 각각 구현하세요.",
+        "실전 체인 애플리케이션 · 단계 4/5 실전 검증 [class447] 실습: 문서 요약 체인과 질의응답 체인을 하나의 라우터 흐름으로 통합하세요.",
         "OutputParser · 단계 5/6 실전 검증 [class414] 실습: 문자열 응답에서 핵심 필드를 파싱해 dict로 변환하세요."
       ],
       "answer_index": 3,
@@ -436,7 +436,7 @@
     {
       "question": "'OutputParser · 단계 5/6 실전 검증 [class414]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "요약/질의응답/챗봇/외부연동 4개 시나리오를 체인으로 구성해 실행한다.",
+        "요약/질의응답/챗봇/외부연동 시나리오를 통합하고 LangGraph 분기 + LangSmith 로그를 점검한다.",
         "입력 -> Prompt -> Model -> Parser -> Memory/Tool/Retriever 흐름을 먼저 도식화한다.",
         "문자열 파싱과 JSON 파싱을 같은 체인에서 비교 실행한다.",
         "문서 로딩 후 청크 크기/오버랩을 조정해 검색 품질을 비교한다."
@@ -448,7 +448,7 @@
       "question": "'OutputParser · 단계 5/6 실전 검증 [class414]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
         "체인 단계를 한 번에 묶어 실패 지점 추적이 불가능해진다.",
-        "개별 체인만 검증하고 통합 워크플로우 테스트를 생략한다.",
+        "개별 체인만 검증하고 상태 전이/추적 로그 없이 운영에 투입한다.",
         "단순 문제에도 Agent를 과도하게 사용해 복잡도와 지연을 키운다.",
         "파싱 실패 fallback 없이 응답을 그대로 사용해 연동 오류를 만든다."
       ],
@@ -491,10 +491,10 @@
     {
       "question": "'class414_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "ops_readiness_check",
+        "hybrid_search",
         "resolve_mode",
-        "execute_case",
-        "to_json_text"
+        "run_agent",
+        "split_text_tokens"
       ],
       "answer_index": 1,
       "explanation": "class414_example3.py 함수 목록: resolve_mode, build_cases, tokenize, build_prompt_template, render_prompt, model_stub, transform_input, single_chain"
@@ -561,6 +561,8 @@
       "tool_calculate",
       "tool_api",
       "run_agent",
+      "langgraph_workflow",
+      "langsmith_observe",
       "practice_bundle",
       "execute_case",
       "summarize_mode",
@@ -599,6 +601,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -632,6 +636,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -666,6 +672,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -701,6 +709,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",
@@ -735,6 +745,8 @@
           "tool_calculate",
           "tool_api",
           "run_agent",
+          "langgraph_workflow",
+          "langsmith_observe",
           "practice_bundle",
           "execute_case",
           "summarize_mode",

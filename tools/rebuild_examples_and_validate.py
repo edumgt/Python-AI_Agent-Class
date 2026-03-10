@@ -2827,6 +2827,26 @@ def build_body(template: str, class_id: str) -> str:
                         "output_format": "JSON",
                     }
                 )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    {
+                        "id": "langgraph_flow",
+                        "task": "LangGraph 상태 흐름",
+                        "input": "질문 유형에 따라 분기/재시도를 적용해줘",
+                        "session_id": "graph-1",
+                        "output_format": "JSON",
+                    }
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    {
+                        "id": "langsmith_trace",
+                        "task": "LangSmith 추적",
+                        "input": "실행 로그와 품질 지표를 추적해줘",
+                        "session_id": "trace-1",
+                        "output_format": "JSON",
+                    }
+                )
             return cases
 
         def tokenize(text):
@@ -2988,6 +3008,32 @@ def build_body(template: str, class_id: str) -> str:
                 cautions.append("Tool 호출 실패 시 fallback 경로를 먼저 정의")
             return {"result": result, "cautions": cautions}
 
+        def langgraph_workflow(case):
+            # 상태 기반 그래프 흐름을 간단한 규칙형으로 시뮬레이션
+            state = {"intent": "general", "retry": 0, "route": "direct", "status": "ok"}
+            text = case["input"]
+            if "분기" in text or "유형" in text:
+                state["intent"] = "routing"
+                state["route"] = "classifier -> worker"
+            if "재시도" in text or "retry" in text.lower():
+                state["retry"] = 1 if EXAMPLE_VARIANT < 5 else 2
+                state["status"] = "recovered"
+            return state
+
+        def langsmith_observe(case, bundle):
+            # LangSmith 추적 항목과 유사한 구조(입력/출력/지연/오류)를 생성
+            latency_ms = 42 + len(case["input"]) + EXAMPLE_VARIANT * 3
+            error_count = 0
+            if bundle.get("external_status", 200) != 200:
+                error_count += 1
+            return {
+                "trace_name": f"trace-{case['id']}",
+                "inputs_logged": True,
+                "outputs_logged": True,
+                "latency_ms": latency_ms,
+                "error_count": error_count,
+            }
+
         def practice_bundle(case, memory_store, knowledge_base):
             summary_case = {**case, "task": "문서 요약 체인"}
             qa_case = {**case, "task": "질의응답 체인"}
@@ -2998,11 +3044,17 @@ def build_body(template: str, class_id: str) -> str:
             qa_result = rag_chain(qa_case["input"], "LangChain 체인은 단계 실행과 검색 근거 결합을 지원한다.")
             chat_result = memory_chat(chat_case, memory_store)
             api_result = tool_api("/v1/external", {"query": api_case["input"]})
+            graph_result = langgraph_workflow(case)
+            trace_result = langsmith_observe(case, {"external_status": api_result["status"]})
             return {
                 "summary_chain": summary_result["pattern"],
                 "qa_hits": len(qa_result["hits"]),
                 "chat_history": chat_result["history_size"],
                 "external_status": api_result["status"],
+                "graph_route": graph_result["route"],
+                "graph_retry": graph_result["retry"],
+                "trace_latency_ms": trace_result["latency_ms"],
+                "trace_errors": trace_result["error_count"],
             }
 
         def execute_case(case, mode, memory_store, knowledge_base):
@@ -3125,7 +3177,18 @@ def build_body(template: str, class_id: str) -> str:
                 }
             if mode == "practice":
                 return {
-                    "practice_items": ["문서 요약 체인", "질의응답 체인", "간단한 챗봇", "외부 데이터 연동 기본 예제"],
+                    "practice_items": [
+                        "문서 요약 체인",
+                        "질의응답 체인",
+                        "간단한 챗봇",
+                        "외부 데이터 연동 기본 예제",
+                        "LangGraph 상태 흐름 제어",
+                        "LangSmith 실행 추적",
+                    ],
+                    "avg_trace_latency_ms": round(
+                        sum(row.get("trace_latency_ms", 0) for row in rows) / max(1, len(rows)),
+                        2,
+                    ),
                     "result_count": len(rows),
                 }
             return {"result_count": len(rows)}
