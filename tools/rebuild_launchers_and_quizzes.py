@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 from functools import lru_cache
 import json
@@ -84,6 +85,84 @@ TRACK_QUIZ_BANK = {
 }
 
 
+def module_core_name(module: str) -> str:
+    return module.split("·", maxsplit=1)[0].strip()
+
+
+DATA_VIZ_QUIZ_BANK = {
+    "데이터 분석 환경 구성": {
+        "concept": "분석 프로세스와 정형/비정형, CSV/Excel/JSON 구조를 먼저 이해해야 전처리 방향이 맞아진다.",
+        "action": "문제 정의 -> 수집 -> 정제 -> 분석 -> 시각화 흐름과 파일 구조를 먼저 확인한다.",
+        "pitfall": "데이터 유형과 포맷 차이를 구분하지 않아 로딩/정제 단계에서 오류가 반복된다.",
+        "check": "정형/비정형 예시와 CSV/Excel/JSON 차이를 표로 정리해 검증한다.",
+        "outcome": "분석 시작 전에 데이터 구조와 도구 선택 기준을 설명할 수 있다.",
+    },
+    "NumPy 기초": {
+        "concept": "배열(Array), list와 ndarray 차이, 벡터화 연산, 인덱싱/슬라이싱이 NumPy 핵심이다.",
+        "action": "같은 계산을 list 반복문과 ndarray 벡터화 방식으로 비교한다.",
+        "pitfall": "ndarray 특성을 이해하지 않고 list 방식으로만 처리해 성능과 정확도를 놓친다.",
+        "check": "케이스별 인덱싱/슬라이싱 결과와 기초 통계를 함께 검증한다.",
+        "outcome": "벡터화 기반 수치 연산을 안정적으로 적용할 수 있다.",
+    },
+    "Pandas 데이터프레임 기초": {
+        "concept": "Series/DataFrame, 데이터 로딩/저장, 행/열 선택, 필터링, 정렬, 기초 통계가 Pandas 기본기다.",
+        "action": "컬럼 선택·행 선택·조건 필터링·정렬을 순서대로 실행해 확인한다.",
+        "pitfall": "행/열 선택 기준이 불명확해 의도와 다른 데이터가 분석에 포함된다.",
+        "check": "필터링·정렬 전후 행 수와 핵심 통계를 비교해 기록한다.",
+        "outcome": "표 데이터 조작을 재현 가능한 절차로 수행할 수 있다.",
+    },
+    "결측치/이상치 처리": {
+        "concept": "결측치 처리, 중복 제거, 데이터 타입 변환은 데이터 정제의 핵심 축이다.",
+        "action": "결측/중복/타입 변환 규칙을 분리해 단계별로 적용한다.",
+        "pitfall": "정제 규칙 없이 평균/모델링을 진행해 분석 결과가 왜곡된다.",
+        "check": "정제 전후 행 수·결측 수·중복 수를 비교표로 남긴다.",
+        "outcome": "정제 규칙과 품질 개선 효과를 근거로 설명할 수 있다.",
+    },
+    "문자열/날짜 전처리": {
+        "concept": "문자열 정리, 날짜형 처리, 컬럼명 정리는 후속 분석 안정성을 높인다.",
+        "action": "공백/대소문자/특수문자와 날짜 포맷, 컬럼명 규칙을 표준화한다.",
+        "pitfall": "컬럼명/날짜 포맷 불일치를 방치해 groupby/join 단계에서 오류가 발생한다.",
+        "check": "파싱 성공/실패 건수와 컬럼명 변환 전후 스키마를 기록한다.",
+        "outcome": "텍스트·날짜·스키마 정리를 자동화할 수 있다.",
+    },
+    "그룹화와 집계": {
+        "concept": "파생변수 생성과 groupby/aggregation으로 데이터 패턴을 요약한다.",
+        "action": "파생변수 추가 후 groupby와 agg 조합을 비교 실행한다.",
+        "pitfall": "파생변수 정의와 그룹 키를 검증하지 않아 잘못된 집계가 발생한다.",
+        "check": "원본 샘플과 그룹 집계 결과를 대조해 검증한다.",
+        "outcome": "집계 지표를 근거로 의미 있는 인사이트를 제시할 수 있다.",
+    },
+    "데이터 병합과 변환": {
+        "concept": "merge/join, pivot table, 범주형 데이터 처리는 데이터 가공의 핵심이다.",
+        "action": "join 방식과 pivot table 구조를 비교해 분석용 테이블을 구성한다.",
+        "pitfall": "키 누락·중복과 범주형 순서를 확인하지 않아 결과 해석이 어긋난다.",
+        "check": "병합 전후 행 수, key 일치율, pivot 결과를 함께 검증한다.",
+        "outcome": "다중 소스 데이터를 일관된 분석 구조로 변환할 수 있다.",
+    },
+    "Matplotlib 시각화 기초": {
+        "concept": "시각화 원칙과 Matplotlib 기본 문법(line/bar/scatter/histogram), 한글 폰트/제목/축/범례 설정이 핵심이다.",
+        "action": "동일 데이터를 line/bar/scatter/histogram으로 각각 그려 비교한다.",
+        "pitfall": "한글 폰트·축·범례 설정을 생략해 그래프 해석이 왜곡된다.",
+        "check": "차트 유형별 결과와 라벨/범례 설정을 체크리스트로 검증한다.",
+        "outcome": "시각화 결과를 명확한 그래프 구성과 함께 전달할 수 있다.",
+    },
+    "Seaborn/실전 차트 해석": {
+        "concept": "EDA에서 분포, 평균/중앙값/표준편차, 상관관계, 패턴, 가설 설정을 다룬다.",
+        "action": "분포 지표와 상관 차트를 함께 확인해 문제 정의와 가설을 작성한다.",
+        "pitfall": "요약 통계 없이 시각 패턴만 보고 성급하게 결론을 내린다.",
+        "check": "EDA 결과를 근거 수치와 가설 문장으로 정리한다.",
+        "outcome": "탐색 결과를 다음 분석/모델링 단계로 연결할 수 있다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "concept": "전처리-집계-시각화를 통합 파이프라인으로 연결한다.",
+        "action": "정상/지연/오류 입력을 단계별로 실행해 실패 지점을 찾는다.",
+        "pitfall": "정상 케이스만 테스트해 운영 장애 시나리오를 놓친다.",
+        "check": "단계별 로그와 복구 절차(재시도/롤백)를 함께 점검한다.",
+        "outcome": "통합 파이프라인의 안정성과 운영 준비도를 검증할 수 있다.",
+    },
+}
+
+
 PYTHON_PL_QUIZ_BANK = {
     "오리엔테이션 및 개발환경 준비": {
         "concept": "인터프리터·가상환경·의존성 고정은 실행 재현성의 기본이다.",
@@ -159,6 +238,10 @@ PYTHON_PL_QUIZ_BANK = {
 
 
 def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, str]:
+    if subject_name.strip() == "Python 전처리 및 시각화":
+        module_bank = DATA_VIZ_QUIZ_BANK.get(module_core_name(module))
+        if module_bank:
+            return module_bank
     if subject_name.strip() == "Python 프로그래밍":
         module_bank = PYTHON_PL_QUIZ_BANK.get(module)
         if module_bank:
@@ -378,6 +461,26 @@ def class_dir_from_row(row: dict[str, str]) -> Path:
         if md_path.name:
             return md_path.parent
     return ROOT / row["class"]
+
+
+def subject_root_from_row(row: dict[str, str]) -> str:
+    md_rel = (row.get("md_file") or "").strip()
+    if md_rel:
+        parts = Path(md_rel).parts
+        if parts:
+            return parts[0]
+    class_dir = class_dir_from_row(row)
+    try:
+        rel = class_dir.resolve().relative_to(ROOT.resolve())
+        return rel.parts[0] if rel.parts else ""
+    except Exception:
+        return class_dir.name
+
+
+def filter_rows_by_subject_roots(rows: list[dict[str, str]], roots: set[str]) -> list[dict[str, str]]:
+    if not roots:
+        return rows
+    return [row for row in rows if subject_root_from_row(row) in roots]
 
 
 def choose_track(subject_name: str, module: str) -> str:
@@ -1543,8 +1646,13 @@ def build_launcher_py(class_id: str) -> str:
     )
 
 
-def rebuild_launchers_and_quizzes() -> None:
-    rows = read_rows()
+def rebuild_launchers_and_quizzes(roots: set[str] | None = None) -> None:
+    roots = roots or set()
+    rows = filter_rows_by_subject_roots(read_rows(), roots)
+    if not rows:
+        print("Updated launchers: 0")
+        print("Created quiz html files: 0")
+        return
     context = build_quiz_context(rows)
     launcher_count = 0
     quiz_count = 0
@@ -1564,7 +1672,18 @@ def rebuild_launchers_and_quizzes() -> None:
 
     print(f"Updated launchers: {launcher_count}")
     print(f"Created quiz html files: {quiz_count}")
+    if roots:
+        print(f"Subject roots: {', '.join(sorted(roots))}")
 
 
 if __name__ == "__main__":
-    rebuild_launchers_and_quizzes()
+    parser = argparse.ArgumentParser(description="Rebuild class launchers and quiz HTML files.")
+    parser.add_argument(
+        "--subject-root",
+        action="append",
+        default=[],
+        help="Rebuild only rows under this root folder (e.g. dataVizPrep). Can be repeated.",
+    )
+    args = parser.parse_args()
+    roots = {item.strip() for item in args.subject_root if item.strip()}
+    rebuild_launchers_and_quizzes(roots=roots)

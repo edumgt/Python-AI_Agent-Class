@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import py_compile
 from pathlib import Path
@@ -38,6 +39,17 @@ def subject_root(class_dir: Path) -> str:
         return rel.parts[0] if rel.parts else ""
     except Exception:
         return class_dir.parts[-2] if len(class_dir.parts) >= 2 else class_dir.name
+
+
+def filter_rows_by_subject_roots(rows: list[dict[str, str]], roots: set[str]) -> list[dict[str, str]]:
+    if not roots:
+        return rows
+    kept: list[dict[str, str]] = []
+    for row in rows:
+        class_dir = class_dir_from_row(row)
+        if subject_root(class_dir) in roots:
+            kept.append(row)
+    return kept
 
 
 def is_python_basics(row: dict[str, str], class_dir: Path | None = None) -> bool:
@@ -138,6 +150,7 @@ def wrap_code(class_id: str, module: str, template: str, variant: int, body: str
 
         TOPIC = "{q(module)}"
         EXAMPLE_TEMPLATE = "{template}"
+        EXAMPLE_VARIANT = {variant}
         """
     )
     return header + "\n" + body.strip() + "\n"
@@ -150,19 +163,42 @@ def build_body(template: str, class_id: str) -> str:
         import platform
 
         def build_setup_plan():
-            return [
+            plan = [
                 ("venv", "python -m venv .venv"),
                 ("activate", "source .venv/bin/activate"),
                 ("deps", "pip install -r requirements.txt"),
                 ("run", "python {class_id}_example1.py"),
             ]
+            if EXAMPLE_VARIANT >= 3:
+                plan.append(("freeze", "pip freeze > requirements.lock.txt"))
+            if EXAMPLE_VARIANT >= 4:
+                plan.append(("smoke", "python -c \\"import numpy, pandas\\""))
+            if EXAMPLE_VARIANT >= 5:
+                plan.append(("check", "python -m pip check"))
+            return plan
+
+        def build_path_checks():
+            checks = ["README.md", "requirements.txt"]
+            if EXAMPLE_VARIANT >= 2:
+                checks.append("curriculum_index.csv")
+            if EXAMPLE_VARIANT >= 3:
+                checks.extend(["dataVizPrep", "tools/rebuild_examples_and_validate.py"])
+            if EXAMPLE_VARIANT >= 4:
+                checks.append("run_class.sh")
+            if EXAMPLE_VARIANT >= 5:
+                checks.append("run_day.sh")
+            return checks
 
         def scan_workspace():
             root = Path(__file__).resolve().parents[2]
+            checks = build_path_checks()
+            existing = {{rel: (root / rel).exists() for rel in checks}}
             return {{
                 "platform": platform.system(),
+                "variant": EXAMPLE_VARIANT,
                 "requirements_exists": (root / "requirements.txt").exists(),
                 "readme_exists": (root / "README.md").exists(),
+                "checks": existing,
             }}
 
         def main():
@@ -361,6 +397,8 @@ def build_body(template: str, class_id: str) -> str:
             np = None
 
         def compute_stats(values):
+            if not values:
+                raise ValueError("values must not be empty")
             if np is None:
                 avg = sum(values) / len(values)
                 var = sum((v - avg) ** 2 for v in values) / len(values)
@@ -372,11 +410,35 @@ def build_body(template: str, class_id: str) -> str:
                 "backend": "numpy",
             }
 
+        def build_test_cases():
+            cases = [("baseline", [0.3, 0.4, 0.45, 0.5, 0.65])]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(("signed_values", [-1.2, -0.2, 0.0, 0.5, 1.1]))
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(("with_outlier", [10, 10.2, 9.9, 10.1, 45]))
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(("wide_range", [0.001, 1, 10, 100, 250]))
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(("tiny_decimals", [0.1001, 0.1002, 0.1004, 0.1003, 0.1002]))
+            return cases
+
         def main():
             print("오늘 주제:", TOPIC)
-            result = compute_stats([0.3, 0.4, 0.45, 0.5, 0.65])
-            print("통계:", result)
-            return result
+            reports = []
+            for name, values in build_test_cases():
+                stats = compute_stats(values)
+                stats["case"] = name
+                stats["size"] = len(values)
+                reports.append(stats)
+                print(f"[{name}] 통계:", stats)
+
+            largest = max(reports, key=lambda x: x["std"])
+            return {
+                "variant": EXAMPLE_VARIANT,
+                "case_count": len(reports),
+                "largest_std_case": largest["case"],
+                "backend": reports[0]["backend"] if reports else "unknown",
+            }
         """
 
     if template == "pandas":
@@ -386,33 +448,129 @@ def build_body(template: str, class_id: str) -> str:
         except ImportError:
             pd = None
 
-        def summarize_scores(rows):
-            if pd is None:
-                avg = sum(r["score"] for r in rows) / len(rows)
-                passed = sum(1 for r in rows if r["score"] >= 80)
-                return {"backend": "python", "avg": round(avg, 2), "pass_count": passed}
+        def safe_float(value):
+            try:
+                return float(value)
+            except (TypeError, ValueError):
+                return None
 
-            df = pd.DataFrame(rows)
+        def normalize_rows(rows):
+            cleaned = []
+            dropped = []
+            for idx, row in enumerate(rows, start=1):
+                score = safe_float(row.get("score"))
+                name = str(row.get("name", "")).strip() or f"unknown-{idx}"
+                if score is None:
+                    dropped.append({"row": idx, "reason": "invalid_score", "raw": row.get("score")})
+                    continue
+                cleaned.append({"name": name, "score": score})
+            return cleaned, dropped
+
+        def summarize_scores(rows):
+            cleaned, dropped = normalize_rows(rows)
+            if not cleaned:
+                return {"backend": "python", "avg": 0.0, "pass_count": 0, "row_count": 0, "dropped_count": len(dropped)}
+
+            if pd is None:
+                avg = sum(r["score"] for r in cleaned) / len(cleaned)
+                passed = sum(1 for r in cleaned if r["score"] >= 80)
+                return {
+                    "backend": "python",
+                    "avg": round(avg, 2),
+                    "pass_count": passed,
+                    "row_count": len(cleaned),
+                    "dropped_count": len(dropped),
+                }
+
+            df = pd.DataFrame(cleaned)
             return {
                 "backend": "pandas",
                 "avg": round(float(df["score"].mean()), 2),
                 "pass_count": int((df["score"] >= 80).sum()),
+                "row_count": int(len(df)),
+                "dropped_count": len(dropped),
             }
+
+        def build_test_cases():
+            cases = [
+                (
+                    "baseline",
+                    [
+                        {"name": "A", "score": 72},
+                        {"name": "B", "score": 88},
+                        {"name": "C", "score": 91},
+                    ],
+                ),
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(
+                    (
+                        "string_scores",
+                        [
+                            {"name": "D", "score": "84"},
+                            {"name": "E", "score": "79.5"},
+                            {"name": "F", "score": "92"},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(
+                    (
+                        "missing_values",
+                        [
+                            {"name": "G", "score": 81},
+                            {"name": "H", "score": None},
+                            {"name": "I", "score": "err"},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    (
+                        "edge_threshold",
+                        [
+                            {"name": "J", "score": 79.99},
+                            {"name": "K", "score": 80},
+                            {"name": "L", "score": 80.01},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    (
+                        "mixed_inputs",
+                        [
+                            {"name": "M", "score": "100"},
+                            {"name": "N", "score": "-5"},
+                            {"name": " ", "score": 87.2},
+                            {"name": "P", "score": "not-a-number"},
+                        ],
+                    )
+                )
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            rows = [{"name": "A", "score": 72}, {"name": "B", "score": 88}, {"name": "C", "score": 91}]
-            summary = summarize_scores(rows)
-            print("요약:", summary)
-            return summary
+            reports = []
+            for name, rows in build_test_cases():
+                summary = summarize_scores(rows)
+                summary["case"] = name
+                reports.append(summary)
+                print(f"[{name}] 요약:", summary)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(reports), "reports": reports}
         """
 
     if template == "visualization":
         return f"""
         from pathlib import Path
+        import re
 
-        def save_chart(points):
-            out = Path(__file__).with_name("{class_id}_plot.png")
+        def sanitize_case_name(name):
+            return re.sub(r"[^a-zA-Z0-9_-]+", "_", name).strip("_") or "case"
+
+        def save_chart(points, case_name):
+            token = sanitize_case_name(case_name)
+            out = Path(__file__).with_name(f"{class_id}_plot_{{token}}.png")
             try:
                 import matplotlib.pyplot as plt
 
@@ -420,7 +578,7 @@ def build_body(template: str, class_id: str) -> str:
                 y = [v for _, v in points]
                 plt.figure(figsize=(5, 3))
                 plt.plot(x, y, marker="o")
-                plt.title(TOPIC)
+                plt.title(f"{{TOPIC}} | {{case_name}}")
                 plt.xlabel("step")
                 plt.ylabel("value")
                 plt.tight_layout()
@@ -434,43 +592,171 @@ def build_body(template: str, class_id: str) -> str:
                 mode = "text-fallback"
             return out, mode
 
+        def summarize_points(points):
+            values = [float(v) for _, v in points]
+            return {{
+                "count": len(values),
+                "min": min(values),
+                "max": max(values),
+                "delta": round(values[-1] - values[0], 2),
+            }}
+
+        def build_test_cases():
+            cases = [
+                ("baseline_uptrend", [("week1", 61), ("week2", 67), ("week3", 73), ("week4", 78)]),
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(("with_dip", [("w1", 80), ("w2", 72), ("w3", 76), ("w4", 88)]))
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(("negative_values", [("q1", -4), ("q2", 2), ("q3", 5), ("q4", -1)]))
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(("flat_signal", [("h1", 5), ("h2", 5), ("h3", 5), ("h4", 5)]))
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(("with_outlier", [("d1", 11), ("d2", 10), ("d3", 40), ("d4", 12)]))
+            return cases
+
         def main():
             print("오늘 주제:", TOPIC)
-            points = [("week1", 61), ("week2", 67), ("week3", 73), ("week4", 78)]
-            out, mode = save_chart(points)
-            print("출력 파일:", out.name)
-            return {{"output": out.name, "mode": mode}}
+            outputs = []
+            for case_name, points in build_test_cases():
+                out, mode = save_chart(points, case_name=case_name)
+                summary = summarize_points(points)
+                outputs.append({{"case": case_name, "output": out.name, "mode": mode, "summary": summary}})
+                print(f"[{{case_name}}] 출력 파일:", out.name, "| 요약:", summary)
+            return {{"variant": EXAMPLE_VARIANT, "case_count": len(outputs), "outputs": outputs}}
         """
 
     if template == "data_preprocess":
         return """
         from datetime import datetime
 
+        def parse_amount(raw):
+            if raw is None:
+                return None
+            text = str(raw).strip().replace(",", "")
+            if not text:
+                return None
+            try:
+                return float(text)
+            except ValueError:
+                return None
+
+        def parse_date(raw):
+            text = str(raw).strip()
+            if not text:
+                return None
+            try:
+                return datetime.strptime(text, "%Y-%m-%d")
+            except ValueError:
+                return None
+
         def clean_rows(rows):
             cleaned = []
-            for row in rows:
-                text = row["text"].strip().lower()
-                amount = float(row["amount"])
-                when = datetime.strptime(row["date"], "%Y-%m-%d")
+            rejected = []
+            for idx, row in enumerate(rows, start=1):
+                text = str(row.get("text", "")).strip().lower()
+                amount = parse_amount(row.get("amount"))
+                when = parse_date(row.get("date"))
+                if not text or amount is None or when is None:
+                    rejected.append(
+                        {
+                            "row": idx,
+                            "text": row.get("text"),
+                            "amount": row.get("amount"),
+                            "date": row.get("date"),
+                        }
+                    )
+                    continue
                 cleaned.append({"text": text, "amount": amount, "month": when.month})
-            return cleaned
+            return cleaned, rejected
 
         def summarize(rows):
+            if not rows:
+                return {"rows": 0, "total": 0.0, "avg": 0.0, "min": None, "max": None}
             total = round(sum(r["amount"] for r in rows), 2)
             avg = round(total / len(rows), 2)
-            return {"rows": len(rows), "total": total, "avg": avg}
+            min_amount = round(min(r["amount"] for r in rows), 2)
+            max_amount = round(max(r["amount"] for r in rows), 2)
+            return {"rows": len(rows), "total": total, "avg": avg, "min": min_amount, "max": max_amount}
+
+        def build_test_cases():
+            cases = [
+                (
+                    "baseline",
+                    [
+                        {"text": "  GPU Server  ", "amount": "1200", "date": "2026-03-01"},
+                        {"text": "Monitoring  ", "amount": "450", "date": "2026-03-12"},
+                    ],
+                ),
+            ]
+            if EXAMPLE_VARIANT >= 2:
+                cases.append(
+                    (
+                        "zero_and_spaces",
+                        [
+                            {"text": "  cache  ", "amount": "0", "date": "2026-03-20"},
+                            {"text": "  API Gateway ", "amount": "99.5", "date": "2026-03-21"},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 3:
+                cases.append(
+                    (
+                        "invalid_rows",
+                        [
+                            {"text": "STT", "amount": "300", "date": "2026-03-10"},
+                            {"text": "", "amount": "180", "date": "2026-03-11"},
+                            {"text": "TTS", "amount": "not-number", "date": "2026-03-12"},
+                            {"text": "Batch", "amount": "200", "date": "2026/03/13"},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 4:
+                cases.append(
+                    (
+                        "signed_amounts",
+                        [
+                            {"text": "refund", "amount": "-120", "date": "2026-02-01"},
+                            {"text": "usage", "amount": "320", "date": "2026-02-02"},
+                            {"text": "credit", "amount": "-40", "date": "2026-02-03"},
+                        ],
+                    )
+                )
+            if EXAMPLE_VARIANT >= 5:
+                cases.append(
+                    (
+                        "mixed_months",
+                        [
+                            {"text": "alpha", "amount": "1,200", "date": "2026-01-05"},
+                            {"text": "beta", "amount": "860.75", "date": "2026-02-11"},
+                            {"text": "gamma", "amount": "420", "date": "2026-02-17"},
+                            {"text": "delta", "amount": "1040", "date": "2026-03-09"},
+                        ],
+                    )
+                )
+            return cases
 
         def main():
             print("오늘 주제:", TOPIC)
-            raw = [
-                {"text": "  GPU Server  ", "amount": "1200", "date": "2026-03-01"},
-                {"text": "Monitoring  ", "amount": "450", "date": "2026-03-12"},
-            ]
-            cleaned = clean_rows(raw)
-            report = summarize(cleaned)
-            print("정제 데이터:", cleaned)
-            print("요약:", report)
-            return report
+            results = []
+            for case_name, raw in build_test_cases():
+                cleaned, rejected = clean_rows(raw)
+                report = summarize(cleaned)
+                report.update(
+                    {
+                        "case": case_name,
+                        "rejected_rows": len(rejected),
+                        "months": sorted({row["month"] for row in cleaned}),
+                    }
+                )
+                results.append(report)
+                print(f"[{case_name}] 정제 데이터:", cleaned)
+                print(f"[{case_name}] 제외 데이터:", rejected)
+                print(f"[{case_name}] 요약:", report)
+
+            total_valid = sum(item["rows"] for item in results)
+            total_rejected = sum(item["rejected_rows"] for item in results)
+            return {"variant": EXAMPLE_VARIANT, "case_count": len(results), "valid_rows": total_valid, "rejected_rows": total_rejected}
         """
 
     if template == "ml":
@@ -686,16 +972,52 @@ def build_body(template: str, class_id: str) -> str:
     def solve_in_steps(task):
         return [
             f"1단계: {task} 요구사항 정리",
-            "2단계: 작은 함수로 분리",
-            "3단계: 테스트 입력 2개 이상 실행",
+            "2단계: 입력 검증과 핵심 로직 분리",
+            "3단계: 테스트 입력을 단계별로 확장",
         ]
+
+    def build_test_cases():
+        cases = [
+            {"name": "baseline", "latency_ms": 380, "error_rate": 0.01, "coverage": 0.82},
+        ]
+        if EXAMPLE_VARIANT >= 2:
+            cases.append({"name": "high_latency", "latency_ms": 820, "error_rate": 0.02, "coverage": 0.84})
+        if EXAMPLE_VARIANT >= 3:
+            cases.append({"name": "high_error", "latency_ms": 410, "error_rate": 0.09, "coverage": 0.81})
+        if EXAMPLE_VARIANT >= 4:
+            cases.append({"name": "low_coverage", "latency_ms": 360, "error_rate": 0.015, "coverage": 0.62})
+        if EXAMPLE_VARIANT >= 5:
+            cases.append({"name": "balanced", "latency_ms": 295, "error_rate": 0.008, "coverage": 0.9})
+        return cases
+
+    def evaluate_case(case):
+        score = 0
+        if case["latency_ms"] <= 500:
+            score += 1
+        if case["error_rate"] <= 0.03:
+            score += 1
+        if case["coverage"] >= 0.8:
+            score += 1
+        return {
+            "name": case["name"],
+            "score": score,
+            "pass": score >= 2,
+            "latency_ms": case["latency_ms"],
+            "error_rate": case["error_rate"],
+            "coverage": case["coverage"],
+        }
 
     def main():
         print("오늘 주제:", TOPIC)
-        steps = solve_in_steps(TOPIC)
-        for line in steps:
+        for line in solve_in_steps(TOPIC):
             print(line)
-        return {"step_count": len(steps)}
+
+        reports = [evaluate_case(case) for case in build_test_cases()]
+        for report in reports:
+            print("케이스 결과:", report)
+
+        pass_count = sum(1 for report in reports if report["pass"])
+        return {"variant": EXAMPLE_VARIANT, "case_count": len(reports), "pass_count": pass_count}
     """
 
 
@@ -911,11 +1233,23 @@ def validate_examples(rows: list[dict[str, str]]) -> tuple[int, list[str]]:
 
 
 def main() -> None:
-    rows = read_rows()
+    parser = argparse.ArgumentParser(description="Rebuild example files from curriculum index.")
+    parser.add_argument(
+        "--subject-root",
+        action="append",
+        default=[],
+        help="Rebuild only classes under this root folder (e.g. dataVizPrep). Can be repeated.",
+    )
+    args = parser.parse_args()
+
+    roots = {item.strip() for item in args.subject_root if item.strip()}
+    rows = filter_rows_by_subject_roots(read_rows(), roots)
     written = rebuild_examples(rows)
     checked, errors = validate_examples(rows)
 
     print(f"Rows: {len(rows)}")
+    if roots:
+        print(f"Subject roots: {', '.join(sorted(roots))}")
     print(f"Examples rebuilt: {written}")
     print(f"Validation checked: {checked}")
     print(f"Validation errors: {len(errors)}")

@@ -409,7 +409,7 @@
   "module": "그룹화와 집계 · 단계 4/4 운영 최적화 [class064]",
   "level": "기초응용",
   "session": "24/40",
-  "track_outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
+  "track_outcome": "집계 지표를 근거로 의미 있는 인사이트를 제시할 수 있다.",
   "questions": [
     {
       "question": "class064 (Python 전처리 및 시각화 24/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'그룹화와 집계 · 단계 4/4 운영 최적화 [class064]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "그룹화와 집계 · 단계 4/4 운영 최적화 [class064] 실습: `그룹화와 집계` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Seaborn/실전 차트 해석 · 단계 4/4 운영 최적화 [class076] 실습: `Seaborn/실전 차트 해석` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077] 실습: `Agent 시스템 통합 구현` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Matplotlib 시각화 기초 · 단계 4/4 운영 최적화 [class072] 실습: `Matplotlib 시각화 기초` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "그룹화와 집계 · 단계 4/4 운영 최적화 [class064] 실습: 파생변수(예: month, bucket)를 생성해 분석 축을 추가하세요.",
+        "Seaborn/실전 차트 해석 · 단계 4/4 운영 최적화 [class076] 실습: 분포 차트로 평균/중앙값/표준편차를 해석하세요.",
+        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077] 실습: example1에서 기준 시나리오를 실행하고 로그 포맷을 확인하세요.",
+        "Matplotlib 시각화 기초 · 단계 4/4 운영 최적화 [class072] 실습: 동일 데이터로 line/bar/scatter/histogram을 각각 그려 차이를 비교하세요."
       ],
       "answer_index": 0,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'그룹화와 집계 · 단계 4/4 운영 최적화 [class064]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다."
+        "분포 지표와 상관 차트를 함께 확인해 문제 정의와 가설을 작성한다.",
+        "문제 정의 -> 수집 -> 정제 -> 분석 -> 시각화 흐름과 파일 구조를 먼저 확인한다.",
+        "파생변수 추가 후 groupby와 agg 조합을 비교 실행한다.",
+        "공백/대소문자/특수문자와 날짜 포맷, 컬럼명 규칙을 표준화한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'그룹화와 집계 · 단계 4/4 운영 최적화 [class064]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다."
+        "컬럼명/날짜 포맷 불일치를 방치해 groupby/join 단계에서 오류가 발생한다.",
+        "한글 폰트·축·범례 설정을 생략해 그래프 해석이 왜곡된다.",
+        "파생변수 정의와 그룹 키를 검증하지 않아 잘못된 집계가 발생한다.",
+        "행/열 선택 기준이 불명확해 의도와 다른 데이터가 분석에 포함된다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'그룹화와 집계 · 단계 4/4 운영 최적화 [class064]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "Matplotlib 시각화 기초 · 단계 3/4 실전 검증 [class071] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "그룹화와 집계 · 단계 4/4 운영 최적화 [class064] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "데이터 분석 환경 구성 · 단계 2/4 기초 구현 [class042] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 점검: 데이터 항목 이름을 정확히 이해했다."
+        "Matplotlib 시각화 기초 · 단계 3/4 실전 검증 [class071] 점검: line/bar/scatter/histogram 4개 차트를 모두 실행했다.",
+        "그룹화와 집계 · 단계 4/4 운영 최적화 [class064] 점검: 파생변수 정의 이유를 분석 질문과 연결해 설명할 수 있다.",
+        "데이터 분석 환경 구성 · 단계 2/4 기초 구현 [class042] 점검: 문제 정의부터 시각화까지 분석 프로세스를 순서대로 설명할 수 있다.",
+        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 점검: 문자열 정리 규칙을 함수로 재사용 가능하게 만들었다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '원본 샘플과 그룹 집계 결과를 대조해 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'그룹화와 집계 · 단계 4/4 운영 최적화 [class064]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class064_example1.py",
-        "class304_example1.py",
-        "class007_example1.py",
-        "class296_example1.py"
+        "class046_example1.py",
+        "class041_example1.py",
+        "class059_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class064_example1.py 입니다."
@@ -481,9 +481,9 @@
       "question": "'class064_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "data_preprocess",
-        "visualization",
-        "function_module",
-        "speech"
+        "pandas",
+        "numpy",
+        "generic"
       ],
       "answer_index": 0,
       "explanation": "class064_example2.py의 EXAMPLE_TEMPLATE 값은 'data_preprocess' 입니다."
@@ -491,20 +491,20 @@
     {
       "question": "'class064_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "rolling_average",
-        "lint_prompt",
-        "clean_rows",
-        "mini_project_plan"
+        "extension_mission",
+        "sanitize_case_name",
+        "parse_amount",
+        "ops_readiness_check"
       ],
       "answer_index": 2,
-      "explanation": "class064_example3.py 함수 목록: clean_rows, summarize, main, self_check, challenge_case"
+      "explanation": "class064_example3.py 함수 목록: parse_amount, parse_date, clean_rows, summarize, build_test_cases, main, self_check, challenge_case"
     },
     {
       "question": "'class064_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "datetime",
-        "platform",
-        "math",
+        "pandas",
+        "pathlib",
         "matplotlib"
       ],
       "answer_index": 0,
@@ -541,8 +541,11 @@
       "datetime"
     ],
     "functions": [
+      "parse_amount",
+      "parse_date",
       "clean_rows",
       "summarize",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
@@ -558,8 +561,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -570,8 +576,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -583,8 +592,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
@@ -597,8 +609,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "mini_project_plan"
         ],
@@ -610,8 +625,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "ops_readiness_check"
         ],
@@ -622,23 +640,23 @@
   "example_snippets": [
     {
       "file": "class064_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example1: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example1: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 1\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class064_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example2: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example2: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 2\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class064_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example3: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example3: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 3\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class064_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example4: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example4: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 4\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class064_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example5: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class064 example5: 그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 4/4 운영 최적화 [class064]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 5\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     }
   ]
 };

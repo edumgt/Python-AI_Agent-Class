@@ -37,7 +37,7 @@
   - `classXXX_assignment_basic.py`: 기본 과제
   - `classXXX_assignment_advanced.py`: 심화 과제
   - `classXXX_assignment_challenge.py`: 챌린지 과제
-  - `classXXX_quiz.html`: 5문항 퀴즈
+  - `classXXX_quiz.html`: 10문항 퀴즈
   - `instructor_notes.md`: 강사용 해설서
 - `tools/`: 콘텐츠 재생성/검증 스크립트
 - `curriculum_index.csv`: 전체 차시 인덱스
@@ -50,7 +50,7 @@
 | 과목명 | 폴더명(camelCase) | class 범위 | 상세 학습 내용 |
 | --- | --- | --- | --- |
 | Python 프로그래밍 | `pyBasics` | class001~class040 | 변수/자료형/함수 기초 이후, **웹 프론트엔드 기초(HTML/CSS/Vanilla JS)**, **Tailwind CSS UI 모듈 제작**, 외부 라이브러리 활용, API 개념/HTTP, FastAPI·Uvicorn 서버 구현, OpenAPI 명세 문서화까지 개발자 중심으로 구성 |
-| Python 전처리 및 시각화 | `dataVizPrep` | class041~class080 | NumPy/Pandas 기반 전처리, 결측/이상치 처리, 집계/변환, Matplotlib/Seaborn 시각화 실습 |
+| Python 전처리 및 시각화 | `dataVizPrep` | class041~class080 | 데이터 분석 개요부터 NumPy/Pandas, 데이터 정제·가공, EDA, Matplotlib/Seaborn 시각화, 통합 실습까지 단계형 구성 |
 | 머신러닝과 딥러닝 | `mlDeepDive` | class081~class128 | 지도학습, 회귀/분류, 모델 평가, 특성공학, 과적합 제어, 신경망 기초와 실전 예측 프로젝트 |
 | 자연어 및 음성 데이터 활용 및 모델 개발 | `nlpSpeechAI` | class129~class224 | 텍스트 토큰화/임베딩과 음성 데이터 전처리를 통합해 NLP·Speech 모델 파이프라인 설계 |
 | 음성 데이터 활용한 TTS와 STT 모델 개발 | `speechTtsStt` | class225~class288 | 발화/화자 데이터 구성, 오디오 특징 추출, STT·TTS 모델 구성/평가, 품질 개선 루프 실습 |
@@ -59,6 +59,17 @@
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
 | 프로젝트 | `project` | project001~project020 | DevOps/MLOps/AIOps/LLMOps 통합 프로젝트 트랙. `devops_mlops_aiops_llmops_report.md` 기준으로 설계·배포·운영·관측을 실제 시나리오로 연결 |
+
+### 3-1-1) dataVizPrep 7단계 구성(요청 반영)
+| 단계 | 핵심 내용 | class 범위 |
+| --- | --- | --- |
+| 1. 데이터 분석 개요 | 데이터 분석 프로세스, 정형/비정형, CSV·Excel·JSON 구조, 분석용 Python 생태계 | class041~044 |
+| 2. NumPy 기초 | 배열(Array), list vs ndarray, 벡터화, 인덱싱/슬라이싱, 기초 통계 연산 | class045~048 |
+| 3. Pandas 기초 | Series/DataFrame, 데이터 로딩·저장, 행/열 선택, 조건 필터링, 정렬, 기초 통계 | class049~052 |
+| 4. 데이터 정제 | 결측치 처리, 중복 제거, 타입 변환, 문자열 정리, 날짜형 처리, 컬럼명 정리 | class053~060 |
+| 5. 데이터 가공 | 파생변수, groupby, aggregation, merge/join, pivot table, 범주형 처리 | class061~068 |
+| 6. EDA | 분포, 평균·중앙값·표준편차, 상관관계, 패턴 탐색, 문제 정의·가설 설정 | class073~076 |
+| 7. 데이터 시각화 기초 | 시각화 원칙, Matplotlib 문법, line/bar/scatter/histogram, 한글 폰트, 제목·축·범례 | class069~072 |
 
 ## 3-2) 실무 배포 트랙 (OnPrem + AWS + K8s/EKS)
 | 트랙 | class 범위 | 핵심 학습 항목 | 운영/배포 결과물 |

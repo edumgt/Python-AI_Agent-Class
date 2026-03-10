@@ -409,7 +409,7 @@
   "module": "NumPy 기초 · 단계 3/4 실전 검증 [class047]",
   "level": "입문",
   "session": "7/40",
-  "track_outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
+  "track_outcome": "벡터화 기반 수치 연산을 안정적으로 적용할 수 있다.",
   "questions": [
     {
       "question": "class047 (Python 전처리 및 시각화 7/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'NumPy 기초 · 단계 3/4 실전 검증 [class047]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 실습: `그룹화와 집계` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "NumPy 기초 · 단계 1/4 입문 이해 [class045] 실습: `NumPy 기초` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "NumPy 기초 · 단계 3/4 실전 검증 [class047] 실습: `NumPy 기초` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 실습: `문자열/날짜 전처리` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 실습: 파생변수(예: month, bucket)를 생성해 분석 축을 추가하세요.",
+        "NumPy 기초 · 단계 1/4 입문 이해 [class045] 실습: 같은 계산을 list 반복문과 ndarray 벡터화 방식으로 각각 실행해 비교하세요.",
+        "NumPy 기초 · 단계 3/4 실전 검증 [class047] 실습: 같은 계산을 list 반복문과 ndarray 벡터화 방식으로 각각 실행해 비교하세요.",
+        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 실습: 문자열 컬럼을 strip/lower/replace로 정리해 보세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'NumPy 기초 · 단계 3/4 실전 검증 [class047]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다."
+        "컬럼 선택·행 선택·조건 필터링·정렬을 순서대로 실행해 확인한다.",
+        "동일 데이터를 line/bar/scatter/histogram으로 각각 그려 비교한다.",
+        "정상/지연/오류 입력을 단계별로 실행해 실패 지점을 찾는다.",
+        "같은 계산을 list 반복문과 ndarray 벡터화 방식으로 비교한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'NumPy 기초 · 단계 3/4 실전 검증 [class047]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다."
+        "키 누락·중복과 범주형 순서를 확인하지 않아 결과 해석이 어긋난다.",
+        "컬럼명/날짜 포맷 불일치를 방치해 groupby/join 단계에서 오류가 발생한다.",
+        "ndarray 특성을 이해하지 않고 list 방식으로만 처리해 성능과 정확도를 놓친다.",
+        "한글 폰트·축·범례 설정을 생략해 그래프 해석이 왜곡된다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'NumPy 기초 · 단계 3/4 실전 검증 [class047]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "데이터 병합과 변환 · 단계 4/4 운영 최적화 [class068] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "NumPy 기초 · 단계 3/4 실전 검증 [class047] 점검: 데이터 항목 이름을 정확히 이해했다."
+        "문자열/날짜 전처리 · 단계 3/4 실전 검증 [class059] 점검: 문자열 정리 규칙을 함수로 재사용 가능하게 만들었다.",
+        "데이터 병합과 변환 · 단계 4/4 운영 최적화 [class068] 점검: join 방식 선택 근거와 데이터 손실 여부를 설명할 수 있다.",
+        "Agent 시스템 통합 구현 · 단계 1/4 입문 이해 [class077] 점검: 정상/지연/오류 입력 3종 이상으로 통합 테스트를 실행했다.",
+        "NumPy 기초 · 단계 3/4 실전 검증 [class047] 점검: list와 ndarray의 연산 차이를 코드로 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '케이스별 인덱싱/슬라이싱 결과와 기초 통계를 함께 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'NumPy 기초 · 단계 3/4 실전 검증 [class047]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class376_example1.py",
+        "class080_example1.py",
         "class047_example1.py",
-        "class290_example1.py",
-        "class271_example1.py"
+        "class075_example1.py",
+        "class065_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class047_example1.py 입니다."
@@ -480,9 +480,9 @@
     {
       "question": "'class047_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "generic",
-        "speech",
         "dev_setup",
+        "data_preprocess",
+        "pandas",
         "numpy"
       ],
       "answer_index": 3,
@@ -492,19 +492,19 @@
       "question": "'class047_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "compute_stats",
-        "challenge_case",
-        "top_k",
-        "mae"
+        "scan_workspace",
+        "clean_rows",
+        "summarize_scores"
       ],
       "answer_index": 0,
-      "explanation": "class047_example3.py 함수 목록: compute_stats, main, self_check, challenge_case"
+      "explanation": "class047_example3.py 함수 목록: compute_stats, build_test_cases, main, self_check, challenge_case"
     },
     {
       "question": "'class047_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
+        "re",
         "pandas",
-        "pathlib",
-        "json",
+        "platform",
         "numpy"
       ],
       "answer_index": 3,
@@ -542,6 +542,7 @@
     ],
     "functions": [
       "compute_stats",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
@@ -558,6 +559,7 @@
         ],
         "functions": [
           "compute_stats",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -569,6 +571,7 @@
         ],
         "functions": [
           "compute_stats",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -581,6 +584,7 @@
         ],
         "functions": [
           "compute_stats",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
@@ -594,6 +598,7 @@
         ],
         "functions": [
           "compute_stats",
+          "build_test_cases",
           "main",
           "mini_project_plan"
         ],
@@ -606,6 +611,7 @@
         ],
         "functions": [
           "compute_stats",
+          "build_test_cases",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +622,23 @@
   "example_snippets": [
     {
       "file": "class047_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example1: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if np is None:\n        avg = sum(values) / len(values)\n        var = sum((v - avg) ** 2 for v in values) / len(values)\n        return {\"mean\": round(avg, 4), \"std\": round(var ** 0.5, 4), \"backend\": \"python\"}\n    arr = np.array(values, dtype=float)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example1: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\nEXAMPLE_VARIANT = 1\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if not values:\n        raise ValueError(\"values must not be empty\")\n    if np is None:\n        avg = sum(values) / len(values)"
     },
     {
       "file": "class047_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example2: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if np is None:\n        avg = sum(values) / len(values)\n        var = sum((v - avg) ** 2 for v in values) / len(values)\n        return {\"mean\": round(avg, 4), \"std\": round(var ** 0.5, 4), \"backend\": \"python\"}\n    arr = np.array(values, dtype=float)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example2: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\nEXAMPLE_VARIANT = 2\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if not values:\n        raise ValueError(\"values must not be empty\")\n    if np is None:\n        avg = sum(values) / len(values)"
     },
     {
       "file": "class047_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example3: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if np is None:\n        avg = sum(values) / len(values)\n        var = sum((v - avg) ** 2 for v in values) / len(values)\n        return {\"mean\": round(avg, 4), \"std\": round(var ** 0.5, 4), \"backend\": \"python\"}\n    arr = np.array(values, dtype=float)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example3: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\nEXAMPLE_VARIANT = 3\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if not values:\n        raise ValueError(\"values must not be empty\")\n    if np is None:\n        avg = sum(values) / len(values)"
     },
     {
       "file": "class047_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example4: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if np is None:\n        avg = sum(values) / len(values)\n        var = sum((v - avg) ** 2 for v in values) / len(values)\n        return {\"mean\": round(avg, 4), \"std\": round(var ** 0.5, 4), \"backend\": \"python\"}\n    arr = np.array(values, dtype=float)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example4: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\nEXAMPLE_VARIANT = 4\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if not values:\n        raise ValueError(\"values must not be empty\")\n    if np is None:\n        avg = sum(values) / len(values)"
     },
     {
       "file": "class047_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example5: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if np is None:\n        avg = sum(values) / len(values)\n        var = sum((v - avg) ** 2 for v in values) / len(values)\n        return {\"mean\": round(avg, 4), \"std\": round(var ** 0.5, 4), \"backend\": \"python\"}\n    arr = np.array(values, dtype=float)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class047 example5: NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\"\"\n\nTOPIC = \"NumPy 기초 · 단계 3/4 실전 검증 [class047]\"\nEXAMPLE_TEMPLATE = \"numpy\"\nEXAMPLE_VARIANT = 5\n\ntry:\n    import numpy as np\nexcept ImportError:\n    np = None\n\ndef compute_stats(values):\n    if not values:\n        raise ValueError(\"values must not be empty\")\n    if np is None:\n        avg = sum(values) / len(values)"
     }
   ]
 };

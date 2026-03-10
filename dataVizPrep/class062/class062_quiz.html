@@ -409,7 +409,7 @@
   "module": "그룹화와 집계 · 단계 2/4 기초 구현 [class062]",
   "level": "기초응용",
   "session": "22/40",
-  "track_outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
+  "track_outcome": "집계 지표를 근거로 의미 있는 인사이트를 제시할 수 있다.",
   "questions": [
     {
       "question": "class062 (Python 전처리 및 시각화 22/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'그룹화와 집계 · 단계 2/4 기초 구현 [class062]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "문자열/날짜 전처리 · 단계 4/4 운영 최적화 [class060] 실습: `문자열/날짜 전처리` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문자열/날짜 전처리 · 단계 2/4 기초 구현 [class058] 실습: `문자열/날짜 전처리` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Pandas 데이터프레임 기초 · 단계 1/4 입문 이해 [class049] 실습: `Pandas 데이터프레임 기초` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 실습: `그룹화와 집계` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "문자열/날짜 전처리 · 단계 4/4 운영 최적화 [class060] 실습: 문자열 컬럼을 strip/lower/replace로 정리해 보세요.",
+        "문자열/날짜 전처리 · 단계 2/4 기초 구현 [class058] 실습: 문자열 컬럼을 strip/lower/replace로 정리해 보세요.",
+        "Pandas 데이터프레임 기초 · 단계 1/4 입문 이해 [class049] 실습: CSV/JSON 데이터를 로딩하고 컬럼/행 구조를 출력해 확인하세요.",
+        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 실습: 파생변수(예: month, bucket)를 생성해 분석 축을 추가하세요."
       ],
       "answer_index": 3,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'그룹화와 집계 · 단계 2/4 기초 구현 [class062]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다."
+        "join 방식과 pivot table 구조를 비교해 분석용 테이블을 구성한다.",
+        "결측/중복/타입 변환 규칙을 분리해 단계별로 적용한다.",
+        "공백/대소문자/특수문자와 날짜 포맷, 컬럼명 규칙을 표준화한다.",
+        "파생변수 추가 후 groupby와 agg 조합을 비교 실행한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'그룹화와 집계 · 단계 2/4 기초 구현 [class062]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다."
+        "ndarray 특성을 이해하지 않고 list 방식으로만 처리해 성능과 정확도를 놓친다.",
+        "행/열 선택 기준이 불명확해 의도와 다른 데이터가 분석에 포함된다.",
+        "한글 폰트·축·범례 설정을 생략해 그래프 해석이 왜곡된다.",
+        "파생변수 정의와 그룹 키를 검증하지 않아 잘못된 집계가 발생한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,20 +458,20 @@
     {
       "question": "'그룹화와 집계 · 단계 2/4 기초 구현 [class062]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "데이터 병합과 변환 · 단계 2/4 기초 구현 [class066] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "데이터 병합과 변환 · 단계 1/4 입문 이해 [class065] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "Seaborn/실전 차트 해석 · 단계 1/4 입문 이해 [class073] 점검: 데이터 항목 이름을 정확히 이해했다."
+        "데이터 병합과 변환 · 단계 2/4 기초 구현 [class066] 점검: join 방식 선택 근거와 데이터 손실 여부를 설명할 수 있다.",
+        "데이터 병합과 변환 · 단계 1/4 입문 이해 [class065] 점검: join 방식 선택 근거와 데이터 손실 여부를 설명할 수 있다.",
+        "그룹화와 집계 · 단계 2/4 기초 구현 [class062] 점검: 파생변수 정의 이유를 분석 질문과 연결해 설명할 수 있다.",
+        "Seaborn/실전 차트 해석 · 단계 1/4 입문 이해 [class073] 점검: 평균·중앙값·표준편차를 데이터 분포와 함께 해석했다."
       ],
       "answer_index": 2,
-      "explanation": "이 차시는 '전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '원본 샘플과 그룹 집계 결과를 대조해 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'그룹화와 집계 · 단계 2/4 기초 구현 [class062]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class062_example1.py",
-        "class159_example1.py",
-        "class392_example1.py",
+        "class050_example1.py",
+        "class066_example1.py",
         "class043_example1.py"
       ],
       "answer_index": 0,
@@ -481,9 +481,9 @@
       "question": "'class062_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
         "data_preprocess",
-        "ml",
-        "speech",
-        "visualization"
+        "numpy",
+        "visualization",
+        "pandas"
       ],
       "answer_index": 0,
       "explanation": "class062_example2.py의 EXAMPLE_TEMPLATE 값은 'data_preprocess' 입니다."
@@ -491,21 +491,21 @@
     {
       "question": "'class062_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "make_dataset",
-        "clean_rows",
-        "relu",
+        "safe_float",
+        "parse_amount",
+        "normalize_rows",
         "compute_stats"
       ],
       "answer_index": 1,
-      "explanation": "class062_example3.py 함수 목록: clean_rows, summarize, main, self_check, challenge_case"
+      "explanation": "class062_example3.py 함수 목록: parse_amount, parse_date, clean_rows, summarize, build_test_cases, main, self_check, challenge_case"
     },
     {
       "question": "'class062_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "matplotlib",
         "datetime",
-        "numpy",
-        "platform"
+        "re",
+        "pandas"
       ],
       "answer_index": 1,
       "explanation": "class062_example4.py import 목록: datetime"
@@ -541,8 +541,11 @@
       "datetime"
     ],
     "functions": [
+      "parse_amount",
+      "parse_date",
       "clean_rows",
       "summarize",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
@@ -558,8 +561,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -570,8 +576,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -583,8 +592,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
@@ -597,8 +609,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "mini_project_plan"
         ],
@@ -610,8 +625,11 @@
           "datetime"
         ],
         "functions": [
+          "parse_amount",
+          "parse_date",
           "clean_rows",
           "summarize",
+          "build_test_cases",
           "main",
           "ops_readiness_check"
         ],
@@ -622,23 +640,23 @@
   "example_snippets": [
     {
       "file": "class062_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example1: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example1: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 1\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class062_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example2: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example2: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 2\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class062_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example3: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example3: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 3\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class062_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example4: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example4: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 4\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     },
     {
       "file": "class062_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example5: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\n\nfrom datetime import datetime\n\ndef clean_rows(rows):\n    cleaned = []\n    for row in rows:\n        text = row[\"text\"].strip().lower()\n        amount = float(row[\"amount\"])\n        when = datetime.strptime(row[\"date\"], \"%Y-%m-%d\")\n        cleaned.append({\"text\": text, \"amount\": amount, \"month\": when.month})\n    return cleaned"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class062 example5: 그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\"\"\n\nTOPIC = \"그룹화와 집계 · 단계 2/4 기초 구현 [class062]\"\nEXAMPLE_TEMPLATE = \"data_preprocess\"\nEXAMPLE_VARIANT = 5\n\nfrom datetime import datetime\n\ndef parse_amount(raw):\n    if raw is None:\n        return None\n    text = str(raw).strip().replace(\",\", \"\")\n    if not text:\n        return None\n    try:\n        return float(text)"
     }
   ]
 };

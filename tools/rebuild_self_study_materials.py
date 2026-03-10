@@ -1,12 +1,18 @@
 # 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다
 from __future__ import annotations
 
+import argparse
 import csv
 import re
 from pathlib import Path
 from textwrap import dedent
 
-from PIL import Image, ImageDraw, ImageFont
+try:
+    from PIL import Image, ImageDraw, ImageFont
+except ImportError:
+    Image = None
+    ImageDraw = None
+    ImageFont = None
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -304,6 +310,394 @@ TRACK_FLOW_STEPS = {
     ],
 }
 
+
+TRACK_EXAMPLE_PROGRESS = {
+    "python": [
+        "example1: 정상 입력 1세트로 기본 동작을 확인한다.",
+        "example2: 입력값 범위를 늘려 조건 분기 동작을 확인한다.",
+        "example3: 경계값/예외값을 넣어 실패 경로를 재현한다.",
+        "example4: 여러 테스트 케이스 결과를 비교하고 개선안을 반영한다.",
+        "example5: 운영 관점 체크리스트(로그/알림/롤백)까지 점검한다.",
+    ],
+    "data": [
+        "example1: 작은 정상 데이터로 전처리와 요약 결과를 확인한다.",
+        "example2: 값 범위(0/음수/문자열 숫자)를 넓혀 변환 규칙을 검증한다.",
+        "example3: 결측/형식 오류를 넣어 제외 규칙과 오류 처리 로직을 테스트한다.",
+        "example4: 여러 케이스 통계를 비교해 지표 차이를 해석한다.",
+        "example5: 운영 기준(품질 임계치/회귀 테스트/복구 절차)을 점검한다.",
+    ],
+    "ml": [
+        "example1: 기본 학습 데이터로 모델 계산 흐름을 검증한다.",
+        "example2: 입력 분포를 변경해 성능 변화를 확인한다.",
+        "example3: 이상치/편향 데이터를 넣어 취약 구간을 찾는다.",
+        "example4: 실험 결과를 비교해 개선 방향을 도출한다.",
+        "example5: 배포 전 기준 성능과 롤백 조건을 정의한다.",
+    ],
+    "nlp": [
+        "example1: 기본 문장 전처리/토큰화를 실행한다.",
+        "example2: 문장 유형을 늘려 토큰화 결과 차이를 확인한다.",
+        "example3: 특수문자/빈 입력을 넣어 예외 케이스를 점검한다.",
+        "example4: 빈도/패턴 결과를 비교해 해석 품질을 높인다.",
+        "example5: 운영용 품질 체크(오탐/누락/로그)를 구성한다.",
+    ],
+    "speech": [
+        "example1: 기본 발화 샘플로 처리 파이프라인을 확인한다.",
+        "example2: 길이/잡음 조건을 늘려 필터링 규칙을 검증한다.",
+        "example3: 품질 낮은 샘플을 넣어 실패 케이스를 재현한다.",
+        "example4: 품질 지표를 비교해 임계치를 조정한다.",
+        "example5: 실시간 운영 기준(지연/재시도/알림)을 점검한다.",
+    ],
+    "prompt": [
+        "example1: 기본 프롬프트 구조를 실행해 출력 형식을 확인한다.",
+        "example2: 역할/목표/형식을 바꿔 응답 차이를 관찰한다.",
+        "example3: 모호한 프롬프트를 넣어 실패 케이스를 분석한다.",
+        "example4: 개선 전후 프롬프트를 비교해 품질을 평가한다.",
+        "example5: 실전 운영 규칙(검증/금칙어/로그)을 적용한다.",
+    ],
+    "langchain": [
+        "example1: 체인 최소 단계를 연결해 기본 동작을 확인한다.",
+        "example2: 입력 유형을 늘려 단계별 검증을 수행한다.",
+        "example3: 단계 실패 시나리오를 재현해 복구 로직을 점검한다.",
+        "example4: 체인 구성 변경 전후 결과를 비교한다.",
+        "example5: 운영 추적/경보/재실행 절차를 정리한다.",
+    ],
+    "rag": [
+        "example1: 기본 검색-응답 흐름을 실행한다.",
+        "example2: 질문 유형을 확장해 검색 품질을 비교한다.",
+        "example3: 검색 실패/저품질 케이스를 넣어 방어 로직을 확인한다.",
+        "example4: top_k/필터 조건을 바꿔 결과를 비교한다.",
+        "example5: 운영 기준(근거율/응답시간/재색인)을 점검한다.",
+    ],
+    "generic": [
+        "example1: 최소 동작 시나리오를 실행한다.",
+        "example2: 입력 조건을 확장해 동작 범위를 확인한다.",
+        "example3: 실패 시나리오를 재현해 방어 로직을 점검한다.",
+        "example4: 개선 전후 결과를 비교해 품질을 높인다.",
+        "example5: 운영 체크리스트까지 반영해 마무리한다.",
+    ],
+}
+
+
+def module_core_name(module: str) -> str:
+    return module.split("·", maxsplit=1)[0].strip()
+
+
+def is_data_viz_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "Python 전처리 및 시각화"
+
+
+DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "데이터 분석 환경 구성": {
+        "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
+        "why": "데이터 형태와 파일 구조를 구분하지 못하면 이후 NumPy/Pandas 실습에서 전처리 방향을 잘못 잡기 쉽습니다.",
+        "concepts": [
+            "`데이터 분석 프로세스`는 문제 정의 -> 수집 -> 정제 -> 분석 -> 시각화 -> 공유 순서로 진행합니다.",
+            "`정형/비정형 데이터`를 구분해야 적절한 저장 형식과 처리 도구를 선택할 수 있습니다.",
+            "`CSV/Excel/JSON` 구조 차이와 Python 생태계(NumPy/Pandas/Matplotlib)를 이해해야 실습이 연결됩니다.",
+        ],
+        "practice_steps": [
+            "같은 샘플 데이터를 CSV/JSON 형태로 준비해 구조 차이를 비교하세요.",
+            "정형 데이터와 비정형 데이터 예시를 2개씩 분류해 보세요.",
+            "분석 프로세스 각 단계에서 어떤 Python 라이브러리를 쓸지 매핑해 보세요.",
+        ],
+        "checklist": [
+            "문제 정의부터 시각화까지 분석 프로세스를 순서대로 설명할 수 있다.",
+            "정형/비정형 데이터 차이를 예시와 함께 설명할 수 있다.",
+            "CSV/Excel/JSON 파일 구조 특징과 사용 시점을 구분할 수 있다.",
+        ],
+        "flow_steps": [
+            "분석 목표와 문제를 정의한다",
+            "정형/비정형 데이터와 파일 포맷을 구분한다",
+            "Python 분석 생태계 도구를 역할별로 매핑한다",
+            "샘플 데이터를 로딩해 다음 단계 준비를 마친다",
+        ],
+        "focus_points": [
+            "데이터 유형(정형/비정형)에 맞는 처리 도구를 선택했는지 확인하기",
+            "CSV/Excel/JSON 구조 차이를 컬럼/중첩 기준으로 설명할 수 있는지 점검하기",
+            "분석 프로세스 단계와 실행 코드가 대응되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 NumPy 배열 연산으로 전처리 계산의 기본기를 다집니다.",
+    },
+    "NumPy 기초": {
+        "kid_summary": "배열(Array) 기반 연산으로 빠르고 일관된 수치 처리를 익히는 차시입니다.",
+        "why": "리스트 반복문보다 ndarray 벡터화 연산을 이해해야 데이터 처리 성능과 코드 가독성을 함께 확보할 수 있습니다.",
+        "concepts": [
+            "`배열(Array)`은 동일 타입 수치를 연속 메모리로 관리해 계산 효율을 높입니다.",
+            "`list`와 `ndarray` 차이를 이해해야 벡터화 연산, 브로드캐스팅, 타입 변환을 정확히 다룰 수 있습니다.",
+            "`인덱싱/슬라이싱`과 `기초 통계(mean/std/min/max)`는 NumPy 분석의 기본 조작입니다.",
+        ],
+        "practice_steps": [
+            "같은 계산을 list 반복문과 ndarray 벡터화 방식으로 각각 실행해 비교하세요.",
+            "인덱싱/슬라이싱으로 부분 배열을 추출하고 값이 어떻게 바뀌는지 확인하세요.",
+            "평균/분산/표준편차를 여러 테스트 세트로 계산해 분포 차이를 해석하세요.",
+        ],
+        "checklist": [
+            "list와 ndarray의 연산 차이를 코드로 설명할 수 있다.",
+            "벡터화 연산을 사용해 반복문을 줄이는 방법을 적용했다.",
+            "인덱싱/슬라이싱과 기초 통계를 조합해 결과를 검증했다.",
+        ],
+        "flow_steps": [
+            "원본 수치를 ndarray로 변환한다",
+            "벡터화 연산으로 전처리 계산을 수행한다",
+            "인덱싱/슬라이싱으로 관심 구간을 추출한다",
+            "기초 통계 지표로 결과를 검증한다",
+        ],
+        "focus_points": [
+            "벡터화 연산이 반복문 대비 어떤 이점을 주는지 확인하기",
+            "인덱싱/슬라이싱 범위가 경계값에서 안전한지 점검하기",
+            "통계 지표 해석이 입력 분포 변화와 연결되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Pandas Series/DataFrame으로 표 데이터 조작을 확장합니다.",
+    },
+    "Pandas 데이터프레임 기초": {
+        "kid_summary": "Series와 DataFrame으로 표 데이터를 읽고, 필터링하고, 정렬하는 기본기를 익히는 차시입니다.",
+        "why": "실무 데이터 분석은 CSV/Excel/JSON 로딩 이후 행·열 선택과 조건 필터링이 핵심 반복 작업입니다.",
+        "concepts": [
+            "`Series`는 1차원, `DataFrame`은 2차원 표 구조로 Pandas 분석의 중심 자료구조입니다.",
+            "`데이터 로딩/저장`과 `행·열 선택`을 정확히 해야 전처리 오류를 줄일 수 있습니다.",
+            "`조건 필터링/정렬/기초 통계`는 데이터 상태를 빠르게 점검하는 기본 루틴입니다.",
+        ],
+        "practice_steps": [
+            "CSV/JSON 데이터를 로딩하고 컬럼/행 구조를 출력해 확인하세요.",
+            "컬럼 선택, 행 선택, 조건 필터링을 각각 수행해 결과 차이를 비교하세요.",
+            "정렬과 describe 기반 통계를 함께 출력해 데이터 상태를 요약하세요.",
+        ],
+        "checklist": [
+            "Series와 DataFrame의 역할 차이를 설명할 수 있다.",
+            "행/열 선택과 조건 필터링을 혼합해 필요한 데이터만 추출했다.",
+            "정렬 전후 결과와 기초 통계 변화를 해석할 수 있다.",
+        ],
+        "flow_steps": [
+            "표 데이터를 로딩해 DataFrame을 구성한다",
+            "컬럼/행 선택과 조건 필터링을 적용한다",
+            "정렬과 기본 통계로 데이터 품질을 점검한다",
+            "저장 포맷을 선택해 결과를 내보낸다",
+        ],
+        "focus_points": [
+            "선택/필터 조건이 분석 질문과 정확히 대응되는지 확인하기",
+            "정렬 기준 컬럼과 오름/내림차순 의도가 명확한지 점검하기",
+            "기초 통계 수치로 이상 패턴을 먼저 발견했는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 결측/중복/타입 이슈를 해결하는 데이터 정제로 넘어갑니다.",
+    },
+    "결측치/이상치 처리": {
+        "kid_summary": "결측치, 중복, 이상치를 정리해 분석 가능한 깨끗한 데이터셋을 만드는 차시입니다.",
+        "why": "정제 규칙이 없으면 평균·모델 성능·시각화 해석이 왜곡됩니다.",
+        "concepts": [
+            "`결측치 처리`와 `중복 데이터 제거`는 분석 품질을 지키는 기본 방어선입니다.",
+            "`데이터 타입 변환`을 먼저 맞춰야 집계/비교/정렬이 올바르게 동작합니다.",
+            "`이상치 처리 기준`은 제외/보정 여부를 일관성 있게 결정해야 합니다.",
+        ],
+        "practice_steps": [
+            "결측치 처리 전후 행 수와 결측 개수를 비교하세요.",
+            "중복 행 제거와 타입 변환(int/float/datetime) 결과를 점검하세요.",
+            "이상치 기준을 바꿔 통계 지표가 어떻게 달라지는지 확인하세요.",
+        ],
+        "checklist": [
+            "결측/중복/이상치 처리 기준을 문장으로 설명할 수 있다.",
+            "타입 변환 실패 행을 분리해 로그로 남겼다.",
+            "정제 전후 핵심 통계를 비교해 품질 개선 근거를 제시했다.",
+        ],
+        "flow_steps": [
+            "결측치와 중복 현황을 진단한다",
+            "타입 변환과 이상치 기준을 적용한다",
+            "정제된 데이터셋을 재검증한다",
+            "정제 리포트를 저장하고 공유한다",
+        ],
+        "focus_points": [
+            "정제 규칙이 데이터 손실을 과도하게 만들지 않는지 확인하기",
+            "타입 변환 실패를 조용히 무시하지 않고 추적하는지 점검하기",
+            "정제 전후 수치 비교로 개선 효과를 검증했는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 문자열/날짜/컬럼명을 표준화해 가공 준비를 마무리합니다.",
+    },
+    "문자열/날짜 전처리": {
+        "kid_summary": "문자열 정리와 날짜형 변환, 컬럼명 정규화로 일관된 분석 스키마를 만드는 차시입니다.",
+        "why": "공백·대소문자·날짜 포맷·컬럼명 불일치를 정리하지 않으면 join/groupby 단계에서 오류가 반복됩니다.",
+        "concepts": [
+            "`문자열 정리`는 공백/특수문자/대소문자 규칙을 통일하는 작업입니다.",
+            "`날짜형 데이터 처리`는 파싱 포맷과 시계열 기준 컬럼을 명확히 해야 합니다.",
+            "`컬럼명 정리`는 snake_case 등 규칙을 고정해 후속 코드 안정성을 높입니다.",
+        ],
+        "practice_steps": [
+            "문자열 컬럼을 strip/lower/replace로 정리해 보세요.",
+            "여러 날짜 형식을 하나의 datetime 포맷으로 통일하세요.",
+            "컬럼명을 일괄 변환하고 전후 스키마를 비교하세요.",
+        ],
+        "checklist": [
+            "문자열 정리 규칙을 함수로 재사용 가능하게 만들었다.",
+            "날짜 파싱 성공/실패 건수를 분리해 확인했다.",
+            "컬럼명 규칙을 통일해 후속 코드 가독성을 높였다.",
+        ],
+        "flow_steps": [
+            "문자열 컬럼 정리 규칙을 정의한다",
+            "날짜형 데이터 파싱과 검증을 수행한다",
+            "컬럼명을 표준 규칙으로 변환한다",
+            "정리된 스키마를 저장해 다음 단계로 전달한다",
+        ],
+        "focus_points": [
+            "문자열 정리 규칙이 누락 없이 적용되는지 확인하기",
+            "날짜 파싱 실패를 빠르게 탐지할 수 있는지 점검하기",
+            "컬럼명 표준화 후 참조 오류가 없는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 파생변수, groupby, aggregation으로 데이터 가공을 확장합니다.",
+    },
+    "그룹화와 집계": {
+        "kid_summary": "파생변수를 만들고 groupby/aggregation으로 의미 있는 지표를 만드는 차시입니다.",
+        "why": "원본 데이터를 그대로 보는 것보다 그룹 단위 집계가 의사결정에 직접 쓰이는 인사이트를 제공합니다.",
+        "concepts": [
+            "`파생변수 생성`은 원본 컬럼을 업무 지표로 바꾸는 핵심 전처리입니다.",
+            "`groupby`와 `aggregation`은 집단별 합계/평균/개수 등 패턴을 드러냅니다.",
+            "`집계 결과 검증`은 분모/분자 오류와 그룹 누락을 줄이는 필수 단계입니다.",
+        ],
+        "practice_steps": [
+            "파생변수(예: month, bucket)를 생성해 분석 축을 추가하세요.",
+            "groupby + agg로 그룹별 합계/평균/건수를 계산하세요.",
+            "원본 샘플과 집계 결과를 대조해 계산 정확도를 검증하세요.",
+        ],
+        "checklist": [
+            "파생변수 정의 이유를 분석 질문과 연결해 설명할 수 있다.",
+            "groupby 키와 agg 함수 선택 근거를 제시할 수 있다.",
+            "집계 결과를 원본 데이터와 대조해 검증했다.",
+        ],
+        "flow_steps": [
+            "분석 목표에 맞는 파생변수를 생성한다",
+            "groupby 키를 확정하고 aggregation을 수행한다",
+            "집계 테이블을 정렬/필터링해 핵심 패턴을 추출한다",
+            "결과 해석과 다음 액션을 정리한다",
+        ],
+        "focus_points": [
+            "파생변수와 그룹 키가 질문 의도에 맞는지 확인하기",
+            "aggregation 결과에 누락 그룹이 없는지 점검하기",
+            "집계 결과 해석이 수치 근거와 연결되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 merge/join/pivot으로 여러 테이블을 결합해 분석 폭을 넓힙니다.",
+    },
+    "데이터 병합과 변환": {
+        "kid_summary": "merge/join과 pivot table, 범주형 처리로 분석 테이블을 재구성하는 차시입니다.",
+        "why": "실무 데이터는 여러 소스에 흩어져 있어 병합·피벗·범주형 정리가 있어야 최종 리포트를 만들 수 있습니다.",
+        "concepts": [
+            "`merge/join`은 키 기반으로 테이블을 결합해 분석 범위를 확장합니다.",
+            "`pivot table`은 행·열 관점을 바꿔 패턴을 빠르게 비교하게 합니다.",
+            "`범주형 데이터 처리`는 코드/라벨/순서 정보를 명확히 관리하는 작업입니다.",
+        ],
+        "practice_steps": [
+            "inner/left join 결과 행 수를 비교해 차이를 확인하세요.",
+            "pivot table로 지표를 재배치해 읽기 쉬운 구조를 만드세요.",
+            "범주형 컬럼을 category로 변환하고 정렬/집계 결과를 비교하세요.",
+        ],
+        "checklist": [
+            "join 방식 선택 근거와 데이터 손실 여부를 설명할 수 있다.",
+            "pivot table 전후 구조 차이를 해석할 수 있다.",
+            "범주형 처리 후 집계 결과가 의도대로 정렬되는지 검증했다.",
+        ],
+        "flow_steps": [
+            "결합 대상 테이블과 키를 정의한다",
+            "merge/join으로 통합 테이블을 생성한다",
+            "pivot table과 범주형 처리로 구조를 재배치한다",
+            "분석용 최종 테이블을 검증한다",
+        ],
+        "focus_points": [
+            "병합 키 누락/중복으로 인한 행 손실이 없는지 확인하기",
+            "pivot 결과가 비교 목적에 맞는 축으로 구성됐는지 점검하기",
+            "범주형 순서/라벨이 시각화와 일관되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 EDA 관점에서 분포·상관·가설 검증으로 해석력을 강화합니다.",
+    },
+    "Matplotlib 시각화 기초": {
+        "kid_summary": "시각화 원칙과 Matplotlib 기본 문법으로 line/bar/scatter/histogram 차트를 다루는 차시입니다.",
+        "why": "적절한 차트와 폰트/축/범례 설정이 있어야 데이터 해석이 왜곡되지 않고 전달됩니다.",
+        "concepts": [
+            "`시각화 원칙`은 목적에 맞는 차트 선택, 왜곡 없는 축, 명확한 라벨링입니다.",
+            "`Matplotlib 기본 문법`으로 line/bar/scatter/histogram을 구현할 수 있어야 합니다.",
+            "`한글 폰트/제목/축/범례` 설정은 실무 리포트 가독성과 재현성의 핵심입니다.",
+        ],
+        "practice_steps": [
+            "동일 데이터로 line/bar/scatter/histogram을 각각 그려 차이를 비교하세요.",
+            "한글 폰트를 적용해 제목/축/범례가 깨지지 않는지 확인하세요.",
+            "축 범위/단위를 바꿔 해석이 어떻게 달라지는지 기록하세요.",
+        ],
+        "checklist": [
+            "line/bar/scatter/histogram 4개 차트를 모두 실행했다.",
+            "한글 폰트 적용 후 제목·축 라벨·범례가 정상 출력된다.",
+            "차트 유형 선택 이유를 데이터 특성과 연결해 설명할 수 있다.",
+        ],
+        "flow_steps": [
+            "시각화 목적과 비교 지표를 정의한다",
+            "Matplotlib로 핵심 차트(line/bar/scatter/histogram)를 생성한다",
+            "한글 폰트와 제목/축/범례를 설정한다",
+            "차트 해석 결과를 요약해 공유한다",
+        ],
+        "focus_points": [
+            "차트 유형 선택이 질문 의도(추세/비교/분포)에 맞는지 확인하기",
+            "한글 폰트/라벨/범례 설정 누락으로 가독성이 떨어지지 않는지 점검하기",
+            "축 스케일이 과도한 왜곡을 만들지 않는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Matplotlib 결과를 Seaborn 스타일/통계 시각화로 확장합니다.",
+    },
+    "Seaborn/실전 차트 해석": {
+        "kid_summary": "탐색적 데이터 분석(EDA) 관점에서 분포·통계·상관·패턴·가설을 다루는 차시입니다.",
+        "why": "EDA를 통해 문제를 정의하고 가설을 세워야 모델링과 보고서 품질이 높아집니다.",
+        "concepts": [
+            "`EDA`는 데이터 분포 파악, 평균/중앙값/표준편차 확인, 상관관계 탐색의 반복입니다.",
+            "`데이터 패턴 찾기`를 통해 문제 정의를 구체화하고 가설을 세울 수 있습니다.",
+            "`Seaborn`은 통계 시각화로 가설 검증 전 단서를 빠르게 찾게 해줍니다.",
+        ],
+        "practice_steps": [
+            "분포 차트로 평균/중앙값/표준편차를 해석하세요.",
+            "상관 차트(scatter/heatmap)로 변수 관계를 점검하세요.",
+            "발견한 패턴을 바탕으로 가설 1개 이상을 문장으로 작성하세요.",
+        ],
+        "checklist": [
+            "평균·중앙값·표준편차를 데이터 분포와 함께 해석했다.",
+            "상관관계 수치와 시각 패턴을 함께 설명할 수 있다.",
+            "문제 정의와 가설 설정을 데이터 근거로 제시했다.",
+        ],
+        "flow_steps": [
+            "분석 질문과 가설 후보를 정의한다",
+            "EDA 지표(분포/중심/산포/상관)를 계산한다",
+            "Seaborn 시각화로 패턴을 확인한다",
+            "가설 검증 계획과 후속 액션을 정리한다",
+        ],
+        "focus_points": [
+            "EDA 결과가 문제 정의와 직접 연결되는지 확인하기",
+            "시각 패턴과 통계 수치를 함께 근거로 제시했는지 점검하기",
+            "가설 문장이 측정 가능 지표로 검증 가능한지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 시각화와 전처리를 묶어 Agent 시스템 통합 구현으로 연결합니다.",
+    },
+    "Agent 시스템 통합 구현": {
+        "kid_summary": "전처리·집계·시각화 요소를 하나의 실행 흐름으로 묶는 통합 구현 차시입니다.",
+        "why": "실무에서는 개별 기능보다 입력 검증, 처리 파이프라인, 실패 복구를 함께 설계해야 안정적으로 운영할 수 있습니다.",
+        "concepts": [
+            "`입력 계약`을 먼저 고정하면 모듈 간 연결 오류를 크게 줄일 수 있습니다.",
+            "`단계별 상태 기록`은 실패 지점 식별과 재실행 자동화의 핵심입니다.",
+            "`회귀 테스트`는 기능 추가 후 기존 동작 보존 여부를 검증합니다.",
+        ],
+        "practice_steps": [
+            "example1에서 기준 시나리오를 실행하고 로그 포맷을 확인하세요.",
+            "example2~3에서 지연/오류 입력을 추가해 방어 로직을 검증하세요.",
+            "example4~5에서 개선 전후 결과와 운영 체크리스트를 비교하세요.",
+        ],
+        "checklist": [
+            "정상/지연/오류 입력 3종 이상으로 통합 테스트를 실행했다.",
+            "실패 케이스에서 어느 단계가 실패했는지 로그로 추적할 수 있다.",
+            "복구 절차(재시도/롤백/알림) 초안을 코드 또는 문서로 남겼다.",
+        ],
+        "flow_steps": [
+            "입력 계약과 성공 기준을 정의한다",
+            "전처리-집계-시각화 단계를 파이프라인으로 연결한다",
+            "지연/오류 시나리오를 재현해 복구 로직을 검증한다",
+            "운영 체크리스트와 회귀 테스트 결과를 문서화한다",
+        ],
+        "focus_points": [
+            "단계 간 입출력 계약이 깨지지 않는지 확인하기",
+            "오류 발생 시 로그만으로 실패 지점을 찾을 수 있는지 점검하기",
+            "개선 전후 결과를 수치로 비교해 품질 향상을 검증하기",
+        ],
+        "next_tip": "다음 과목에서는 통합 구현 패턴을 LLM/RAG 파이프라인으로 확장합니다.",
+    },
+}
 
 PYTHON_PL_MODULE_PROFILES = {
     "오리엔테이션 및 개발환경 준비": {
@@ -655,38 +1049,44 @@ def get_python_pl_profile(subject_name: str, module: str) -> dict[str, object] |
     return PYTHON_PL_MODULE_PROFILES.get(module)
 
 
+def get_data_viz_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_data_viz_subject(subject_name):
+        return None
+    return DATA_VIZ_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
-    profile = get_python_pl_profile(subject_name, module)
-    if not profile:
-        return info
-    for key in ("kid_summary", "why", "concepts", "analogy", "practice_steps", "checklist", "next_tip"):
-        if key in profile:
-            info[key] = profile[key]
+    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+        if not profile:
+            continue
+        for key in ("kid_summary", "why", "concepts", "analogy", "practice_steps", "checklist", "next_tip"):
+            if key in profile:
+                info[key] = profile[key]
     return info
 
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
-    profile = get_python_pl_profile(subject_name, module)
-    syntax = profile.get("syntax") if profile else None
-    if isinstance(syntax, list) and syntax:
-        return syntax
+    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+        syntax = profile.get("syntax") if profile else None
+        if isinstance(syntax, list) and syntax:
+            return syntax
     return TRACK_MAIN_SYNTAX.get(track, TRACK_MAIN_SYNTAX["generic"])
 
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
-    profile = get_python_pl_profile(subject_name, module)
-    flow_steps = profile.get("flow_steps") if profile else None
-    if isinstance(flow_steps, list) and len(flow_steps) >= 4:
-        return flow_steps
+    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+        flow_steps = profile.get("flow_steps") if profile else None
+        if isinstance(flow_steps, list) and len(flow_steps) >= 4:
+            return flow_steps
     return TRACK_FLOW_STEPS.get(track, TRACK_FLOW_STEPS["generic"])
 
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
-    profile = get_python_pl_profile(subject_name, module)
-    points = profile.get("focus_points") if profile else None
-    if isinstance(points, list) and len(points) >= 3:
-        return points[:3]
+    for profile in (get_data_viz_profile(subject_name, module), get_python_pl_profile(subject_name, module)):
+        points = profile.get("focus_points") if profile else None
+        if isinstance(points, list) and len(points) >= 3:
+            return points[:3]
     if track == "python":
         return [
             "변수/상수/타입 정의가 요구사항과 일치하는지 확인하기",
@@ -694,6 +1094,92 @@ def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str
             "함수/클래스 경계가 명확하고 테스트 가능한 구조인지 점검하기",
         ]
     return DEFAULT_CODE_FOCUS_POINTS
+
+
+def resolve_example_progression(track: str, subject_name: str, module: str) -> list[str]:
+    if is_data_viz_subject(subject_name):
+        core = module_core_name(module)
+        if core == "데이터 분석 환경 구성":
+            return [
+                "example1: 데이터 분석 프로세스와 파일 구조(CSV/JSON) 기본 흐름을 확인한다.",
+                "example2: 정형/비정형 데이터 사례를 추가해 분류 기준을 점검한다.",
+                "example3: 포맷 오류/누락 입력을 넣어 로딩 실패 케이스를 재현한다.",
+                "example4: 분석 도구(NumPy/Pandas/Matplotlib) 매핑을 비교해 정리한다.",
+                "example5: 실습 환경 재현 체크리스트와 운영 점검을 마무리한다.",
+            ]
+        if core == "NumPy 기초":
+            return [
+                "example1: 기본 배열 생성과 기초 통계를 실행한다.",
+                "example2: list와 ndarray 연산 차이를 비교한다.",
+                "example3: 이상치/음수 입력으로 벡터화 결과를 검증한다.",
+                "example4: 인덱싱/슬라이싱 조합으로 부분 분석을 수행한다.",
+                "example5: 여러 케이스 통계를 비교해 운영 기준을 점검한다.",
+            ]
+        if core == "Pandas 데이터프레임 기초":
+            return [
+                "example1: Series/DataFrame 기본 조작을 실행한다.",
+                "example2: 행/열 선택과 조건 필터링을 확장한다.",
+                "example3: 문자열 숫자/결측 입력으로 정제 로직을 검증한다.",
+                "example4: 정렬/기초 통계 결과를 비교한다.",
+                "example5: 로딩-정제-저장 전체 흐름을 점검한다.",
+            ]
+        if core == "결측치/이상치 처리":
+            return [
+                "example1: 결측치/이상치 기본 처리 규칙을 실행한다.",
+                "example2: 중복 제거와 타입 변환 케이스를 추가한다.",
+                "example3: 잘못된 포맷 입력으로 실패 경로를 점검한다.",
+                "example4: 정제 전후 지표 변화를 비교한다.",
+                "example5: 품질 기준과 복구 절차를 운영 관점으로 점검한다.",
+            ]
+        if core == "문자열/날짜 전처리":
+            return [
+                "example1: 문자열 정리와 날짜 파싱 기본 케이스를 실행한다.",
+                "example2: 다양한 날짜/문자열 형식을 추가해 규칙을 검증한다.",
+                "example3: 파싱 실패 입력을 넣어 예외 처리를 점검한다.",
+                "example4: 컬럼명 정리와 스키마 표준화를 비교한다.",
+                "example5: 전처리 로그/체크리스트를 운영 기준으로 정리한다.",
+            ]
+        if core == "그룹화와 집계":
+            return [
+                "example1: groupby/aggregation 기본 집계를 실행한다.",
+                "example2: 파생변수를 추가해 그룹 축을 확장한다.",
+                "example3: 누락/오류 입력을 포함해 집계 방어 로직을 점검한다.",
+                "example4: 그룹별 지표 비교 리포트를 생성한다.",
+                "example5: 운영 기준(품질 임계치/회귀 테스트)을 점검한다.",
+            ]
+        if core == "데이터 병합과 변환":
+            return [
+                "example1: merge/join 기본 결합을 실행한다.",
+                "example2: join 방식(inner/left) 차이를 비교한다.",
+                "example3: 키 누락/중복 케이스로 오류 경로를 점검한다.",
+                "example4: pivot table과 범주형 변환 결과를 비교한다.",
+                "example5: 결합 품질 지표와 운영 체크리스트를 점검한다.",
+            ]
+        if core == "Matplotlib 시각화 기초":
+            return [
+                "example1: line/bar/scatter/histogram 기본 차트를 실행한다.",
+                "example2: 축 범위/단위를 바꿔 해석 차이를 확인한다.",
+                "example3: 이상치/음수 입력으로 왜곡 가능성을 점검한다.",
+                "example4: 한글 폰트와 제목/축/범례 설정을 표준화한다.",
+                "example5: 차트 출력 실패 대비 fallback/로그를 점검한다.",
+            ]
+        if core == "Seaborn/실전 차트 해석":
+            return [
+                "example1: 분포/관계 차트로 EDA 기본 점검을 수행한다.",
+                "example2: 평균/중앙값/표준편차 비교를 확장한다.",
+                "example3: 상관관계와 이상 패턴을 탐지한다.",
+                "example4: 문제 정의와 가설 문장을 데이터로 검증한다.",
+                "example5: EDA 리포트 자동화와 운영 점검을 수행한다.",
+            ]
+        if core == "Agent 시스템 통합 구현":
+            return [
+                "example1: 통합 파이프라인의 기준 시나리오를 실행한다.",
+                "example2: 입력 범위(지연/누락/형식 차이)를 확장해 연결 안정성을 점검한다.",
+                "example3: 실패 시나리오를 재현해 복구 로직을 검증한다.",
+                "example4: 개선 전후 결과를 비교해 병목 지점을 찾는다.",
+                "example5: 운영 기준(모니터링/알림/롤백)으로 최종 점검한다.",
+            ]
+    return TRACK_EXAMPLE_PROGRESS.get(track, TRACK_EXAMPLE_PROGRESS["generic"])
 
 
 AUTO_TECH_STACK_START = "<!-- AUTO-GENERATED: TECH_STACK_FLOW START -->"
@@ -1585,6 +2071,8 @@ def render_auto_tech_stack_block(
 
 
 def load_flow_font(size: int) -> ImageFont.ImageFont:
+    if ImageFont is None:
+        return None
     for font_path in [
         "C:/Windows/Fonts/malgun.ttf",
         "C:/Windows/Fonts/malgunbd.ttf",
@@ -1618,6 +2106,8 @@ def wrap_text_by_width(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.Ima
 
 
 def save_flow_png(steps: list[str], out_path: Path, class_id: str, module: str) -> None:
+    if Image is None or ImageDraw is None or ImageFont is None:
+        return
     margin_x = 90
     margin_y = 70
     box_width = 1160
@@ -2005,6 +2495,7 @@ def render_markdown(
     session = row["subject_session"]
     info = resolve_learning_info(track=track, subject_name=subject_name, module=module)
     focus_points = resolve_focus_points(track=track, subject_name=subject_name, module=module)
+    example_progression = resolve_example_progression(track=track, subject_name=subject_name, module=module)
     day_text = f"Day {day:02d}"
     slot_text = f"{slot}교시"
     term_guide_block = render_term_guide(subject_name=subject_name, module=module, track=track)
@@ -2098,6 +2589,13 @@ def render_markdown(
     python {class_rel_dir}/{example_file}
     ```
 
+    ### example1~example5 단계별 테스트 확장
+    1. {example_progression[0]}
+    2. {example_progression[1]}
+    3. {example_progression[2]}
+    4. {example_progression[3]}
+    5. {example_progression[4]}
+
     __TECH_STACK_SECTION__
 
     ### 예제 코드를 볼 때 집중할 포인트
@@ -2105,7 +2603,7 @@ def render_markdown(
     2. {focus_points[1]}
     3. {focus_points[2]}
 
-    ## 6) 퀴즈로 복습하기 (5문항)
+    ## 6) 퀴즈로 복습하기 (10문항)
     - 퀴즈 파일: `{quiz_file}`
     - 브라우저에서 열기:
     ```bash
@@ -2170,7 +2668,19 @@ def class_rel_dir_from_row(row: dict[str, str]) -> str:
     return row["class"]
 
 
-def build_self_study_materials() -> None:
+def subject_root_from_row(row: dict[str, str]) -> str:
+    rel_dir = class_rel_dir_from_row(row)
+    return rel_dir.split("/", maxsplit=1)[0] if rel_dir else ""
+
+
+def filter_rows_by_subject_roots(rows: list[dict[str, str]], roots: set[str]) -> list[dict[str, str]]:
+    if not roots:
+        return rows
+    return [row for row in rows if subject_root_from_row(row) in roots]
+
+
+def build_self_study_materials(roots: set[str] | None = None) -> None:
+    roots = roots or set()
     if not INDEX_FILE.exists():
         raise FileNotFoundError(f"Cannot find index file: {INDEX_FILE}")
 
@@ -2182,6 +2692,11 @@ def build_self_study_materials() -> None:
     for raw in raw_rows:
         cleaned = {str(key).lstrip("\ufeff"): value for key, value in raw.items()}
         rows.append(cleaned)
+
+    rows = filter_rows_by_subject_roots(rows, roots)
+    if not rows:
+        print("Updated 0 class markdown files.")
+        return
 
     def class_number(class_id: str) -> int:
         match = re.search(r"(\d+)$", class_id)
@@ -2262,7 +2777,18 @@ def build_self_study_materials() -> None:
             )
 
     print(f"Updated {len(ordered_rows)} class markdown files.")
+    if roots:
+        print(f"Subject roots: {', '.join(sorted(roots))}")
 
 
 if __name__ == "__main__":
-    build_self_study_materials()
+    parser = argparse.ArgumentParser(description="Rebuild self-study markdown and flow assets.")
+    parser.add_argument(
+        "--subject-root",
+        action="append",
+        default=[],
+        help="Rebuild only rows under this root folder (e.g. dataVizPrep). Can be repeated.",
+    )
+    args = parser.parse_args()
+    roots = {item.strip() for item in args.subject_root if item.strip()}
+    build_self_study_materials(roots=roots)

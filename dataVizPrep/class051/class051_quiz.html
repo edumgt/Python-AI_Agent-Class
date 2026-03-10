@@ -409,7 +409,7 @@
   "module": "Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]",
   "level": "기초응용",
   "session": "11/40",
-  "track_outcome": "정리된 표 데이터로 의미 있는 패턴을 설명할 수 있다.",
+  "track_outcome": "표 데이터 조작을 재현 가능한 절차로 수행할 수 있다.",
   "questions": [
     {
       "question": "class051 (Python 전처리 및 시각화 11/40) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "Matplotlib 시각화 기초 · 단계 2/4 기초 구현 [class070] 실습: `Matplotlib 시각화 기초` 단계 2/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문자열/날짜 전처리 · 단계 4/4 운영 최적화 [class060] 실습: `문자열/날짜 전처리` 단계 4/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051] 실습: `Pandas 데이터프레임 기초` 단계 3/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문자열/날짜 전처리 · 단계 1/4 입문 이해 [class057] 실습: `문자열/날짜 전처리` 단계 1/4 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "Matplotlib 시각화 기초 · 단계 2/4 기초 구현 [class070] 실습: 동일 데이터로 line/bar/scatter/histogram을 각각 그려 차이를 비교하세요.",
+        "문자열/날짜 전처리 · 단계 4/4 운영 최적화 [class060] 실습: 문자열 컬럼을 strip/lower/replace로 정리해 보세요.",
+        "Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051] 실습: CSV/JSON 데이터를 로딩하고 컬럼/행 구조를 출력해 확인하세요.",
+        "문자열/날짜 전처리 · 단계 1/4 입문 이해 [class057] 실습: 문자열 컬럼을 strip/lower/replace로 정리해 보세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다."
+        "정상/지연/오류 입력을 단계별로 실행해 실패 지점을 찾는다.",
+        "동일 데이터를 line/bar/scatter/histogram으로 각각 그려 비교한다.",
+        "결측/중복/타입 변환 규칙을 분리해 단계별로 적용한다.",
+        "컬럼 선택·행 선택·조건 필터링·정렬을 순서대로 실행해 확인한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "요구사항을 분해하지 않고 코드를 길게 작성해 오류 원인을 숨긴다.",
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다."
+        "정상 케이스만 테스트해 운영 장애 시나리오를 놓친다.",
+        "요약 통계 없이 시각 패턴만 보고 성급하게 결론을 내린다.",
+        "행/열 선택 기준이 불명확해 의도와 다른 데이터가 분석에 포함된다.",
+        "한글 폰트·축·범례 설정을 생략해 그래프 해석이 왜곡된다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "결측치/이상치 처리 · 단계 1/4 입문 이해 [class053] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "결측치/이상치 처리 · 단계 4/4 운영 최적화 [class056] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "NumPy 기초 · 단계 1/4 입문 이해 [class045] 점검: 데이터 항목 이름을 정확히 이해했다.",
-        "Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051] 점검: 데이터 항목 이름을 정확히 이해했다."
+        "결측치/이상치 처리 · 단계 1/4 입문 이해 [class053] 점검: 결측/중복/이상치 처리 기준을 문장으로 설명할 수 있다.",
+        "결측치/이상치 처리 · 단계 4/4 운영 최적화 [class056] 점검: 결측/중복/이상치 처리 기준을 문장으로 설명할 수 있다.",
+        "NumPy 기초 · 단계 1/4 입문 이해 [class045] 점검: list와 ndarray의 연산 차이를 코드로 설명할 수 있다.",
+        "Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051] 점검: Series와 DataFrame의 역할 차이를 설명할 수 있다."
       ],
       "answer_index": 3,
-      "explanation": "이 차시는 '전처리 전후 행 수, 결측치 개수, 핵심 통계를 비교표로 남긴다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '필터링·정렬 전후 행 수와 핵심 통계를 비교해 기록한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class051_example1.py",
-        "class484_example1.py",
-        "class283_example1.py",
-        "class449_example1.py"
+        "class059_example1.py",
+        "class078_example1.py",
+        "class072_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class051_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class051_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "loop",
-        "deep_learning",
+        "dev_setup",
+        "visualization",
         "pandas",
-        "numpy"
+        "data_preprocess"
       ],
       "answer_index": 2,
       "explanation": "class051_example2.py의 EXAMPLE_TEMPLATE 값은 'pandas' 입니다."
@@ -491,20 +491,20 @@
     {
       "question": "'class051_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "summarize_scores",
-        "summarize",
-        "write_rows",
-        "challenge_case"
+        "safe_float",
+        "build_test_cases",
+        "challenge_case",
+        "scan_workspace"
       ],
       "answer_index": 0,
-      "explanation": "class051_example3.py 함수 목록: summarize_scores, main, self_check, challenge_case"
+      "explanation": "class051_example3.py 함수 목록: safe_float, normalize_rows, summarize_scores, build_test_cases, main, self_check, challenge_case"
     },
     {
       "question": "'class051_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "platform",
-        "numpy",
-        "math",
+        "datetime",
+        "re",
+        "pathlib",
         "pandas"
       ],
       "answer_index": 3,
@@ -541,7 +541,10 @@
       "pandas"
     ],
     "functions": [
+      "safe_float",
+      "normalize_rows",
       "summarize_scores",
+      "build_test_cases",
       "main",
       "extension_mission",
       "self_check",
@@ -557,7 +560,10 @@
           "pandas"
         ],
         "functions": [
+          "safe_float",
+          "normalize_rows",
           "summarize_scores",
+          "build_test_cases",
           "main"
         ],
         "entrypoint": "main()"
@@ -568,7 +574,10 @@
           "pandas"
         ],
         "functions": [
+          "safe_float",
+          "normalize_rows",
           "summarize_scores",
+          "build_test_cases",
           "main",
           "extension_mission"
         ],
@@ -580,7 +589,10 @@
           "pandas"
         ],
         "functions": [
+          "safe_float",
+          "normalize_rows",
           "summarize_scores",
+          "build_test_cases",
           "main",
           "self_check",
           "challenge_case"
@@ -593,7 +605,10 @@
           "pandas"
         ],
         "functions": [
+          "safe_float",
+          "normalize_rows",
           "summarize_scores",
+          "build_test_cases",
           "main",
           "mini_project_plan"
         ],
@@ -605,7 +620,10 @@
           "pandas"
         ],
         "functions": [
+          "safe_float",
+          "normalize_rows",
           "summarize_scores",
+          "build_test_cases",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +634,23 @@
   "example_snippets": [
     {
       "file": "class051_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example1: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef summarize_scores(rows):\n    if pd is None:\n        avg = sum(r[\"score\"] for r in rows) / len(rows)\n        passed = sum(1 for r in rows if r[\"score\"] >= 80)\n        return {\"backend\": \"python\", \"avg\": round(avg, 2), \"pass_count\": passed}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example1: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\nEXAMPLE_VARIANT = 1\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef safe_float(value):\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        return None"
     },
     {
       "file": "class051_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example2: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef summarize_scores(rows):\n    if pd is None:\n        avg = sum(r[\"score\"] for r in rows) / len(rows)\n        passed = sum(1 for r in rows if r[\"score\"] >= 80)\n        return {\"backend\": \"python\", \"avg\": round(avg, 2), \"pass_count\": passed}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example2: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\nEXAMPLE_VARIANT = 2\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef safe_float(value):\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        return None"
     },
     {
       "file": "class051_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example3: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef summarize_scores(rows):\n    if pd is None:\n        avg = sum(r[\"score\"] for r in rows) / len(rows)\n        passed = sum(1 for r in rows if r[\"score\"] >= 80)\n        return {\"backend\": \"python\", \"avg\": round(avg, 2), \"pass_count\": passed}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example3: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\nEXAMPLE_VARIANT = 3\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef safe_float(value):\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        return None"
     },
     {
       "file": "class051_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example4: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef summarize_scores(rows):\n    if pd is None:\n        avg = sum(r[\"score\"] for r in rows) / len(rows)\n        passed = sum(1 for r in rows if r[\"score\"] >= 80)\n        return {\"backend\": \"python\", \"avg\": round(avg, 2), \"pass_count\": passed}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example4: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\nEXAMPLE_VARIANT = 4\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef safe_float(value):\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        return None"
     },
     {
       "file": "class051_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example5: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef summarize_scores(rows):\n    if pd is None:\n        avg = sum(r[\"score\"] for r in rows) / len(rows)\n        passed = sum(1 for r in rows if r[\"score\"] >= 80)\n        return {\"backend\": \"python\", \"avg\": round(avg, 2), \"pass_count\": passed}"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class051 example5: Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\"\"\n\nTOPIC = \"Pandas 데이터프레임 기초 · 단계 3/4 실전 검증 [class051]\"\nEXAMPLE_TEMPLATE = \"pandas\"\nEXAMPLE_VARIANT = 5\n\ntry:\n    import pandas as pd\nexcept ImportError:\n    pd = None\n\ndef safe_float(value):\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        return None"
     }
   ]
 };
