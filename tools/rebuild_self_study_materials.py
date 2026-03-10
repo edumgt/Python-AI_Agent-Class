@@ -6306,7 +6306,7 @@ def build_self_study_materials(roots: set[str] | None = None) -> None:
             return 10**9
         number = int(match.group(1))
         if class_id.startswith("project"):
-            # Place project001~project020 after class500.
+            # Place project rows after class500.
             return 500 + number
         return number
 
