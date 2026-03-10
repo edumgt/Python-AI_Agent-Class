@@ -409,7 +409,7 @@
   "module": "VectorStore 연동 · 단계 4/6 응용 확장 [class441]",
   "level": "실전심화",
   "session": "49/56",
-  "track_outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
+  "track_outcome": "RAG 연계 기반을 갖춘 검색-생성 흐름을 설계할 수 있다.",
   "questions": [
     {
       "question": "class441 (Langchain 활용하기 49/56) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'VectorStore 연동 · 단계 4/6 응용 확장 [class441]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "VectorStore 연동 · 단계 2/6 기초 구현 [class439] 실습: `VectorStore 연동` 단계 2/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Chain 구성 · 단계 4/5 실전 검증 [class419] 실습: `Chain 구성` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 실습: `VectorStore 연동` 단계 4/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Model/LLM 연결 · 단계 5/5 운영 최적화 [class409] 실습: `Model/LLM 연결` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "VectorStore 연동 · 단계 2/6 기초 구현 [class439] 실습: 청크 임베딩을 VectorStore에 저장하고 질의 검색을 실행하세요.",
+        "Chain 구성 · 단계 4/5 실전 검증 [class419] 실습: 단일 체인과 순차 체인을 같은 입력으로 실행해 비교하세요.",
+        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 실습: 청크 임베딩을 VectorStore에 저장하고 질의 검색을 실행하세요.",
+        "Model/LLM 연결 · 단계 5/5 운영 최적화 [class409] 실습: Model 호출 전/후 PromptTemplate, Parser를 연결한 최소 체인을 구성하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'VectorStore 연동 · 단계 4/6 응용 확장 [class441]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다."
+        "벡터 저장/검색을 실행하고 top_k/threshold를 조정해 비교한다.",
+        "Model-Prompt-Parser 기본 체인을 만든 뒤 Memory/Retriever/Tool을 선택적으로 결합한다.",
+        "입력 -> Prompt -> Model -> Parser -> Memory/Tool/Retriever 흐름을 먼저 도식화한다.",
+        "문자열 파싱과 JSON 파싱을 같은 체인에서 비교 실행한다."
       ],
       "answer_index": 0,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'VectorStore 연동 · 단계 4/6 응용 확장 [class441]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다."
+        "단일 호출 중심으로만 설계해 체인 구조 필요성을 놓친다.",
+        "파싱 실패 fallback 없이 응답을 그대로 사용해 연동 오류를 만든다.",
+        "검색 하이퍼파라미터를 고정해 데이터 변화에 대응하지 못한다.",
+        "단순 문제에도 Agent를 과도하게 사용해 복잡도와 지연을 키운다."
       ],
       "answer_index": 2,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'VectorStore 연동 · 단계 4/6 응용 확장 [class441]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "Model/LLM 연결 · 단계 4/5 실전 검증 [class408] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Chain 구성 · 단계 2/5 기초 구현 [class417] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Tool/Agent 기초 · 단계 1/6 입문 이해 [class427] 점검: 단계별 입력/출력을 설명할 수 있다."
+        "Model/LLM 연결 · 단계 4/5 실전 검증 [class408] 점검: 핵심 구성요소 8개의 역할을 설명할 수 있다.",
+        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: VectorStore 저장/검색 파이프라인을 구현했다.",
+        "Chain 구성 · 단계 2/5 기초 구현 [class417] 점검: 단일 체인과 순차 체인의 차이를 코드로 설명했다.",
+        "Tool/Agent 기초 · 단계 1/6 입문 이해 [class427] 점검: 외부 도구 호출 흐름을 구현했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'Retriever 검색 결과와 생성 답변의 근거 일치 여부를 검증한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'VectorStore 연동 · 단계 4/6 응용 확장 [class441]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class441_example1.py",
-        "class315_example1.py",
-        "class253_example1.py",
-        "class218_example1.py"
+        "class412_example1.py",
+        "class438_example1.py",
+        "class408_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class441_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class441_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "langchain",
+        "nlp",
         "ml",
         "rag",
-        "prompt"
+        "python"
       ],
       "answer_index": 2,
       "explanation": "class441_example2.py의 EXAMPLE_TEMPLATE 값은 'rag' 입니다."
@@ -491,10 +491,10 @@
     {
       "question": "'class441_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "clean_rows",
-        "answer",
+        "main",
+        "mini_project_plan",
         "tokenize",
-        "read_rows"
+        "append_memory"
       ],
       "answer_index": 2,
       "explanation": "class441_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
@@ -502,10 +502,10 @@
     {
       "question": "'class441_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
-        "platform",
+        "pathlib",
         "(import 없음)",
-        "numpy",
-        "pathlib"
+        "datetime",
+        "math"
       ],
       "answer_index": 1,
       "explanation": "class441_example4.py import 목록: (import 없음)"
@@ -616,23 +616,23 @@
   "example_snippets": [
     {
       "file": "class441_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example1: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example1: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class441_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example2: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example2: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class441_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example3: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example3: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class441_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example4: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example4: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class441_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example5: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class441 example5: VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\"\"\n\nTOPIC = \"VectorStore 연동 · 단계 4/6 응용 확장 [class441]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     }
   ]
 };

@@ -4,10 +4,8 @@
 ## 1) 오늘의 학습 정보
 - 교과목: **Langchain 활용하기**
 - 학습 주제: **Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]**
-- 학습 주제 진행: **Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] (총 6시간 중 5시간차)**
 - 세부 시퀀스: **39/56**
 - 일정: **Day 54 / 7교시**
-- 최종 목표: **Agent 폴더의 실제 시스템 구성요소를 구현·연동·운영할 수 있는 개발자 역량 확보**
 - 난이도: **기초응용**
 
 ### 교과목·학습주제 어휘 해설 (IT 강사 스타일)
@@ -21,28 +19,32 @@
 
 #### 학습주제 표현 분석: `Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]`
 - 문법 포인트: 핵심 개념 명사를 중심으로 한 명사구 구조입니다.
-- 기술 포인트: 이번 차시는 `Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]`를 중심으로 같은 주제 내에서 단계적으로 고도화된 구현을 수행합니다.
+- 기술 포인트: 이번 차시는 `Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]` 용어를 중심으로 문제 정의, 코드 구현, 결과 검증까지 연결합니다.
 | 용어 | 문법/품사 | 한글·한자 | 영어 | 기술 설명 |
 | --- | --- | --- | --- | --- |
 | `Tool` | 명사(영어) | Tool (한자 없음) | tool | 모델이 외부 기능(API, 계산기 등)을 호출할 수 있게 한 모듈입니다. |
 | `Agent` | 명사(영어) | Agent (한자 없음) | agent | 목표 달성을 위해 도구 선택과 실행 순서를 스스로 결정하는 실행자입니다. |
 | `기초` | 명사(기술 개념어) | 기초 (한자 없음) | (context-specific) | 용어 `기초`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
+| `단계` | 명사(기술 개념어) | 단계 (한자 없음) | (context-specific) | 용어 `단계`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
+| `실전` | 명사(기술 개념어) | 실전 (한자 없음) | (context-specific) | 용어 `실전`: 이번 학습주제에서 정의해야 할 핵심 개념 용어입니다. |
+| `검증` | 명사 | 검증 (檢證) | validation | 결과가 요구사항과 기준을 만족하는지 확인하는 절차입니다. |
 
 ## 2) 이전에 배운 내용 (복습)
 - 이전 차시: **class430 / Tool/Agent 기초 · 단계 4/6 응용 확장 [class430]** (Day 54 / 6교시)
-- 복습 연결: 이전에 배운 **Tool/Agent 기초 · 단계 4/6 응용 확장 [class430]** 를 떠올리며, 오늘 **Tool/Agent 기초 · 품질 검증 리팩터링 적용 (차시 39) [class431]** 와 어떤 점이 이어지는지 비교해 보세요.
+- 복습 연결: 이전에 배운 **Tool/Agent 기초 · 단계 4/6 응용 확장 [class430]** 를 떠올리며, 오늘 **Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]** 와 어떤 점이 이어지는지 비교해 보세요.
 
 ## 3) 주제를 아주 쉽게 이해하기
-- 한 줄 설명: Tool/Agent 기초를 단계 5/6(실전 검증) 수준으로 고도화해 구현하는 차시입니다.
-- 왜 배우나요?: 동일 주제를 반복하더라도 단계별 난이도를 높여 실무 수준의 문제 해결력을 만들기 위해서입니다.
+- 한 줄 설명: 외부 기능 호출, 검색/계산/API 연결, Agent 동작 원리와 과도한 사용 시 주의사항을 다루는 차시입니다.
+- 왜 배우나요?: Agent는 강력하지만 모든 문제에 쓰면 복잡도와 비용이 증가하므로 사용 기준이 필요합니다.
 
 ### 핵심 개념 3가지
-1. `Tool/Agent 기초`의 핵심 입력/출력 구조를 단계 5/6 기준으로 명확히 정의합니다.
-2. `실전 검증` 수준에서 필요한 구현 패턴(검증, 예외, 로깅, 성능)을 코드에 반영합니다.
-3. 이전 단계 결과를 재사용해 다음 단계로 확장 가능한 구조로 리팩터링합니다.
+1. `Tool`은 검색, 계산, API 같은 외부 기능을 체인에 연결하는 인터페이스입니다.
+2. `Agent`는 목표 기반으로 도구를 선택하고 실행 순서를 결정하는 실행자입니다.
+3. `주의사항`은 단순 문제에 Agent를 남용하면 디버깅 난이도와 지연이 증가한다는 점입니다.
 
 ### 비유로 이해하기
-- 기초 공정에서 시작해 품질검사와 운영튜닝까지 단계적으로 완성도를 올리는 제조 라인과 같습니다.
+- 샌드위치를 만들 때 재료 준비, 굽기, 포장을 단계별로 나누는 것과 같아요.
+
 ## 4) 실습 환경 만들기 (항상 먼저)
 아래 명령은 **처음 한 번** 준비해 두면 이후 학습이 쉬워집니다.
 
@@ -71,39 +73,18 @@ pip install -r requirements.txt
 python langChainLab/class431/class431_example1.py
 ```
 
-
-<!-- AUTO-GENERATED: OS_COMMANDS START -->
-## 5-1) 운영체제별 실행 명령 예시
-### PowerShell (Windows)
-```powershell
-cd C:\DevOps\Python-AI_Agent-Class
-python .\langChainLab\class431\class431.py
-python .\langChainLab\class431\class431_example1.py
-python .\langChainLab\class431\class431_assignment.py
-start .\langChainLab\class431\class431_quiz.html
-```
-
-### WSL Ubuntu (bash)
-```bash
-cd /mnt/c/DevOps/Python-AI_Agent-Class
-python3 langChainLab/class431/class431.py
-python3 langChainLab/class431/class431_example1.py
-python3 langChainLab/class431/class431_assignment.py
-explorer.exe "$(wslpath -w 'langChainLab/class431/class431_quiz.html')"
-```
-
-### run_class/run_day 스크립트 연동 (WSL bash)
-```bash
-./run_class.sh class431
-./run_day.sh 54 launcher
-```
-<!-- AUTO-GENERATED: OS_COMMANDS END -->
+### example1~example5 단계별 테스트 확장
+1. example1: 검색/계산/API 도구 호출을 연결한다.
+2. example2: Agent 라우팅으로 도구 선택 흐름을 확장한다.
+3. example3: 도구 실패/Agent 오판 케이스를 점검한다.
+4. example4: Agent 사용/비사용 버전의 복잡도를 비교한다.
+5. example5: Agent 남용 방지 기준을 정리한다.
 
 <!-- AUTO-GENERATED: TECH_STACK_FLOW START -->
 ### 기술 스택
 - 언어: `Python 3`
 - 실행: `CLI` (`python langChainLab/class431/class431_example1.py`)
-- 주요 문법: `단계 함수`, `체인 구성`, `중간 상태 점검`, `출력(print)`
+- 주요 문법: `tool 함수`, `agent 라우터`, `실행 로그`, `fallback 처리`
 - 학습 포커스: `Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]`
 
 ### 실습 example1.py 동작 원리 (Mermaid Flowchart)
@@ -111,12 +92,12 @@ explorer.exe "$(wslpath -w 'langChainLab/class431/class431_quiz.html')"
 flowchart TD
 N1["시작: class431 (39/56, 기초응용)"]
 N2["학습 주제 파악: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]"]
-N3["1단계: 체인 단계(입력/처리/출력)를 설계한다"]
-N4["2단계: 모델·도구·메모리를 연결한다"]
-N5["3단계: 중간 상태 로그를 확인한다"]
-N6["4단계: 워크플로우 전체 결과를 검증한다"]
+N3["1단계: 도구 목록과 호출 계약을 정의한다"]
+N4["2단계: 작업 의도를 기준으로 도구를 선택한다"]
+N5["3단계: 선택된 도구를 실행하고 결과를 수집한다"]
+N6["4단계: 실패 시 fallback 경로로 복구한다"]
 N7["예제 실행: python langChainLab/class431/class431_example1.py"]
-N8["다음 준비: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 연결 포인트 정리"]
+N8["다음 준비: Tool/Agent 기초 · 단계 6/6 운영 최적화 [class432] 연결 포인트 정리"]
 N1 --> N2
 N2 --> N3
 N3 --> N4
@@ -131,11 +112,11 @@ N7 --> N8
 <!-- AUTO-GENERATED: TECH_STACK_FLOW END -->
 
 ### 예제 코드를 볼 때 집중할 포인트
-1. 입력이 무엇인지 먼저 찾기
-2. 처리 규칙(함수/조건/반복) 확인하기
-3. 출력 결과가 목표와 맞는지 점검하기
+1. 도구 입력/출력 계약이 명확한지 확인하기
+2. Agent 의사결정 근거가 로그에 남는지 점검하기
+3. 단순 작업은 일반 체인으로 대체 가능한지 확인하기
 
-## 6) 퀴즈로 복습하기 (5문항)
+## 6) 퀴즈로 복습하기 (10문항)
 - 퀴즈 파일: `class431_quiz.html`
 - 브라우저에서 열기:
 ```bash
@@ -152,14 +133,14 @@ langChainLab/class431/class431_quiz.html
 4. 함수를 1개 더 만들어 작은 기능을 추가해요.
 
 ### 실습 미션
-1. `Tool/Agent 기초` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.
-2. `실전 검증` 관점에서 실패 케이스 1개 이상을 재현하고 대응 코드를 추가하세요.
-3. 이전 단계 코드와 비교해 변경점(입력/처리/출력)을 3줄로 정리하세요.
+1. 검색/계산/API 도구 스텁을 만들고 호출 흐름을 연결하세요.
+2. 간단한 라우팅 규칙으로 Agent 의사결정 흐름을 구현하세요.
+3. Agent 사용 버전과 비사용 버전을 비교해 복잡도 차이를 기록하세요.
 
 ## 8) 스스로 점검 체크리스트
-- [ ] 단계별 입력/출력을 설명할 수 있다.
-- [ ] 중간 결과를 출력해 흐름을 확인했다.
-- [ ] 단계 순서를 바꿨을 때 변화도 실험했다.
+- [ ] 외부 도구 호출 흐름을 구현했다.
+- [ ] Agent 동작 방식을 설명할 수 있다.
+- [ ] 과도한 Agent 사용 위험과 대안을 정리했다.
 
 ## 9) 막히면 이렇게 해결해요
 1. 에러 메시지 마지막 줄을 먼저 읽어요.
@@ -172,5 +153,5 @@ langChainLab/class431/class431_quiz.html
 - 미리보기: 다음 차시 전에 **Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]** 핵심 코드 1개를 다시 실행해 두면 Tool/Agent 기초 · 단계 6/6 운영 최적화 [class432] 학습이 더 쉬워집니다.
 
 ## 11) 다음 차시 연결
-- 다음 차시에서는 체인에 검색과 메모리를 결합해 볼 거예요.
+- 다음 차시에서는 문서 로딩/분할을 통해 Retriever 기반 검색 토대를 만듭니다.
 - 오늘 코드를 복사하지 말고, 직접 다시 작성해 보세요.

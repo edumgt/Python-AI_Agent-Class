@@ -409,7 +409,7 @@
   "module": "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]",
   "level": "실전심화",
   "session": "45/56",
-  "track_outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
+  "track_outcome": "Retriever 기반 검색 토대를 구축할 수 있다.",
   "questions": [
     {
       "question": "class437 (Langchain 활용하기 45/56) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "Chain 구성 · 단계 3/5 응용 확장 [class418] 실습: `Chain 구성` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Memory 활용 · 단계 1/6 입문 이해 [class421] 실습: `Memory 활용` 단계 1/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437] 실습: `문서 로딩과 분할` 단계 5/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Chain 구성 · 단계 2/5 기초 구현 [class417] 실습: `Chain 구성` 단계 2/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "Chain 구성 · 단계 3/5 응용 확장 [class418] 실습: 단일 체인과 순차 체인을 같은 입력으로 실행해 비교하세요.",
+        "Memory 활용 · 단계 1/6 입문 이해 [class421] 실습: 세션별 메모리 버퍼를 만들고 대화 3턴 이상을 유지하세요.",
+        "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437] 실습: 문서를 로딩해 텍스트와 메타데이터를 분리하세요.",
+        "Chain 구성 · 단계 2/5 기초 구현 [class417] 실습: 단일 체인과 순차 체인을 같은 입력으로 실행해 비교하세요."
       ],
       "answer_index": 2,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "템플릿 변수(role, question)를 분리해 프롬프트를 구성한다.",
-        "TODO를 1개씩 구현하고 매 단계마다 실행 확인한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다."
+        "단일 체인 baseline 후 순차 체인으로 확장해 비교한다.",
+        "사용자 입력 변수를 분리해 템플릿 렌더링을 실행한다.",
+        "문서 로딩 후 청크 크기/오버랩을 조정해 검색 품질을 비교한다.",
+        "검색·계산·API 호출 도구를 연결하고 Agent 라우팅을 적용한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "역할, 목표, 출력형식을 섞어 써서 재현 불가능한 응답을 만든다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다.",
-        "결측치/자료형을 확인하지 않은 채 평균과 시각화를 바로 계산한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다."
+        "체인 단계를 한 번에 묶어 실패 지점 추적이 불가능해진다.",
+        "문서를 통으로 처리해 검색 정확도와 근거성이 떨어진다.",
+        "파싱 실패 fallback 없이 응답을 그대로 사용해 연동 오류를 만든다.",
+        "검색 하이퍼파라미터를 고정해 데이터 변화에 대응하지 못한다."
       ],
       "answer_index": 1,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "OutputParser · 단계 1/6 입문 이해 [class410] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "PromptTemplate · 단계 2/6 기초 구현 [class400] 점검: 단계별 입력/출력을 설명할 수 있다."
+        "OutputParser · 단계 1/6 입문 이해 [class410] 점검: 문자열/JSON 파싱을 모두 실행했다.",
+        "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437] 점검: 문서 로딩과 분할 파이프라인을 구현했다.",
+        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: VectorStore 저장/검색 파이프라인을 구현했다.",
+        "PromptTemplate · 단계 2/6 기초 구현 [class400] 점검: PromptTemplate 변수 주입 방식을 적용했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 '청크 전략별 검색 결과와 메타데이터 품질을 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
         "class437_example1.py",
-        "class006_example1.py",
-        "class182_example1.py",
-        "class477_example1.py"
+        "class428_example1.py",
+        "class447_example1.py",
+        "class393_example1.py"
       ],
       "answer_index": 0,
       "explanation": "기본 예제 파일은 class437_example1.py 입니다."
@@ -480,9 +480,9 @@
     {
       "question": "'class437_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "prompt",
         "nlp",
-        "generic",
+        "ml",
+        "langchain",
         "rag"
       ],
       "answer_index": 3,
@@ -492,9 +492,9 @@
       "question": "'class437_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
         "tokenize",
-        "step_answer",
-        "answer",
-        "dense_forward"
+        "practice_bundle",
+        "execute_case",
+        "retrieve_chunks"
       ],
       "answer_index": 0,
       "explanation": "class437_example3.py 함수 목록: tokenize, retrieve, answer, main, self_check, challenge_case"
@@ -505,7 +505,7 @@
         "(import 없음)",
         "pathlib",
         "datetime",
-        "math"
+        "json"
       ],
       "answer_index": 0,
       "explanation": "class437_example4.py import 목록: (import 없음)"
@@ -616,23 +616,23 @@
   "example_snippets": [
     {
       "file": "class437_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example1: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example1: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 1\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class437_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example2: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example2: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 2\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class437_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example3: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example3: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 3\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class437_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example4: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example4: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 4\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     },
     {
       "file": "class437_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example5: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})\n    scored.sort(key=lambda x: x[\"score\"], reverse=True)"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class437 example5: 문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\"\"\n\nTOPIC = \"문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]\"\nEXAMPLE_TEMPLATE = \"rag\"\nEXAMPLE_VARIANT = 5\n\ndef tokenize(text):\n    return [t.lower() for t in text.replace(\",\", \" \").replace(\".\", \" \").split() if t]\n\ndef retrieve(question, docs, top_k=2):\n    q = set(tokenize(question))\n    scored = []\n    for doc in docs:\n        overlap = len(q & set(tokenize(doc[\"text\"])))\n        if overlap > 0:\n            scored.append({\"id\": doc[\"id\"], \"text\": doc[\"text\"], \"score\": overlap})"
     }
   ]
 };

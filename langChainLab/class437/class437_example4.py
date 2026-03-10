@@ -4,6 +4,7 @@
 
 TOPIC = "문서 로딩과 분할 · 단계 5/5 운영 최적화 [class437]"
 EXAMPLE_TEMPLATE = "rag"
+EXAMPLE_VARIANT = 4
 
 def tokenize(text):
     return [t.lower() for t in text.replace(",", " ").replace(".", " ").split() if t]

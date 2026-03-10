@@ -409,7 +409,7 @@
   "module": "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]",
   "level": "기초응용",
   "session": "39/56",
-  "track_outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
+  "track_outcome": "Tool/Agent 사용 기준과 주의사항을 실무 관점으로 설명할 수 있다.",
   "questions": [
     {
       "question": "class431 (Langchain 활용하기 39/56) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 실습: `Tool/Agent 기초` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "실전 체인 애플리케이션 · 단계 3/5 응용 확장 [class446] 실습: `실전 체인 애플리케이션` 단계 3/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "Memory 활용 · 단계 1/6 입문 이해 [class421] 실습: `Memory 활용` 단계 1/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "LangChain 개요 · 단계 2/6 기초 구현 [class394] 실습: `LangChain 개요` 단계 2/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 실습: 검색/계산/API 도구 스텁을 만들고 호출 흐름을 연결하세요.",
+        "실전 체인 애플리케이션 · 단계 3/5 응용 확장 [class446] 실습: 문서 요약 체인과 질의응답 체인을 각각 구현하세요.",
+        "Memory 활용 · 단계 1/6 입문 이해 [class421] 실습: 세션별 메모리 버퍼를 만들고 대화 3턴 이상을 유지하세요.",
+        "LangChain 개요 · 단계 2/6 기초 구현 [class394] 실습: LangChain 없이 구현한 흐름과 LangChain 구성 흐름을 비교해 보세요."
       ],
       "answer_index": 0,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "columns와 shape를 먼저 확인하고 계산 순서를 정한다.",
-        "작은 입력부터 실행하고 print()로 중간 값을 확인한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다."
+        "사용자 입력 변수를 분리해 템플릿 렌더링을 실행한다.",
+        "입력 -> Prompt -> Model -> Parser -> Memory/Tool/Retriever 흐름을 먼저 도식화한다.",
+        "요약/질의응답/챗봇/외부연동 4개 시나리오를 체인으로 구성해 실행한다.",
+        "검색·계산·API 호출 도구를 연결하고 Agent 라우팅을 적용한다."
       ],
       "answer_index": 3,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "검색 근거 없이 모델 답변만 채택해 환각을 놓친다.",
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다."
+        "개별 체인만 검증하고 통합 워크플로우 테스트를 생략한다.",
+        "문서를 통으로 처리해 검색 정확도와 근거성이 떨어진다.",
+        "검색 하이퍼파라미터를 고정해 데이터 변화에 대응하지 못한다.",
+        "단순 문제에도 Agent를 과도하게 사용해 복잡도와 지연을 키운다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,20 +458,20 @@
     {
       "question": "'Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "실전 체인 애플리케이션 · 단계 1/5 입문 이해 [class444] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "문서 로딩과 분할 · 단계 2/5 기초 구현 [class434] 점검: 단계별 입력/출력을 설명할 수 있다."
+        "VectorStore 연동 · 단계 4/6 응용 확장 [class441] 점검: VectorStore 저장/검색 파이프라인을 구현했다.",
+        "Tool/Agent 기초 · 단계 5/6 실전 검증 [class431] 점검: 외부 도구 호출 흐름을 구현했다.",
+        "실전 체인 애플리케이션 · 단계 1/5 입문 이해 [class444] 점검: 요약/질의응답/챗봇/외부연동 예제를 실행했다.",
+        "문서 로딩과 분할 · 단계 2/5 기초 구현 [class434] 점검: 문서 로딩과 분할 파이프라인을 구현했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'Agent 사용/비사용 버전 결과와 복잡도를 비교해 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class265_example1.py",
-        "class148_example1.py",
-        "class400_example1.py",
+        "class434_example1.py",
+        "class402_example1.py",
+        "class417_example1.py",
         "class431_example1.py"
       ],
       "answer_index": 3,
@@ -480,9 +480,9 @@
     {
       "question": "'class431_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "numpy",
         "nlp",
-        "function_module",
+        "ml",
+        "python",
         "langchain"
       ],
       "answer_index": 3,
@@ -491,24 +491,24 @@
     {
       "question": "'class431_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "step_collect",
-        "infer_schema",
-        "build_setup_plan",
-        "step_answer"
+        "resolve_mode",
+        "build_prompt_template",
+        "sequential_chain",
+        "practice_bundle"
       ],
       "answer_index": 0,
-      "explanation": "class431_example3.py 함수 목록: step_collect, step_retrieve, step_answer, main, self_check, challenge_case"
+      "explanation": "class431_example3.py 함수 목록: resolve_mode, build_cases, tokenize, build_prompt_template, render_prompt, model_stub, transform_input, single_chain"
     },
     {
       "question": "'class431_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
+        "pathlib",
+        "re",
         "json",
-        "platform",
-        "(import 없음)",
-        "numpy"
+        "datetime"
       ],
       "answer_index": 2,
-      "explanation": "class431_example4.py import 목록: (import 없음)"
+      "explanation": "class431_example4.py import 목록: json"
     },
     {
       "question": "'class431_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,33 @@
     "templates": [
       "langchain"
     ],
-    "imports": [],
+    "imports": [
+      "json"
+    ],
     "functions": [
-      "step_collect",
-      "step_retrieve",
-      "step_answer",
+      "resolve_mode",
+      "build_cases",
+      "tokenize",
+      "build_prompt_template",
+      "render_prompt",
+      "model_stub",
+      "transform_input",
+      "single_chain",
+      "sequential_chain",
+      "parse_output",
+      "to_json_text",
+      "append_memory",
+      "memory_chat",
+      "split_documents",
+      "retrieve_chunks",
+      "rag_chain",
+      "tool_search",
+      "tool_calculate",
+      "tool_api",
+      "run_agent",
+      "practice_bundle",
+      "execute_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +575,66 @@
     "by_file": {
       "class431_example1.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class431_example2.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -576,11 +642,33 @@
       },
       "class431_example3.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +677,33 @@
       },
       "class431_example4.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +711,33 @@
       },
       "class431_example5.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +748,23 @@
   "example_snippets": [
     {
       "file": "class431_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example1: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example1: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 1\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class431_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example2: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example2: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 2\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class431_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example3: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example3: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 3\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class431_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example4: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example4: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 4\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class431_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example5: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class431 example5: Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\"\"\n\nTOPIC = \"Tool/Agent 기초 · 단계 5/6 실전 검증 [class431]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 5\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     }
   ]
 };

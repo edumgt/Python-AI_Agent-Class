@@ -4,6 +4,7 @@
 
 TOPIC = "VectorStore 연동 · 단계 2/6 기초 구현 [class439]"
 EXAMPLE_TEMPLATE = "rag"
+EXAMPLE_VARIANT = 5
 
 def tokenize(text):
     return [t.lower() for t in text.replace(",", " ").replace(".", " ").split() if t]

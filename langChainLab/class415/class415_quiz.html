@@ -409,7 +409,7 @@
   "module": "OutputParser · 단계 6/6 운영 최적화 [class415]",
   "level": "기초응용",
   "session": "23/56",
-  "track_outcome": "단계 함수를 조합해 반복 가능한 워크플로우를 만들 수 있다.",
+  "track_outcome": "구조화 결과 저장과 후처리 자동화를 구현할 수 있다.",
   "questions": [
     {
       "question": "class415 (Langchain 활용하기 23/56) 차시의 실제 학습 주제는 무엇인가요?",
@@ -425,10 +425,10 @@
     {
       "question": "'OutputParser · 단계 6/6 운영 최적화 [class415]' 차시의 실제 실습 목표를 가장 구체적으로 설명한 문장은 무엇인가요?",
       "options": [
-        "Model/LLM 연결 · 단계 4/5 실전 검증 [class408] 실습: `Model/LLM 연결` 단계 4/5 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "LangChain 개요 · 단계 3/6 응용 확장 [class395] 실습: `LangChain 개요` 단계 3/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "VectorStore 연동 · 단계 5/6 실전 검증 [class442] 실습: `VectorStore 연동` 단계 5/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요.",
-        "OutputParser · 단계 6/6 운영 최적화 [class415] 실습: `OutputParser` 단계 6/6 목표 기능을 코드로 구현하고 실행 로그를 남기세요."
+        "Model/LLM 연결 · 단계 4/5 실전 검증 [class408] 실습: Model 호출 전/후 PromptTemplate, Parser를 연결한 최소 체인을 구성하세요.",
+        "LangChain 개요 · 단계 3/6 응용 확장 [class395] 실습: LangChain 없이 구현한 흐름과 LangChain 구성 흐름을 비교해 보세요.",
+        "VectorStore 연동 · 단계 5/6 실전 검증 [class442] 실습: 청크 임베딩을 VectorStore에 저장하고 질의 검색을 실행하세요.",
+        "OutputParser · 단계 6/6 운영 최적화 [class415] 실습: 문자열 응답에서 핵심 필드를 파싱해 dict로 변환하세요."
       ],
       "answer_index": 3,
       "explanation": "정답은 해당 차시 MD의 핵심 개념/실습 미션에서 직접 가져온 문장입니다."
@@ -436,10 +436,10 @@
     {
       "question": "'OutputParser · 단계 6/6 운영 최적화 [class415]' 실습에서 오류를 줄이는 시작 전략으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "샘플 발화를 몇 개 확인하고 길이/라벨 기준으로 필터링한다.",
-        "전처리 후 토큰 리스트를 먼저 출력해 결과를 점검한다.",
-        "각 단계의 입력/출력을 출력해 흐름을 먼저 검증한다.",
-        "검색 결과와 최종 답변을 분리해서 출력한다."
+        "벡터 저장/검색을 실행하고 top_k/threshold를 조정해 비교한다.",
+        "검색·계산·API 호출 도구를 연결하고 Agent 라우팅을 적용한다.",
+        "문자열 파싱과 JSON 파싱을 같은 체인에서 비교 실행한다.",
+        "단일 체인 baseline 후 순차 체인으로 확장해 비교한다."
       ],
       "answer_index": 2,
       "explanation": "정답은 실행 흐름을 먼저 검증하는 고효율 시작 루틴입니다."
@@ -447,10 +447,10 @@
     {
       "question": "'OutputParser · 단계 6/6 운영 최적화 [class415]' 실습 결과를 왜곡할 가능성이 가장 큰 실수는 무엇인가요?",
       "options": [
-        "불용어/특수문자 정제를 생략해 토큰 빈도 해석을 왜곡한다.",
-        "입력 경계값(0, 빈 문자열, 음수)을 테스트하지 않고 예시 1개만 확인한다.",
-        "오디오 길이와 라벨 품질을 확인하지 않아 학습 데이터 잡음이 증가한다.",
-        "체인 단계를 한 번에 묶어 디버깅 지점을 확인하지 못한다."
+        "검색 하이퍼파라미터를 고정해 데이터 변화에 대응하지 못한다.",
+        "단일 호출 중심으로만 설계해 체인 구조 필요성을 놓친다.",
+        "개별 체인만 검증하고 통합 워크플로우 테스트를 생략한다.",
+        "파싱 실패 fallback 없이 응답을 그대로 사용해 연동 오류를 만든다."
       ],
       "answer_index": 3,
       "explanation": "정답은 현장에서 자주 발생하는 품질 저하 패턴입니다."
@@ -458,21 +458,21 @@
     {
       "question": "'OutputParser · 단계 6/6 운영 최적화 [class415]'를 끝낸 직후, 다음 학습 단계로 넘어가기 전 자기 점검 항목으로 가장 적절한 것은 무엇인가요?",
       "options": [
-        "Tool/Agent 기초 · 단계 3/6 응용 확장 [class429] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "OutputParser · 단계 6/6 운영 최적화 [class415] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "OutputParser · 단계 1/6 입문 이해 [class410] 점검: 단계별 입력/출력을 설명할 수 있다.",
-        "Memory 활용 · 단계 3/6 응용 확장 [class423] 점검: 단계별 입력/출력을 설명할 수 있다."
+        "Tool/Agent 기초 · 단계 3/6 응용 확장 [class429] 점검: 외부 도구 호출 흐름을 구현했다.",
+        "OutputParser · 단계 6/6 운영 최적화 [class415] 점검: 문자열/JSON 파싱을 모두 실행했다.",
+        "OutputParser · 단계 1/6 입문 이해 [class410] 점검: 문자열/JSON 파싱을 모두 실행했다.",
+        "Memory 활용 · 단계 3/6 응용 확장 [class423] 점검: 세션별 대화 이력 저장을 구현했다."
       ],
       "answer_index": 1,
-      "explanation": "이 차시는 '각 단계 입력/출력 스냅샷을 저장해 실패 지점을 단계별로 추적한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
+      "explanation": "이 차시는 'JSON 스키마 검증과 파싱 실패 처리 경로를 함께 점검한다.' 관점으로 검증해야 다음 단계로 안정적으로 연결됩니다."
     },
     {
       "question": "'OutputParser · 단계 6/6 운영 최적화 [class415]' 기본 실습에서 첫 실행 대상으로 맞는 파일명은 무엇인가요?",
       "options": [
-        "class469_example1.py",
+        "class423_example1.py",
         "class415_example1.py",
-        "class029_example1.py",
-        "class073_example1.py"
+        "class394_example1.py",
+        "class443_example1.py"
       ],
       "answer_index": 1,
       "explanation": "기본 예제 파일은 class415_example1.py 입니다."
@@ -480,10 +480,10 @@
     {
       "question": "'class415_example2.py'에 선언된 EXAMPLE_TEMPLATE 값으로 맞는 것은 무엇인가요?",
       "options": [
-        "visualization",
-        "function_module",
+        "data",
+        "ml",
         "langchain",
-        "generic"
+        "rag"
       ],
       "answer_index": 2,
       "explanation": "class415_example2.py의 EXAMPLE_TEMPLATE 값은 'langchain' 입니다."
@@ -491,24 +491,24 @@
     {
       "question": "'class415_example3.py' 코드에 실제 정의된 함수 이름으로 맞는 것은 무엇인가요?",
       "options": [
-        "rolling_average",
-        "build_setup_plan",
-        "step_collect",
-        "answer"
+        "mini_project_plan",
+        "sequential_chain",
+        "resolve_mode",
+        "execute_case"
       ],
       "answer_index": 2,
-      "explanation": "class415_example3.py 함수 목록: step_collect, step_retrieve, step_answer, main, self_check, challenge_case"
+      "explanation": "class415_example3.py 함수 목록: resolve_mode, build_cases, tokenize, build_prompt_template, render_prompt, model_stub, transform_input, single_chain"
     },
     {
       "question": "'class415_example4.py'에서 import 또는 from으로 사용되는 모듈은 무엇인가요?",
       "options": [
         "math",
-        "(import 없음)",
-        "platform",
-        "pathlib"
+        "json",
+        "pathlib",
+        "(import 없음)"
       ],
       "answer_index": 1,
-      "explanation": "class415_example4.py import 목록: (import 없음)"
+      "explanation": "class415_example4.py import 목록: json"
     },
     {
       "question": "'class415_example5.py' 파일의 실행 진입점(entrypoint)으로 맞는 것은 무엇인가요?",
@@ -537,11 +537,33 @@
     "templates": [
       "langchain"
     ],
-    "imports": [],
+    "imports": [
+      "json"
+    ],
     "functions": [
-      "step_collect",
-      "step_retrieve",
-      "step_answer",
+      "resolve_mode",
+      "build_cases",
+      "tokenize",
+      "build_prompt_template",
+      "render_prompt",
+      "model_stub",
+      "transform_input",
+      "single_chain",
+      "sequential_chain",
+      "parse_output",
+      "to_json_text",
+      "append_memory",
+      "memory_chat",
+      "split_documents",
+      "retrieve_chunks",
+      "rag_chain",
+      "tool_search",
+      "tool_calculate",
+      "tool_api",
+      "run_agent",
+      "practice_bundle",
+      "execute_case",
+      "summarize_mode",
       "main",
       "extension_mission",
       "self_check",
@@ -553,22 +575,66 @@
     "by_file": {
       "class415_example1.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main"
         ],
         "entrypoint": "main()"
       },
       "class415_example2.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "extension_mission"
         ],
@@ -576,11 +642,33 @@
       },
       "class415_example3.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "self_check",
           "challenge_case"
@@ -589,11 +677,33 @@
       },
       "class415_example4.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "mini_project_plan"
         ],
@@ -601,11 +711,33 @@
       },
       "class415_example5.py": {
         "template": "langchain",
-        "imports": [],
+        "imports": [
+          "json"
+        ],
         "functions": [
-          "step_collect",
-          "step_retrieve",
-          "step_answer",
+          "resolve_mode",
+          "build_cases",
+          "tokenize",
+          "build_prompt_template",
+          "render_prompt",
+          "model_stub",
+          "transform_input",
+          "single_chain",
+          "sequential_chain",
+          "parse_output",
+          "to_json_text",
+          "append_memory",
+          "memory_chat",
+          "split_documents",
+          "retrieve_chunks",
+          "rag_chain",
+          "tool_search",
+          "tool_calculate",
+          "tool_api",
+          "run_agent",
+          "practice_bundle",
+          "execute_case",
+          "summarize_mode",
           "main",
           "ops_readiness_check"
         ],
@@ -616,23 +748,23 @@
   "example_snippets": [
     {
       "file": "class415_example1.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example1: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example1: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 1\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class415_example2.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example2: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example2: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 2\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class415_example3.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example3: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example3: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 3\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class415_example4.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example4: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example4: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 4\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     },
     {
       "file": "class415_example5.py",
-      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example5: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\n\ndef step_collect(question):\n    return {\"question\": question, \"context\": []}\n\ndef step_retrieve(state):\n    state[\"context\"] = [\n        \"체인은 여러 단계를 연결한다\",\n        \"도구 호출 전 입력 검증이 중요하다\",\n    ]\n    return state\n\ndef step_answer(state):"
+      "code": "# 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다\n\n\"\"\"class415 example5: OutputParser · 단계 6/6 운영 최적화 [class415]\"\"\"\n\nTOPIC = \"OutputParser · 단계 6/6 운영 최적화 [class415]\"\nEXAMPLE_TEMPLATE = \"langchain\"\nEXAMPLE_VARIANT = 5\n\nimport json\n\nCORE_COMPONENTS = [\n    {\"name\": \"Model\", \"role\": \"LLM 호출/추론 수행\"},\n    {\"name\": \"PromptTemplate\", \"role\": \"변수 주입형 프롬프트 구성\"},\n    {\"name\": \"Chain\", \"role\": \"단계 실행 흐름 오케스트레이션\"},\n    {\"name\": \"Output Parser\", \"role\": \"문자열/JSON 구조화\"},\n    {\"name\": \"Memory\", \"role\": \"대화 이력/컨텍스트 유지\"},\n    {\"name\": \"Retriever\", \"role\": \"관련 문서 검색\"},\n    {\"name\": \"Tool\", \"role\": \"검색/계산/API 등 외부 기능 호출\"},"
     }
   ]
 };

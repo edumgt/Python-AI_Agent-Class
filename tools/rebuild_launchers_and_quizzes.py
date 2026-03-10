@@ -623,6 +623,79 @@ PROMPT_ENG_QUIZ_BANK = {
     },
 }
 
+LANGCHAIN_QUIZ_BANK = {
+    "LangChain 개요": {
+        "concept": "LangChain은 LLM 앱을 체인 중심으로 구성해 모듈화·재사용·확장을 쉽게 만든다.",
+        "action": "입력 -> Prompt -> Model -> Parser -> Memory/Tool/Retriever 흐름을 먼저 도식화한다.",
+        "pitfall": "단일 호출 중심으로만 설계해 체인 구조 필요성을 놓친다.",
+        "check": "LangChain 목적, 필요성, 기본 아키텍처를 각각 설명할 수 있는지 점검한다.",
+        "outcome": "LangChain이 LLM 앱 구성에서 어떤 역할을 하는지 설명할 수 있다.",
+    },
+    "PromptTemplate": {
+        "concept": "PromptTemplate는 변수 주입과 재사용 가능한 구조화 프롬프트 관리를 위한 핵심 구성요소다.",
+        "action": "사용자 입력 변수를 분리해 템플릿 렌더링을 실행한다.",
+        "pitfall": "하드코딩 프롬프트를 유지해 재사용성과 테스트 가능성을 잃는다.",
+        "check": "변수 누락/오타/형식 누락 케이스를 포함해 템플릿을 검증한다.",
+        "outcome": "입력 연결형 프롬프트 템플릿을 안정적으로 운영할 수 있다.",
+    },
+    "Model/LLM 연결": {
+        "concept": "Model 연결은 PromptTemplate, Chain, Output Parser, Memory, Retriever, Tool, Agent를 묶는 중심 단계다.",
+        "action": "Model-Prompt-Parser 기본 체인을 만든 뒤 Memory/Retriever/Tool을 선택적으로 결합한다.",
+        "pitfall": "구성요소 역할을 분리하지 않아 디버깅과 확장이 어려워진다.",
+        "check": "핵심 구성요소 8개 역할과 연결 순서를 설명할 수 있는지 점검한다.",
+        "outcome": "LLM 애플리케이션 구성 요소를 연결하는 설계 기준을 갖출 수 있다.",
+    },
+    "OutputParser": {
+        "concept": "Output Parser는 문자열/JSON 응답을 구조화해 저장·후처리 자동화를 가능하게 한다.",
+        "action": "문자열 파싱과 JSON 파싱을 같은 체인에서 비교 실행한다.",
+        "pitfall": "파싱 실패 fallback 없이 응답을 그대로 사용해 연동 오류를 만든다.",
+        "check": "JSON 스키마 검증과 파싱 실패 처리 경로를 함께 점검한다.",
+        "outcome": "구조화 결과 저장과 후처리 자동화를 구현할 수 있다.",
+    },
+    "Chain 구성": {
+        "concept": "단일 체인, 순차 체인, 다단계 처리는 입력→변환→생성 흐름을 명확히 만드는 방법이다.",
+        "action": "단일 체인 baseline 후 순차 체인으로 확장해 비교한다.",
+        "pitfall": "체인 단계를 한 번에 묶어 실패 지점 추적이 불가능해진다.",
+        "check": "단계별 입력/출력 로그를 남겨 병목과 실패 단계를 검증한다.",
+        "outcome": "체인 기반 LLM 앱 흐름을 재현 가능하게 설계할 수 있다.",
+    },
+    "Memory 활용": {
+        "concept": "Memory는 대화 이력 저장, 컨텍스트 유지, 세션별 응답 관리를 담당한다.",
+        "action": "세션별 메모리 버퍼를 두고 대화형 흐름을 실행한다.",
+        "pitfall": "세션 분리 없이 이력을 공유해 컨텍스트 오염이 발생한다.",
+        "check": "대화 이력 누적, 컨텍스트 유지, 세션 분리 동작을 함께 점검한다.",
+        "outcome": "챗봇 흐름에서 문맥 일관성을 유지할 수 있다.",
+    },
+    "Tool/Agent 기초": {
+        "concept": "Tool은 외부 기능 호출, Agent는 도구 선택/실행 의사결정을 담당한다.",
+        "action": "검색·계산·API 호출 도구를 연결하고 Agent 라우팅을 적용한다.",
+        "pitfall": "단순 문제에도 Agent를 과도하게 사용해 복잡도와 지연을 키운다.",
+        "check": "Agent 사용/비사용 버전 결과와 복잡도를 비교해 점검한다.",
+        "outcome": "Tool/Agent 사용 기준과 주의사항을 실무 관점으로 설명할 수 있다.",
+    },
+    "문서 로딩과 분할": {
+        "concept": "문서 로딩/분할은 Retriever 품질과 RAG 연계 성능을 결정하는 전처리 핵심 단계다.",
+        "action": "문서 로딩 후 청크 크기/오버랩을 조정해 검색 품질을 비교한다.",
+        "pitfall": "문서를 통으로 처리해 검색 정확도와 근거성이 떨어진다.",
+        "check": "청크 전략별 검색 결과와 메타데이터 품질을 점검한다.",
+        "outcome": "Retriever 기반 검색 토대를 구축할 수 있다.",
+    },
+    "VectorStore 연동": {
+        "concept": "VectorStore 연동은 의미 기반 검색을 가능하게 해 RAG 품질을 높인다.",
+        "action": "벡터 저장/검색을 실행하고 top_k/threshold를 조정해 비교한다.",
+        "pitfall": "검색 하이퍼파라미터를 고정해 데이터 변화에 대응하지 못한다.",
+        "check": "Retriever 검색 결과와 생성 답변의 근거 일치 여부를 검증한다.",
+        "outcome": "RAG 연계 기반을 갖춘 검색-생성 흐름을 설계할 수 있다.",
+    },
+    "실전 체인 애플리케이션": {
+        "concept": "문서 요약 체인, 질의응답 체인, 챗봇, 외부 데이터 연동은 LangChain 실습의 핵심 통합 시나리오다.",
+        "action": "요약/질의응답/챗봇/외부연동 4개 시나리오를 체인으로 구성해 실행한다.",
+        "pitfall": "개별 체인만 검증하고 통합 워크플로우 테스트를 생략한다.",
+        "check": "체인 간 입력/출력 계약, 오류 처리, 운영 로그를 함께 점검한다.",
+        "outcome": "서비스형 LLM 앱을 체인 기반으로 구현하는 역량을 확보할 수 있다.",
+    },
+}
+
 
 PYTHON_PL_MODULE_ALIASES = {
     "수업 준비 1: 필수 플랫폼 가입/계정 설정 (class001)": "오리엔테이션 및 개발환경 준비",
@@ -642,6 +715,10 @@ def resolve_quiz_bank(subject_name: str, module: str, track: str) -> dict[str, s
     normalized_subject = subject_name.strip()
     module_core = module_core_name(module)
 
+    if normalized_subject == "Langchain 활용하기":
+        module_bank = LANGCHAIN_QUIZ_BANK.get(module_core)
+        if module_bank:
+            return module_bank
     if normalized_subject == "프롬프트 엔지니어링":
         module_bank = PROMPT_ENG_QUIZ_BANK.get(module_core)
         if module_bank:

@@ -406,6 +406,10 @@ def is_prompt_eng_subject(subject_name: str) -> bool:
     return subject_name.strip() == "프롬프트 엔지니어링"
 
 
+def is_langchain_subject(subject_name: str) -> bool:
+    return subject_name.strip() == "Langchain 활용하기"
+
+
 DATA_VIZ_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     "데이터 분석 환경 구성": {
         "kid_summary": "데이터 분석 전체 흐름과 분석용 Python 도구 지형을 한 번에 정리하는 차시입니다.",
@@ -2368,6 +2372,329 @@ PROMPT_ENG_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
     },
 }
 
+LANGCHAIN_MODULE_OVERRIDES: dict[str, dict[str, object]] = {
+    "LangChain 개요": {
+        "kid_summary": "LangChain이 왜 필요한지, LLM 앱에서 어떤 역할을 맡는지, 기본 아키텍처를 이해하는 시작 차시입니다.",
+        "why": "LLM 앱은 프롬프트·메모리·도구·검색·출력 파싱을 함께 다루므로 구성요소를 체계적으로 연결하는 프레임워크가 필요합니다.",
+        "concepts": [
+            "`LangChain의 목적`은 LLM 애플리케이션을 모듈 단위로 구성해 재사용성과 확장성을 높이는 것입니다.",
+            "`왜 필요한가`에 대한 답은 실무에서 단일 호출이 아니라 체인/메모리/도구 조합이 필요하다는 점입니다.",
+            "`기본 아키텍처`는 입력 -> PromptTemplate -> Model -> Parser -> Memory/Tool/Retriever -> 출력 흐름으로 이해할 수 있습니다.",
+        ],
+        "practice_steps": [
+            "LangChain 없이 구현한 흐름과 LangChain 구성 흐름을 비교해 보세요.",
+            "기본 아키텍처 블록(Model, Prompt, Chain, Parser, Memory, Tool, Retriever)을 다이어그램으로 작성하세요.",
+            "LLM 앱에서 LangChain이 담당하는 역할을 기능별로 매핑하세요.",
+        ],
+        "checklist": [
+            "LangChain의 목적과 필요성을 설명할 수 있다.",
+            "LLM 앱 구성에서 LangChain의 역할을 모듈별로 구분할 수 있다.",
+            "기본 아키텍처를 입력→출력 흐름으로 설명할 수 있다.",
+        ],
+        "syntax": ["체인 단계 함수", "상태(dict) 전달", "구성요소 매핑 표", "실행 로그 출력"],
+        "flow_steps": [
+            "요구사항을 체인 기반 구조로 분해한다",
+            "핵심 구성요소를 역할별로 배치한다",
+            "기본 실행 흐름을 연결한다",
+            "구성 요소 간 입출력 계약을 검증한다",
+        ],
+        "focus_points": [
+            "단일 함수 호출과 체인 구조의 차이를 명확히 설명하는지 확인하기",
+            "구성요소 경계(Model/Prompt/Parser/Memory)가 분리되는지 점검하기",
+            "기본 아키텍처가 이후 RAG/Agent 확장과 연결되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 PromptTemplate로 변수 주입형 프롬프트를 재사용 가능하게 설계합니다.",
+    },
+    "PromptTemplate": {
+        "kid_summary": "PromptTemplate의 변수 주입, 템플릿 재사용, 사용자 입력 연결, 구조화 프롬프트 관리를 다루는 차시입니다.",
+        "why": "프롬프트를 하드코딩하면 재사용과 테스트가 어렵고, 입력 변경 시 오류가 쉽게 발생합니다.",
+        "concepts": [
+            "`변수 주입`은 사용자 입력을 안전하게 템플릿에 연결하는 핵심 방식입니다.",
+            "`템플릿 재사용`은 동일 작업(요약/질의응답/분류)을 일관된 품질로 반복 실행하게 합니다.",
+            "`구조화 프롬프트 관리`는 역할, 목표, 제약조건, 출력형식을 템플릿 레벨에서 표준화하는 작업입니다.",
+        ],
+        "practice_steps": [
+            "하드코딩 프롬프트를 PromptTemplate 기반으로 바꿔 보세요.",
+            "입력 변수 2개 이상(question, context 등)를 주입해 결과를 비교하세요.",
+            "템플릿 버전을 분리해 재사용 가능한 프롬프트 집합을 구성하세요.",
+        ],
+        "checklist": [
+            "PromptTemplate 변수 주입 방식을 적용했다.",
+            "템플릿 재사용 구조(함수/클래스)를 만들었다.",
+            "사용자 입력과 구조화 프롬프트를 안전하게 연결했다.",
+        ],
+        "syntax": ["PromptTemplate 문자열", "입력 변수 dict", "템플릿 렌더 함수", "형식 제약조건"],
+        "flow_steps": [
+            "프롬프트 공통 구조를 정의한다",
+            "입력 변수를 템플릿에 주입한다",
+            "렌더링 결과를 검증한다",
+            "재사용 가능한 템플릿으로 저장한다",
+        ],
+        "focus_points": [
+            "입력 변수 누락/오타가 없는지 확인하기",
+            "템플릿이 과도한 결합 없이 여러 태스크에 재사용되는지 점검하기",
+            "출력 형식 제약이 템플릿에 반영되는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Model 연결과 핵심 구성요소 연계를 통해 실제 체인 실행을 시작합니다.",
+    },
+    "Model/LLM 연결": {
+        "kid_summary": "Model 연결을 중심으로 LangChain 핵심 구성요소(Model, PromptTemplate, Chain, Output Parser, Memory, Retriever, Tool, Agent)를 한 번에 정리하는 차시입니다.",
+        "why": "구성요소를 따로 이해하면 실제 앱 설계에서 연결 순서와 책임 경계를 놓치기 쉽습니다.",
+        "concepts": [
+            "`Model`은 생성/추론을 담당하고, `PromptTemplate`은 입력 형식을 표준화합니다.",
+            "`Chain`은 단계 실행 흐름을 만들고, `Output Parser`는 후처리 가능한 구조를 보장합니다.",
+            "`Memory/Retriever/Tool/Agent`는 대화 문맥, 검색 근거, 외부 기능 호출, 동적 실행 의사결정을 담당합니다.",
+        ],
+        "practice_steps": [
+            "Model 호출 전/후 PromptTemplate, Parser를 연결한 최소 체인을 구성하세요.",
+            "Memory와 Retriever를 연결해 입력 컨텍스트를 확장하세요.",
+            "Tool/Agent 개요 수준에서 어떤 상황에 어떤 구성요소를 붙일지 매핑하세요.",
+        ],
+        "checklist": [
+            "핵심 구성요소 8개의 역할을 설명할 수 있다.",
+            "Model 중심 체인에서 Parser/Memory/Retriever 연결 흐름을 구현했다.",
+            "Agent를 언제 쓰고 언제 쓰지 않을지 기준을 설명할 수 있다.",
+        ],
+        "syntax": ["모델 호출 함수", "체인 오케스트레이션", "파서 연동", "구성요소 라우팅"],
+        "flow_steps": [
+            "모델 연결 인터페이스를 정의한다",
+            "Prompt-Model-Parser를 기본 체인으로 연결한다",
+            "Memory/Retriever/Tool을 선택적으로 결합한다",
+            "Agent 필요 여부를 판단해 실행 경로를 확정한다",
+        ],
+        "focus_points": [
+            "구성요소 간 책임이 겹치지 않는지 확인하기",
+            "모델 출력이 Parser 입력 스키마와 일치하는지 점검하기",
+            "Agent를 과도하게 사용하지 않고 단순 체인으로 해결 가능한지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Output Parser를 통해 문자열/JSON 출력을 구조화합니다.",
+    },
+    "OutputParser": {
+        "kid_summary": "문자열 응답 파싱, JSON 처리, 구조화 결과 저장, 후처리 자동화를 다루는 차시입니다.",
+        "why": "LLM 응답을 그대로 쓰면 서비스 연동 시 파싱 오류와 후처리 비용이 크게 증가합니다.",
+        "concepts": [
+            "`문자열 파싱`은 응답 텍스트에서 필요한 필드를 추출하는 기본 단계입니다.",
+            "`JSON 출력 처리`는 후속 시스템(API/DB)과 안정적으로 연결하기 위한 표준 방식입니다.",
+            "`구조화 저장`과 `후처리 자동화`는 체인의 마지막 품질 보증 단계입니다.",
+        ],
+        "practice_steps": [
+            "문자열 응답에서 핵심 필드를 파싱해 dict로 변환하세요.",
+            "JSON 응답 강제와 파싱 실패 fallback을 구현하세요.",
+            "파싱 결과를 저장 가능한 구조로 변환해 후처리 자동화를 점검하세요.",
+        ],
+        "checklist": [
+            "문자열/JSON 파싱을 모두 실행했다.",
+            "파싱 실패 예외 처리(fallback)를 구현했다.",
+            "구조화 결과를 저장/후처리에 연결했다.",
+        ],
+        "syntax": ["문자열 파서", "JSON 파서", "스키마 검증", "후처리 함수"],
+        "flow_steps": [
+            "출력 스키마를 정의한다",
+            "모델 응답을 문자열/JSON으로 파싱한다",
+            "파싱 오류를 fallback으로 처리한다",
+            "구조화 결과를 저장/후처리 단계로 전달한다",
+        ],
+        "focus_points": [
+            "JSON 키 누락/타입 오류를 탐지하는지 확인하기",
+            "파싱 실패 시 전체 체인이 중단되지 않는지 점검하기",
+            "구조화 결과가 후처리 요구사항과 일치하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Chain 구성 패턴(단일/순차/다단계)을 본격적으로 확장합니다.",
+    },
+    "Chain 구성": {
+        "kid_summary": "단일 체인, 순차 체인, 다단계 처리로 입력→변환→생성 흐름을 설계하는 차시입니다.",
+        "why": "복잡한 LLM 작업은 단일 호출보다 단계 분해 체인이 품질, 디버깅, 재사용 측면에서 유리합니다.",
+        "concepts": [
+            "`단일 체인`은 빠른 실험에 적합하며 흐름이 단순합니다.",
+            "`순차 체인`은 전 단계 결과를 다음 단계 입력으로 전달하는 구조입니다.",
+            "`다단계 처리`는 전처리/검색/생성/검증을 명시적으로 분리해 안정성을 높입니다.",
+        ],
+        "practice_steps": [
+            "단일 체인과 순차 체인을 같은 입력으로 실행해 비교하세요.",
+            "입력→변환→생성 3단계 흐름을 함수 단위로 분리하세요.",
+            "체인 단계별 로그를 남겨 병목과 실패 지점을 찾으세요.",
+        ],
+        "checklist": [
+            "단일 체인과 순차 체인의 차이를 코드로 설명했다.",
+            "다단계 처리 흐름을 구현했다.",
+            "단계별 입출력 로그로 흐름을 검증했다.",
+        ],
+        "syntax": ["step 함수", "순차 오케스트레이터", "상태 전달(dict)", "단계별 로그"],
+        "flow_steps": [
+            "요구사항을 단계별 작업으로 분해한다",
+            "단일 체인 baseline을 구현한다",
+            "순차/다단계 체인으로 확장한다",
+            "단계별 결과를 검증해 최종 체인을 확정한다",
+        ],
+        "focus_points": [
+            "각 단계가 단일 책임을 가지는지 확인하기",
+            "단계 간 입력 스키마 호환성을 점검하기",
+            "체인 길이 증가 시 지연/오류 전파를 점검하기",
+        ],
+        "next_tip": "다음 차시에서는 Memory를 연결해 대화형 응답의 문맥 일관성을 높입니다.",
+    },
+    "Memory 활용": {
+        "kid_summary": "대화 이력 저장, 컨텍스트 유지, 세션별 응답 관리로 챗봇 흐름을 구성하는 차시입니다.",
+        "why": "대화형 서비스에서 메모리가 없으면 같은 사용자와의 맥락이 끊겨 응답 품질이 급격히 떨어집니다.",
+        "concepts": [
+            "`대화 이력 저장`은 사용자 발화와 모델 응답을 세션 단위로 관리하는 방식입니다.",
+            "`컨텍스트 유지`는 최근 대화 요약/선택 저장 전략으로 구현합니다.",
+            "`세션별 응답 관리`는 다중 사용자 환경에서 상태 충돌을 막는 핵심입니다.",
+        ],
+        "practice_steps": [
+            "세션별 메모리 버퍼를 만들고 대화 3턴 이상을 유지하세요.",
+            "이력 길이 제한 정책을 적용해 컨텍스트 품질을 비교하세요.",
+            "챗봇 흐름(입력-메모리조회-응답-메모리저장)을 구현하세요.",
+        ],
+        "checklist": [
+            "세션별 대화 이력 저장을 구현했다.",
+            "컨텍스트 유지 규칙을 적용했다.",
+            "챗봇 흐름에서 메모리 연계를 검증했다.",
+        ],
+        "syntax": ["세션 메모리 dict", "이력 append", "컨텍스트 요약", "대화 체인 함수"],
+        "flow_steps": [
+            "세션 키와 메모리 구조를 정의한다",
+            "대화 이력을 저장한다",
+            "필요한 컨텍스트를 불러와 응답을 생성한다",
+            "응답 후 메모리를 갱신한다",
+        ],
+        "focus_points": [
+            "세션 분리가 정확히 동작하는지 확인하기",
+            "이력 누적으로 응답 지연이 커지지 않는지 점검하기",
+            "메모리 누락/초기화 오류에 대비하는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 Tool과 Agent를 연결해 외부 기능 호출 기반 워크플로우를 확장합니다.",
+    },
+    "Tool/Agent 기초": {
+        "kid_summary": "외부 기능 호출, 검색/계산/API 연결, Agent 동작 원리와 과도한 사용 시 주의사항을 다루는 차시입니다.",
+        "why": "Agent는 강력하지만 모든 문제에 쓰면 복잡도와 비용이 증가하므로 사용 기준이 필요합니다.",
+        "concepts": [
+            "`Tool`은 검색, 계산, API 같은 외부 기능을 체인에 연결하는 인터페이스입니다.",
+            "`Agent`는 목표 기반으로 도구를 선택하고 실행 순서를 결정하는 실행자입니다.",
+            "`주의사항`은 단순 문제에 Agent를 남용하면 디버깅 난이도와 지연이 증가한다는 점입니다.",
+        ],
+        "practice_steps": [
+            "검색/계산/API 도구 스텁을 만들고 호출 흐름을 연결하세요.",
+            "간단한 라우팅 규칙으로 Agent 의사결정 흐름을 구현하세요.",
+            "Agent 사용 버전과 비사용 버전을 비교해 복잡도 차이를 기록하세요.",
+        ],
+        "checklist": [
+            "외부 도구 호출 흐름을 구현했다.",
+            "Agent 동작 방식을 설명할 수 있다.",
+            "과도한 Agent 사용 위험과 대안을 정리했다.",
+        ],
+        "syntax": ["tool 함수", "agent 라우터", "실행 로그", "fallback 처리"],
+        "flow_steps": [
+            "도구 목록과 호출 계약을 정의한다",
+            "작업 의도를 기준으로 도구를 선택한다",
+            "선택된 도구를 실행하고 결과를 수집한다",
+            "실패 시 fallback 경로로 복구한다",
+        ],
+        "focus_points": [
+            "도구 입력/출력 계약이 명확한지 확인하기",
+            "Agent 의사결정 근거가 로그에 남는지 점검하기",
+            "단순 작업은 일반 체인으로 대체 가능한지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 문서 로딩/분할을 통해 Retriever 기반 검색 토대를 만듭니다.",
+    },
+    "문서 로딩과 분할": {
+        "kid_summary": "문서 로딩과 청크 분할을 통해 Retriever가 사용할 검색 단위를 만드는 차시입니다.",
+        "why": "문서를 통째로 넣으면 검색 품질이 떨어지고, 적절한 분할이 있어야 RAG 품질이 안정됩니다.",
+        "concepts": [
+            "`문서 로딩`은 다양한 소스(PDF, txt, web)에서 텍스트를 표준화하는 단계입니다.",
+            "`문서 분할`은 의미 단위 청크를 만들어 검색 정확도와 응답 근거성을 높입니다.",
+            "`Retriever 기반`은 청크 품질과 메타데이터 설계에 크게 의존합니다.",
+        ],
+        "practice_steps": [
+            "문서를 로딩해 텍스트와 메타데이터를 분리하세요.",
+            "청크 크기/오버랩을 바꿔 검색 품질 차이를 비교하세요.",
+            "질문에 대해 상위 청크를 검색해 근거 품질을 점검하세요.",
+        ],
+        "checklist": [
+            "문서 로딩과 분할 파이프라인을 구현했다.",
+            "청크 전략별 검색 품질 차이를 기록했다.",
+            "Retriever 연계 기반을 구성했다.",
+        ],
+        "syntax": ["loader 함수", "chunk splitter", "메타데이터 dict", "retriever 호출"],
+        "flow_steps": [
+            "원본 문서를 로딩한다",
+            "청크/오버랩 규칙으로 분할한다",
+            "청크 메타데이터를 저장한다",
+            "질문 기반 검색으로 품질을 검증한다",
+        ],
+        "focus_points": [
+            "청크 경계가 문맥을 과도하게 끊지 않는지 확인하기",
+            "메타데이터(출처/페이지)가 누락되지 않는지 점검하기",
+            "검색 결과가 RAG 응답 근거로 충분한지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 VectorStore 연동으로 검색 품질과 RAG 응답 정확도를 높입니다.",
+    },
+    "VectorStore 연동": {
+        "kid_summary": "VectorStore 연동으로 Retriever 성능을 높이고 RAG 연계 기반을 확립하는 차시입니다.",
+        "why": "텍스트 검색만으로는 의미 유사 질문 대응이 어려워 벡터 검색 기반이 필요합니다.",
+        "concepts": [
+            "`VectorStore`는 임베딩 벡터를 저장/검색해 의미 기반 유사도를 제공합니다.",
+            "`Retriever`는 VectorStore 질의를 통해 관련 청크를 반환합니다.",
+            "`RAG 연계`는 검색 결과를 생성 단계에 주입해 근거 중심 응답을 만듭니다.",
+        ],
+        "practice_steps": [
+            "청크 임베딩을 VectorStore에 저장하고 질의 검색을 실행하세요.",
+            "retriever top_k를 바꿔 결과 품질을 비교하세요.",
+            "검색 근거를 포함한 RAG 응답 체인을 구성하세요.",
+        ],
+        "checklist": [
+            "VectorStore 저장/검색 파이프라인을 구현했다.",
+            "Retriever와 생성 체인을 연결했다.",
+            "RAG 연계 기반(검색→생성)을 검증했다.",
+        ],
+        "syntax": ["임베딩 생성", "vector upsert/query", "top_k 검색", "RAG 결합 함수"],
+        "flow_steps": [
+            "문서 청크를 벡터화한다",
+            "VectorStore에 벡터를 저장한다",
+            "Retriever로 관련 청크를 검색한다",
+            "검색 근거를 포함해 응답을 생성한다",
+        ],
+        "focus_points": [
+            "임베딩 품질/차원이 검색 성능과 맞는지 확인하기",
+            "top_k/score threshold 조정 근거를 기록하는지 점검하기",
+            "RAG 답변에 근거 정보가 누락되지 않는지 확인하기",
+        ],
+        "next_tip": "다음 차시에서는 실전 체인 애플리케이션으로 요약/질의응답/챗봇/외부연동을 통합합니다.",
+    },
+    "실전 체인 애플리케이션": {
+        "kid_summary": "문서 요약 체인, 질의응답 체인, 간단한 챗봇, 외부 데이터 연동 예제를 통합하는 실습 차시입니다.",
+        "why": "실무에서는 개별 기능보다 여러 체인을 서비스 흐름으로 묶어 운영 가능한 형태로 만드는 능력이 중요합니다.",
+        "concepts": [
+            "`문서 요약 체인`은 입력 문서 정리와 출력 구조화가 핵심입니다.",
+            "`질의응답 체인`은 Retriever/RAG 연계로 근거 기반 답변을 강화합니다.",
+            "`챗봇 + 외부 데이터 연동`은 Memory, Tool, Parser를 조합해 서비스형 워크플로우를 완성합니다.",
+        ],
+        "practice_steps": [
+            "문서 요약 체인과 질의응답 체인을 각각 구현하세요.",
+            "세션 메모리를 포함한 간단한 챗봇 체인을 구성하세요.",
+            "외부 API/검색 데이터를 연결하는 기본 예제를 추가하세요.",
+        ],
+        "checklist": [
+            "요약/질의응답/챗봇/외부연동 예제를 실행했다.",
+            "체인 간 입력/출력 계약을 문서화했다.",
+            "RAG 연계와 운영 점검 기준을 함께 확인했다.",
+        ],
+        "syntax": ["체인 조합 함수", "라우팅 로직", "메모리+툴 결합", "통합 리포트"],
+        "flow_steps": [
+            "실습 시나리오별 체인을 설계한다",
+            "요약/질의응답/챗봇 체인을 구현한다",
+            "외부 데이터 도구를 연결한다",
+            "통합 테스트와 운영 기준을 점검한다",
+        ],
+        "focus_points": [
+            "체인 간 계약이 일관적인지 확인하기",
+            "외부 연동 실패 시 복구 경로가 있는지 점검하기",
+            "RAG 근거성과 응답 형식 안정성이 유지되는지 확인하기",
+        ],
+        "next_tip": "과목 전체를 복습하며 체인 기반 LLM 앱과 RAG 연계 설계를 포트폴리오 형태로 정리하세요.",
+    },
+}
+
 PYTHON_PL_MODULE_PROFILES = {
     "오리엔테이션 및 개발환경 준비": {
         "kid_summary": "Python 코드가 어떤 실행환경에서 동작하는지 먼저 맞추는 차시입니다.",
@@ -2811,9 +3138,16 @@ def get_prompt_eng_profile(subject_name: str, module: str) -> dict[str, object] 
     return PROMPT_ENG_MODULE_OVERRIDES.get(module_core_name(module))
 
 
+def get_langchain_profile(subject_name: str, module: str) -> dict[str, object] | None:
+    if not is_langchain_subject(subject_name):
+        return None
+    return LANGCHAIN_MODULE_OVERRIDES.get(module_core_name(module))
+
+
 def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[str, object]:
     info = dict(TRACK_INFO.get(track, TRACK_INFO["generic"]))
     for profile in (
+        get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
@@ -2832,6 +3166,7 @@ def resolve_learning_info(track: str, subject_name: str, module: str) -> dict[st
 
 def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
@@ -2848,6 +3183,7 @@ def resolve_main_syntax(track: str, subject_name: str, module: str) -> list[str]
 
 def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
@@ -2864,6 +3200,7 @@ def resolve_flow_steps(track: str, subject_name: str, module: str) -> list[str]:
 
 def resolve_focus_points(track: str, subject_name: str, module: str) -> list[str]:
     for profile in (
+        get_langchain_profile(subject_name, module),
         get_prompt_eng_profile(subject_name, module),
         get_llm_text_gen_profile(subject_name, module),
         get_speech_tts_stt_profile(subject_name, module),
@@ -2966,6 +3303,88 @@ def resolve_example_progression(track: str, subject_name: str, module: str) -> l
                 "example3: JSON 구조화 출력과 오류 응답 처리를 결합한다.",
                 "example4: system/user 분리와 버전 전략을 검증한다.",
                 "example5: 테스트 케이스 기반 실무 적용 기준을 확정한다.",
+            ]
+    if is_langchain_subject(subject_name):
+        core = module_core_name(module)
+        if core == "LangChain 개요":
+            return [
+                "example1: LangChain 목적과 기본 아키텍처를 정리한다.",
+                "example2: LLM 앱에서 LangChain 역할을 기능별로 매핑한다.",
+                "example3: 구성요소 연결 실패 케이스를 재현해 점검한다.",
+                "example4: 아키텍처 개선 전후 흐름을 비교한다.",
+                "example5: 운영 체크리스트(로그/복구/확장)를 정리한다.",
+            ]
+        if core == "PromptTemplate":
+            return [
+                "example1: 변수 주입 기반 PromptTemplate를 작성한다.",
+                "example2: 사용자 입력을 연결해 템플릿 재사용성을 검증한다.",
+                "example3: 구조화 프롬프트 누락/오류 케이스를 점검한다.",
+                "example4: 템플릿 버전별 출력 품질을 비교한다.",
+                "example5: 프롬프트 템플릿 관리 기준을 정리한다.",
+            ]
+        if core == "Model/LLM 연결":
+            return [
+                "example1: Model-Prompt-Chain 최소 연결을 실행한다.",
+                "example2: OutputParser/Memory/Retriever 연결을 확장한다.",
+                "example3: Tool/Agent 분기 조건 실패 케이스를 점검한다.",
+                "example4: 구성요소 조합별 성능/복잡도를 비교한다.",
+                "example5: 핵심 구성요소 선택 기준을 문서화한다.",
+            ]
+        if core == "OutputParser":
+            return [
+                "example1: 문자열 응답 파싱을 실행한다.",
+                "example2: JSON 출력 파싱과 스키마 검증을 추가한다.",
+                "example3: 파싱 실패 fallback 처리 케이스를 점검한다.",
+                "example4: 구조화 저장/후처리 자동화를 비교한다.",
+                "example5: 파싱 안정성 운영 기준을 정리한다.",
+            ]
+        if core == "Chain 구성":
+            return [
+                "example1: 단일 체인 baseline을 실행한다.",
+                "example2: 순차 체인으로 입력→변환→생성 흐름을 확장한다.",
+                "example3: 다단계 처리 중 실패 단계를 재현해 점검한다.",
+                "example4: 체인 조합별 품질/지연을 비교한다.",
+                "example5: 체인 설계 체크리스트를 정리한다.",
+            ]
+        if core == "Memory 활용":
+            return [
+                "example1: 대화 이력 저장과 기본 응답 흐름을 실행한다.",
+                "example2: 컨텍스트 유지와 세션 분리를 확장한다.",
+                "example3: 메모리 누락/오염 케이스를 점검한다.",
+                "example4: 챗봇 흐름 품질(문맥 일관성)을 비교한다.",
+                "example5: 세션 운영 기준과 정리 정책을 문서화한다.",
+            ]
+        if core == "Tool/Agent 기초":
+            return [
+                "example1: 검색/계산/API 도구 호출을 연결한다.",
+                "example2: Agent 라우팅으로 도구 선택 흐름을 확장한다.",
+                "example3: 도구 실패/Agent 오판 케이스를 점검한다.",
+                "example4: Agent 사용/비사용 버전의 복잡도를 비교한다.",
+                "example5: Agent 남용 방지 기준을 정리한다.",
+            ]
+        if core == "문서 로딩과 분할":
+            return [
+                "example1: 문서 로딩과 청크 분할 baseline을 실행한다.",
+                "example2: 청크 크기/오버랩을 바꿔 검색 품질을 비교한다.",
+                "example3: 청크 메타데이터 누락 케이스를 점검한다.",
+                "example4: Retriever 기반 검색 결과를 분석한다.",
+                "example5: RAG 연계 전 준비 체크리스트를 정리한다.",
+            ]
+        if core == "VectorStore 연동":
+            return [
+                "example1: 벡터 저장/검색 흐름을 실행한다.",
+                "example2: top_k/threshold 조정으로 검색 품질을 비교한다.",
+                "example3: 임베딩/검색 실패 케이스를 점검한다.",
+                "example4: Retriever+생성(RAG) 결합 결과를 비교한다.",
+                "example5: RAG 운영 기준(근거율/지연/재색인)을 정리한다.",
+            ]
+        if core == "실전 체인 애플리케이션":
+            return [
+                "example1: 문서 요약 체인을 실행한다.",
+                "example2: 질의응답 체인과 간단 챗봇을 확장한다.",
+                "example3: 외부 데이터 연결 실패 케이스를 점검한다.",
+                "example4: 통합 체인 시나리오 품질을 비교한다.",
+                "example5: 실전 워크플로우 운영 체크리스트를 완성한다.",
             ]
     if is_llm_text_gen_subject(subject_name):
         core = module_core_name(module)
