@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Web Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                sand: "#F6E8CF",
+                ink: "#102A43",
+                tide: "#0F766E",
+                rust: "#B45309",
+              },
+            },
+            fontFamily: {
+              sans: ["IBM Plex Sans KR", "Noto Sans KR", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background:
+          radial-gradient(circle at 8% 12%, rgba(15, 118, 110, 0.22), transparent 35%),
+          radial-gradient(circle at 86% 14%, rgba(180, 83, 9, 0.18), transparent 30%),
+          linear-gradient(160deg, #fffaf0 0%, #f1f5f9 48%, #ecfeff 100%);
+      }
+
+      .panel {
+        box-shadow:
+          0 12px 40px rgba(15, 23, 42, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-900">
+    <div class="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 lg:px-8">
+      <header class="mb-6 rounded-3xl border border-white/60 bg-white/75 p-6 backdrop-blur panel">
+        <p class="text-xs font-semibold tracking-[0.2em] text-brand-rust">FASTAPI + VANILLA JS PRACTICE</p>
+        <h1 id="classTitle" class="mt-2 text-2xl font-bold text-brand-ink sm:text-3xl">Loading class...</h1>
+        <p id="topic" class="mt-2 text-sm text-slate-700">Loading topic...</p>
+        <p class="mt-3 text-xs text-slate-500">Tip: Example Python 파일을 그대로 실행하고 출력/오류/소스를 한 화면에서 점검할 수 있습니다.</p>
+      </header>
+
+      <main class="grid gap-6 lg:grid-cols-[360px,1fr]">
+        <section class="rounded-3xl border border-white/60 bg-white/80 p-5 panel">
+          <h2 class="text-lg font-semibold text-brand-ink">Run Controls</h2>
+
+          <div class="mt-4 space-y-3">
+            <label for="exampleSelect" class="block text-sm font-medium text-slate-700">Example 선택</label>
+            <select
+              id="exampleSelect"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-brand-tide focus:ring-2 focus:ring-brand-tide/20"
+            ></select>
+
+            <div class="flex flex-wrap gap-2">
+              <button
+                id="runBtn"
+                class="rounded-xl bg-brand-tide px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+              >
+                Example 실행
+              </button>
+              <button
+                id="sourceBtn"
+                class="rounded-xl bg-brand-rust px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+              >
+                Source 보기
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+            <p class="text-xs font-semibold text-slate-600">상태</p>
+            <p id="status" class="mt-1 text-sm text-slate-700">Initializing...</p>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+            <p class="text-xs font-semibold text-slate-600">실행 규칙</p>
+            <ul class="mt-2 list-disc space-y-1 pl-4 text-xs text-slate-600">
+              <li>선택한 `classXXX_exampleN.py`를 백엔드에서 실행합니다.</li>
+              <li>시간 제한은 서버에서 20초로 설정됩니다.</li>
+              <li>stdout/stderr를 분리해 확인하세요.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="space-y-6">
+          <article class="rounded-3xl border border-white/60 bg-white/80 p-5 panel">
+            <div class="mb-3 flex items-center justify-between gap-3">
+              <h2 class="text-lg font-semibold text-brand-ink">Execution Output</h2>
+              <span id="exitCode" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">exit: -</span>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">stdout</p>
+                <pre id="stdout" class="h-72 overflow-auto rounded-2xl bg-slate-950 p-3 font-mono text-xs text-emerald-300"></pre>
+              </div>
+              <div>
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">stderr</p>
+                <pre id="stderr" class="h-72 overflow-auto rounded-2xl bg-slate-950 p-3 font-mono text-xs text-rose-300"></pre>
+              </div>
+            </div>
+          </article>
+
+          <article class="rounded-3xl border border-white/60 bg-white/80 p-5 panel">
+            <h2 class="mb-3 text-lg font-semibold text-brand-ink">Example Source</h2>
+            <pre id="source" class="h-[28rem] overflow-auto rounded-2xl bg-slate-950 p-3 font-mono text-xs text-sky-200"></pre>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const state = {
+        meta: null,
+      };
+
+      const classTitleEl = document.getElementById("classTitle");
+      const topicEl = document.getElementById("topic");
+      const exampleSelectEl = document.getElementById("exampleSelect");
+      const statusEl = document.getElementById("status");
+      const stdoutEl = document.getElementById("stdout");
+      const stderrEl = document.getElementById("stderr");
+      const sourceEl = document.getElementById("source");
+      const exitCodeEl = document.getElementById("exitCode");
+      const runBtn = document.getElementById("runBtn");
+      const sourceBtn = document.getElementById("sourceBtn");
+
+      async function requestJson(url, options = {}) {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const message = await response.text();
+          throw new Error(`HTTP ${response.status}: ${message}`);
+        }
+        return response.json();
+      }
+
+      function setStatus(message, isError = false) {
+        statusEl.textContent = message;
+        statusEl.className = isError ? "mt-1 text-sm text-rose-700" : "mt-1 text-sm text-slate-700";
+      }
+
+      function selectedExample() {
+        const value = Number(exampleSelectEl.value);
+        return Number.isFinite(value) ? value : 1;
+      }
+
+      function renderExamples(examples) {
+        exampleSelectEl.innerHTML = "";
+        examples.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = String(item.index);
+          option.textContent = `example${item.index} - ${item.topic || item.file}`;
+          exampleSelectEl.appendChild(option);
+        });
+      }
+
+      async function loadMeta() {
+        setStatus("Class metadata loading...");
+        const meta = await requestJson("/api/meta");
+        state.meta = meta;
+
+        classTitleEl.textContent = `${meta.class_id} Web Practice`;
+        topicEl.textContent = meta.topic || "Topic not found in example file.";
+        renderExamples(meta.examples || []);
+        stdoutEl.textContent = "";
+        stderrEl.textContent = "";
+        sourceEl.textContent = "";
+        exitCodeEl.textContent = "exit: -";
+        setStatus(`Ready. ${meta.example_count} examples detected.`);
+      }
+
+      async function runExample() {
+        const example = selectedExample();
+        setStatus(`Running example${example}...`);
+
+        try {
+          const result = await requestJson("/api/run", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ example }),
+          });
+
+          stdoutEl.textContent = result.stdout || "(empty)";
+          stderrEl.textContent = result.stderr || "(empty)";
+          exitCodeEl.textContent = `exit: ${result.exit_code === null ? "timeout" : result.exit_code}`;
+
+          if (result.ok) {
+            setStatus(`example${example} completed successfully.`);
+          } else {
+            setStatus(`example${example} finished with error/timeout.`, true);
+          }
+        } catch (error) {
+          setStatus(`Run failed: ${error.message}`, true);
+        }
+      }
+
+      async function loadSource() {
+        const example = selectedExample();
+        setStatus(`Loading source for example${example}...`);
+
+        try {
+          const payload = await requestJson(`/api/source/${example}`);
+          sourceEl.textContent = payload.source || "(empty)";
+          setStatus(`Source loaded: ${payload.file}`);
+        } catch (error) {
+          setStatus(`Source load failed: ${error.message}`, true);
+        }
+      }
+
+      runBtn.addEventListener("click", runExample);
+      sourceBtn.addEventListener("click", loadSource);
+
+      loadMeta().catch((error) => {
+        setStatus(`Initialization failed: ${error.message}`, true);
+      });
+    </script>
+  </body>
+</html>
