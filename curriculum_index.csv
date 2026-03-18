@@ -500,6 +500,26 @@ class497,63,1,정규교과-9,RAG(Retrieval-Augmented Generation),49/52,Agent 시
 class498,63,2,정규교과-9,RAG(Retrieval-Augmented Generation),50/52,Agent 시스템 통합 구현 · 단계 3/5 응용 확장 [class498],실전심화,ragPipeline/class498/class498.md
 class499,63,3,정규교과-9,RAG(Retrieval-Augmented Generation),51/52,Agent 시스템 통합 구현 · 단계 4/5 실전 검증 [class499],실전심화,ragPipeline/class499/class499.md
 class500,63,4,정규교과-9,RAG(Retrieval-Augmented Generation),52/52,Agent 시스템 통합 구현 · 단계 5/5 운영 최적화 [class500],실전심화,ragPipeline/class500/class500.md
+class501,64,1,정규교과-10,LLMOps,1/20,LLMOps 개요 · 단계 1/4 입문 이해 [class501],입문,llmOps/class501/class501.md
+class502,64,2,정규교과-10,LLMOps,2/20,LLMOps 개요 · 단계 2/4 기초 구현 [class502],기초응용,llmOps/class502/class502.md
+class503,64,3,정규교과-10,LLMOps,3/20,LLMOps 개요 · 단계 3/4 실전 검증 [class503],실전심화,llmOps/class503/class503.md
+class504,64,4,정규교과-10,LLMOps,4/20,LLMOps 개요 · 단계 4/4 운영 최적화 [class504],실전심화,llmOps/class504/class504.md
+class505,64,5,정규교과-10,LLMOps,5/20,프롬프트 관리 · 단계 1/4 입문 이해 [class505],입문,llmOps/class505/class505.md
+class506,64,6,정규교과-10,LLMOps,6/20,프롬프트 관리 · 단계 2/4 기초 구현 [class506],기초응용,llmOps/class506/class506.md
+class507,64,7,정규교과-10,LLMOps,7/20,프롬프트 관리 · 단계 3/4 실전 검증 [class507],실전심화,llmOps/class507/class507.md
+class508,64,8,정규교과-10,LLMOps,8/20,프롬프트 관리 · 단계 4/4 운영 최적화 [class508],실전심화,llmOps/class508/class508.md
+class509,65,1,정규교과-10,LLMOps,9/20,LLM 평가와 품질 · 단계 1/4 입문 이해 [class509],입문,llmOps/class509/class509.md
+class510,65,2,정규교과-10,LLMOps,10/20,LLM 평가와 품질 · 단계 2/4 기초 구현 [class510],기초응용,llmOps/class510/class510.md
+class511,65,3,정규교과-10,LLMOps,11/20,LLM 평가와 품질 · 단계 3/4 실전 검증 [class511],실전심화,llmOps/class511/class511.md
+class512,65,4,정규교과-10,LLMOps,12/20,LLM 평가와 품질 · 단계 4/4 운영 최적화 [class512],실전심화,llmOps/class512/class512.md
+class513,65,5,정규교과-10,LLMOps,13/20,LLM 모니터링 · 단계 1/4 입문 이해 [class513],입문,llmOps/class513/class513.md
+class514,65,6,정규교과-10,LLMOps,14/20,LLM 모니터링 · 단계 2/4 기초 구현 [class514],기초응용,llmOps/class514/class514.md
+class515,65,7,정규교과-10,LLMOps,15/20,LLM 모니터링 · 단계 3/4 실전 검증 [class515],실전심화,llmOps/class515/class515.md
+class516,65,8,정규교과-10,LLMOps,16/20,LLM 모니터링 · 단계 4/4 운영 최적화 [class516],실전심화,llmOps/class516/class516.md
+class517,66,1,정규교과-10,LLMOps,17/20,LLM 배포 자동화 · 단계 1/4 입문 이해 [class517],입문,llmOps/class517/class517.md
+class518,66,2,정규교과-10,LLMOps,18/20,LLM 배포 자동화 · 단계 2/4 기초 구현 [class518],기초응용,llmOps/class518/class518.md
+class519,66,3,정규교과-10,LLMOps,19/20,LLM 배포 자동화 · 단계 3/4 실전 검증 [class519],실전심화,llmOps/class519/class519.md
+class520,66,4,정규교과-10,LLMOps,20/20,LLM 배포 자동화 · 단계 4/4 운영 최적화 [class520],실전심화,llmOps/class520/class520.md
 project001,63,5,프로젝트-A,프로젝트,1/3,나만의 음성 모델 만들기 [VoiceModelBuilder],기초응용,VoiceModelBuilder/README.md
 project002,63,6,프로젝트-B,프로젝트,2/3,거대 언어 모델을 활용한 PERSONA AI 답변 기능 구현하기 [PersonaLLMResponder],기초응용,PersonaLLMResponder/README.md
 project003,63,7,프로젝트-C,프로젝트,3/3,사전 데이터 기반 PERSO AI의 답변 커스텀하기 [PersonaKnowledgeCustomizer],기초응용,PersonaKnowledgeCustomizer/README.md

@@ -1,0 +1,164 @@
+<!doctype html>
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>class503 10문항 퀴즈</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {--bg:#f3f6fb;--panel:#fff;--ink:#0f172a;--sub:#475569;--primary:#0b5fff;--primary-strong:#0038c7;--accent:#04b7a1;--line:#d9e3f3;--danger:#e44863;}
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);}
+    .container{width:min(900px,100% - 32px);margin:28px auto 56px;}
+    .hero{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px 36px 24px;margin-bottom:24px;}
+    .hero h1{font-size:1.5rem;margin:0 0 6px;}
+    .hero p{color:var(--sub);margin:0;}
+    .question-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 28px;margin-bottom:16px;}
+    .question-text{font-weight:600;margin:0 0 14px;}
+    .qnum{color:var(--primary);margin-right:6px;}
+    .options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+    .option-label{display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1px solid var(--line);border-radius:10px;transition:.15s;}
+    .option-label:hover{border-color:var(--primary);background:#f0f5ff;}
+    .feedback{margin-top:12px;font-weight:600;font-size:.9rem;}
+    .correct{color:#16a34a;}.wrong{color:var(--danger);}
+    .btn-row{display:flex;gap:12px;justify-content:center;margin-top:28px;}
+    .btn{padding:12px 32px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;}
+    .btn-grade{background:var(--primary);color:#fff;}.btn-reset{background:#e2e8f0;color:var(--ink);}
+    .score-banner{display:none;text-align:center;padding:20px;background:#fff;border:2px solid var(--primary);border-radius:16px;margin-top:20px;font-size:1.2rem;font-weight:700;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>class503 퀴즈 — LLMOps 개요</h1>
+    <p>LLMOps 과정 · 총 10문항 · 문항당 10점</p>
+  </div>
+
+      <div class="question-card" id="qcard1" data-correct="1">
+        <p class="question-text"><span class="qnum">Q1.</span> LLMOps의 정의로 가장 적절한 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q1" value="0" /><span class="option-text">LLM 모델 학습 최적화 도구</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="1" /><span class="option-text">LLM 기반 서비스를 설계·평가·운영하는 체계</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="2" /><span class="option-text">데이터 파이프라인 관리 도구</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="3" /><span class="option-text">머신러닝 실험 추적 플랫폼</span></label></li>
+        </ul>
+        <div class="feedback" id="fb1"></div>
+      </div>
+      <div class="question-card" id="qcard2" data-correct="1">
+        <p class="question-text"><span class="qnum">Q2.</span> LLMOps와 MLOps의 가장 큰 차이점은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q2" value="0" /><span class="option-text">학습 데이터 크기</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="1" /><span class="option-text">프롬프트·체인·에이전트 관리 영역의 포함</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="2" /><span class="option-text">클라우드 비용 관리</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="3" /><span class="option-text">도커 사용 여부</span></label></li>
+        </ul>
+        <div class="feedback" id="fb2"></div>
+      </div>
+      <div class="question-card" id="qcard3" data-correct="2">
+        <p class="question-text"><span class="qnum">Q3.</span> LLMOps의 핵심 구성 요소가 아닌 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q3" value="0" /><span class="option-text">프롬프트 관리</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="1" /><span class="option-text">벡터DB 운영</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="2" /><span class="option-text">픽셀 렌더링</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="3" /><span class="option-text">응답 품질 평가</span></label></li>
+        </ul>
+        <div class="feedback" id="fb3"></div>
+      </div>
+      <div class="question-card" id="qcard4" data-correct="1">
+        <p class="question-text"><span class="qnum">Q4.</span> LLMOps에서 '가드레일(Guardrail)'의 역할은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q4" value="0" /><span class="option-text">모델 학습 속도 향상</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="1" /><span class="option-text">유해·부정확 응답 차단</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="2" /><span class="option-text">비용 절감 자동화</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="3" /><span class="option-text">API 요청 캐싱</span></label></li>
+        </ul>
+        <div class="feedback" id="fb4"></div>
+      </div>
+      <div class="question-card" id="qcard5" data-correct="1">
+        <p class="question-text"><span class="qnum">Q5.</span> LLM 서비스 운영 시 가장 먼저 설정해야 할 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q5" value="0" /><span class="option-text">GPU 수량 확보</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="1" /><span class="option-text">응답 품질 기준(SLO) 정의</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="2" /><span class="option-text">UI 디자인</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="3" /><span class="option-text">마케팅 전략</span></label></li>
+        </ul>
+        <div class="feedback" id="fb5"></div>
+      </div>
+      <div class="question-card" id="qcard6" data-correct="1">
+        <p class="question-text"><span class="qnum">Q6.</span> LLMOps 관점에서 '드리프트(Drift)'란?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q6" value="0" /><span class="option-text">모델 파라미터 변경</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="1" /><span class="option-text">프롬프트 효과가 시간이 지남에 따라 저하되는 현상</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="2" /><span class="option-text">네트워크 지연</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="3" /><span class="option-text">GPU 온도 상승</span></label></li>
+        </ul>
+        <div class="feedback" id="fb6"></div>
+      </div>
+      <div class="question-card" id="qcard7" data-correct="1">
+        <p class="question-text"><span class="qnum">Q7.</span> LangSmith의 주요 역할은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q7" value="0" /><span class="option-text">벡터DB 색인</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="1" /><span class="option-text">LLM 실행 추적 및 품질 모니터링</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="2" /><span class="option-text">모델 학습 가속</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="3" /><span class="option-text">HTML 렌더링</span></label></li>
+        </ul>
+        <div class="feedback" id="fb7"></div>
+      </div>
+      <div class="question-card" id="qcard8" data-correct="1">
+        <p class="question-text"><span class="qnum">Q8.</span> LLMOps에서 '평가 파이프라인'이 필요한 이유는?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q8" value="0" /><span class="option-text">서버 비용 절감</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="1" /><span class="option-text">응답 일관성·정확성을 자동으로 측정하기 위해</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="2" /><span class="option-text">UI 성능 향상</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="3" /><span class="option-text">데이터베이스 최적화</span></label></li>
+        </ul>
+        <div class="feedback" id="fb8"></div>
+      </div>
+      <div class="question-card" id="qcard9" data-correct="1">
+        <p class="question-text"><span class="qnum">Q9.</span> LLMOps 환경에서 '실험 추적'의 목적은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q9" value="0" /><span class="option-text">사용자 행동 분석</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="1" /><span class="option-text">프롬프트/모델 변경 이력을 재현 가능하게 관리</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="2" /><span class="option-text">서버 가동시간 모니터링</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="3" /><span class="option-text">네트워크 라우팅 최적화</span></label></li>
+        </ul>
+        <div class="feedback" id="fb9"></div>
+      </div>
+      <div class="question-card" id="qcard10" data-correct="1">
+        <p class="question-text"><span class="qnum">Q10.</span> LLMOps의 최종 목표로 가장 적절한 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q10" value="0" /><span class="option-text">모든 AI 기능을 오픈소스로만 구현</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="1" /><span class="option-text">LLM 기반 서비스의 품질·안전성·운영 효율을 지속적으로 개선</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="2" /><span class="option-text">학습 데이터 무한 확장</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="3" /><span class="option-text">GPU 비용 제로화</span></label></li>
+        </ul>
+        <div class="feedback" id="fb10"></div>
+      </div>
+  <div class="btn-row">
+    <button class="btn btn-grade" onclick="grade()">채점하기</button>
+    <button class="btn btn-reset" onclick="resetQuiz()">다시풀기</button>
+  </div>
+  <div class="score-banner" id="scoreBanner"></div>
+</div>
+<script>
+function grade(){
+  let score=0;
+  document.querySelectorAll('.question-card').forEach((card)=>{
+    const correct=parseInt(card.dataset.correct);
+    const sel=card.querySelector('input[type=radio]:checked');
+    const fb=card.querySelector('.feedback');
+    if(!sel){fb.textContent='선택하지 않았습니다.';fb.className='feedback wrong';return;}
+    if(parseInt(sel.value)===correct){score+=10;fb.textContent='✓ 정답입니다!';fb.className='feedback correct';}
+    else{const opts=card.querySelectorAll('.option-text');fb.textContent='✗ 오답. 정답: '+(opts[correct]?opts[correct].textContent:correct);fb.className='feedback wrong';}
+  });
+  const b=document.getElementById('scoreBanner');b.style.display='block';b.textContent='총점: '+score+'점 / 100점';
+}
+function resetQuiz(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.feedback').forEach(f=>{f.textContent='';f.className='feedback';});
+  document.getElementById('scoreBanner').style.display='none';
+}
+</script>
+</body>
+</html>
