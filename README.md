@@ -12,6 +12,7 @@
 7. 프롬프트 엔지니어링
 8. LangChain 활용하기
 9. RAG 기반 생성형 AI 애플리케이션 구현
+10. **LLMOps** *(신규 추가)*
 
 ### 본 과정의 목표
 
@@ -44,13 +45,13 @@
 
 ---
 
-최종 목표: `Agent/` 폴더의 실제 시스템 구축을 단계별로 연습하는 개발자 중심 커리큘럼 (520개 고유 학습주제)
+최종 목표: `Agent/` 폴더의 실제 시스템 구축을 단계별로 연습하는 개발자 중심 커리큘럼 **(540개 고유 학습주제)**
 
-첨부 커리큘럼의 **정규교과 520시간** 기준으로 세분화한 교육 저장소이며, 520개 클래스의 학습주제를 모두 고유하게 구성했습니다.  
-`class001`부터 `class500`은 정규교과, 프로젝트 과목은 루트의 3개 독립 앱(`VoiceModelBuilder`, `PersonaLLMResponder`, `PersonaKnowledgeCustomizer`)으로 운영합니다.
+첨부 커리큘럼의 **정규교과 520시간 + LLMOps 20시간** 기준으로 세분화한 교육 저장소이며, 540개 클래스의 학습주제를 모두 고유하게 구성했습니다.  
+`class001`부터 `class500`은 기존 정규교과, `class501`~`class520`은 **LLMOps 심화 과정**, 프로젝트 과목은 루트의 3개 독립 앱(`VoiceModelBuilder`, `PersonaLLMResponder`, `PersonaKnowledgeCustomizer`)으로 운영합니다.
 
 ## 1) 현재까지 반영된 핵심 작업
-- 520개 차시 `classXXX.md` 자동 정비
+- 540개 차시 `classXXX.md` 자동 정비 (class001~class520)
 - 교과목/학습주제 용어 해설(문법, 한글·한자, 영어, 기술 설명) 반영
 - 각 차시별 **서로 다른 Mermaid Flowchart** 생성
 - 각 차시별 Flow를 **PNG 캡처 이미지(`classXXX_flow.png`)**로 생성 및 md 참조 연결
@@ -99,6 +100,7 @@
 | 프롬프트 엔지니어링 | `promptEng` | class353~class392 | 역할/맥락/출력형식 설계, 템플릿화, 평가 기준 수립, 실전 프롬프트 튜닝 전략 |
 | Langchain 활용하기 | `langChainLab` | class393~class448 | 체인 구성, PromptTemplate/OutputParser, 메모리/도구 연결, LangGraph 상태 흐름, LangSmith 추적 기반 서비스형 워크플로우 구현 |
 | RAG(Retrieval-Augmented Generation) | `ragPipeline` | class449~class500 | 문서 로딩/청크, 임베딩·벡터검색, 근거 결합 응답, 출처 기반 검증까지 RAG 전체 파이프라인 구현 |
+| **LLMOps** | `llmOps` | **class501~class520** | LLMOps 개요, 프롬프트 버전관리, LLM 평가·품질관리, 모니터링·관측성, 배포 자동화(CI/CD·Blue-Green·Canary)까지 Lab 스타일 실습 |
 | 프로젝트 앱 | `VoiceModelBuilder`, `PersonaLLMResponder`, `PersonaKnowledgeCustomizer` | 독립 앱 3종 | 음성 모델 생성, PERSONA LLM 답변, 사전 데이터 기반 답변 커스텀을 각각 독립 서비스로 실습 |
 
 ### 3-1-1) dataVizPrep 7단계 구성(요청 반영)
@@ -146,6 +148,22 @@
 | 6. LangChain과 RAG 연결 | Retriever 구성, Prompt 문맥 주입, 검색 기반 답변 생성, source 반환, hallucination 감소 | class481~490 (`프롬프트 결합`, `응답 검증/출처화`) |
 | 7. 평가와 개선 | 검색 정확도, 답변 정확도, chunking 개선, 프롬프트 튜닝, 하이브리드 검색 | class491~495 (`평가 지표 설계`) |
 | 8. 실습 | 사내 문서 질의응답, FAQ 챗봇, PDF 검색 시스템, 출처 포함 답변 생성 | class496~500 (`Agent 시스템 통합 구현`) |
+
+### 3-1-4) llmOps 5단계 구성 *(신규)*
+학습 목표:
+- LLMOps 개념과 DevOps/MLOps와의 차이 이해
+- 프롬프트 버전관리·A/B 테스트 역량 습득
+- LLM 서비스 품질 평가 자동화 파이프라인 구성
+- Prometheus/Grafana 기반 모니터링·관측성 실습
+- CI/CD·Blue-Green·Canary 기반 LLM 배포 자동화 구현
+
+| 단계 | 핵심 내용 | class 범위 |
+| --- | --- | --- |
+| 1. LLMOps 개요 | LLMOps 정의, DevOps·MLOps와의 차이, 핵심 구성요소(프롬프트·평가·모니터링·가드레일), 드리프트 관리 | class501~504 |
+| 2. 프롬프트 관리 | 프롬프트 버전관리, 템플릿화, A/B 테스트, Chain-of-Thought, 프롬프트 인젝션 방어 | class505~508 |
+| 3. LLM 평가와 품질 | BLEU/Faithfulness/Answer Relevance, 자동 평가 파이프라인, LLM-as-Judge, 지속적 품질 관리 | class509~512 |
+| 4. LLM 모니터링 | Prometheus·Grafana 메트릭, 토큰·지연·오류율 추적, 이상 탐지, SLO 설정, Circuit Breaker | class513~516 |
+| 5. LLM 배포 자동화 | CI/CD 파이프라인, Docker 패키징, K8s HPA, Blue-Green/Canary 배포, IaC, Secret 관리 | class517~520 |
 
 ## 3-2) 실무 배포 트랙 (OnPrem + AWS + K8s/EKS)
 | 트랙 | class 범위 | 핵심 학습 항목 | 운영/배포 결과물 |

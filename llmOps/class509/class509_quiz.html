@@ -1,0 +1,164 @@
+<!doctype html>
+<!-- 이 파일은 www.edumgt.co.kr 의 에듀엠지티에 저작권이 있습니다 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>class509 10문항 퀴즈</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {--bg:#f3f6fb;--panel:#fff;--ink:#0f172a;--sub:#475569;--primary:#0b5fff;--primary-strong:#0038c7;--accent:#04b7a1;--line:#d9e3f3;--danger:#e44863;}
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);}
+    .container{width:min(900px,100% - 32px);margin:28px auto 56px;}
+    .hero{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px 36px 24px;margin-bottom:24px;}
+    .hero h1{font-size:1.5rem;margin:0 0 6px;}
+    .hero p{color:var(--sub);margin:0;}
+    .question-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 28px;margin-bottom:16px;}
+    .question-text{font-weight:600;margin:0 0 14px;}
+    .qnum{color:var(--primary);margin-right:6px;}
+    .options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+    .option-label{display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1px solid var(--line);border-radius:10px;transition:.15s;}
+    .option-label:hover{border-color:var(--primary);background:#f0f5ff;}
+    .feedback{margin-top:12px;font-weight:600;font-size:.9rem;}
+    .correct{color:#16a34a;}.wrong{color:var(--danger);}
+    .btn-row{display:flex;gap:12px;justify-content:center;margin-top:28px;}
+    .btn{padding:12px 32px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;}
+    .btn-grade{background:var(--primary);color:#fff;}.btn-reset{background:#e2e8f0;color:var(--ink);}
+    .score-banner{display:none;text-align:center;padding:20px;background:#fff;border:2px solid var(--primary);border-radius:16px;margin-top:20px;font-size:1.2rem;font-weight:700;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>class509 퀴즈 — LLM 평가와 품질</h1>
+    <p>LLMOps 과정 · 총 10문항 · 문항당 10점</p>
+  </div>
+
+      <div class="question-card" id="qcard1" data-correct="1">
+        <p class="question-text"><span class="qnum">Q1.</span> LLM 응답 품질 평가 지표 BLEU는 무엇을 측정하는가?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q1" value="0" /><span class="option-text">응답 속도</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="1" /><span class="option-text">생성 텍스트와 참조 텍스트의 n-gram 유사도</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="2" /><span class="option-text">모델 파라미터 수</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q1" value="3" /><span class="option-text">GPU 사용률</span></label></li>
+        </ul>
+        <div class="feedback" id="fb1"></div>
+      </div>
+      <div class="question-card" id="qcard2" data-correct="1">
+        <p class="question-text"><span class="qnum">Q2.</span> Hallucination(환각) 문제를 줄이는 방법은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q2" value="0" /><span class="option-text">모델 크기 무조건 증가</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="1" /><span class="option-text">RAG로 외부 근거 기반 응답 생성</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="2" /><span class="option-text">프롬프트 길이 축소</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q2" value="3" /><span class="option-text">Temperature를 1.0으로 고정</span></label></li>
+        </ul>
+        <div class="feedback" id="fb2"></div>
+      </div>
+      <div class="question-card" id="qcard3" data-correct="1">
+        <p class="question-text"><span class="qnum">Q3.</span> LLM 평가에서 'Faithfulness'가 의미하는 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q3" value="0" /><span class="option-text">응답 속도</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="1" /><span class="option-text">응답이 제공된 컨텍스트에 충실한지 여부</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="2" /><span class="option-text">토큰 비용</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q3" value="3" /><span class="option-text">UI 스타일</span></label></li>
+        </ul>
+        <div class="feedback" id="fb3"></div>
+      </div>
+      <div class="question-card" id="qcard4" data-correct="1">
+        <p class="question-text"><span class="qnum">Q4.</span> 자동화 평가(Automated Evaluation)의 장점은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q4" value="0" /><span class="option-text">100% 정확한 품질 보장</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="1" /><span class="option-text">대규모 응답을 일관된 기준으로 빠르게 측정</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="2" /><span class="option-text">인간 판단 완전 대체</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q4" value="3" /><span class="option-text">비용 제로</span></label></li>
+        </ul>
+        <div class="feedback" id="fb4"></div>
+      </div>
+      <div class="question-card" id="qcard5" data-correct="0">
+        <p class="question-text"><span class="qnum">Q5.</span> LLM-as-Judge 방식의 의미는?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q5" value="0" /><span class="option-text">LLM이 다른 LLM의 응답을 평가 기준으로 채점</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="1" /><span class="option-text">LLM을 법원 시스템에 활용</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="2" /><span class="option-text">모델 학습 자동화</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q5" value="3" /><span class="option-text">API 부하 분산</span></label></li>
+        </ul>
+        <div class="feedback" id="fb5"></div>
+      </div>
+      <div class="question-card" id="qcard6" data-correct="1">
+        <p class="question-text"><span class="qnum">Q6.</span> 응답 다양성(Diversity) 평가가 필요한 이유는?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q6" value="0" /><span class="option-text">서버 비용 절감</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="1" /><span class="option-text">같은 질문에 항상 동일 응답만 반환하는 문제 탐지</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="2" /><span class="option-text">보안 강화</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q6" value="3" /><span class="option-text">캐시 효율화</span></label></li>
+        </ul>
+        <div class="feedback" id="fb6"></div>
+      </div>
+      <div class="question-card" id="qcard7" data-correct="0">
+        <p class="question-text"><span class="qnum">Q7.</span> 평가 데이터셋(Benchmark)을 직접 구축해야 하는 경우는?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q7" value="0" /><span class="option-text">공개 벤치마크가 도메인 특화 데이터를 충분히 다루지 못할 때</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="1" /><span class="option-text">GPU 수량이 부족할 때</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="2" /><span class="option-text">UI 디자인 변경 시</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q7" value="3" /><span class="option-text">서버 재시작 후</span></label></li>
+        </ul>
+        <div class="feedback" id="fb7"></div>
+      </div>
+      <div class="question-card" id="qcard8" data-correct="1">
+        <p class="question-text"><span class="qnum">Q8.</span> Temperature 파라미터를 낮추면 응답 품질에 어떤 영향을 주는가?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q8" value="0" /><span class="option-text">응답이 더 창의적으로 변한다</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="1" /><span class="option-text">응답이 더 일관되고 예측 가능해진다</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="2" /><span class="option-text">토큰 비용이 증가한다</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q8" value="3" /><span class="option-text">지연시간이 감소한다</span></label></li>
+        </ul>
+        <div class="feedback" id="fb8"></div>
+      </div>
+      <div class="question-card" id="qcard9" data-correct="1">
+        <p class="question-text"><span class="qnum">Q9.</span> RAG 기반 평가에서 'Answer Relevance'는 무엇을 측정하는가?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q9" value="0" /><span class="option-text">문서 로딩 속도</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="1" /><span class="option-text">생성 답변이 질문과 얼마나 관련성이 있는지</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="2" /><span class="option-text">벡터DB 인덱스 크기</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q9" value="3" /><span class="option-text">프롬프트 길이</span></label></li>
+        </ul>
+        <div class="feedback" id="fb9"></div>
+      </div>
+      <div class="question-card" id="qcard10" data-correct="1">
+        <p class="question-text"><span class="qnum">Q10.</span> 지속적 품질 관리를 위해 필요한 것은?</p>
+        <ul class="options">
+            <li><label class="option-label"><input type="radio" name="q10" value="0" /><span class="option-text">한 번 평가 후 영구 보관</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="1" /><span class="option-text">정기적 평가 자동화 파이프라인 구축</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="2" /><span class="option-text">수동 검토만 수행</span></label></li>
+            <li><label class="option-label"><input type="radio" name="q10" value="3" /><span class="option-text">UI 변경 금지</span></label></li>
+        </ul>
+        <div class="feedback" id="fb10"></div>
+      </div>
+  <div class="btn-row">
+    <button class="btn btn-grade" onclick="grade()">채점하기</button>
+    <button class="btn btn-reset" onclick="resetQuiz()">다시풀기</button>
+  </div>
+  <div class="score-banner" id="scoreBanner"></div>
+</div>
+<script>
+function grade(){
+  let score=0;
+  document.querySelectorAll('.question-card').forEach((card)=>{
+    const correct=parseInt(card.dataset.correct);
+    const sel=card.querySelector('input[type=radio]:checked');
+    const fb=card.querySelector('.feedback');
+    if(!sel){fb.textContent='선택하지 않았습니다.';fb.className='feedback wrong';return;}
+    if(parseInt(sel.value)===correct){score+=10;fb.textContent='✓ 정답입니다!';fb.className='feedback correct';}
+    else{const opts=card.querySelectorAll('.option-text');fb.textContent='✗ 오답. 정답: '+(opts[correct]?opts[correct].textContent:correct);fb.className='feedback wrong';}
+  });
+  const b=document.getElementById('scoreBanner');b.style.display='block';b.textContent='총점: '+score+'점 / 100점';
+}
+function resetQuiz(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.feedback').forEach(f=>{f.textContent='';f.className='feedback';});
+  document.getElementById('scoreBanner').style.display='none';
+}
+</script>
+</body>
+</html>
